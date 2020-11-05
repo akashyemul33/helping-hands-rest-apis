@@ -193,6 +193,34 @@ public class Place extends CommonUsedAttributes{
     public void setViews(List<Long> views) {
         this.views = views;
     }
+
+    public Place(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long place_id, String place_type, Address place_address, long place_category_id, String place_category_name, String place_name, String place_desc, Contact place_contact, boolean door_service, List<EmbededImage> place_images, PlaceAvailabilityDays place_avaialable_days, String opening_time, String closing_time, String lunchhour_starttime, String lunchhour_endtime, List<ProductsWithPrice> products_with_price, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
+        this.place_id = place_id;
+        this.place_type = place_type;
+        this.place_address = place_address;
+        this.place_category_id = place_category_id;
+        this.place_category_name = place_category_name;
+        this.place_name = place_name;
+        this.place_desc = place_desc;
+        this.place_contact = place_contact;
+        this.door_service = door_service;
+        this.place_images = place_images;
+        this.place_avaialable_days = place_avaialable_days;
+        this.opening_time = opening_time;
+        this.closing_time = closing_time;
+        this.lunchhour_starttime = lunchhour_starttime;
+        this.lunchhour_endtime = lunchhour_endtime;
+        this.products_with_price = products_with_price;
+        this.number_of_ratings = number_of_ratings;
+        this.number_of_views = number_of_views;
+        this.avg_rating = avg_rating;
+        this.ratings = ratings;
+        this.views = views;
+        this.schema_version=schemaVersion;
+        this.created_date_time = createdDateTime;
+        this.modified_date_time=modifiedDateTime;
+        this.status=status;
+    }
 }
 class ProductsWithPrice{
     private String product_price;
@@ -238,6 +266,8 @@ class ProductsWithPrice{
     public void setProduct_name(ProductNames product_name) {
         this.product_name = product_name;
     }
+
+
 }
 class PlaceAvailabilityDays{
     private boolean sun;

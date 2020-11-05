@@ -5,11 +5,22 @@ public class PlaceMainCategories extends CommonUsedAttributes{
     private PlaceCategoryName place_category_names;
     private EmbededImage place_category_image;
 
+    public EmbededImage getPlace_category_image() {
+        return place_category_image;
+    }
 
-    public PlaceMainCategories(long place_category_id, PlaceCategoryName place_category_names, EmbededImage place_category_image) {
+    public void setPlace_category_image(EmbededImage place_category_image) {
+        this.place_category_image = place_category_image;
+    }
+
+    public PlaceMainCategories(double schemaVersion, String createdDateTime, String modifiedDateTime, String status, long place_category_id, PlaceCategoryName place_category_names, EmbededImage place_category_image) {
         this.place_category_id = place_category_id;
         this.place_category_names = place_category_names;
         this.place_category_image = place_category_image;
+        this.schema_version=schemaVersion;
+        this.created_date_time = createdDateTime;
+        this.modified_date_time=modifiedDateTime;
+        this.status=status;
     }
 
     public long getPlace_category_id() {

@@ -55,4 +55,17 @@ public class User extends CommonUsedAttributes{
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    public User(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long user_id, String user_name, Contact contact, String password_hash, String profile_img_path, Address address) {
+        this.schema_version=schemaVersion;
+        this.created_date_time = createdDateTime;
+        this.modified_date_time=modifiedDateTime;
+        this.status=status;
+        this.user_id = user_id;
+        this.user_name = user_name;
+        this.contact = contact;
+        this.password_hash = password_hash;
+        this.profile_img_path = profile_img_path;
+        this.address = address;
+    }
 }

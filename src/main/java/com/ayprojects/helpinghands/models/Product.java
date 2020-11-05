@@ -56,6 +56,19 @@ public class Product extends CommonUsedAttributes{
     public void setAvg_price(double avg_price) {
         this.avg_price = avg_price;
     }
+
+    public Product(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long product_id, EmbededImage product_image, String default_unit, long place_sub_category_id, ProductNames product_names, double avg_price) {
+        this.product_id = product_id;
+        this.product_image = product_image;
+        this.default_unit = default_unit;
+        this.place_sub_category_id = place_sub_category_id;
+        this.product_names = product_names;
+        this.avg_price = avg_price;
+        this.schema_version=schemaVersion;
+        this.created_date_time = createdDateTime;
+        this.modified_date_time=modifiedDateTime;
+        this.status=status;
+    }
 }
 
 class ProductNames {
@@ -86,4 +99,6 @@ class ProductNames {
     public void setProductname_in_hindi(String productname_in_hindi) {
         this.productname_in_hindi = productname_in_hindi;
     }
+
+
 }

@@ -1,10 +1,10 @@
 package com.ayprojects.helpinghands.models;
 
 public class CommonUsedAttributes {
-    private String created_date_time;
-    private String modified_date_time;
-    private double schema_version;
-    private String status;
+    public String created_date_time;
+    public String modified_date_time;
+    public double schema_version;
+    public String status;
 
     public String getCreated_date_time() {
         return created_date_time;

@@ -64,4 +64,18 @@ public class RatingAndComments extends CommonUsedAttributes{
     public void setContent_id(long content_id) {
         this.content_id = content_id;
     }
+
+    public RatingAndComments(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long review_comment_id, double rating, String comment, long added_by_user_id, String added_by_user_name, String content_type, long content_id) {
+        this.schema_version=schemaVersion;
+        this.created_date_time = createdDateTime;
+        this.modified_date_time=modifiedDateTime;
+        this.status=status;
+        this.review_comment_id = review_comment_id;
+        this.rating = rating;
+        this.comment = comment;
+        this.added_by_user_id = added_by_user_id;
+        this.added_by_user_name = added_by_user_name;
+        this.content_type = content_type;
+        this.content_id = content_id;
+    }
 }

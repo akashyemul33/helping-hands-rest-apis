@@ -157,5 +157,29 @@ public class Posts extends CommonUsedAttributes{
     public void setViews(List<Long> views) {
         this.views = views;
     }
+
+    public Posts(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long post_id, String post_type, long place_id, long added_by, String post_title, String post_desc, List<EmbededImage> post_images, Contact contact_details, Address address_details, String offer_start_time, String offer_end_time, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
+        this.post_id = post_id;
+        this.post_type = post_type;
+        this.place_id = place_id;
+        this.added_by = added_by;
+        this.post_title = post_title;
+        this.post_desc = post_desc;
+        this.post_images = post_images;
+        this.contact_details = contact_details;
+        this.address_details = address_details;
+        this.offer_start_time = offer_start_time;
+        this.offer_end_time = offer_end_time;
+        this.are_details_same_as_registered = are_details_same_as_registered;
+        this.number_of_ratings = number_of_ratings;
+        this.number_of_views = number_of_views;
+        this.avg_rating = avg_rating;
+        this.ratings = ratings;
+        this.views = views;
+        this.schema_version=schemaVersion;
+        this.created_date_time = createdDateTime;
+        this.modified_date_time=modifiedDateTime;
+        this.status=status;
+    }
 }
 

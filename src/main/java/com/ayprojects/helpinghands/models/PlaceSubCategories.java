@@ -20,9 +20,13 @@ public class PlaceSubCategories extends CommonUsedAttributes{
         this.place_sub_category_image = place_sub_category_image;
     }
 
-    public PlaceSubCategories(long place_sub_category_id, EmbededImage place_sub_category_image) {
+    public PlaceSubCategories(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long place_sub_category_id, EmbededImage place_sub_category_image) {
         this.place_sub_category_id = place_sub_category_id;
         this.place_sub_category_image = place_sub_category_image;
+        this.schema_version=schemaVersion;
+        this.created_date_time = createdDateTime;
+        this.modified_date_time=modifiedDateTime;
+        this.status=status;
     }
 }
 

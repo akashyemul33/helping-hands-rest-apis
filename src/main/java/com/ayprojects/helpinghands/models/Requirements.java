@@ -120,4 +120,24 @@ public class Requirements extends CommonUsedAttributes {
     public void setViews(List<Long> views) {
         this.views = views;
     }
+
+    public Requirements(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long requirement_id, String requirement_title, String requirement_desc, String priority, String budget, Contact contact_details, Address address_details, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
+        this.schema_version=schemaVersion;
+        this.created_date_time = createdDateTime;
+        this.modified_date_time=modifiedDateTime;
+        this.status=status;
+        this.requirement_id = requirement_id;
+        this.requirement_title = requirement_title;
+        this.requirement_desc = requirement_desc;
+        this.priority = priority;
+        this.budget = budget;
+        this.contact_details = contact_details;
+        this.address_details = address_details;
+        this.are_details_same_as_registered = are_details_same_as_registered;
+        this.number_of_ratings = number_of_ratings;
+        this.number_of_views = number_of_views;
+        this.avg_rating = avg_rating;
+        this.ratings = ratings;
+        this.views = views;
+    }
 }
