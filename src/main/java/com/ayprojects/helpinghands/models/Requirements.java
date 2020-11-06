@@ -122,9 +122,9 @@ public class Requirements extends CommonUsedAttributes {
     }
 
     public Requirements(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long requirement_id, String requirement_title, String requirement_desc, String priority, String budget, Contact contact_details, Address address_details, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
-        this.schema_version=schemaVersion;
-        this.created_date_time = createdDateTime;
-        this.modified_date_time=modifiedDateTime;
+        this.schemaVersion =schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime =modifiedDateTime;
         this.status=status;
         this.requirement_id = requirement_id;
         this.requirement_title = requirement_title;

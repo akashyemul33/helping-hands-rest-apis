@@ -27,12 +27,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findByMobile(String mobile) {
-        return userRepository.findByMobile(mobile);
+    public Optional<User> findByMobileNumber(String mobileNumber) {
+        return userRepository.findByMobileNumber(mobileNumber);
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<User> findByEmailId(String emailId) {
+        return userRepository.findByEmailId(emailId);
     }
 }

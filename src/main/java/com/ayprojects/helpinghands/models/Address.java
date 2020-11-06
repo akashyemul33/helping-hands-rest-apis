@@ -3,15 +3,15 @@ package com.ayprojects.helpinghands.models;
 public class Address {
     private String thoroughfare;
     private String subthoroughfare;
-    private String feature_name;
+    private String featureName;
     private String locality;
-    private String admin_area;
-    private String sub_admin_area;
-    private String country_name;
-    private int postal_code;
+    private String adminArea;
+    private String subAdminArea;
+    private String countryName;
+    private int postalCode;
     private double lat;
     private double lng;
-    private String full_address;
+    private String fullAddress;
     private String landmark;
 
     public String getThoroughfare() {
@@ -30,12 +30,12 @@ public class Address {
         this.subthoroughfare = subthoroughfare;
     }
 
-    public String getFeature_name() {
-        return feature_name;
+    public String getFeatureName() {
+        return featureName;
     }
 
-    public void setFeature_name(String feature_name) {
-        this.feature_name = feature_name;
+    public void setFeatureName(String featureName) {
+        this.featureName = featureName;
     }
 
     public String getLocality() {
@@ -46,36 +46,36 @@ public class Address {
         this.locality = locality;
     }
 
-    public String getAdmin_area() {
-        return admin_area;
+    public String getAdminArea() {
+        return adminArea;
     }
 
-    public void setAdmin_area(String admin_area) {
-        this.admin_area = admin_area;
+    public void setAdminArea(String adminArea) {
+        this.adminArea = adminArea;
     }
 
-    public String getSub_admin_area() {
-        return sub_admin_area;
+    public String getSubAdminArea() {
+        return subAdminArea;
     }
 
-    public void setSub_admin_area(String sub_admin_area) {
-        this.sub_admin_area = sub_admin_area;
+    public void setSubAdminArea(String subAdminArea) {
+        this.subAdminArea = subAdminArea;
     }
 
-    public String getCountry_name() {
-        return country_name;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setCountry_name(String country_name) {
-        this.country_name = country_name;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 
-    public int getPostal_code() {
-        return postal_code;
+    public int getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostal_code(int postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(int postalCode) {
+        this.postalCode = postalCode;
     }
 
     public double getLat() {
@@ -94,12 +94,12 @@ public class Address {
         this.lng = lng;
     }
 
-    public String getFull_address() {
-        return full_address;
+    public String getFullAddress() {
+        return fullAddress;
     }
 
-    public void setFull_address(String full_address) {
-        this.full_address = full_address;
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
     }
 
     public String getLandmark() {

@@ -53,9 +53,9 @@ public class Views extends CommonUsedAttributes {
         this.user_name = user_name;
         this.content_type = content_type;
         this.content_id = content_id;
-        this.schema_version=schemaVersion;
-        this.created_date_time = createdDateTime;
-        this.modified_date_time=modifiedDateTime;
+        this.schemaVersion =schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime =modifiedDateTime;
         this.status=status;
     }
 }

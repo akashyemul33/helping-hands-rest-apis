@@ -1,11 +1,8 @@
 package com.ayprojects.helpinghands.services.user;
 
 import com.ayprojects.helpinghands.AppConstants;
-import com.ayprojects.helpinghands.HelpingHandsApplication;
-import com.ayprojects.helpinghands.ResponseMessages;
 import com.ayprojects.helpinghands.dao.user.UserDao;
 import com.ayprojects.helpinghands.models.Address;
-import com.ayprojects.helpinghands.models.Contact;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.models.User;
 import com.ayprojects.helpinghands.tools.Utility;
@@ -16,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -36,8 +32,9 @@ public class UserServiceImpl implements UserService{
     public Response<User> signUp(User userDetails, HttpHeaders httpHeaders) {
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("language="+language);
+        userDetails.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         Response<User> res = new Response<User>();
-        if(Utility.isFieldEmpty(userDetails.getMobile()) || Utility.isFieldEmpty(userDetails.getEmail())){
+        if(Utility.isFieldEmpty(userDetails.getMobileNumber()) || Utility.isFieldEmpty(userDetails.getEmailId())){
             LOGGER.info("Contact details are missing ");
             res.setStatus(false);
             res.setStatusCode(402);
@@ -55,7 +52,7 @@ public class UserServiceImpl implements UserService{
             return res;
         }
 
-        Address address = userDetails.getAddress();
+        Address address = userDetails.getAddressDetails();
         if(address==null || address.getLat()==0 || address.getLng()==0){
             LOGGER.info("Address details are missing ");
             res.setStatus(false);
@@ -65,10 +62,10 @@ public class UserServiceImpl implements UserService{
             return res;
         }
 
-        Optional<User> repeatedUser = userDao.findByMobile(userDetails.getMobile());
+        Optional<User> repeatedUser = userDao.findByMobileNumber(userDetails.getMobileNumber());
         if(!repeatedUser.isPresent()){
-            LOGGER.info("UserServiceImpl->Not found user with mobile "+userDetails.getMobile());
-            repeatedUser = userDao.findByEmail(userDetails.getEmail());
+            LOGGER.info("UserServiceImpl->Not found user with mobile "+userDetails.getMobileNumber());
+            repeatedUser = userDao.findByEmailId(userDetails.getEmailId());
         }
 
         if(repeatedUser.isPresent()){
@@ -84,12 +81,12 @@ public class UserServiceImpl implements UserService{
 
         String uniqueID = UUID.randomUUID().toString();
 
-        userDetails.setUser_id(uniqueID);
+        userDetails.setUserId(uniqueID);
         userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
-        userDetails.setCreated_date_time(Utility.currentDateTimeInUTC());
-        userDetails.setModified_date_time(Utility.currentDateTimeInUTC());
+        userDetails.setCreatedDateTime(Utility.currentDateTimeInUTC());
+        userDetails.setModifiedDateTime(Utility.currentDateTimeInUTC());
         userDetails.setStatus(AppConstants.STATUS_ACTIVE);
-        userDetails.setSchema_version(AppConstants.SCHEMA_VERSION);
+        userDetails.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         res.setStatus(true);
         res.setStatusCode(201);
         res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language));

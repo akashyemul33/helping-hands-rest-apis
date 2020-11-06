@@ -33,9 +33,9 @@ public class Images extends CommonUsedAttributes {
         this.image_id = image_id;
         this.image_path = image_path;
         this.image_type = image_type;
-        this.schema_version=schemaVersion;
-        this.created_date_time = createdDateTime;
-        this.modified_date_time=modifiedDateTime;
+        this.schemaVersion =schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime =modifiedDateTime;
         this.status=status;
     }
 }

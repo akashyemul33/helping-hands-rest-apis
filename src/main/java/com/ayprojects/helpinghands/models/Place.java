@@ -216,9 +216,9 @@ public class Place extends CommonUsedAttributes{
         this.avg_rating = avg_rating;
         this.ratings = ratings;
         this.views = views;
-        this.schema_version=schemaVersion;
-        this.created_date_time = createdDateTime;
-        this.modified_date_time=modifiedDateTime;
+        this.schemaVersion =schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime =modifiedDateTime;
         this.status=status;
     }
 }

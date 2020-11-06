@@ -66,9 +66,9 @@ public class RatingAndComments extends CommonUsedAttributes{
     }
 
     public RatingAndComments(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long review_comment_id, double rating, String comment, long added_by_user_id, String added_by_user_name, String content_type, long content_id) {
-        this.schema_version=schemaVersion;
-        this.created_date_time = createdDateTime;
-        this.modified_date_time=modifiedDateTime;
+        this.schemaVersion =schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime =modifiedDateTime;
         this.status=status;
         this.review_comment_id = review_comment_id;
         this.rating = rating;

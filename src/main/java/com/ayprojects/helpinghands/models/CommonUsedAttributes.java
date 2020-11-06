@@ -1,33 +1,33 @@
 package com.ayprojects.helpinghands.models;
 
 public class CommonUsedAttributes {
-    public String created_date_time;
-    public String modified_date_time;
-    public String schema_version;
+    public String createdDateTime;
+    public String modifiedDateTime;
+    public String schemaVersion;
     public String status;
 
-    public String getCreated_date_time() {
-        return created_date_time;
+    public String getCreatedDateTime() {
+        return createdDateTime;
     }
 
-    public void setCreated_date_time(String created_date_time) {
-        this.created_date_time = created_date_time;
+    public void setCreatedDateTime(String createdDateTime) {
+        this.createdDateTime = createdDateTime;
     }
 
-    public String getModified_date_time() {
-        return modified_date_time;
+    public String getModifiedDateTime() {
+        return modifiedDateTime;
     }
 
-    public void setModified_date_time(String modified_date_time) {
-        this.modified_date_time = modified_date_time;
+    public void setModifiedDateTime(String modifiedDateTime) {
+        this.modifiedDateTime = modifiedDateTime;
     }
 
-    public String getSchema_version() {
-        return schema_version;
+    public String getSchemaVersion() {
+        return schemaVersion;
     }
 
-    public void setSchema_version(String schema_version) {
-        this.schema_version = schema_version;
+    public void setSchemaVersion(String schemaVersion) {
+        this.schemaVersion = schemaVersion;
     }
 
     public String getStatus() {

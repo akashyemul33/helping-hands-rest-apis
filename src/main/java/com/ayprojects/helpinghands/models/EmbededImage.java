@@ -1,22 +1,22 @@
 package com.ayprojects.helpinghands.models;
 
 public class EmbededImage {
-    private long image_id;
-    private String image_path;
+    private long imageId;
+    private String imagePath;
 
-    public long getImage_id() {
-        return image_id;
+    public long getImageId() {
+        return imageId;
     }
 
-    public void setImage_id(long image_id) {
-        this.image_id = image_id;
+    public void setImageId(long imageId) {
+        this.imageId = imageId;
     }
 
-    public String getImage_path() {
-        return image_path;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage_path(String image_path) {
-        this.image_path = image_path;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

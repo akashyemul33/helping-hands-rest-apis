@@ -1,37 +1,36 @@
 package com.ayprojects.helpinghands.models;
 
 public class User extends CommonUsedAttributes{
-    private String user_id;
+    private String userId;
     private String name;
     private String password;
-    private EmbededImage profile_img;
-    private Address address;
-    private String mobile;
-    private String email;
+    private EmbededImage profileImg;
+    private Address addressDetails;
+    private String mobileNumber;
+    private String emailId;
 
-
-    public String getMobile() {
-        return mobile;
+    public String getMobileNumber() {
+        return mobileNumber;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailId() {
+        return emailId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -51,32 +50,32 @@ public class User extends CommonUsedAttributes{
     }
 
     public EmbededImage getProfileImg() {
-        return profile_img;
+        return profileImg;
     }
 
     public void setProfile_img_path(EmbededImage profileImg) {
-        this.profile_img = profileImg;
+        this.profileImg = profileImg;
     }
 
-    public Address getAddress() {
-        return address;
+    public Address getAddressDetails() {
+        return addressDetails;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddressDetails(Address addressDetails) {
+        this.addressDetails = addressDetails;
     }
 
-    public User(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String user_id, String name,String password, EmbededImage embededImage, Address address,String mobileNumber,String emailId) {
-        this.schema_version=schemaVersion;
-        this.created_date_time = createdDateTime;
-        this.modified_date_time=modifiedDateTime;
+    public User(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String name, String password, EmbededImage profileImg, Address addressDetails, String mobileNumber, String emailId) {
+        this.schemaVersion =schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime =modifiedDateTime;
         this.status=status;
-        this.user_id = user_id;
+        this.userId = userId;
         this.name = name;
-        this.mobile = mobileNumber;
-        this.email = emailId;
+        this.mobileNumber = mobileNumber;
+        this.emailId = emailId;
         this.password = password;
-        this.profile_img = embededImage;
-        this.address = address;
+        this.profileImg = profileImg;
+        this.addressDetails = addressDetails;
     }
 }

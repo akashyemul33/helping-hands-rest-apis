@@ -64,9 +64,9 @@ public class Product extends CommonUsedAttributes{
         this.place_sub_category_id = place_sub_category_id;
         this.product_names = product_names;
         this.avg_price = avg_price;
-        this.schema_version=schemaVersion;
-        this.created_date_time = createdDateTime;
-        this.modified_date_time=modifiedDateTime;
+        this.schemaVersion =schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime =modifiedDateTime;
         this.status=status;
     }
 }
