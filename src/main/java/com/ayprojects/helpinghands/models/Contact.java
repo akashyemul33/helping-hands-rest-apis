@@ -1,15 +1,15 @@
 package com.ayprojects.helpinghands.models;
 
 public class Contact {
-    private int mobile;
+    private String mobile;
     private String email;
     private String webiste;
 
-    public int getMobile() {
+    public String getMobile() {
         return mobile;
     }
 
-    public void setMobile(int mobile) {
+    public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 

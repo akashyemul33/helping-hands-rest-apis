@@ -57,7 +57,7 @@ public class Product extends CommonUsedAttributes{
         this.avg_price = avg_price;
     }
 
-    public Product(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long product_id, EmbededImage product_image, String default_unit, long place_sub_category_id, ProductNames product_names, double avg_price) {
+    public Product(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long product_id, EmbededImage product_image, String default_unit, long place_sub_category_id, ProductNames product_names, double avg_price) {
         this.product_id = product_id;
         this.product_image = product_image;
         this.default_unit = default_unit;

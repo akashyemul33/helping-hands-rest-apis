@@ -3,7 +3,7 @@ package com.ayprojects.helpinghands.models;
 public class CommonUsedAttributes {
     public String created_date_time;
     public String modified_date_time;
-    public double schema_version;
+    public String schema_version;
     public String status;
 
     public String getCreated_date_time() {
@@ -22,11 +22,11 @@ public class CommonUsedAttributes {
         this.modified_date_time = modified_date_time;
     }
 
-    public double getSchema_version() {
+    public String getSchema_version() {
         return schema_version;
     }
 
-    public void setSchema_version(double schema_version) {
+    public void setSchema_version(String schema_version) {
         this.schema_version = schema_version;
     }
 

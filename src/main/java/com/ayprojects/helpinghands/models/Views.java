@@ -47,7 +47,7 @@ public class Views extends CommonUsedAttributes {
         this.content_id = content_id;
     }
 
-    public Views(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long view_id, long user_id, String user_name, String content_type, long content_id) {
+    public Views(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long view_id, long user_id, String user_name, String content_type, long content_id) {
         this.view_id = view_id;
         this.user_id = user_id;
         this.user_name = user_name;

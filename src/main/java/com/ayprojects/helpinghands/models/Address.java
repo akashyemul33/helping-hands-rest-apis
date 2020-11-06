@@ -11,7 +11,7 @@ public class Address {
     private int postal_code;
     private double lat;
     private double lng;
-    private String address;
+    private String full_address;
     private String landmark;
 
     public String getThoroughfare() {
@@ -94,12 +94,12 @@ public class Address {
         this.lng = lng;
     }
 
-    public String getAddress() {
-        return address;
+    public String getFull_address() {
+        return full_address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setFull_address(String full_address) {
+        this.full_address = full_address;
     }
 
     public String getLandmark() {

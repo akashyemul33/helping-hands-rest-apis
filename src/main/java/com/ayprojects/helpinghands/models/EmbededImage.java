@@ -19,9 +19,4 @@ public class EmbededImage {
     public void setImage_path(String image_path) {
         this.image_path = image_path;
     }
-
-    public EmbededImage(long image_id, String image_path) {
-        this.image_id = image_id;
-        this.image_path = image_path;
-    }
 }

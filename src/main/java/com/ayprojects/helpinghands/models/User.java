@@ -1,51 +1,61 @@
 package com.ayprojects.helpinghands.models;
 
 public class User extends CommonUsedAttributes{
-    private long user_id;
-    private String user_name;
-    private Contact contact;
-    private String password_hash;
-    private String profile_img_path;
+    private String user_id;
+    private String name;
+    private String password;
+    private EmbededImage profile_img;
     private Address address;
+    private String mobile;
+    private String email;
 
-    public long getUser_id() {
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(long user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getName() {
+        return name;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Contact getContact() {
-        return contact;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getPassword_hash() {
-        return password_hash;
+    public EmbededImage getProfileImg() {
+        return profile_img;
     }
 
-    public void setPassword_hash(String password_hash) {
-        this.password_hash = password_hash;
-    }
-
-    public String getProfile_img_path() {
-        return profile_img_path;
-    }
-
-    public void setProfile_img_path(String profile_img_path) {
-        this.profile_img_path = profile_img_path;
+    public void setProfile_img_path(EmbededImage profileImg) {
+        this.profile_img = profileImg;
     }
 
     public Address getAddress() {
@@ -56,16 +66,17 @@ public class User extends CommonUsedAttributes{
         this.address = address;
     }
 
-    public User(double schemaVersion,String createdDateTime,String modifiedDateTime,String status,long user_id, String user_name, Contact contact, String password_hash, String profile_img_path, Address address) {
+    public User(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String user_id, String name,String password, EmbededImage embededImage, Address address,String mobileNumber,String emailId) {
         this.schema_version=schemaVersion;
         this.created_date_time = createdDateTime;
         this.modified_date_time=modifiedDateTime;
         this.status=status;
         this.user_id = user_id;
-        this.user_name = user_name;
-        this.contact = contact;
-        this.password_hash = password_hash;
-        this.profile_img_path = profile_img_path;
+        this.name = name;
+        this.mobile = mobileNumber;
+        this.email = emailId;
+        this.password = password;
+        this.profile_img = embededImage;
         this.address = address;
     }
 }
