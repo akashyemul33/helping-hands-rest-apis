@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class Images extends CommonUsedAttributes {
+public class DhImages extends CommonUsedAttributes {
     private long image_id;
     private String image_path;
     private String image_type;
@@ -29,7 +29,7 @@ public class Images extends CommonUsedAttributes {
         this.image_type = image_type;
     }
 
-    public Images(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long image_id, String image_path, String image_type) {
+    public DhImages(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long image_id, String image_path, String image_type) {
         this.image_id = image_id;
         this.image_path = image_path;
         this.image_type = image_type;

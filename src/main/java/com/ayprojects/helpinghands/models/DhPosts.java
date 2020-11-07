@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-public class Posts extends CommonUsedAttributes{
+public class DhPosts extends CommonUsedAttributes{
 
     private long post_id;
     private String post_type;
@@ -158,7 +158,7 @@ public class Posts extends CommonUsedAttributes{
         this.views = views;
     }
 
-    public Posts(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long post_id, String post_type, long place_id, long added_by, String post_title, String post_desc, List<EmbededImage> post_images, Contact contact_details, Address address_details, String offer_start_time, String offer_end_time, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
+    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long post_id, String post_type, long place_id, long added_by, String post_title, String post_desc, List<EmbededImage> post_images, Contact contact_details, Address address_details, String offer_start_time, String offer_end_time, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
         this.post_id = post_id;
         this.post_type = post_type;
         this.place_id = place_id;

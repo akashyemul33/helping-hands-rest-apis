@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-public class Place extends CommonUsedAttributes{
+public class DhPlace extends CommonUsedAttributes{
 
     private long place_id;
     private String place_type;
@@ -194,7 +194,7 @@ public class Place extends CommonUsedAttributes{
         this.views = views;
     }
 
-    public Place(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long place_id, String place_type, Address place_address, long place_category_id, String place_category_name, String place_name, String place_desc, Contact place_contact, boolean door_service, List<EmbededImage> place_images, PlaceAvailabilityDays place_avaialable_days, String opening_time, String closing_time, String lunchhour_starttime, String lunchhour_endtime, List<ProductsWithPrice> products_with_price, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long place_id, String place_type, Address place_address, long place_category_id, String place_category_name, String place_name, String place_desc, Contact place_contact, boolean door_service, List<EmbededImage> place_images, PlaceAvailabilityDays place_avaialable_days, String opening_time, String closing_time, String lunchhour_starttime, String lunchhour_endtime, List<ProductsWithPrice> products_with_price, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
         this.place_id = place_id;
         this.place_type = place_type;
         this.place_address = place_address;

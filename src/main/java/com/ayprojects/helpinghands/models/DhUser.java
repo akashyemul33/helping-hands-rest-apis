@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class User extends CommonUsedAttributes{
+public class DhUser extends CommonUsedAttributes{
     private String userId;
     private String name;
     private String password;
@@ -8,6 +8,25 @@ public class User extends CommonUsedAttributes{
     private Address addressDetails;
     private String mobileNumber;
     private String emailId;
+    private String roles[];
+
+    public String[] getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String[] roles) {
+        this.roles = roles;
+    }
+
+    public String getLanguageSelected() {
+        return languageSelected;
+    }
+
+    public void setLanguageSelected(String languageSelected) {
+        this.languageSelected = languageSelected;
+    }
+
+    private String languageSelected;
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -65,7 +84,7 @@ public class User extends CommonUsedAttributes{
         this.addressDetails = addressDetails;
     }
 
-    public User(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String name, String password, EmbededImage profileImg, Address addressDetails, String mobileNumber, String emailId) {
+    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String name, String password, EmbededImage profileImg, Address addressDetails, String mobileNumber, String emailId, String languageSelected) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
@@ -77,5 +96,6 @@ public class User extends CommonUsedAttributes{
         this.password = password;
         this.profileImg = profileImg;
         this.addressDetails = addressDetails;
+        this.languageSelected= languageSelected;
     }
 }

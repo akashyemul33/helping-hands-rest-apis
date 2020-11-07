@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class Product extends CommonUsedAttributes{
+public class DhProduct extends CommonUsedAttributes{
     private long product_id;
     private EmbededImage product_image;
     private String default_unit;
@@ -57,7 +57,7 @@ public class Product extends CommonUsedAttributes{
         this.avg_price = avg_price;
     }
 
-    public Product(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long product_id, EmbededImage product_image, String default_unit, long place_sub_category_id, ProductNames product_names, double avg_price) {
+    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long product_id, EmbededImage product_image, String default_unit, long place_sub_category_id, ProductNames product_names, double avg_price) {
         this.product_id = product_id;
         this.product_image = product_image;
         this.default_unit = default_unit;

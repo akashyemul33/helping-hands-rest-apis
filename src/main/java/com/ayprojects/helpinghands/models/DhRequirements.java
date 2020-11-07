@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-public class Requirements extends CommonUsedAttributes {
+public class DhRequirements extends CommonUsedAttributes {
     private long requirement_id;
     private String requirement_title;
     private String requirement_desc;
@@ -121,7 +121,7 @@ public class Requirements extends CommonUsedAttributes {
         this.views = views;
     }
 
-    public Requirements(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long requirement_id, String requirement_title, String requirement_desc, String priority, String budget, Contact contact_details, Address address_details, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
+    public DhRequirements(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long requirement_id, String requirement_title, String requirement_desc, String priority, String budget, Contact contact_details, Address address_details, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;

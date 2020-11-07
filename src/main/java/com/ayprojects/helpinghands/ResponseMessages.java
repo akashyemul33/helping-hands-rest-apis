@@ -23,5 +23,21 @@ public class ResponseMessages {
     public String HI_USER_PASSWORD_IS_EMPTY = "पासवर्ड खाली है!";
 
 
+    public String EN_INCORRECT_USERNAME = "Incorrect user name !";
+    public String MR_INCORRECT_USERNAME = "वापरकर्त्याचे नाव चुकीचे आहे !";
+    public String HI_INCORRECT_USERNAME = "उपयोगकर्ता नाम गलत है !";
+
+
+    public String EN_INCORRECT_PASSWORD = "Incorrect password !";
+    public String MR_INCORRECT_PASSWORD = "संकेतशब्द चुकीचा आहे !";
+    public String HI_INCORRECT_PASSWORD = "पासवर्ड गलत है !";
+
+
+    public String EN_USER_LOGGED_IN = "You're logged in successfully !";
+    public String MR_USER_LOGGED_IN = "आपण यशस्वीरित्या लॉग इन केले आहे !";
+    public String HI_USER_LOGGED_IN = "आप सफलतापूर्वक लॉग इन हो गए हैं !";
+
+
+
 
 }

@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class PlaceMainCategories extends CommonUsedAttributes{
+public class DhPlaceMainCategories extends CommonUsedAttributes{
     private long place_category_id;
     private PlaceCategoryName place_category_names;
     private EmbededImage place_category_image;
@@ -13,7 +13,7 @@ public class PlaceMainCategories extends CommonUsedAttributes{
         this.place_category_image = place_category_image;
     }
 
-    public PlaceMainCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long place_category_id, PlaceCategoryName place_category_names, EmbededImage place_category_image) {
+    public DhPlaceMainCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long place_category_id, PlaceCategoryName place_category_names, EmbededImage place_category_image) {
         this.place_category_id = place_category_id;
         this.place_category_names = place_category_names;
         this.place_category_image = place_category_image;

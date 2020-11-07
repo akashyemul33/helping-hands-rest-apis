@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class RatingAndComments extends CommonUsedAttributes{
+public class DhRatingAndComments extends CommonUsedAttributes{
     private long review_comment_id;
     private double rating;
     private String comment;
@@ -65,7 +65,7 @@ public class RatingAndComments extends CommonUsedAttributes{
         this.content_id = content_id;
     }
 
-    public RatingAndComments(String schemaVersion,String createdDateTime,String modifiedDateTime,String status,long review_comment_id, double rating, String comment, long added_by_user_id, String added_by_user_name, String content_type, long content_id) {
+    public DhRatingAndComments(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long review_comment_id, double rating, String comment, long added_by_user_id, String added_by_user_name, String content_type, long content_id) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
