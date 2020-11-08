@@ -37,7 +37,20 @@ public class ResponseMessages {
     public String MR_USER_LOGGED_IN = "आपण यशस्वीरित्या लॉग इन केले आहे !";
     public String HI_USER_LOGGED_IN = "आप सफलतापूर्वक लॉग इन हो गए हैं !";
 
+    public String EN_APP_CONFIG_ADDED = "New app configuration has been added !";
+    public String MR_APP_CONFIG_ADDED = "नवीन अॅप कॉन्फिगरेशन जोडले गेले आहे !";
+    public String HI_APP_CONFIG_ADDED = "नया एप्लिकेशन कॉन्फ़िगरेशन जोड़ा गया है !";
 
+    public String EN_ERROR_WHILE_ADDING_APP_CONFIG = "Unable to add app config !";
+    public String MR_ERROR_WHILE_ADDING_APP_CONFIG = "अॅप कॉन्फिगरेशन जोडण्यात अक्षम !";
+    public String HI_ERROR_WHILE_ADDING_APP_CONFIG = "एप्लिकेशन कॉन्फ़िगर जोड़ने में असमर्थ !";
 
+    public String EN_ERROR_WHILE_FETCHING_APP_CONFIG = "Unable to fetch active app config !";
+    public String MR_ERROR_WHILE_FETCHING_APP_CONFIG = "सक्रिय  अॅप कॉन्फिगरेशन आणण्यात अक्षम !";
+    public String HI_ERROR_WHILE_FETCHING_APP_CONFIG = "सक्रिय एप्लिकेशन कॉन्फ़िगर करने में असमर्थ !";
+
+    public String EN_USER_AND_APPCONFIG_DETAILS_FETCHED = "User and app config details fetched successfully !";
+    public String MR_USER_AND_APPCONFIG_DETAILS_FETCHED = "वापरकर्ता आणि अॅप कॉन्फिगरेशन तपशील यशस्वीरित्या प्राप्त केले !";
+    public String HI_USER_AND_APPCONFIG_DETAILS_FETCHED = "उपयोगकर्ता और एप्लिकेशन कॉन्फ़िगरेशन विवरण सफलतापूर्वक प्राप्त हुए !";
 
 }

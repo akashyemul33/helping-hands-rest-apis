@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 public class LoginResponse {
     private DhUser dhUser;
-    private AccessTokenModel accessToken;
+    private DhAppConfig dhAppConfig;
 
     public DhUser getDhUser() {
         return dhUser;
@@ -12,11 +12,16 @@ public class LoginResponse {
         this.dhUser = dhUser;
     }
 
-    public AccessTokenModel getAccessToken() {
-        return accessToken;
+    public DhAppConfig getDhAppConfig() {
+        return dhAppConfig;
     }
 
-    public void setAccessToken(AccessTokenModel accessToken) {
-        this.accessToken = accessToken;
+    public void setDhAppConfig(DhAppConfig dhAppConfig) {
+        this.dhAppConfig = dhAppConfig;
+    }
+
+    public LoginResponse(DhUser dhUser, DhAppConfig dhAppConfig) {
+        this.dhUser = dhUser;
+        this.dhAppConfig = dhAppConfig;
     }
 }

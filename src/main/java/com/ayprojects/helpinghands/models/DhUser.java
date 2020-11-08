@@ -8,7 +8,7 @@ public class DhUser extends CommonUsedAttributes{
     private Address addressDetails;
     private String mobileNumber;
     private String emailId;
-    private String roles[];
+    private String[] roles;
 
     public String[] getRoles() {
         return roles;

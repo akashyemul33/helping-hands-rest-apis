@@ -2,15 +2,19 @@ package com.ayprojects.helpinghands.services.user;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.dao.user.UserDao;
+import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.AccessTokenModel;
 import com.ayprojects.helpinghands.models.Address;
 import com.ayprojects.helpinghands.models.AuthenticationRequest;
+import com.ayprojects.helpinghands.models.DhAppConfig;
 import com.ayprojects.helpinghands.models.DhLog;
+import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.security.JwtHelper;
 import com.ayprojects.helpinghands.security.UserDetailsDecorator;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
+import com.ayprojects.helpinghands.services.appconfig.AppConfigService;
 import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.tools.Utility;
 import com.ayprojects.helpinghands.security.JwtUtils;
@@ -19,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,6 +62,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private LogService logService;
+
+    @Autowired
+    private AppConfigService appConfigService;
 
     @Override
     public Response<DhUser> signUp(DhUser dhUserDetails, HttpHeaders httpHeaders) {
@@ -116,6 +124,7 @@ public class UserServiceImpl implements UserService{
         dhUserDetails.setCreatedDateTime(Utility.currentDateTimeInUTC());
         dhUserDetails.setModifiedDateTime(Utility.currentDateTimeInUTC());
         dhUserDetails.setStatus(AppConstants.STATUS_ACTIVE);
+        dhUserDetails.setRoles(AppConstants.ROLE_USER);
         dhUserDetails.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         res.setStatus(true);
         res.setStatusCode(201);
@@ -177,5 +186,19 @@ public class UserServiceImpl implements UserService{
                 logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),userDetails.getUser().getUserId(),AppConstants.TRIED_LOGGING_WITH_INCORRECT_PASSWORD,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
                 return res;
             }
+    }
+
+    @Override
+    public Response<LoginResponse> getUserDetails(HttpHeaders httpHeaders, Authentication authentication){
+        String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("language="+language);
+        Response<DhAppConfig> appConfigResponse = appConfigService.getActiveAppConfig(httpHeaders,authentication);
+        DhAppConfig dhAppConfig = appConfigResponse.getStatus() ? appConfigResponse.getData().get(0) : null;
+        return new Response<LoginResponse>(true,
+                201,
+                Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED,language)
+                ,Collections.singletonList(new LoginResponse(userDetailsService.loadUserByUsername(authentication.getName()).getUser(),dhAppConfig))
+                , (long) 1
+        );
     }
 }

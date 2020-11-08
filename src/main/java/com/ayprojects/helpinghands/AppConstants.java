@@ -10,6 +10,10 @@ public class AppConstants {
     public static final String NEW_USER_ADDED = "New user has been added." ;
     public static final String TRIED_LOGGING_WITH_INCORRECT_USERNAME = "Tried logging in with incorrect username !" ;
     public static final String TRIED_LOGGING_WITH_INCORRECT_PASSWORD = "Tried logging in with incorrect password !" ;
+    public static final String[] ROLE_USER = {"USER"} ;
+    public static final String NEW_APPCONFIG_ADDED = "New app configuration added .";
+    public static final String PENDING = "Pending";
+    //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
     public static String LABEL_HEADER_APPLANGUAGE ="App-Language";
@@ -23,4 +27,9 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_INCORRECT_USERNAME = "INCORRECT_USERNAME";
     public static String RESPONSEMESSAGE_INCORRECT_PASSWORD = "INCORRECT_PASSWORD";
     public static String RESPONSEMESSAGE_USER_LOGGED_IN = "USER_LOGGED_IN";
+    public static String RESPONSEMESSAGE_APP_CONFIG_ADDED = "APP_CONFIG_ADDED";
+    public static String RESPONSEMESSAGE_ERROR_WHILE_ADDING_APP_CONFIG = "ERROR_WHILE_ADDING_APP_CONFIG";
+    public static String RESPONSEMESSAGE_ERROR_WHILE_FETCHING_APP_CONFIG = "ERROR_WHILE_FETCHING_APP_CONFIG";
+    public static String RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED = "USER_AND_APPCONFIG_DETAILS_FETCHED";
+    public static String FOUND_APP_CONFIG = "Found app confige with status Active";
 }
