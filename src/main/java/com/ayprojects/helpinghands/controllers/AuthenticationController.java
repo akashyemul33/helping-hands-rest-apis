@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v{version}")
 public class AuthenticationController {
 
-
     @Autowired
     UserService userService;
 

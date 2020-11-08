@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.ayprojects.helpinghands.AppConstants;
 
 import org.springframework.stereotype.Component;
 
@@ -26,8 +27,8 @@ public class JwtHelper {
 
     public String createJwtForClaims(String subject, Map<String, String> claims) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(Instant.now().toEpochMilli());
-        calendar.add(Calendar.DATE, 1);
+        calendar.setTimeInMillis(Instant.now().toEpochMilli()+ AppConstants.JWT_TOKEN_EXPIRATION_VALUE);
+//        calendar.add(Calendar.DATE, 1);
 
         JWTCreator.Builder jwtBuilder = JWT.create().withSubject(subject);
 
