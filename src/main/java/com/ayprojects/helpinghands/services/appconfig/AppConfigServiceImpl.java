@@ -38,6 +38,10 @@ public class AppConfigServiceImpl implements AppConfigService {
     public Response<DhAppConfig> addAppConfig(Authentication authentication,HttpHeaders httpHeaders,DhAppConfig dhAppConfig) throws ServerSideException {
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("AppConfigServiceImpl->addAppConfig : language="+language);
+        if(dhAppConfig==null)
+        {
+            return  new Response<DhAppConfig>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(),(long)0);
+        }
 
         try{
         Response<DhAppConfig> res = new Response<>();
@@ -49,10 +53,10 @@ public class AppConfigServiceImpl implements AppConfigService {
         UserDetailsDecorator userDetails = userDetailsService.loadUserByUsername(authentication.getName());
         dhAppConfig.setCreatedDateTime(Utility.currentDateTimeInUTC());
         dhAppConfig.setModifiedDateTime(Utility.currentDateTimeInUTC());
-        dhAppConfig.setStatus(AppConstants.PENDING);
+        dhAppConfig.setStatus(AppConstants.STATUS_PENDING);
         dhAppConfig.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         appConfigDao.addAppConfig(dhAppConfig);
-        logService.addLog(new DhLog(UUID.randomUUID().toString(),userDetails.getUser().getMobileNumber(),userDetails.getUser().getUserId(),AppConstants.NEW_APPCONFIG_ADDED,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+        logService.addLog(new DhLog(UUID.randomUUID().toString(),userDetails.getUser().getMobileNumber(),userDetails.getUser().getUserId(),AppConstants.ACTION_NEW_APPCONFIG_ADDED,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
         return res;
         }
         catch (Exception e){

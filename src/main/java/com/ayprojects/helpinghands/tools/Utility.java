@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -43,6 +44,11 @@ public class Utility {
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = new Date();
         return dateFormat.format(date);
+    }
+
+    public static String getUUID()
+    {
+        return UUID.randomUUID().toString();
     }
 
     public static String getResponseMessage(String msg, String language) {

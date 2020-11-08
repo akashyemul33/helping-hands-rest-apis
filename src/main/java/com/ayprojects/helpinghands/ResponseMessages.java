@@ -53,4 +53,28 @@ public class ResponseMessages {
     public String MR_USER_AND_APPCONFIG_DETAILS_FETCHED = "वापरकर्ता आणि अॅप कॉन्फिगरेशन तपशील यशस्वीरित्या प्राप्त केले !";
     public String HI_USER_AND_APPCONFIG_DETAILS_FETCHED = "उपयोगकर्ता और एप्लिकेशन कॉन्फ़िगरेशन विवरण सफलतापूर्वक प्राप्त हुए !";
 
+
+    public String EN_EMPTY_BODY_OR_PLACECATEGORYNAMES = "Input details or place category names are missing !";
+    public String MR_EMPTY_BODY_OR_PLACECATEGORYNAMES = "इनपुट तपशील किंवा ठिकाण श्रेणी नावे गहाळ आहेत !";
+    public String HI_EMPTY_BODY_OR_PLACECATEGORYNAMES = "इनपुट विवरण या स्थान श्रेणी के नाम गायब हैं !";
+
+    public String EN_EMPTY_BODY = "Please provide the input details !";
+    public String MR_EMPTY_BODY = "कृपया इनपुट विनंतीचे मुख्य भाग प्रदान करा!";
+    public String HI_EMPTY_BODY = "कृपया इनपुट विवरण प्रदान करें !";
+
+    public String EN_PLACE_CATEGORY_NAMES_EMPTY = "Please provide place category names & name in english is compulsory for main and sub categories!";
+    public String MR_PLACE_CATEGORY_NAMES_EMPTY = "कृपया स्थान श्रेणी नावे प्रदान करा & मुख्य आणि उप श्रेण्यांसाठी इंग्रजीमधील नाव अनिवार्य आहे !";
+    public String HI_PLACE_CATEGORY_NAMES_EMPTY = "कृपया श्रेणी के नाम प्रदान करें & मुख्य और उप श्रेणियों के लिए अंग्रेजी में नाम अनिवार्य है !";
+
+    public String EN_NEW_PLACE_CATEGORY_ADDED = "New category for places has been added .";
+    public String MR_NEW_PLACE_CATEGORY_ADDED = "ठिकाणांसाठी नवीन श्रेणी जोडली गेली आहे .";
+    public String HI_NEW_PLACE_CATEGORY_ADDED = "स्थानों के लिए नई श्रेणी जोड़ी गई है ।";
+
+
+    public String EN_NO_PLACECATEGORIES = "No categories found for places !";
+    public String MR_NO_PLACECATEGORIES = "ठिकाणांसाठी कोणत्याही श्रेण्या आढळल्या नाहीत !";
+    public String HI_NO_PLACECATEGORIES = "स्थानों के लिए कोई श्रेणियां नहीं मिलीं !";
+
+
+
 }

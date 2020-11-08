@@ -2,7 +2,6 @@ package com.ayprojects.helpinghands.services.user;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.dao.user.UserDao;
-import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.AccessTokenModel;
 import com.ayprojects.helpinghands.models.Address;
 import com.ayprojects.helpinghands.models.AuthenticationRequest;
@@ -72,6 +71,10 @@ public class UserServiceImpl implements UserService{
         LOGGER.info("language="+language);
         dhUserDetails.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         Response<DhUser> res = new Response<DhUser>();
+        if(dhUserDetails==null){
+            return new Response<DhUser>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), (long) 0);
+        }
+
         if(Utility.isFieldEmpty(dhUserDetails.getMobileNumber()) || Utility.isFieldEmpty(dhUserDetails.getEmailId())){
             LOGGER.info("Contact details are missing ");
             res.setStatus(false);
@@ -117,7 +120,7 @@ public class UserServiceImpl implements UserService{
             return res;
         }
 
-        String uniqueUserID = UUID.randomUUID().toString();
+        String uniqueUserID = Utility.getUUID();
 
         dhUserDetails.setUserId(uniqueUserID);
         dhUserDetails.setPassword(bCryptPasswordEncoder.encode(dhUserDetails.getPassword()));
@@ -131,7 +134,7 @@ public class UserServiceImpl implements UserService{
         res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language));
         res.setData(Collections.singletonList(dhUserDetails));
         userDao.signUp(dhUserDetails);
-        logService.addLog(new DhLog(UUID.randomUUID().toString(),dhUserDetails.getMobileNumber(),uniqueUserID,AppConstants.NEW_USER_ADDED,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+        logService.addLog(new DhLog(UUID.randomUUID().toString(),dhUserDetails.getMobileNumber(),uniqueUserID,AppConstants.ACTION_NEW_USER_ADDED,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
         return res;
     }
 
@@ -152,7 +155,7 @@ public class UserServiceImpl implements UserService{
             res.setStatusCode(402);
             res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_USERNAME,language));
             res.setData(Collections.singletonList(new AccessTokenModel()));
-            logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),"NA",AppConstants.TRIED_LOGGING_WITH_INCORRECT_USERNAME,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+            logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),"NA",AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_USERNAME,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
             return res;
 //            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
@@ -183,7 +186,7 @@ public class UserServiceImpl implements UserService{
                 res.setStatusCode(402);
                 res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_PASSWORD,language));
                 res.setData(Collections.singletonList(new AccessTokenModel()));
-                logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),userDetails.getUser().getUserId(),AppConstants.TRIED_LOGGING_WITH_INCORRECT_PASSWORD,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+                logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),userDetails.getUser().getUserId(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_PASSWORD,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
                 return res;
             }
     }
