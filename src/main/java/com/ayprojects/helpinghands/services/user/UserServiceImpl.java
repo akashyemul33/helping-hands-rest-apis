@@ -5,17 +5,16 @@ import com.ayprojects.helpinghands.dao.user.UserDao;
 import com.ayprojects.helpinghands.models.AccessTokenModel;
 import com.ayprojects.helpinghands.models.Address;
 import com.ayprojects.helpinghands.models.AuthenticationRequest;
-import com.ayprojects.helpinghands.models.LoginResponse;
+import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.security.JwtHelper;
 import com.ayprojects.helpinghands.security.UserDetailsDecorator;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
+import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.tools.Utility;
 import com.ayprojects.helpinghands.security.JwtUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -55,6 +54,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    private LogService logService;
 
     @Override
     public Response<DhUser> signUp(DhUser dhUserDetails, HttpHeaders httpHeaders) {
@@ -107,9 +109,9 @@ public class UserServiceImpl implements UserService{
             return res;
         }
 
-        String uniqueID = UUID.randomUUID().toString();
+        String uniqueUserID = UUID.randomUUID().toString();
 
-        dhUserDetails.setUserId(uniqueID);
+        dhUserDetails.setUserId(uniqueUserID);
         dhUserDetails.setPassword(bCryptPasswordEncoder.encode(dhUserDetails.getPassword()));
         dhUserDetails.setCreatedDateTime(Utility.currentDateTimeInUTC());
         dhUserDetails.setModifiedDateTime(Utility.currentDateTimeInUTC());
@@ -120,15 +122,16 @@ public class UserServiceImpl implements UserService{
         res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language));
         res.setData(Collections.singletonList(dhUserDetails));
         userDao.signUp(dhUserDetails);
+        logService.addLog(new DhLog(UUID.randomUUID().toString(),dhUserDetails.getMobileNumber(),uniqueUserID,AppConstants.NEW_USER_ADDED,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
         return res;
     }
 
     @Override
-    public Response<LoginResponse> login(AuthenticationRequest authenticationRequest, HttpHeaders httpHeaders) {
+    public Response<AccessTokenModel> login(AuthenticationRequest authenticationRequest, HttpHeaders httpHeaders) {
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("language="+language);
 
-        Response<LoginResponse> res = new Response<LoginResponse>();
+        Response<AccessTokenModel> res = new Response<>();
 
         //find out user with mobile and email, as username can be either mobile or email
         UserDetailsDecorator userDetails;
@@ -139,7 +142,8 @@ public class UserServiceImpl implements UserService{
             res.setStatus(false);
             res.setStatusCode(402);
             res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_USERNAME,language));
-            res.setData(Collections.singletonList(new LoginResponse()));
+            res.setData(Collections.singletonList(new AccessTokenModel()));
+            logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),"NA",AppConstants.TRIED_LOGGING_WITH_INCORRECT_USERNAME,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
             return res;
 //            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
@@ -154,21 +158,14 @@ public class UserServiceImpl implements UserService{
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.joining(","));
                 claims.put("authorities", authorities);
-                claims.put("userId", String.valueOf(userDetails.getUser().getUserId()));
+                claims.put("userId", userDetails.getUser().getUserId());
                 String jwt = jwtHelper.createJwtForClaims(authenticationRequest.getUsername(), claims);
-                AccessTokenModel accessTokenModel = new AccessTokenModel();
-                accessTokenModel.setToken_type("");
-                accessTokenModel.setScope("");
-                accessTokenModel.setRefresh_token("");
-                accessTokenModel.setAccess_token(jwt);
-                accessTokenModel.setExpires_in(AppConstants.JWT_TOKEN_EXPIRATION_VALUE);
+                AccessTokenModel accessTokenModel = new AccessTokenModel(jwt,"","",AppConstants.JWT_TOKEN_EXPIRATION_VALUE,"");
                 //send all the details required back as a response of login
-                LoginResponse loginResponse=new LoginResponse();
-                loginResponse.setAccessToken(accessTokenModel);
                 res.setStatus(true);
                 res.setStatusCode(201);
                 res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_LOGGED_IN,language));
-                res.setData(Collections.singletonList(loginResponse));
+                res.setData(Collections.singletonList(accessTokenModel));
                 return res;
             }
             catch (BadCredentialsException e){
@@ -176,10 +173,9 @@ public class UserServiceImpl implements UserService{
                 res.setStatus(false);
                 res.setStatusCode(402);
                 res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_PASSWORD,language));
-                res.setData(Collections.singletonList(new LoginResponse()));
+                res.setData(Collections.singletonList(new AccessTokenModel()));
+                logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),userDetails.getUser().getUserId(),AppConstants.TRIED_LOGGING_WITH_INCORRECT_PASSWORD,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
                 return res;
             }
-
-
     }
 }

@@ -7,6 +7,9 @@ public class AppConstants {
     public static final String JWT_TOKEN_ISSUER = "HelpingHandsAdmin";
     public static final String JWT_TOKEN_AUDIENCE = "HelpingHandsMobileAndWebUsers";
     public static final String SECRET_KEY = "helping-hands-secret-key";
+    public static final String NEW_USER_ADDED = "New user has been added." ;
+    public static final String TRIED_LOGGING_WITH_INCORRECT_USERNAME = "Tried logging in with incorrect username !" ;
+    public static final String TRIED_LOGGING_WITH_INCORRECT_PASSWORD = "Tried logging in with incorrect password !" ;
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
     public static String LABEL_HEADER_APPLANGUAGE ="App-Language";

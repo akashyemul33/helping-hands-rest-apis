@@ -44,7 +44,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .authorizeRequests(configurer ->
                         configurer
                                 .antMatchers(
-                                        "/api/v1/signUp",
+                                        "/api/v1/users/signUp",
                                         "/api/v1/login"
                                 )
                                 .permitAll()

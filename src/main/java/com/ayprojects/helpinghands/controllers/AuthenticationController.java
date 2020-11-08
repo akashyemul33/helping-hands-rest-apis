@@ -1,5 +1,6 @@
 package com.ayprojects.helpinghands.controllers;
 
+import com.ayprojects.helpinghands.models.AccessTokenModel;
 import com.ayprojects.helpinghands.models.AuthenticationRequest;
 import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
@@ -22,11 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v{version}")
 public class AuthenticationController {
 
+
     @Autowired
     UserService userService;
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
-    public ResponseEntity<Response<LoginResponse>> login(@RequestHeader HttpHeaders httpHeaders, @RequestBody AuthenticationRequest authenticationRequest, @PathVariable String version){
+    public ResponseEntity<Response<AccessTokenModel>> login(@RequestHeader HttpHeaders httpHeaders, @RequestBody AuthenticationRequest authenticationRequest, @PathVariable String version){
         return new ResponseEntity<>(userService.login(authenticationRequest, httpHeaders), HttpStatus.OK);
     }
 }
