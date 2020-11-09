@@ -1,10 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
-import javax.print.DocFlavor;
-
-public class PlaceSubCategories extends CommonUsedAttributes{
+public class PlaceSubCategories extends AllCommonUsedAttributes {
     private String placeSubCategoryId;
-    private EmbededImage placeSubCategoryImage;
     private PlaceSubCategoryName placeSubCategoryName;
     private String placeSubCategoryImageId;
     private String placeSubCategoryImagePath;
@@ -18,13 +15,12 @@ public class PlaceSubCategories extends CommonUsedAttributes{
         this.addedBy = addedBy;
     }
 
-    public PlaceSubCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeSubCategoryId, EmbededImage placeSubCategoryImage, PlaceSubCategoryName placeSubCategoryName, String placeSubCategoryImageId, String placeSubCategoryImagePath, String addedBy) {
+    public PlaceSubCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeSubCategoryId,PlaceSubCategoryName placeSubCategoryName, String placeSubCategoryImageId, String placeSubCategoryImagePath, String addedBy) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
         this.placeSubCategoryId = placeSubCategoryId;
-        this.placeSubCategoryImage = placeSubCategoryImage;
         this.placeSubCategoryName = placeSubCategoryName;
         this.placeSubCategoryImageId = placeSubCategoryImageId;
         this.placeSubCategoryImagePath = placeSubCategoryImagePath;
@@ -37,14 +33,6 @@ public class PlaceSubCategories extends CommonUsedAttributes{
 
     public void setPlaceSubCategoryId(String placeSubCategoryId) {
         this.placeSubCategoryId = placeSubCategoryId;
-    }
-
-    public EmbededImage getPlaceSubCategoryImage() {
-        return placeSubCategoryImage;
-    }
-
-    public void setPlaceSubCategoryImage(EmbededImage placeSubCategoryImage) {
-        this.placeSubCategoryImage = placeSubCategoryImage;
     }
 
     public PlaceSubCategoryName getPlaceSubCategoryName() {

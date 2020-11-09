@@ -1,6 +1,5 @@
 package com.ayprojects.helpinghands.services.user;
 
-import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.AccessTokenModel;
 import com.ayprojects.helpinghands.models.AuthenticationRequest;
 import com.ayprojects.helpinghands.models.LoginResponse;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    Response<DhUser> signUp(DhUser dhUserDetails, HttpHeaders httpHeaders);
-    Response<AccessTokenModel> login(AuthenticationRequest authenticationRequest, HttpHeaders httpHeaders);
-    Response<LoginResponse> getUserDetails(HttpHeaders httpHeaders, Authentication authentication);
+    Response<DhUser> signUp(DhUser dhUserDetails, HttpHeaders httpHeaders, String version);
+    Response<AccessTokenModel> login(AuthenticationRequest authenticationRequest, HttpHeaders httpHeaders, String version);
+    Response<LoginResponse> getUserDetails(HttpHeaders httpHeaders, Authentication authentication, String version);
 }

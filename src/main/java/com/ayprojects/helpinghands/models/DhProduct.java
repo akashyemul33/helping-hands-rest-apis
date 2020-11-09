@@ -1,104 +1,92 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhProduct extends CommonUsedAttributes{
-    private long product_id;
-    private EmbededImage product_image;
-    private String default_unit;
-    private long place_sub_category_id;
-    private ProductNames product_names;
-    private double avg_price;
+public class DhProduct extends AllCommonUsedAttributes {
+    private String productId;
+    private String productImageId;
+    private String productImagePath;
+    private String defaultUnit;
+    private String categoryId;
+    private String categoryName;
+    private ProductName productName;
+    private double avgPrice;
 
-    public long getProduct_id() {
-        return product_id;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(long product_id) {
-        this.product_id = product_id;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
-
-    public String getDefault_unit() {
-        return default_unit;
+    public String getProductImageId() {
+        return productImageId;
     }
 
-    public void setDefault_unit(String default_unit) {
-        this.default_unit = default_unit;
+    public void setProductImageId(String productImageId) {
+        this.productImageId = productImageId;
     }
 
-    public EmbededImage getProduct_image() {
-        return product_image;
+    public String getProductImagePath() {
+        return productImagePath;
     }
 
-    public void setProduct_image(EmbededImage product_image) {
-        this.product_image = product_image;
+    public void setProductImagePath(String productImagePath) {
+        this.productImagePath = productImagePath;
     }
 
-    public long getPlace_sub_category_id() {
-        return place_sub_category_id;
+    public String getDefaultUnit() {
+        return defaultUnit;
     }
 
-    public void setPlace_sub_category_id(long place_sub_category_id) {
-        this.place_sub_category_id = place_sub_category_id;
+    public void setDefaultUnit(String defaultUnit) {
+        this.defaultUnit = defaultUnit;
     }
 
-    public ProductNames getProduct_names() {
-        return product_names;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setProduct_names(ProductNames product_names) {
-        this.product_names = product_names;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public double getAvg_price() {
-        return avg_price;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setAvg_price(double avg_price) {
-        this.avg_price = avg_price;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long product_id, EmbededImage product_image, String default_unit, long place_sub_category_id, ProductNames product_names, double avg_price) {
-        this.product_id = product_id;
-        this.product_image = product_image;
-        this.default_unit = default_unit;
-        this.place_sub_category_id = place_sub_category_id;
-        this.product_names = product_names;
-        this.avg_price = avg_price;
+    public ProductName getProductName() {
+        return productName;
+    }
+
+    public void setProductName(ProductName productName) {
+        this.productName = productName;
+    }
+
+    public double getAvgPrice() {
+        return avgPrice;
+    }
+
+    public void setAvgPrice(double avgPrice) {
+        this.avgPrice = avgPrice;
+    }
+
+    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String productImageId, String productImagePath, String defaultUnit, String categoryId, String categoryName, ProductName productName, double avgPrice) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
+        this.productId = productId;
+        this.productImageId = productImageId;
+        this.productImagePath = productImagePath;
+        this.defaultUnit = defaultUnit;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.productName = productName;
+        this.avgPrice = avgPrice;
     }
 }
 
-class ProductNames {
-    private String productname_in_english;
-    private String productname_in_marathi;
-    private String productname_in_hindi;
-
-    public String getProductname_in_english() {
-        return productname_in_english;
-    }
-
-    public void setProductname_in_english(String productname_in_english) {
-        this.productname_in_english = productname_in_english;
-    }
-
-    public String getProductname_in_marathi() {
-        return productname_in_marathi;
-    }
-
-    public void setProductname_in_marathi(String productname_in_marathi) {
-        this.productname_in_marathi = productname_in_marathi;
-    }
-
-    public String getProductname_in_hindi() {
-        return productname_in_hindi;
-    }
-
-    public void setProductname_in_hindi(String productname_in_hindi) {
-        this.productname_in_hindi = productname_in_hindi;
-    }
-
-
-}

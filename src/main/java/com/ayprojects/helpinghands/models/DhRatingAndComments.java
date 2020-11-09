@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhRatingAndComments extends CommonUsedAttributes{
+public class DhRatingAndComments extends AllCommonUsedAttributes {
     private long review_comment_id;
     private double rating;
     private String comment;

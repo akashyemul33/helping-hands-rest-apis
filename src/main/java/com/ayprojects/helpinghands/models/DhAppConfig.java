@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhAppConfig extends CommonUsedAttributes{
+public class DhAppConfig extends AllCommonUsedAttributes {
     private int appConfigId;
     private boolean languageSupport;
     private boolean darkThemeSupport;

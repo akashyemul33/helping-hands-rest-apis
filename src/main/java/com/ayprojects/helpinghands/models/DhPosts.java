@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-public class DhPosts extends CommonUsedAttributes{
+public class DhPosts extends AllCommonUsedAttributes {
 
     private long post_id;
     private String post_type;

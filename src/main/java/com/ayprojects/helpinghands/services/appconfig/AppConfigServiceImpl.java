@@ -35,7 +35,7 @@ public class AppConfigServiceImpl implements AppConfigService {
     UserDetailsServiceImpl userDetailsService;
 
     @Override
-    public Response<DhAppConfig> addAppConfig(Authentication authentication,HttpHeaders httpHeaders,DhAppConfig dhAppConfig) throws ServerSideException {
+    public Response<DhAppConfig> addAppConfig(Authentication authentication, HttpHeaders httpHeaders, DhAppConfig dhAppConfig, String version) throws ServerSideException {
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("AppConfigServiceImpl->addAppConfig : language="+language);
         if(dhAppConfig==null)
@@ -56,7 +56,7 @@ public class AppConfigServiceImpl implements AppConfigService {
         dhAppConfig.setStatus(AppConstants.STATUS_PENDING);
         dhAppConfig.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         appConfigDao.addAppConfig(dhAppConfig);
-        logService.addLog(new DhLog(UUID.randomUUID().toString(),userDetails.getUser().getMobileNumber(),userDetails.getUser().getUserId(),AppConstants.ACTION_NEW_APPCONFIG_ADDED,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+        logService.addLog(new DhLog(UUID.randomUUID().toString(),userDetails.getUser().getMobileNumber(),AppConstants.ACTION_NEW_APPCONFIG_ADDED+"by UserId:"+userDetails.getUser().getUserId(),Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
         return res;
         }
         catch (Exception e){
@@ -65,7 +65,7 @@ public class AppConfigServiceImpl implements AppConfigService {
     }
 
     @Override
-    public Response<DhAppConfig> getActiveAppConfig(HttpHeaders httpHeaders, Authentication authentication){
+    public Response<DhAppConfig> getActiveAppConfig(HttpHeaders httpHeaders, Authentication authentication, String version){
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("language="+language);
         Optional<DhAppConfig> dhAppConfig = appConfigDao.getActiveAppConfig();

@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhViews extends CommonUsedAttributes {
+public class DhViews extends AllCommonUsedAttributes {
     private long view_id;
     private long user_id;
     private String user_name;

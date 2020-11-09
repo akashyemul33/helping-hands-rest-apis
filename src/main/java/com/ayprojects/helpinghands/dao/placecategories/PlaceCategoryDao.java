@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface PlaceCategoryDao {
     DhPlaceCategories add(DhPlaceCategories dhPlaceCategories);
     Optional<DhPlaceCategories> findByPlaceCategoryId(String placeCategoryId);
+    Optional<DhPlaceCategories> findByPlaceCategoryNamePlacecategorynameInEnglish(String placecategorynameInEnglish);
     Optional<DhPlaceCategories> findByStatus(String status);
     Optional<List<DhPlaceCategories>> findAllByStatus(String status);
 }

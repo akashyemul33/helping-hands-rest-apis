@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class CommonUsedAttributes {
+public class AllCommonUsedAttributes {
     public String createdDateTime;
     public String modifiedDateTime;
     public String schemaVersion;

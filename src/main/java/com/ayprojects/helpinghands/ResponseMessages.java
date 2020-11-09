@@ -75,6 +75,17 @@ public class ResponseMessages {
     public String MR_NO_PLACECATEGORIES = "ठिकाणांसाठी कोणत्याही श्रेण्या आढळल्या नाहीत !";
     public String HI_NO_PLACECATEGORIES = "स्थानों के लिए कोई श्रेणियां नहीं मिलीं !";
 
+    public String EN_CATEGORY_ALREADY_EXISTS = "Category for place already exists !";
+    public String MR_CATEGORY_ALREADY_EXISTS = "स्थानासाठी वर्ग आधीपासून विद्यमान आहे !";
+    public String HI_CATEGORY_ALREADY_EXISTS = "जगह के लिए श्रेणी पहले से मौजूद है !";
 
+    public String EN_NOT_FOUND_PLACECATEGORIY_WITH_ID = "There is no place category with given id !";
+    public String MR_NOT_FOUND_PLACECATEGORIY_WITH_ID = "दिलेल्या आयडीसह स्थानाची श्रेणी नाही !";
+    public String HI_NOT_FOUND_PLACECATEGORIY_WITH_ID = "दिए गए आईडी के साथ कोई स्थान श्रेणी नहीं है !";
+
+
+    public String EN_NEW_PLACESUBCATEGORY_ADDED = "New sub category has been added !";
+    public String MR_NEW_PLACESUBCATEGORY_ADDED = "नवीन उप श्रेणी जोडली गेली आहे !";
+    public String HI_NEW_PLACESUBCATEGORY_ADDED = "नई उप श्रेणी को जोड़ा गया है !";
 
 }

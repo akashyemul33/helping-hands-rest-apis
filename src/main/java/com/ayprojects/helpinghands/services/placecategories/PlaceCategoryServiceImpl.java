@@ -1,7 +1,7 @@
 package com.ayprojects.helpinghands.services.placecategories;
 
+
 import com.ayprojects.helpinghands.AppConstants;
-import com.ayprojects.helpinghands.dao.appconfig.AppConfigDao;
 import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
@@ -14,21 +14,21 @@ import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import javax.print.DocFlavor;
-import javax.rmi.CORBA.Util;
-import javax.swing.text.html.Option;
-
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
+import static com.ayprojects.helpinghands.HelpingHandsApplication.main;
 
 @Service
 public class PlaceCategoryServiceImpl implements PlaceCategoryService {
@@ -42,35 +42,40 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
     @Autowired
     LogService logService;
 
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     @Override
-    public Response<DhPlaceCategories> add(Authentication authentication, HttpHeaders httpHeaders, DhPlaceCategories dhPlaceCategories) {
-        String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
-        LOGGER.info("PlaceCategoryServiceImpl->add : language="+language);
-        if(dhPlaceCategories==null || dhPlaceCategories.getPlaceCategoryName()==null)
-        {
-            return new Response<DhPlaceCategories>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES,language),new ArrayList<>(),(long)0);
+    public Response<DhPlaceCategories> addPlaceMainCategory(Authentication authentication, HttpHeaders httpHeaders, DhPlaceCategories dhPlaceCategories, String version) {
+        String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("PlaceCategoryServiceImpl->add : language=" + language);
+        if (dhPlaceCategories == null || dhPlaceCategories.getPlaceCategoryName() == null) {
+            return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES, language), new ArrayList<>(), (long) 0);
         }
 
-        if(Utility.isFieldEmpty(dhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish())){
-            return new Response<DhPlaceCategories>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY,language),new ArrayList<>(),(long)0);
+        if (Utility.isFieldEmpty(dhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish())) {
+            return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY, language), new ArrayList<>(), (long) 0);
         }
 
-        DhUser dhUser = userDetailsService.loadUserByUsername(authentication.getName()).getUser();
-        String addedBy = dhUser.getUserId();
+        String categoryNameInEnglish = dhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish();
+        Optional<DhPlaceCategories> existingDhPlaceCategories = placeCategoryDao.findByPlaceCategoryNamePlacecategorynameInEnglish(categoryNameInEnglish);
+        if (existingDhPlaceCategories.isPresent()) {
+            return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS, language), new ArrayList<>(), (long) 0);
+        }
+
+
         dhPlaceCategories.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         dhPlaceCategories.setCreatedDateTime(Utility.currentDateTimeInUTC());
         dhPlaceCategories.setModifiedDateTime(Utility.currentDateTimeInUTC());
         dhPlaceCategories.setStatus(AppConstants.STATUS_PENDING);
         dhPlaceCategories.setPlaceCategoryId(Utility.getUUID());
-        dhPlaceCategories.setAddedBy(addedBy);
-        if(dhPlaceCategories.getPlaceSubCategories()!=null && dhPlaceCategories.getPlaceSubCategories().size()>0) {
-            for(PlaceSubCategories placeSubCategories : dhPlaceCategories.getPlaceSubCategories())
-            {
-                if(placeSubCategories.getPlaceSubCategoryName()==null || Utility.isFieldEmpty(placeSubCategories.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish())){
-                    return new Response<DhPlaceCategories>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY,language),new ArrayList<>(),(long)0);
+        dhPlaceCategories.setAddedBy(authentication.getName());
+        if (dhPlaceCategories.getPlaceSubCategories() != null && dhPlaceCategories.getPlaceSubCategories().size() > 0) {
+            for (PlaceSubCategories placeSubCategories : dhPlaceCategories.getPlaceSubCategories()) {
+                if (placeSubCategories.getPlaceSubCategoryName() == null || Utility.isFieldEmpty(placeSubCategories.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish())) {
+                    return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY, language), new ArrayList<>(), (long) 0);
                 }
-                placeSubCategories.setAddedBy(addedBy);
+                placeSubCategories.setAddedBy(authentication.getName());
                 placeSubCategories.setPlaceSubCategoryId(Utility.getUUID());
                 placeSubCategories.setCreatedDateTime(Utility.currentDateTimeInUTC());
                 placeSubCategories.setModifiedDateTime(Utility.currentDateTimeInUTC());
@@ -78,47 +83,95 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             }
         }
         placeCategoryDao.add(dhPlaceCategories);
-        logService.addLog(new DhLog(Utility.getUUID(),dhUser.getMobileNumber(),dhUser.getUserId(),AppConstants.ACTION_NEW_PLACE_CATEGORY_ADDED,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
-        return new Response<DhPlaceCategories>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED,language), Collections.singletonList(dhPlaceCategories), (long) 1);
+        logService.addLog(new DhLog(Utility.getUUID(), authentication.getName(), AppConstants.ACTION_NEW_PLACE_CATEGORY_ADDED, Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC(), AppConstants.SCHEMA_VERSION));
+        return new Response<DhPlaceCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED, language), Collections.singletonList(dhPlaceCategories), (long) 1);
     }
 
     @Override
     public Response<DhPlaceCategories> findByPlaceCategoryId(Authentication authentication, HttpHeaders httpHeaders, String placeCategoryId) {
-
+//TODO
         return null;
     }
 
     @Override
     public Response<DhPlaceCategories> findByStatus(Authentication authentication, HttpHeaders httpHeaders, String status) {
+        //TODO
         return null;
     }
 
     @Override
-    public Response<List<DhPlaceCategories>> findAllByStatus(Authentication authentication, HttpHeaders httpHeaders,String status) {
-        String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
-        LOGGER.info("PlaceCategoryServiceImpl->findAllByStatus : language="+language);
+    public Response<List<DhPlaceCategories>> findAllByStatus(Authentication authentication, HttpHeaders httpHeaders, String status, String version) {
+        String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("PlaceCategoryServiceImpl->findAllByStatus : language=" + language);
         String findWithStatus = Utility.isFieldEmpty(status) ? AppConstants.STATUS_ACTIVE : status;
 
-        Optional<List<DhPlaceCategories>> dhPlaceCategoriesList = placeCategoryDao.findAllByStatus(findWithStatus);
+        Query query = new Query(Criteria.where("status").regex(findWithStatus,"i"));
+        List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query,DhPlaceCategories.class);
         int resStatusCode;
         boolean resStatus;
         String resMessage;
         int resTotalCount;
         List<DhPlaceCategories> resData;
-        if(dhPlaceCategoriesList.isPresent()) {
-            resStatus = true;
-            resStatusCode = 201;
-            resMessage = dhPlaceCategoriesList.get().size()+" place categories found .";
-            resTotalCount = dhPlaceCategoriesList.get().size();
-            resData = dhPlaceCategoriesList.get();
-        }
-        else{
+        if (dhPlaceCategoriesList==null) {
             resStatus = false;
             resStatusCode = 402;
-            resMessage = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES,language);
+            resMessage = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES, language);
             resTotalCount = 0;
-            resData=new ArrayList<>();
+            resData = new ArrayList<>();
+        } else {
+            resStatus = true;
+            resStatusCode = 201;
+            resMessage = dhPlaceCategoriesList.size() + " place categories found .";
+            resTotalCount = dhPlaceCategoriesList.size();
+            resData = dhPlaceCategoriesList;
         }
-        return new Response<List<DhPlaceCategories>>(resStatus,resStatusCode,resMessage, Collections.singletonList(resData),(long)resTotalCount);
+        return new Response<List<DhPlaceCategories>>(resStatus, resStatusCode, resMessage, Collections.singletonList(resData), (long) resTotalCount);
+    }
+
+    @Override
+    public Response<PlaceSubCategories> addPlaceSubCategory(Authentication authentication, HttpHeaders httpHeaders, PlaceSubCategories placeSubCategory,String mainPlaceCategoryId ,String version) {
+        String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("PlaceCategoryServiceImpl->addPlaceSubCategory : language=" + language);
+
+        if (placeSubCategory == null || placeSubCategory.getPlaceSubCategoryName() == null || Utility.isFieldEmpty(mainPlaceCategoryId)) {
+            return new Response<PlaceSubCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES, language), new ArrayList<>(), (long) 0);
+        }
+
+        if (Utility.isFieldEmpty(placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish())) {
+            return new Response<PlaceSubCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY, language), new ArrayList<>(), (long) 0);
+        }
+
+        Query queryFindCategoryWithId = new Query(Criteria.where("placeCategoryId").is(mainPlaceCategoryId));
+        DhPlaceCategories queriedDhPlaceCategories = mongoTemplate.findOne(queryFindCategoryWithId,DhPlaceCategories.class);
+        if (queriedDhPlaceCategories==null) {
+            return new Response<PlaceSubCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID, language) + "ID : " + mainPlaceCategoryId, new ArrayList<>(), (long) 0);
+        }
+
+        List<PlaceSubCategories> placeSubCategoriesList = new ArrayList<>();
+        if (queriedDhPlaceCategories.getPlaceSubCategories() != null) {
+            placeSubCategoriesList = queriedDhPlaceCategories.getPlaceSubCategories();
+            for (PlaceSubCategories subCategory : queriedDhPlaceCategories.getPlaceSubCategories()) {
+                if (subCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish().equalsIgnoreCase(placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish())) {
+                    return new Response<PlaceSubCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS, language), new ArrayList<>(), (long) 0);
+                }
+            }
+        }
+
+        placeSubCategory.setAddedBy(authentication.getName());
+        placeSubCategory.setPlaceSubCategoryId(Utility.getUUID());
+        placeSubCategory.setSchemaVersion(AppConstants.SCHEMA_VERSION);
+        placeSubCategory.setCreatedDateTime(Utility.currentDateTimeInUTC());
+        placeSubCategory.setModifiedDateTime(Utility.currentDateTimeInUTC());
+        placeSubCategory.setStatus(AppConstants.STATUS_PENDING);
+
+        placeSubCategoriesList.add(placeSubCategory);
+
+        Update mainCategoryUpdate = new Update();
+        mainCategoryUpdate.push("placeSubCategories",placeSubCategory);
+        //mainCategoryUpdate.set("placeSubCategories",placeSubCategoriesList);
+        mainCategoryUpdate.set("modifiedDateTime",Utility.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(queryFindCategoryWithId,mainCategoryUpdate,DhPlaceCategories.class);
+        logService.addLog(new DhLog(Utility.getUUID(), authentication.getName(), "New sub category [" + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish() + "] has been added under [" + queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish() + "].", Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC(), AppConstants.SCHEMA_VERSION));
+        return new Response<PlaceSubCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED, language), Collections.singletonList(placeSubCategory), (long) 1);
     }
 }

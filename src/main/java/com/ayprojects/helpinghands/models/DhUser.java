@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhUser extends CommonUsedAttributes{
+public class DhUser extends AllCommonUsedAttributes {
     private String userId;
     private String name;
     private String password;

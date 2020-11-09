@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhImages extends CommonUsedAttributes {
+public class DhImages extends AllCommonUsedAttributes {
     private long image_id;
     private String image_path;
     private String image_type;

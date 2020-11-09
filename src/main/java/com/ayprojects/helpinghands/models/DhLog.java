@@ -1,8 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhLog extends CommonUsedAttributes{
+public class DhLog extends AllCommonUsedAttributes {
     private String logId;
-    private String userId;
     private String action;
     private String userName;
 
@@ -14,10 +13,9 @@ public class DhLog extends CommonUsedAttributes{
         this.userName = userName;
     }
 
-    public DhLog(String logId, String userName, String userId, String action, String createdDateTime, String modifiedDateTime, String schemaVersion) {
+    public DhLog(String logId, String userName, String action, String createdDateTime, String modifiedDateTime, String schemaVersion) {
         this.logId = logId;
         this.userName = userName;
-        this.userId = userId;
         this.action = action;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
@@ -30,14 +28,6 @@ public class DhLog extends CommonUsedAttributes{
 
     public void setLogId(String logId) {
         this.logId = logId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getAction() {

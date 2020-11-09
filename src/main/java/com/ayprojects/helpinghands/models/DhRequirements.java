@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-public class DhRequirements extends CommonUsedAttributes {
+public class DhRequirements extends AllCommonUsedAttributes {
     private long requirement_id;
     private String requirement_title;
     private String requirement_desc;

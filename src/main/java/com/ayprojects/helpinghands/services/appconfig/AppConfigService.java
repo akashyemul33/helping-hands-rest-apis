@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AppConfigService {
-    Response<DhAppConfig> addAppConfig(Authentication authentication,HttpHeaders httpHeaders,DhAppConfig dhAppConfig) throws ServerSideException;
-    Response<DhAppConfig> getActiveAppConfig(HttpHeaders httpHeaders, Authentication authentication);
+    Response<DhAppConfig> addAppConfig(Authentication authentication, HttpHeaders httpHeaders, DhAppConfig dhAppConfig, String version) throws ServerSideException;
+    Response<DhAppConfig> getActiveAppConfig(HttpHeaders httpHeaders, Authentication authentication, String version);
 }

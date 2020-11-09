@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-public class DhPlaceCategories extends CommonUsedAttributes {
+public class DhPlaceCategories extends AllCommonUsedAttributes {
     private String placeCategoryId;
     private PlaceCategoryName placeCategoryName;
     private String placeMainCategoryImageId;

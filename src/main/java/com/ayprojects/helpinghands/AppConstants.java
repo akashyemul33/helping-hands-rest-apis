@@ -9,6 +9,7 @@ public class AppConstants {
     public static final String SECRET_KEY = "helping-hands-secret-key";
     public static final String[] ROLE_USER = {"USER"} ;
     public static final String STATUS_PENDING = "Pending";
+    public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
@@ -42,6 +43,8 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY = "PLACE_CATEGORY_NAMES_EMPTY";
     public static String RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED = "NEW_PLACE_CATEGORY_ADDED";
     public static String RESPONSEMESSAGE_NO_PLACECATEGORIES = "NO_PLACECATEGORIES";
-
+    public static String RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS = "CATEGORY_ALREADY_EXISTS";
+    public static String RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID= "NOT_FOUND_PLACECATEGORIY_WITH_ID";
+    public static String RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED = "NEW_PLACESUBCATEGORY_ADDED";
 
 }

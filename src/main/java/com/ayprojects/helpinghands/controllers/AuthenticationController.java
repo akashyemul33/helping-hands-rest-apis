@@ -28,6 +28,6 @@ public class AuthenticationController {
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public ResponseEntity<Response<AccessTokenModel>> login(@RequestHeader HttpHeaders httpHeaders, @RequestBody AuthenticationRequest authenticationRequest, @PathVariable String version){
-        return new ResponseEntity<>(userService.login(authenticationRequest, httpHeaders), HttpStatus.OK);
+        return new ResponseEntity<>(userService.login(authenticationRequest, httpHeaders,version), HttpStatus.OK);
     }
 }

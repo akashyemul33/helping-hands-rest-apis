@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -19,11 +20,10 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 public class Utility {
     public static String getLanguageFromHeader(HttpHeaders headers) {
-        String lang = null;
+        String lang = "en";
 
         String[] languages = AppConstants.LANGUAGES;
         List<String> languageList = Arrays.asList(languages);
-        lang = "en";
         if (headers.get(AppConstants.LABEL_HEADER_APPLANGUAGE)!=null) {
             lang = headers.get(AppConstants.LABEL_HEADER_APPLANGUAGE).get(0);
             if (isFieldEmpty(lang) || !languageList.contains(lang)) {
@@ -61,7 +61,6 @@ public class Utility {
         } catch (Exception ex) {
             LOGGER.info("Utility->getResponseMessage()->got exception="+ex.getMessage());
             ex.getMessage();
-
         }
         return "";
     }

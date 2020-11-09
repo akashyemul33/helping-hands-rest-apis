@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService{
     private AppConfigService appConfigService;
 
     @Override
-    public Response<DhUser> signUp(DhUser dhUserDetails, HttpHeaders httpHeaders) {
+    public Response<DhUser> signUp(DhUser dhUserDetails, HttpHeaders httpHeaders, String version) {
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("language="+language);
         dhUserDetails.setSchemaVersion(AppConstants.SCHEMA_VERSION);
@@ -134,12 +134,12 @@ public class UserServiceImpl implements UserService{
         res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language));
         res.setData(Collections.singletonList(dhUserDetails));
         userDao.signUp(dhUserDetails);
-        logService.addLog(new DhLog(UUID.randomUUID().toString(),dhUserDetails.getMobileNumber(),uniqueUserID,AppConstants.ACTION_NEW_USER_ADDED,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+        logService.addLog(new DhLog(UUID.randomUUID().toString(),dhUserDetails.getMobileNumber(),AppConstants.ACTION_NEW_USER_ADDED+"by userId:"+uniqueUserID,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
         return res;
     }
 
     @Override
-    public Response<AccessTokenModel> login(AuthenticationRequest authenticationRequest, HttpHeaders httpHeaders) {
+    public Response<AccessTokenModel> login(AuthenticationRequest authenticationRequest, HttpHeaders httpHeaders, String version) {
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("language="+language);
 
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService{
             res.setStatusCode(402);
             res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_USERNAME,language));
             res.setData(Collections.singletonList(new AccessTokenModel()));
-            logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),"NA",AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_USERNAME,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+            logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_USERNAME,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
             return res;
 //            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
@@ -186,16 +186,16 @@ public class UserServiceImpl implements UserService{
                 res.setStatusCode(402);
                 res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_PASSWORD,language));
                 res.setData(Collections.singletonList(new AccessTokenModel()));
-                logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),userDetails.getUser().getUserId(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_PASSWORD,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+                logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_PASSWORD+"by userId:"+userDetails.getUser().getUserId(),Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
                 return res;
             }
     }
 
     @Override
-    public Response<LoginResponse> getUserDetails(HttpHeaders httpHeaders, Authentication authentication){
+    public Response<LoginResponse> getUserDetails(HttpHeaders httpHeaders, Authentication authentication, String version){
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("language="+language);
-        Response<DhAppConfig> appConfigResponse = appConfigService.getActiveAppConfig(httpHeaders,authentication);
+        Response<DhAppConfig> appConfigResponse = appConfigService.getActiveAppConfig(httpHeaders,authentication, version);
         DhAppConfig dhAppConfig = appConfigResponse.getStatus() ? appConfigResponse.getData().get(0) : null;
         return new Response<LoginResponse>(true,
                 201,

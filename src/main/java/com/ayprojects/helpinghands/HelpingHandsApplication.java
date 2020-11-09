@@ -12,7 +12,6 @@ public class HelpingHandsApplication extends SpringBootServletInitializer {
 
 	public static final Logger LOGGER=LoggerFactory.getLogger(HelpingHandsApplication.class);
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(HelpingHandsApplication.class, args);
 	}

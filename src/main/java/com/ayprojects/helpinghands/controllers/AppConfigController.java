@@ -32,12 +32,12 @@ public class AppConfigController {
 
     @RequestMapping(value="/add", method=RequestMethod.POST)
     public ResponseEntity<Response<DhAppConfig>> addAppConfig(Authentication authentication,@RequestHeader HttpHeaders httpHeaders, @RequestBody DhAppConfig dhAppConfig, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(appConfigService.addAppConfig(authentication,httpHeaders,dhAppConfig), HttpStatus.CREATED);
+        return new ResponseEntity<>(appConfigService.addAppConfig(authentication,httpHeaders,dhAppConfig,version), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/getAppConfig",method = RequestMethod.GET)
     ResponseEntity<Response<DhAppConfig>> getAppConfig(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(appConfigService.getActiveAppConfig(httpHeaders,authentication), HttpStatus.OK);
+        return new ResponseEntity<>(appConfigService.getActiveAppConfig(httpHeaders,authentication,version), HttpStatus.OK);
     }
 
 }

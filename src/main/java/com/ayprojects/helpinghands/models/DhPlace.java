@@ -1,9 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
-import java.util.List;
-
-public class DhPlace extends CommonUsedAttributes{
-
+public class DhPlace extends AllCommonUsedAttributes {
+/*
     private long place_id;
     private String place_type;
     private Address place_address;
@@ -286,6 +284,6 @@ class PlaceAvailabilityDays{
         this.thu = thu;
         this.fri = fri;
         this.sat = sat;
-    }
+    }*/
 }
 
