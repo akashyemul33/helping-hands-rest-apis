@@ -2,8 +2,6 @@ package com.ayprojects.helpinghands.controllers;
 
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhProduct;
-import com.ayprojects.helpinghands.models.DhUser;
-import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.products.ProductsService;
 
@@ -34,8 +32,8 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/getProductsForSubCategory",method = RequestMethod.GET)
-    ResponseEntity<Response<DhProduct>> getProductsForSubCategory(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String mainPlaceCategoryId,@RequestParam String subPlaceCategoryId, @PathVariable String version){
-    return null;
+    ResponseEntity<Response<DhProduct>> getProductsForSubCategory(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String subPlaceCategoryId, @PathVariable String version){
+        return new ResponseEntity<>(productsService.findProductsBySubCategoryId(authentication,httpHeaders,subPlaceCategoryId,version), HttpStatus.OK);
     }
 
 }

@@ -17,5 +17,5 @@ import javax.swing.text.html.Option;
 @Service
 public interface ProductsService {
     Response<DhProduct> addProduct(Authentication authentication, HttpHeaders httpHeaders,DhProduct dhProduct, String version) throws ServerSideException;
-    Response<List<DhProduct>> findProductsByCategory(Authentication authentication, HttpHeaders httpHeaders,String mainPlaceCategoryId,String subPlaceCategoryId, String version);
+    Response<DhProduct> findProductsBySubCategoryId(Authentication authentication, HttpHeaders httpHeaders,String subPlaceCategoryId, String version);
 }

@@ -40,7 +40,7 @@ public class AppConfigServiceImpl implements AppConfigService {
         LOGGER.info("AppConfigServiceImpl->addAppConfig : language="+language);
         if(dhAppConfig==null)
         {
-            return  new Response<DhAppConfig>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(),(long)0);
+            return  new Response<DhAppConfig>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(),0);
         }
 
         try{
@@ -70,7 +70,7 @@ public class AppConfigServiceImpl implements AppConfigService {
         LOGGER.info("language="+language);
         Optional<DhAppConfig> dhAppConfig = appConfigDao.getActiveAppConfig();
         return dhAppConfig.isPresent() ?
-                new Response<DhAppConfig>(true,201,AppConstants.FOUND_APP_CONFIG,Collections.singletonList(dhAppConfig.get()), (long) 1)
-        : new Response<DhAppConfig>(false,402,"App config not found",new ArrayList<>(), (long) 0);
+                new Response<DhAppConfig>(true,201,AppConstants.FOUND_APP_CONFIG,Collections.singletonList(dhAppConfig.get()), 1)
+        : new Response<DhAppConfig>(false,402,"App config not found",new ArrayList<>(), 0);
     }
 }

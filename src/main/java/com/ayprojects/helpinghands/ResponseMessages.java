@@ -112,4 +112,8 @@ public class ResponseMessages {
     public String MR_PRODUCT_ALREADY_EXISTS = "उत्पादन आधीपासून विद्यमान आहे !";
     public String HI_PRODUCT_ALREADY_EXISTS = "उत्पाद पहले से मौजूद है !";
 
+    public String EN_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "No active products found for given place sub category id!";
+    public String MR_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "दिलेल्या ठिकाणी उप श्रेणी आयडीसाठी कोणतीही सक्रिय उत्पादने आढळली नाहीत !";
+    public String HI_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "दिए गए उप श्रेणी आईडी के लिए कोई सक्रिय उत्पाद नहीं मिला !";
+
 }

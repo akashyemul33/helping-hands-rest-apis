@@ -7,7 +7,7 @@ public class Response<T> {
     private Boolean status;
     private Integer statusCode;
     private String message;
-    private Long totalCount;
+    private Integer totalCount;
     private List<T> data;
 
     public Response() {
@@ -25,7 +25,7 @@ public class Response<T> {
         this.setData(data);
     }
 
-    public Response(Boolean status, Integer statusCode, String message, List<T> data, Long totalCount) {
+    public Response(Boolean status, Integer statusCode, String message, List<T> data, Integer totalCount) {
         this.setStatus(status);
         this.setStatusCode(statusCode);
         this.setMessage(message);
@@ -33,11 +33,11 @@ public class Response<T> {
         this.setTotalCount(totalCount);
     }
 
-    public Long getTotalCount() {
+    public Integer getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Long totalCount) {
+    public void setTotalCount(Integer totalCount) {
         this.totalCount = totalCount;
     }
 

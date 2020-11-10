@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService{
         dhUserDetails.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         Response<DhUser> res = new Response<DhUser>();
         if(dhUserDetails==null){
-            return new Response<DhUser>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), (long) 0);
+            return new Response<DhUser>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), 0);
         }
 
         if(Utility.isFieldEmpty(dhUserDetails.getMobileNumber()) || Utility.isFieldEmpty(dhUserDetails.getEmailId())){
@@ -201,7 +201,6 @@ public class UserServiceImpl implements UserService{
                 201,
                 Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED,language)
                 ,Collections.singletonList(new LoginResponse(userDetailsService.loadUserByUsername(authentication.getName()).getUser(),dhAppConfig))
-                , (long) 1
-        );
+                , 1);
     }
 }
