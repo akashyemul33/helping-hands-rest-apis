@@ -1,21 +1,14 @@
 package com.ayprojects.helpinghands.models;
 
 public class DhRatingAndComments extends AllCommonUsedAttributes {
-    private long review_comment_id;
+    private String reviewCommentId;
     private double rating;
     private String comment;
-    private long added_by_user_id;
-    private String added_by_user_name;
-    private String content_type;
-    private long content_id;
+    private String addedBy;
+    private String contentType;
+    private String contentId;
 
-    public long getReview_comment_id() {
-        return review_comment_id;
-    }
 
-    public void setReview_comment_id(long review_comment_id) {
-        this.review_comment_id = review_comment_id;
-    }
 
     public double getRating() {
         return rating;
@@ -33,49 +26,48 @@ public class DhRatingAndComments extends AllCommonUsedAttributes {
         this.comment = comment;
     }
 
-    public long getAdded_by_user_id() {
-        return added_by_user_id;
+    public String getAddedBy() {
+        return addedBy;
     }
 
-    public void setAdded_by_user_id(long added_by_user_id) {
-        this.added_by_user_id = added_by_user_id;
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
     }
 
-    public String getAdded_by_user_name() {
-        return added_by_user_name;
+    public String getContentType() {
+        return contentType;
     }
 
-    public void setAdded_by_user_name(String added_by_user_name) {
-        this.added_by_user_name = added_by_user_name;
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
-    public String getContent_type() {
-        return content_type;
+    public String getReviewCommentId() {
+        return reviewCommentId;
     }
 
-    public void setContent_type(String content_type) {
-        this.content_type = content_type;
+    public void setReviewCommentId(String reviewCommentId) {
+        this.reviewCommentId = reviewCommentId;
     }
 
-    public long getContent_id() {
-        return content_id;
+    public String getContentId() {
+        return contentId;
     }
 
-    public void setContent_id(long content_id) {
-        this.content_id = content_id;
+    public void setContentId(String contentId) {
+        this.contentId = contentId;
     }
 
-    public DhRatingAndComments(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long review_comment_id, double rating, String comment, long added_by_user_id, String added_by_user_name, String content_type, long content_id) {
+    public DhRatingAndComments(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String reviewCommentId, double rating, String comment, String addedBy, String contentType, String contentId) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
-        this.review_comment_id = review_comment_id;
+        this.reviewCommentId = reviewCommentId;
         this.rating = rating;
         this.comment = comment;
-        this.added_by_user_id = added_by_user_id;
-        this.added_by_user_name = added_by_user_name;
-        this.content_type = content_type;
-        this.content_id = content_id;
+        this.addedBy = addedBy;
+        this.contentType = contentType;
+        this.contentId = contentId;
     }
 }

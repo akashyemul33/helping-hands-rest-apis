@@ -1,289 +1,268 @@
 package com.ayprojects.helpinghands.models;
 
+import java.util.List;
+
 public class DhPlace extends AllCommonUsedAttributes {
-/*
-    private long place_id;
-    private String place_type;
-    private Address place_address;
-    private long place_category_id;
-    private String place_category_name;
-    private String place_name;
-    private String place_desc;
-    private Contact place_contact;
-    private boolean door_service;
-    private List<EmbededImage> place_images;
-    private PlaceAvailabilityDays place_avaialable_days;
-    private String opening_time;
-    private String closing_time;
-    private String lunchhour_starttime;
-    private String lunchhour_endtime;
-    private List<ProductsWithPrice> products_with_price;
-    private long number_of_ratings;
-    private long number_of_views;
-    private double avg_rating;
-    private List<Long> ratings;
-    private List<Long> views;
+    private String placeId;
+    private String placeType;
+    private Address placeAddress;
+    private String placeMainCategoryId;
 
-    public long getPlace_id() {
-        return place_id;
+    public String getAddedBy() {
+        return addedBy;
     }
 
-    public void setPlace_id(long place_id) {
-        this.place_id = place_id;
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
     }
 
-    public String getPlace_type() {
-        return place_type;
+    private String addedBy;
+    private String placeSubCategoryId;
+    private String placeCategoryName;
+    private String placeName;
+    private String placeDesc;
+    private Contact placeContact;
+    private boolean doorService;
+    private List<EmbededImage> placeImages;
+    private PlaceAvailabilityDays placeAvaialableDays;
+    private String openingTime;
+    private String closingTime;
+    private String lunchHourStartTime;
+    private String lunchHourEndTime;
+    private List<ProductsWithPrices> productsWithPrice;
+    private long numberOfRatings;
+    private long numberOfViews;
+    private double avgRating;
+    private List<String> ratingIds;
+    private List<String> viewIds;
+    private List<DhRatingAndComments> topRatings;
+    private List<DhViews> topViews;
+
+
+    public String getPlaceId() {
+        return placeId;
     }
 
-    public void setPlace_type(String place_type) {
-        this.place_type = place_type;
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
-    public Address getPlace_address() {
-        return place_address;
+    public String getPlaceType() {
+        return placeType;
     }
 
-    public void setPlace_address(Address place_address) {
-        this.place_address = place_address;
+    public void setPlaceType(String placeType) {
+        this.placeType = placeType;
     }
 
-    public long getPlace_category_id() {
-        return place_category_id;
+    public Address getPlaceAddress() {
+        return placeAddress;
     }
 
-    public void setPlace_category_id(long place_category_id) {
-        this.place_category_id = place_category_id;
+    public void setPlaceAddress(Address placeAddress) {
+        this.placeAddress = placeAddress;
     }
 
-    public String getPlace_category_name() {
-        return place_category_name;
+    public String getPlaceMainCategoryId() {
+        return placeMainCategoryId;
     }
 
-    public void setPlace_category_name(String place_category_name) {
-        this.place_category_name = place_category_name;
+    public void setPlaceMainCategoryId(String placeMainCategoryId) {
+        this.placeMainCategoryId = placeMainCategoryId;
     }
 
-    public String getPlace_name() {
-        return place_name;
+    public String getPlaceSubCategoryId() {
+        return placeSubCategoryId;
     }
 
-    public void setPlace_name(String place_name) {
-        this.place_name = place_name;
+    public void setPlaceSubCategoryId(String placeSubCategoryId) {
+        this.placeSubCategoryId = placeSubCategoryId;
     }
 
-    public String getPlace_desc() {
-        return place_desc;
+    public String getPlaceCategoryName() {
+        return placeCategoryName;
     }
 
-    public void setPlace_desc(String place_desc) {
-        this.place_desc = place_desc;
+    public void setPlaceCategoryName(String placeCategoryName) {
+        this.placeCategoryName = placeCategoryName;
     }
 
-    public Contact getPlace_contact() {
-        return place_contact;
+    public String getPlaceName() {
+        return placeName;
     }
 
-    public void setPlace_contact(Contact place_contact) {
-        this.place_contact = place_contact;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 
-    public boolean isDoor_service() {
-        return door_service;
+    public String getPlaceDesc() {
+        return placeDesc;
     }
 
-    public void setDoor_service(boolean door_service) {
-        this.door_service = door_service;
+    public void setPlaceDesc(String placeDesc) {
+        this.placeDesc = placeDesc;
     }
 
-    public List<EmbededImage> getPlace_images() {
-        return place_images;
+    public Contact getPlaceContact() {
+        return placeContact;
     }
 
-    public void setPlace_images(List<EmbededImage> place_images) {
-        this.place_images = place_images;
+    public void setPlaceContact(Contact placeContact) {
+        this.placeContact = placeContact;
     }
 
-    public PlaceAvailabilityDays getPlace_avaialable_days() {
-        return place_avaialable_days;
+    public boolean isDoorService() {
+        return doorService;
     }
 
-    public void setPlace_avaialable_days(PlaceAvailabilityDays place_avaialable_days) {
-        this.place_avaialable_days = place_avaialable_days;
+    public void setDoorService(boolean doorService) {
+        this.doorService = doorService;
     }
 
-    public String getOpening_time() {
-        return opening_time;
+    public List<EmbededImage> getPlaceImages() {
+        return placeImages;
     }
 
-    public void setOpening_time(String opening_time) {
-        this.opening_time = opening_time;
+    public void setPlaceImages(List<EmbededImage> placeImages) {
+        this.placeImages = placeImages;
     }
 
-    public String getClosing_time() {
-        return closing_time;
+    public PlaceAvailabilityDays getPlaceAvaialableDays() {
+        return placeAvaialableDays;
     }
 
-    public void setClosing_time(String closing_time) {
-        this.closing_time = closing_time;
+    public void setPlaceAvaialableDays(PlaceAvailabilityDays placeAvaialableDays) {
+        this.placeAvaialableDays = placeAvaialableDays;
     }
 
-    public String getLunchhour_starttime() {
-        return lunchhour_starttime;
+    public String getOpeningTime() {
+        return openingTime;
     }
 
-    public void setLunchhour_starttime(String lunchhour_starttime) {
-        this.lunchhour_starttime = lunchhour_starttime;
+    public void setOpeningTime(String openingTime) {
+        this.openingTime = openingTime;
     }
 
-    public String getLunchhour_endtime() {
-        return lunchhour_endtime;
+    public String getClosingTime() {
+        return closingTime;
     }
 
-    public void setLunchhour_endtime(String lunchhour_endtime) {
-        this.lunchhour_endtime = lunchhour_endtime;
+    public void setClosingTime(String closingTime) {
+        this.closingTime = closingTime;
     }
 
-    public List<ProductsWithPrice> getProducts_with_price() {
-        return products_with_price;
+    public String getLunchHourStartTime() {
+        return lunchHourStartTime;
     }
 
-    public void setProducts_with_price(List<ProductsWithPrice> products_with_price) {
-        this.products_with_price = products_with_price;
+    public void setLunchHourStartTime(String lunchHourStartTime) {
+        this.lunchHourStartTime = lunchHourStartTime;
     }
 
-    public long getNumber_of_ratings() {
-        return number_of_ratings;
+    public String getLunchHourEndTime() {
+        return lunchHourEndTime;
     }
 
-    public void setNumber_of_ratings(long number_of_ratings) {
-        this.number_of_ratings = number_of_ratings;
+    public void setLunchHourEndTime(String lunchHourEndTime) {
+        this.lunchHourEndTime = lunchHourEndTime;
     }
 
-    public long getNumber_of_views() {
-        return number_of_views;
+    public List<ProductsWithPrices> getProductsWithPrice() {
+        return productsWithPrice;
     }
 
-    public void setNumber_of_views(long number_of_views) {
-        this.number_of_views = number_of_views;
+    public void setProductsWithPrice(List<ProductsWithPrices> productsWithPrice) {
+        this.productsWithPrice = productsWithPrice;
     }
 
-    public double getAvg_rating() {
-        return avg_rating;
+    public long getNumberOfRatings() {
+        return numberOfRatings;
     }
 
-    public void setAvg_rating(double avg_rating) {
-        this.avg_rating = avg_rating;
+    public void setNumberOfRatings(long numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
     }
 
-    public List<Long> getRatings() {
-        return ratings;
+    public long getNumberOfViews() {
+        return numberOfViews;
     }
 
-    public void setRatings(List<Long> ratings) {
-        this.ratings = ratings;
+    public void setNumberOfViews(long numberOfViews) {
+        this.numberOfViews = numberOfViews;
     }
 
-    public List<Long> getViews() {
-        return views;
+    public double getAvgRating() {
+        return avgRating;
     }
 
-    public void setViews(List<Long> views) {
-        this.views = views;
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
     }
 
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long place_id, String place_type, Address place_address, long place_category_id, String place_category_name, String place_name, String place_desc, Contact place_contact, boolean door_service, List<EmbededImage> place_images, PlaceAvailabilityDays place_avaialable_days, String opening_time, String closing_time, String lunchhour_starttime, String lunchhour_endtime, List<ProductsWithPrice> products_with_price, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
-        this.place_id = place_id;
-        this.place_type = place_type;
-        this.place_address = place_address;
-        this.place_category_id = place_category_id;
-        this.place_category_name = place_category_name;
-        this.place_name = place_name;
-        this.place_desc = place_desc;
-        this.place_contact = place_contact;
-        this.door_service = door_service;
-        this.place_images = place_images;
-        this.place_avaialable_days = place_avaialable_days;
-        this.opening_time = opening_time;
-        this.closing_time = closing_time;
-        this.lunchhour_starttime = lunchhour_starttime;
-        this.lunchhour_endtime = lunchhour_endtime;
-        this.products_with_price = products_with_price;
-        this.number_of_ratings = number_of_ratings;
-        this.number_of_views = number_of_views;
-        this.avg_rating = avg_rating;
-        this.ratings = ratings;
-        this.views = views;
+    public List<String> getRatingIds() {
+        return ratingIds;
+    }
+
+    public void setRatingIds(List<String> ratingIds) {
+        this.ratingIds = ratingIds;
+    }
+
+    public List<String> getViewIds() {
+        return viewIds;
+    }
+
+    public void setViewIds(List<String> viewIds) {
+        this.viewIds = viewIds;
+    }
+
+    public List<DhRatingAndComments> getTopRatings() {
+        return topRatings;
+    }
+
+    public void setTopRatings(List<DhRatingAndComments> topRatings) {
+        this.topRatings = topRatings;
+    }
+
+    public List<DhViews> getTopViews() {
+        return topViews;
+    }
+
+    public void setTopViews(List<DhViews> topViews) {
+        this.topViews = topViews;
+    }
+
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,String addedBy,String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<EmbededImage> placeImages, PlaceAvailabilityDays placeAvaialableDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
+        this.addedBy = addedBy;
+        this.placeId = placeId;
+        this.placeType = placeType;
+        this.placeAddress = placeAddress;
+        this.placeMainCategoryId = placeMainCategoryId;
+        this.placeSubCategoryId = placeSubCategoryId;
+        this.placeCategoryName = placeCategoryName;
+        this.placeName = placeName;
+        this.placeDesc = placeDesc;
+        this.placeContact = placeContact;
+        this.doorService = doorService;
+        this.placeImages = placeImages;
+        this.placeAvaialableDays = placeAvaialableDays;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
+        this.lunchHourStartTime = lunchHourStartTime;
+        this.lunchHourEndTime = lunchHourEndTime;
+        this.productsWithPrice = productsWithPrice;
+        this.numberOfRatings = numberOfRatings;
+        this.numberOfViews = numberOfViews;
+        this.avgRating = avgRating;
+        this.ratingIds = ratingIds;
+        this.viewIds = viewIds;
+        this.topRatings = topRatings;
+        this.topViews = topViews;
     }
 }
-class ProductsWithPrice{
-    private String product_price;
-    private String product_unit;
-    private ProductNames product_name;
-    private long product_id;
-
-    public ProductsWithPrice(long product_id,String product_price, String product_unit, ProductNames product_name) {
-        this.product_price = product_price;
-        this.product_id = product_id;
-        this.product_unit = product_unit;
-        this.product_name = product_name;
-    }
-
-    public long getProduct_id() {
-        return product_id;
-    }
-
-    public void setProduct_id(long product_id) {
-        this.product_id = product_id;
-    }
-
-    public String getProduct_price() {
-        return product_price;
-    }
-
-    public void setProduct_price(String product_price) {
-        this.product_price = product_price;
-    }
-
-    public String getProduct_unit() {
-        return product_unit;
-    }
-
-    public void setProduct_unit(String product_unit) {
-        this.product_unit = product_unit;
-    }
-
-    public ProductNames getProduct_name() {
-        return product_name;
-    }
-
-    public void setProduct_name(ProductNames product_name) {
-        this.product_name = product_name;
-    }
 
 
-}
-class PlaceAvailabilityDays{
-    private boolean sun;
-    private boolean mon;
-    private boolean tue;
-    private boolean wed;
-    private boolean thu;
-    private boolean fri;
-    private boolean sat;
-
-    public PlaceAvailabilityDays(boolean sun, boolean mon, boolean tue, boolean wed, boolean thu, boolean fri, boolean sat) {
-        this.sun = sun;
-        this.mon = mon;
-        this.tue = tue;
-        this.wed = wed;
-        this.thu = thu;
-        this.fri = fri;
-        this.sat = sat;
-    }*/
-}
 

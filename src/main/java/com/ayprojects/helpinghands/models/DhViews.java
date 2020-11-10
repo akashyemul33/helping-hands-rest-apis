@@ -1,61 +1,51 @@
 package com.ayprojects.helpinghands.models;
 
 public class DhViews extends AllCommonUsedAttributes {
-    private long view_id;
-    private long user_id;
-    private String user_name;
-    private String content_type;
-    private long content_id;
+    private String viewId;
+    private String addedBy;
+    private String contentType;
+    private long contentId;
 
-    public long getView_id() {
-        return view_id;
+    public String getViewId() {
+        return viewId;
     }
 
-    public void setView_id(long view_id) {
-        this.view_id = view_id;
+    public void setViewId(String viewId) {
+        this.viewId = viewId;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public String getAddedBy() {
+        return addedBy;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getContentType() {
+        return contentType;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
-    public String getContent_type() {
-        return content_type;
+    public long getContentId() {
+        return contentId;
     }
 
-    public void setContent_type(String content_type) {
-        this.content_type = content_type;
+    public void setContentId(long contentId) {
+        this.contentId = contentId;
     }
 
-    public long getContent_id() {
-        return content_id;
-    }
-
-    public void setContent_id(long content_id) {
-        this.content_id = content_id;
-    }
-
-    public DhViews(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long view_id, long user_id, String user_name, String content_type, long content_id) {
-        this.view_id = view_id;
-        this.user_id = user_id;
-        this.user_name = user_name;
-        this.content_type = content_type;
-        this.content_id = content_id;
+    public DhViews(String viewId, String addedBy, String contentType, long contentId) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
+        this.viewId = viewId;
+        this.addedBy = addedBy;
+        this.contentType = contentType;
+        this.contentId = contentId;
     }
 }
