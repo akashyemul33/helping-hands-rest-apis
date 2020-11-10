@@ -62,7 +62,7 @@ public class ResponseMessages {
     public String MR_EMPTY_BODY = "कृपया इनपुट विनंतीचे मुख्य भाग प्रदान करा!";
     public String HI_EMPTY_BODY = "कृपया इनपुट विवरण प्रदान करें !";
 
-    public String EN_PLACE_CATEGORY_NAMES_EMPTY = "Please provide place category names & name in english is compulsory for main and sub categories!";
+    public String EN_PLACE_CATEGORY_NAMES_EMPTY = "Please provide place category names & name in english is compulsory for main and sub categories !";
     public String MR_PLACE_CATEGORY_NAMES_EMPTY = "कृपया स्थान श्रेणी नावे प्रदान करा & मुख्य आणि उप श्रेण्यांसाठी इंग्रजीमधील नाव अनिवार्य आहे !";
     public String HI_PLACE_CATEGORY_NAMES_EMPTY = "कृपया श्रेणी के नाम प्रदान करें & मुख्य और उप श्रेणियों के लिए अंग्रेजी में नाम अनिवार्य है !";
 
@@ -79,13 +79,37 @@ public class ResponseMessages {
     public String MR_CATEGORY_ALREADY_EXISTS = "स्थानासाठी वर्ग आधीपासून विद्यमान आहे !";
     public String HI_CATEGORY_ALREADY_EXISTS = "जगह के लिए श्रेणी पहले से मौजूद है !";
 
-    public String EN_NOT_FOUND_PLACECATEGORIY_WITH_ID = "There is no place category with given id !";
-    public String MR_NOT_FOUND_PLACECATEGORIY_WITH_ID = "दिलेल्या आयडीसह स्थानाची श्रेणी नाही !";
-    public String HI_NOT_FOUND_PLACECATEGORIY_WITH_ID = "दिए गए आईडी के साथ कोई स्थान श्रेणी नहीं है !";
+    public String EN_NOT_FOUND_PLACECATEGORIY_WITH_ID = "There is no active place category with given id !";
+    public String MR_NOT_FOUND_PLACECATEGORIY_WITH_ID = "दिलेल्या आयडीसह सक्रिय स्थानाची श्रेणी नाही !";
+    public String HI_NOT_FOUND_PLACECATEGORIY_WITH_ID = "दिए गए आईडी के साथ कोई सक्रिय स्थान श्रेणी नहीं है !";
 
 
     public String EN_NEW_PLACESUBCATEGORY_ADDED = "New sub category has been added !";
     public String MR_NEW_PLACESUBCATEGORY_ADDED = "नवीन उप श्रेणी जोडली गेली आहे !";
     public String HI_NEW_PLACESUBCATEGORY_ADDED = "नई उप श्रेणी को जोड़ा गया है !";
+
+    public String EN_EMPTY_BODY_OR_PRODUCTNAMES = "Input details or product names are missing !";
+    public String MR_EMPTY_BODY_OR_PRODUCTNAMES = "इनपुट तपशील किंवा उत्पादनांची नावे गहाळ आहेत !";
+    public String HI_EMPTY_BODY_OR_PRODUCTNAMES = "इनपुट विवरण या उत्पाद नाम गायब हैं !";
+
+    public String EN_PRODUCT_NAMES_EMPTY = "Please provide product names & name in english is compulsory !";
+    public String MR_PRODUCT_NAMES_EMPTY = "कृपया उत्पादनांची नावे द्या आणि इंग्रजीतील नाव अनिवार्य आहे !";
+    public String HI_PRODUCT_NAMES_EMPTY = "कृपया उत्पाद नाम प्रदान करें और अंग्रेजी में नाम अनिवार्य है !";
+
+    public String EN_CATEGORY_IDS_MISSING = "Main place category or sub place category id's are missing !";
+    public String MR_CATEGORY_IDS_MISSING = "मुख्य ठिकाण श्रेणी किंवा उप-स्थान श्रेणी आयडी गहाळ आहेत !";
+    public String HI_CATEGORY_IDS_MISSING = "मुख्य स्थान श्रेणी या उप स्थान श्रेणी आईडी गायब हैं !";
+
+    public String EN_NEW_PRODUCT_ADDED = "New product has been added !";
+    public String MR_NEW_PRODUCT_ADDED = "नवीन उत्पादन जोडले गेले आहे !";
+    public String HI_NEW_PRODUCT_ADDED = "नया उत्पाद जोड़ा गया है !";
+
+    public String EN_SOMETHING_WENT_WRONG = "Something went wrong, please try again after some time !";
+    public String MR_SOMETHING_WENT_WRONG = "काहीतरी चूक झाली, कृपया थोड्या वेळाने पुन्हा प्रयत्न करा !";
+    public String HI_SOMETHING_WENT_WRONG = "कुछ गलत हुआ, कृपया कुछ समय बाद फिर से प्रयास करें !";
+
+    public String EN_PRODUCT_ALREADY_EXISTS = "Product already exists !";
+    public String MR_PRODUCT_ALREADY_EXISTS = "उत्पादन आधीपासून विद्यमान आहे !";
+    public String HI_PRODUCT_ALREADY_EXISTS = "उत्पाद पहले से मौजूद है !";
 
 }

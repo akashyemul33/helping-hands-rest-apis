@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-class ProductName {
+public class ProductName {
     private String productnameInEnglish;
     private String productnameInMarathi;
     private String productnameInHindi;

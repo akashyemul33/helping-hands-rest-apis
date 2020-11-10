@@ -2,9 +2,13 @@ package com.ayprojects.helpinghands.tools;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.ResponseMessages;
+import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.services.log.LogService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -18,7 +22,12 @@ import java.util.UUID;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
+@Service
 public class Utility {
+
+    @Autowired
+    LogService logService;
+
     public static String getLanguageFromHeader(HttpHeaders headers) {
         String lang = "en";
 
@@ -65,4 +74,11 @@ public class Utility {
         return "";
     }
 
+
+    public void addLog(String username,String actionMsg){
+        if(logService == null || Utility.isFieldEmpty(username) || Utility.isFieldEmpty(actionMsg)){
+            return;
+        }
+        logService.addLog(new DhLog(Utility.getUUID(), username, actionMsg, Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC(), AppConstants.SCHEMA_VERSION));
+    }
 }

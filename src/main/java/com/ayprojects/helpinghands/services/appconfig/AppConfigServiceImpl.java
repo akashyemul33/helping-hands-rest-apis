@@ -29,7 +29,7 @@ public class AppConfigServiceImpl implements AppConfigService {
     AppConfigDao appConfigDao;
 
     @Autowired
-    LogService logService;
+    Utility utility;
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -56,7 +56,7 @@ public class AppConfigServiceImpl implements AppConfigService {
         dhAppConfig.setStatus(AppConstants.STATUS_PENDING);
         dhAppConfig.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         appConfigDao.addAppConfig(dhAppConfig);
-        logService.addLog(new DhLog(UUID.randomUUID().toString(),userDetails.getUser().getMobileNumber(),AppConstants.ACTION_NEW_APPCONFIG_ADDED+"by UserId:"+userDetails.getUser().getUserId(),Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+        utility.addLog(authentication.getName(),AppConstants.ACTION_NEW_APPCONFIG_ADDED+"by UserId:"+userDetails.getUser().getUserId());
         return res;
         }
         catch (Exception e){

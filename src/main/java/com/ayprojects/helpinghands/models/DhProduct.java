@@ -5,10 +5,28 @@ public class DhProduct extends AllCommonUsedAttributes {
     private String productImageId;
     private String productImagePath;
     private String defaultUnit;
-    private String categoryId;
+    private String mainPlaceCategoryId;
+    private String subPlaceCategoryId;
     private String categoryName;
+    private String addedBy;
     private ProductName productName;
     private double avgPrice;
+
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+
+    public String getSubPlaceCategoryId() {
+        return subPlaceCategoryId;
+    }
+
+    public void setSubPlaceCategoryId(String subPlaceCategoryId) {
+        this.subPlaceCategoryId = subPlaceCategoryId;
+    }
 
     public String getProductId() {
         return productId;
@@ -42,12 +60,12 @@ public class DhProduct extends AllCommonUsedAttributes {
         this.defaultUnit = defaultUnit;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getMainPlaceCategoryId() {
+        return mainPlaceCategoryId;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setMainPlaceCategoryId(String mainPlaceCategoryId) {
+        this.mainPlaceCategoryId = mainPlaceCategoryId;
     }
 
     public String getCategoryName() {
@@ -74,7 +92,7 @@ public class DhProduct extends AllCommonUsedAttributes {
         this.avgPrice = avgPrice;
     }
 
-    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String productImageId, String productImagePath, String defaultUnit, String categoryId, String categoryName, ProductName productName, double avgPrice) {
+    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String productImageId, String productImagePath, String defaultUnit, String mainPlaceCategoryId, String subPlaceCategoryId, String categoryName, ProductName productName, double avgPrice,String addedBy) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
@@ -83,10 +101,12 @@ public class DhProduct extends AllCommonUsedAttributes {
         this.productImageId = productImageId;
         this.productImagePath = productImagePath;
         this.defaultUnit = defaultUnit;
-        this.categoryId = categoryId;
+        this.mainPlaceCategoryId = mainPlaceCategoryId;
         this.categoryName = categoryName;
         this.productName = productName;
         this.avgPrice = avgPrice;
+        this.subPlaceCategoryId = subPlaceCategoryId;
+        this.addedBy = addedBy;
     }
 }
 

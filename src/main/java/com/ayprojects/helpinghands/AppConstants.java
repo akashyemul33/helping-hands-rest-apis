@@ -10,6 +10,8 @@ public class AppConstants {
     public static final String[] ROLE_USER = {"USER"} ;
     public static final String STATUS_PENDING = "Pending";
     public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
+    public static final String COLLECTION_DH_PRODUCT = "dhProduct";
+    public static final String MSG_SOMETHING_WENT_WRONG = "Something went wrong !";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
@@ -46,5 +48,12 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS = "CATEGORY_ALREADY_EXISTS";
     public static String RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID= "NOT_FOUND_PLACECATEGORIY_WITH_ID";
     public static String RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED = "NEW_PLACESUBCATEGORY_ADDED";
+    public static String RESPONSEMESSAGE_EMPTY_BODY_OR_PRODUCTNAMES = "EMPTY_BODY_OR_PRODUCTNAMES";
+    public static String RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY = "PRODUCT_NAMES_EMPTY";
+    public static String RESPONSEMESSAGE_CATEGORY_IDS_MISSING = "CATEGORY_IDS_MISSING";
+    public static String RESPONSEMESSAGE_NO_CATEGORY_FOUND_WITH_ID = "CATEGORY_IDS_MISSING";
+    public static String RESPONSEMESSAGE_NEW_PRODUCT_ADDED = "NEW_PRODUCT_ADDED";
+    public static String RESPONSEMESSAGE_SOMETHING_WENT_WRONG = "SOMETHING_WENT_WRONG";
+    public static String RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS = "PRODUCT_ALREADY_EXISTS";
 
 }

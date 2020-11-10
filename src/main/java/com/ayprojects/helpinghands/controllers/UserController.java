@@ -35,6 +35,7 @@ public class UserController {
 
     @RequestMapping(value="/signUp", method=RequestMethod.POST)
     public ResponseEntity<Response<DhUser>> signUp(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUserDetails, @PathVariable String version){
+
         return new ResponseEntity<>(userService.signUp(dhUserDetails, httpHeaders,version), HttpStatus.CREATED);
     }
 

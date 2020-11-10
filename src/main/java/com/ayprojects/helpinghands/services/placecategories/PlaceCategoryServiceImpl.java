@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.rmi.CORBA.Util;
+
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.main;
 
@@ -40,7 +42,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
     UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    LogService logService;
+    Utility utility;
 
     @Autowired
     MongoTemplate mongoTemplate;
@@ -63,7 +65,6 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS, language), new ArrayList<>(), (long) 0);
         }
 
-
         dhPlaceCategories.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         dhPlaceCategories.setCreatedDateTime(Utility.currentDateTimeInUTC());
         dhPlaceCategories.setModifiedDateTime(Utility.currentDateTimeInUTC());
@@ -83,7 +84,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             }
         }
         placeCategoryDao.add(dhPlaceCategories);
-        logService.addLog(new DhLog(Utility.getUUID(), authentication.getName(), AppConstants.ACTION_NEW_PLACE_CATEGORY_ADDED, Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC(), AppConstants.SCHEMA_VERSION));
+        utility.addLog(authentication.getName(),AppConstants.ACTION_NEW_PLACE_CATEGORY_ADDED);
         return new Response<DhPlaceCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED, language), Collections.singletonList(dhPlaceCategories), (long) 1);
     }
 
@@ -142,6 +143,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         }
 
         Query queryFindCategoryWithId = new Query(Criteria.where("placeCategoryId").is(mainPlaceCategoryId));
+        queryFindCategoryWithId.addCriteria(Criteria.where("status").regex(AppConstants.STATUS_ACTIVE,"i"));
         DhPlaceCategories queriedDhPlaceCategories = mongoTemplate.findOne(queryFindCategoryWithId,DhPlaceCategories.class);
         if (queriedDhPlaceCategories==null) {
             return new Response<PlaceSubCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID, language) + "ID : " + mainPlaceCategoryId, new ArrayList<>(), (long) 0);
@@ -171,7 +173,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         //mainCategoryUpdate.set("placeSubCategories",placeSubCategoriesList);
         mainCategoryUpdate.set("modifiedDateTime",Utility.currentDateTimeInUTC());
         mongoTemplate.updateFirst(queryFindCategoryWithId,mainCategoryUpdate,DhPlaceCategories.class);
-        logService.addLog(new DhLog(Utility.getUUID(), authentication.getName(), "New sub category [" + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish() + "] has been added under [" + queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish() + "].", Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC(), AppConstants.SCHEMA_VERSION));
+        utility.addLog(authentication.getName(),"New sub category [" + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish() + "] has been added under [" + queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish() + "].");
         return new Response<PlaceSubCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED, language), Collections.singletonList(placeSubCategory), (long) 1);
     }
 }

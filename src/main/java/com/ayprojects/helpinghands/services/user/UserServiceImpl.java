@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService{
     AuthenticationManager authenticationManager;
 
     @Autowired
-    private LogService logService;
+    private Utility utility;
 
     @Autowired
     private AppConfigService appConfigService;
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService{
         res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language));
         res.setData(Collections.singletonList(dhUserDetails));
         userDao.signUp(dhUserDetails);
-        logService.addLog(new DhLog(UUID.randomUUID().toString(),dhUserDetails.getMobileNumber(),AppConstants.ACTION_NEW_USER_ADDED+"by userId:"+uniqueUserID,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+        utility.addLog(dhUserDetails.getMobileNumber(),AppConstants.ACTION_NEW_USER_ADDED+"by userId:"+uniqueUserID);
         return res;
     }
 
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService{
             res.setStatusCode(402);
             res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_USERNAME,language));
             res.setData(Collections.singletonList(new AccessTokenModel()));
-            logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_USERNAME,Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+            utility.addLog(authenticationRequest.getUsername(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_USERNAME);
             return res;
 //            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
@@ -186,7 +186,7 @@ public class UserServiceImpl implements UserService{
                 res.setStatusCode(402);
                 res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_PASSWORD,language));
                 res.setData(Collections.singletonList(new AccessTokenModel()));
-                logService.addLog(new DhLog(UUID.randomUUID().toString(),authenticationRequest.getUsername(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_PASSWORD+"by userId:"+userDetails.getUser().getUserId(),Utility.currentDateTimeInUTC(),Utility.currentDateTimeInUTC(),AppConstants.SCHEMA_VERSION));
+                utility.addLog(authenticationRequest.getUsername(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_PASSWORD+"by userId:"+userDetails.getUser().getUserId());
                 return res;
             }
     }
