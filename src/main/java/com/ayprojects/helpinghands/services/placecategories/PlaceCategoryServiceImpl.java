@@ -69,13 +69,13 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         dhPlaceCategories.setModifiedDateTime(Utility.currentDateTimeInUTC());
         dhPlaceCategories.setStatus(AppConstants.STATUS_PENDING);
         dhPlaceCategories.setPlaceCategoryId(Utility.getUUID());
-        dhPlaceCategories.setAddedBy(authentication.getName());
+        dhPlaceCategories.setAddedBy(dhPlaceCategories.getAddedBy());
         if (dhPlaceCategories.getPlaceSubCategories() != null && dhPlaceCategories.getPlaceSubCategories().size() > 0) {
             for (PlaceSubCategories placeSubCategories : dhPlaceCategories.getPlaceSubCategories()) {
                 if (placeSubCategories.getPlaceSubCategoryName() == null || Utility.isFieldEmpty(placeSubCategories.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish())) {
                     return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY, language), new ArrayList<>(), 0);
                 }
-                placeSubCategories.setAddedBy(authentication.getName());
+                placeSubCategories.setAddedBy(dhPlaceCategories.getAddedBy());
                 placeSubCategories.setPlaceSubCategoryId(Utility.getUUID());
                 placeSubCategories.setCreatedDateTime(Utility.currentDateTimeInUTC());
                 placeSubCategories.setModifiedDateTime(Utility.currentDateTimeInUTC());
@@ -158,7 +158,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             }
         }
 
-        placeSubCategory.setAddedBy(authentication.getName());
+        placeSubCategory.setAddedBy(placeSubCategory.getAddedBy());
         placeSubCategory.setPlaceSubCategoryId(Utility.getUUID());
         placeSubCategory.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         placeSubCategory.setCreatedDateTime(Utility.currentDateTimeInUTC());

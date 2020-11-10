@@ -70,7 +70,7 @@ public class ProductsServiceImpl implements ProductsService{
 
         for(PlaceSubCategories placeSubCategory : queriedDhPlaceCategories.getPlaceSubCategories()){
             if(placeSubCategory.getPlaceSubCategoryId().equalsIgnoreCase(dhProduct.getSubPlaceCategoryId())){
-                dhProduct.setAddedBy(authentication.getName());
+                dhProduct.setAddedBy(dhProduct.getAddedBy());
                 dhProduct.setCategoryName(queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish()+"->"+placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish());
                 dhProduct.setSchemaVersion(AppConstants.SCHEMA_VERSION);
                 dhProduct.setCreatedDateTime(Utility.currentDateTimeInUTC());

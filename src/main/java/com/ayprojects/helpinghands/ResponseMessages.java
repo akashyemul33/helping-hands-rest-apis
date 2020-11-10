@@ -116,4 +116,8 @@ public class ResponseMessages {
     public String MR_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "दिलेल्या ठिकाणी उप श्रेणी आयडीसाठी कोणतीही सक्रिय उत्पादने आढळली नाहीत !";
     public String HI_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "दिए गए उप श्रेणी आईडी के लिए कोई सक्रिय उत्पाद नहीं मिला !";
 
+    public String EN_NEW_PLACE_ADDED = "New place has been added successfully !";
+    public String MR_NEW_PLACE_ADDED = "नवीन जागा यशस्वीरित्या जोडली गेली आहे !";
+    public String HI_NEW_PLACE_ADDED = "नई जगह को सफलतापूर्वक जोड़ा गया है !";
+
 }

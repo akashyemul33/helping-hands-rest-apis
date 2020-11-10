@@ -8,7 +8,16 @@ public class DhAppConfig extends AllCommonUsedAttributes {
     private boolean showImgToProducts;
     private String currentAppVersion;
     private Languages languages;
+    private String addedBy;
     private Modules modules;
+
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
 
     public int getAppConfigId() {
         return appConfigId;
@@ -205,4 +214,6 @@ class Modules{
     public void setHhShowOverview(boolean hhShowOverview) {
         this.hhShowOverview = hhShowOverview;
     }
+
+
 }

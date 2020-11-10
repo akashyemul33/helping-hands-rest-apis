@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.services.place.PlaceService;
 import com.ayprojects.helpinghands.services.products.ProductsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v{version}/places")
 public class PlaceController {
 
+    @Autowired
+    PlaceService placeService;
+
     @RequestMapping(value="/addPlace", method= RequestMethod.POST)
     public ResponseEntity<Response<DhPlace>> addPlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @PathVariable String version) throws ServerSideException {
-    return null;
+        return new ResponseEntity<>(placeService.addPlace(authentication,httpHeaders,dhPlace,version), HttpStatus.CREATED);
     }
 
     @RequestMapping(value="/deletePlace", method= RequestMethod.PUT)
@@ -44,7 +48,5 @@ public class PlaceController {
     ResponseEntity<Response<DhProduct>> getPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String searchValue, @PathVariable String version){
     return null;
     }
-
-
 
 }
