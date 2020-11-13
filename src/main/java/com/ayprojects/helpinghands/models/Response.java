@@ -8,10 +8,48 @@ public class Response<T> {
     private Integer statusCode;
     private String message;
     private Integer totalCount;
+    private Integer currentPage;
+    private Integer totalPages;
+    private Long totalItems;
     private List<T> data;
 
     public Response() {
 
+    }
+
+    public Response(Boolean status, Integer statusCode, String message, Integer totalCount, Integer currentPage, Integer totalPages, Long totalItems, List<T> data) {
+        this.status = status;
+        this.statusCode = statusCode;
+        this.message = message;
+        this.totalCount = totalCount;
+        this.currentPage = currentPage;
+        this.totalPages = totalPages;
+        this.totalItems = totalItems;
+        this.data = data;
+    }
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public Integer getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(Integer totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public Long getTotalItems() {
+        return totalItems;
+    }
+
+    public void setTotalItems(Long totalItems) {
+        this.totalItems = totalItems;
     }
 
     public Response(String message) {

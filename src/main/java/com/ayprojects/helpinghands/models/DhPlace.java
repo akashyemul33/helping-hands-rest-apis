@@ -24,7 +24,7 @@ public class DhPlace extends AllCommonUsedAttributes {
     private Contact placeContact;
     private boolean doorService;
     private List<EmbededImage> placeImages;
-    private PlaceAvailabilityDays placeAvaialableDays;
+    private PlaceAvailabilityDays placeAvailablityDays;
     private String openingTime;
     private String closingTime;
     private String lunchHourStartTime;
@@ -127,12 +127,12 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.placeImages = placeImages;
     }
 
-    public PlaceAvailabilityDays getPlaceAvaialableDays() {
-        return placeAvaialableDays;
+    public PlaceAvailabilityDays getPlaceAvailablityDays() {
+        return placeAvailablityDays;
     }
 
-    public void setPlaceAvaialableDays(PlaceAvailabilityDays placeAvaialableDays) {
-        this.placeAvaialableDays = placeAvaialableDays;
+    public void setPlaceAvailablityDays(PlaceAvailabilityDays placeAvailablityDays) {
+        this.placeAvailablityDays = placeAvailablityDays;
     }
 
     public String getOpeningTime() {
@@ -231,7 +231,7 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.topViews = topViews;
     }
 
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,String addedBy,String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<EmbededImage> placeImages, PlaceAvailabilityDays placeAvaialableDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews) {
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String addedBy, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<EmbededImage> placeImages, PlaceAvailabilityDays placeAvailablityDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
@@ -248,7 +248,7 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.placeContact = placeContact;
         this.doorService = doorService;
         this.placeImages = placeImages;
-        this.placeAvaialableDays = placeAvaialableDays;
+        this.placeAvailablityDays = placeAvailablityDays;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
         this.lunchHourStartTime = lunchHourStartTime;

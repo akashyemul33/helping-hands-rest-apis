@@ -3,11 +3,13 @@ package com.ayprojects.helpinghands.services.place;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.repositories.PlaceRepository;
 import com.ayprojects.helpinghands.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -15,8 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.rmi.CORBA.Util;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -26,6 +26,9 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    PlaceRepository placeRepository;
 
     @Autowired
     Utility utility;
@@ -64,7 +67,7 @@ public class PlaceServiceImpl implements PlaceService{
                 missingFieldsList.add("Email");
             }
         }
-        if(dhPlace.getPlaceAvaialableDays()==null)missingFieldsList.add("PlaceAvailabilityDaysBlock");
+        if(dhPlace.getPlaceAvailablityDays()==null)missingFieldsList.add("PlaceAvailabilityDaysBlock");
         if(missingFieldsList.size()>0){
             String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language);
             resMsg = resMsg+" , these fields are missing : "+missingFieldsList;
@@ -94,5 +97,13 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public Response<DhPlace> getPlaces(Authentication authentication, HttpHeaders httpHeaders, String searchValue, String version) {
         return null;
+    }
+
+    @Override
+    public Response<DhPlace> getPaginatedPlaces(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version) {
+        PageRequest paging = PageRequest.of(page,size);
+        Page<DhPlace> dhPlacePages = placeRepository.findAllByStatus(AppConstants.STATUS_ACTIVE,paging);
+        List<DhPlace> dhPlaceList = dhPlacePages.getContent();
+        return new Response<DhPlace>(true,201,"Query successful",dhPlaceList.size(),dhPlacePages.getNumber(),dhPlacePages.getTotalPages(),dhPlacePages.getTotalElements(),dhPlaceList);
     }
 }

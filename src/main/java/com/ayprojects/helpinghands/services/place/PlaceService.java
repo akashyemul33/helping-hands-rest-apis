@@ -15,5 +15,6 @@ public interface PlaceService {
     Response<DhPlace> deletePlace(Authentication authentication, HttpHeaders httpHeaders,String placeId, String version) throws ServerSideException;
     Response<DhPlace> updatePlace(Authentication authentication, HttpHeaders httpHeaders, DhPlace dhPlace, String version) throws ServerSideException;
     Response<DhPlace> getPlaces(Authentication authentication, HttpHeaders httpHeaders, String searchValue, String version);
+    Response<DhPlace> getPaginatedPlaces(Authentication authentication, HttpHeaders httpHeaders,int page,int size, String version);
 
 }
