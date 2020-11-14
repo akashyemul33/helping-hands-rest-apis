@@ -35,9 +35,8 @@ public class DhPlace extends AllCommonUsedAttributes {
     private double avgRating;
     private List<String> ratingIds;
     private List<String> viewIds;
-    private List<DhRatingAndComments> topRatings;
+    private List<DhRating_comments> topRatings;
     private List<DhViews> topViews;
-
 
     public String getPlaceId() {
         return placeId;
@@ -215,11 +214,11 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.viewIds = viewIds;
     }
 
-    public List<DhRatingAndComments> getTopRatings() {
+    public List<DhRating_comments> getTopRatings() {
         return topRatings;
     }
 
-    public void setTopRatings(List<DhRatingAndComments> topRatings) {
+    public void setTopRatings(List<DhRating_comments> topRatings) {
         this.topRatings = topRatings;
     }
 
@@ -231,7 +230,7 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.topViews = topViews;
     }
 
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String addedBy, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<EmbededImage> placeImages, PlaceAvailabilityDays placeAvailablityDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews) {
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String addedBy, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<EmbededImage> placeImages, PlaceAvailabilityDays placeAvailablityDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRating_comments> topRatings, List<DhViews> topViews) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;

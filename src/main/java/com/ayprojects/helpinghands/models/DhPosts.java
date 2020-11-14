@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DhPosts extends AllCommonUsedAttributes {
 
-    private long post_id;
+    private String postId;
     private String post_type;
     private long place_id;
     private long added_by;
@@ -22,12 +22,12 @@ public class DhPosts extends AllCommonUsedAttributes {
     private List<Long> ratings;
     private List<Long> views;
 
-    public long getPost_id() {
-        return post_id;
+    public String getPostId() {
+        return postId;
     }
 
-    public void setPost_id(long post_id) {
-        this.post_id = post_id;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public String getPost_type() {
@@ -158,8 +158,8 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.views = views;
     }
 
-    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long post_id, String post_type, long place_id, long added_by, String post_title, String post_desc, List<EmbededImage> post_images, Contact contact_details, Address address_details, String offer_start_time, String offer_end_time, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
-        this.post_id = post_id;
+    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String post_type, long place_id, long added_by, String post_title, String post_desc, List<EmbededImage> post_images, Contact contact_details, Address address_details, String offer_start_time, String offer_end_time, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
+        this.postId = postId;
         this.post_type = post_type;
         this.place_id = place_id;
         this.added_by = added_by;

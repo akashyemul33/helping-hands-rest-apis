@@ -3,7 +3,7 @@ package com.ayprojects.helpinghands.models;
 import java.util.List;
 
 public class DhRequirements extends AllCommonUsedAttributes {
-    private long requirement_id;
+    private String requirementId;
     private String requirement_title;
     private String requirement_desc;
     private String priority;
@@ -17,12 +17,12 @@ public class DhRequirements extends AllCommonUsedAttributes {
     private List<Long> ratings;
     private List<Long> views;
 
-    public long getRequirement_id() {
-        return requirement_id;
+    public String getRequirementId() {
+        return requirementId;
     }
 
-    public void setRequirement_id(long requirement_id) {
-        this.requirement_id = requirement_id;
+    public void setRequirementId(String requirementId) {
+        this.requirementId = requirementId;
     }
 
     public String getRequirement_title() {
@@ -121,12 +121,12 @@ public class DhRequirements extends AllCommonUsedAttributes {
         this.views = views;
     }
 
-    public DhRequirements(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, long requirement_id, String requirement_title, String requirement_desc, String priority, String budget, Contact contact_details, Address address_details, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
+    public DhRequirements(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String requirementId, String requirement_title, String requirement_desc, String priority, String budget, Contact contact_details, Address address_details, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
-        this.requirement_id = requirement_id;
+        this.requirementId = requirementId;
         this.requirement_title = requirement_title;
         this.requirement_desc = requirement_desc;
         this.priority = priority;
