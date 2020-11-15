@@ -3,24 +3,25 @@ package com.ayprojects.helpinghands.models;
 import java.util.List;
 
 public class DhPosts extends AllCommonUsedAttributes {
-
     private String postId;
-    private String post_type;
-    private long place_id;
-    private long added_by;
-    private String post_title;
-    private String post_desc;
-    private List<EmbededImage> post_images;
-    private Contact contact_details;
-    private Address address_details;
-    private String offer_start_time;
-    private String offer_end_time;
-    private boolean are_details_same_as_registered;
-    private long number_of_ratings;
-    private long number_of_views;
-    private double avg_rating;
-    private List<Long> ratings;
-    private List<Long> views;
+    private String postType;
+    private String placeId;
+    private String addedBy;
+    private String postTitle;
+    private String postDesc;
+    private List<EmbededImage> postImages;
+    private Contact contactDetails;
+    private Address addressDetails;
+    private String offerStartTime;
+    private String offerEndTime;
+    private boolean areDetailsSameAsRegistered;
+    private long numberOfRatings;
+    private long numberOfViews;
+    private double avgRating;
+    private List<String> ratingIds;
+    private List<String> viewIds;
+    private List<DhRating_comments> topRatings;
+    private List<DhViews> topViews;
 
     public String getPostId() {
         return postId;
@@ -30,156 +31,174 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.postId = postId;
     }
 
-    public String getPost_type() {
-        return post_type;
+    public String getPostType() {
+        return postType;
     }
 
-    public void setPost_type(String post_type) {
-        this.post_type = post_type;
+    public void setPostType(String postType) {
+        this.postType = postType;
     }
 
-    public long getPlace_id() {
-        return place_id;
+    public String getPlaceId() {
+        return placeId;
     }
 
-    public void setPlace_id(long place_id) {
-        this.place_id = place_id;
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
-    public long getAdded_by() {
-        return added_by;
+    public String getAddedBy() {
+        return addedBy;
     }
 
-    public void setAdded_by(long added_by) {
-        this.added_by = added_by;
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
     }
 
-    public String getPost_title() {
-        return post_title;
+    public String getPostTitle() {
+        return postTitle;
     }
 
-    public void setPost_title(String post_title) {
-        this.post_title = post_title;
+    public void setPostTitle(String postTitle) {
+        this.postTitle = postTitle;
     }
 
-    public String getPost_desc() {
-        return post_desc;
+    public String getPostDesc() {
+        return postDesc;
     }
 
-    public void setPost_desc(String post_desc) {
-        this.post_desc = post_desc;
+    public void setPostDesc(String postDesc) {
+        this.postDesc = postDesc;
     }
 
-    public List<EmbededImage> getPost_images() {
-        return post_images;
+    public List<EmbededImage> getPostImages() {
+        return postImages;
     }
 
-    public void setPost_images(List<EmbededImage> post_images) {
-        this.post_images = post_images;
+    public void setPostImages(List<EmbededImage> postImages) {
+        this.postImages = postImages;
     }
 
-    public Contact getContact_details() {
-        return contact_details;
+    public Contact getContactDetails() {
+        return contactDetails;
     }
 
-    public void setContact_details(Contact contact_details) {
-        this.contact_details = contact_details;
+    public void setContactDetails(Contact contactDetails) {
+        this.contactDetails = contactDetails;
     }
 
-    public Address getAddress_details() {
-        return address_details;
+    public Address getAddressDetails() {
+        return addressDetails;
     }
 
-    public void setAddress_details(Address address_details) {
-        this.address_details = address_details;
+    public void setAddressDetails(Address addressDetails) {
+        this.addressDetails = addressDetails;
     }
 
-    public String getOffer_start_time() {
-        return offer_start_time;
+    public String getOfferStartTime() {
+        return offerStartTime;
     }
 
-    public void setOffer_start_time(String offer_start_time) {
-        this.offer_start_time = offer_start_time;
+    public void setOfferStartTime(String offerStartTime) {
+        this.offerStartTime = offerStartTime;
     }
 
-    public String getOffer_end_time() {
-        return offer_end_time;
+    public String getOfferEndTime() {
+        return offerEndTime;
     }
 
-    public void setOffer_end_time(String offer_end_time) {
-        this.offer_end_time = offer_end_time;
+    public void setOfferEndTime(String offerEndTime) {
+        this.offerEndTime = offerEndTime;
     }
 
-    public boolean isAre_details_same_as_registered() {
-        return are_details_same_as_registered;
+    public boolean isAreDetailsSameAsRegistered() {
+        return areDetailsSameAsRegistered;
     }
 
-    public void setAre_details_same_as_registered(boolean are_details_same_as_registered) {
-        this.are_details_same_as_registered = are_details_same_as_registered;
+    public void setAreDetailsSameAsRegistered(boolean areDetailsSameAsRegistered) {
+        this.areDetailsSameAsRegistered = areDetailsSameAsRegistered;
     }
 
-    public long getNumber_of_ratings() {
-        return number_of_ratings;
+    public long getNumberOfRatings() {
+        return numberOfRatings;
     }
 
-    public void setNumber_of_ratings(long number_of_ratings) {
-        this.number_of_ratings = number_of_ratings;
+    public void setNumberOfRatings(long numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
     }
 
-    public long getNumber_of_views() {
-        return number_of_views;
+    public long getNumberOfViews() {
+        return numberOfViews;
     }
 
-    public void setNumber_of_views(long number_of_views) {
-        this.number_of_views = number_of_views;
+    public void setNumberOfViews(long numberOfViews) {
+        this.numberOfViews = numberOfViews;
     }
 
-    public double getAvg_rating() {
-        return avg_rating;
+    public double getAvgRating() {
+        return avgRating;
     }
 
-    public void setAvg_rating(double avg_rating) {
-        this.avg_rating = avg_rating;
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
     }
 
-    public List<Long> getRatings() {
-        return ratings;
+    public List<String> getRatingIds() {
+        return ratingIds;
     }
 
-    public void setRatings(List<Long> ratings) {
-        this.ratings = ratings;
+    public void setRatingIds(List<String> ratingIds) {
+        this.ratingIds = ratingIds;
     }
 
-    public List<Long> getViews() {
-        return views;
+    public List<String> getViewIds() {
+        return viewIds;
     }
 
-    public void setViews(List<Long> views) {
-        this.views = views;
+    public void setViewIds(List<String> viewIds) {
+        this.viewIds = viewIds;
     }
 
-    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String post_type, long place_id, long added_by, String post_title, String post_desc, List<EmbededImage> post_images, Contact contact_details, Address address_details, String offer_start_time, String offer_end_time, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
-        this.postId = postId;
-        this.post_type = post_type;
-        this.place_id = place_id;
-        this.added_by = added_by;
-        this.post_title = post_title;
-        this.post_desc = post_desc;
-        this.post_images = post_images;
-        this.contact_details = contact_details;
-        this.address_details = address_details;
-        this.offer_start_time = offer_start_time;
-        this.offer_end_time = offer_end_time;
-        this.are_details_same_as_registered = are_details_same_as_registered;
-        this.number_of_ratings = number_of_ratings;
-        this.number_of_views = number_of_views;
-        this.avg_rating = avg_rating;
-        this.ratings = ratings;
-        this.views = views;
+    public List<DhRating_comments> getTopRatings() {
+        return topRatings;
+    }
+
+    public void setTopRatings(List<DhRating_comments> topRatings) {
+        this.topRatings = topRatings;
+    }
+
+    public List<DhViews> getTopViews() {
+        return topViews;
+    }
+
+    public void setTopViews(List<DhViews> topViews) {
+        this.topViews = topViews;
+    }
+
+    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String postType, String placeId, String addedBy, String postTitle, String postDesc, List<EmbededImage> postImages, Contact contactDetails, Address addressDetails, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRating_comments> topRatings, List<DhViews> topViews) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
+        this.postId = postId;
+        this.postType = postType;
+        this.placeId = placeId;
+        this.addedBy = addedBy;
+        this.postTitle = postTitle;
+        this.postDesc = postDesc;
+        this.postImages = postImages;
+        this.contactDetails = contactDetails;
+        this.addressDetails = addressDetails;
+        this.offerStartTime = offerStartTime;
+        this.offerEndTime = offerEndTime;
+        this.areDetailsSameAsRegistered = areDetailsSameAsRegistered;
+        this.numberOfRatings = numberOfRatings;
+        this.numberOfViews = numberOfViews;
+        this.avgRating = avgRating;
+        this.ratingIds = ratingIds;
+        this.viewIds = viewIds;
+        this.topRatings = topRatings;
+        this.topViews = topViews;
     }
 }
 

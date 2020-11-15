@@ -74,7 +74,6 @@ public class Utility {
         return "";
     }
 
-
     public void addLog(String username,String actionMsg){
         if(logService == null || Utility.isFieldEmpty(username) || Utility.isFieldEmpty(actionMsg)){
             return;

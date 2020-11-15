@@ -47,8 +47,8 @@ public class PlaceServiceImpl implements PlaceService{
         if(Utility.isFieldEmpty(dhPlace.getPlaceSubCategoryId())) missingFieldsList.add("PlaceSubCategoryId");
         if(Utility.isFieldEmpty(dhPlace.getPlaceName())) missingFieldsList.add("PlaceName");
         if(Utility.isFieldEmpty(dhPlace.getPlaceType())) missingFieldsList.add("PlaceType");
-        if(dhPlace.getPlaceAddress()==null)missingFieldsList.add("PlaceAddressBlock");
         if(Utility.isFieldEmpty(dhPlace.getPlaceCategoryName()))missingFieldsList.add("PlaceCategoryName");
+        if(dhPlace.getPlaceAddress()==null)missingFieldsList.add("PlaceAddressBlock");
         else {
             if(dhPlace.getPlaceAddress().getLat()==0)
                 missingFieldsList.add("Lattitude");
@@ -79,6 +79,7 @@ public class PlaceServiceImpl implements PlaceService{
         dhPlace.setCreatedDateTime(Utility.currentDateTimeInUTC());
         dhPlace.setModifiedDateTime(Utility.currentDateTimeInUTC());
         dhPlace.setStatus(AppConstants.STATUS_ACTIVE);
+
         mongoTemplate.save(dhPlace,AppConstants.COLLECTION_DH_PLACE);
         utility.addLog(authentication.getName(),"New ["+dhPlace.getPlaceType()+"] place with category ["+dhPlace.getPlaceCategoryName()+"] has been added.");
         return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED,language),new ArrayList<>(),1);

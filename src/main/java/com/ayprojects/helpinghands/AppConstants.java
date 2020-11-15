@@ -12,10 +12,13 @@ public class AppConstants {
     public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
     public static final String COLLECTION_DH_PRODUCT = "dhProduct";
     public static final String COLLECTION_DH_PLACE = "dhPlace";
+    public static final String COLLECTION_DH_POSTS = "dhPosts";
     public static final String COLLECTION_DH_RATING_COMMENT = "DhRatingAndComments";
     public static final String MSG_SOMETHING_WENT_WRONG = "Something went wrong !";
     public static final String QUERY_SUCCESSFUL = "Query successful";
     public static final String RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID ="NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID" ;
+    public static final String BUSINESS_POST = "Business Post";
+    public static final String PUBLIC_POST = "Public Post";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
@@ -60,6 +63,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_SOMETHING_WENT_WRONG = "SOMETHING_WENT_WRONG";
     public static String RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS = "PRODUCT_ALREADY_EXISTS";
     public static String RESPONSEMESSAGE_NEW_PLACE_ADDED = "NEW_PLACE_ADDED";
+    public static String RESPONSEMESSAGE_NEW_POST_ADDED = "NEW_POST_ADDED";
     public static String RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED = "NEW_RATING_COMMENT_ADDED";
 
 }

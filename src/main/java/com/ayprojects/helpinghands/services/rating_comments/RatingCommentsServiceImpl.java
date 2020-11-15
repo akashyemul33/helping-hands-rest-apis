@@ -117,9 +117,11 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
             return new Response<>(false, 402, resMsg, new ArrayList<>(), 0);
         }
         Pageable pageable = PageRequest.of(page,size);
-        Query queryGetRC = new Query(Criteria.where("contentId").regex(contentId,"i")).with(pageable);
-        queryGetRC.addCriteria(Criteria.where("contentType").regex(contentType,"i"));
-        queryGetRC.addCriteria(Criteria.where("status").regex(status,"i"));
+        Criteria criteria = new Criteria();
+        criteria.and("contentId").regex(contentId,"i");
+        criteria.and("contentType").regex(contentType,"i");
+        criteria.and("status").regex(status,"i");
+        Query queryGetRC = new Query(criteria).with(pageable);
         List<DhRating_comments> dhRatingCommentsList = mongoTemplate.find(queryGetRC, DhRating_comments.class);
         Page<DhRating_comments> ratingAndCommentsPage = PageableExecutionUtils.getPage(
                 dhRatingCommentsList,

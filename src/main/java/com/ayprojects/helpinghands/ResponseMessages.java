@@ -124,4 +124,7 @@ public class ResponseMessages {
     public String MR_NEW_RATING_COMMENT_ADDED = "नवीन रेटिंग आणि टिप्पणी जोडली गेली आहे !";
     public String HI_NEW_RATING_COMMENT_ADDED = "नई रेटिंग और टिप्पणी जोड़ी गई है !";
 
+    public String EN_NEW_POST_ADDED = "New post has been added successfully !";
+    public String MR_NEW_POST_ADDED = "नवीन पोस्ट यशस्वीरित्या जोडली गेली आहे !";
+    public String HI_NEW_POST_ADDED = "नई पोस्ट सफलतापूर्वक जोड़ दी गई है !";
 }
