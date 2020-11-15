@@ -4,7 +4,7 @@ public class DhViews extends AllCommonUsedAttributes {
     private String viewId;
     private String addedBy;
     private String contentType;
-    private long contentId;
+    private String contentId;
 
     public String getViewId() {
         return viewId;
@@ -30,15 +30,15 @@ public class DhViews extends AllCommonUsedAttributes {
         this.contentType = contentType;
     }
 
-    public long getContentId() {
+    public String getContentId() {
         return contentId;
     }
 
-    public void setContentId(long contentId) {
+    public void setContentId(String contentId) {
         this.contentId = contentId;
     }
 
-    public DhViews(String viewId, String addedBy, String contentType, long contentId) {
+    public DhViews(String viewId, String addedBy, String contentType, String contentId) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;

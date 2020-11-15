@@ -3,7 +3,8 @@ package com.ayprojects.helpinghands.services.rating_comments;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhRating_comments;
+import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.RatingAndCommentsRepository;
 import com.ayprojects.helpinghands.tools.Utility;
@@ -39,12 +40,12 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
     Utility utility;
 
     @Override
-    public Response<DhRating_comments> addRatingAndComments(Authentication authentication, HttpHeaders httpHeaders, DhRating_comments dhRatingComments, String version) throws ServerSideException {
+    public Response<DhRatingAndComments> addRatingAndComments(Authentication authentication, HttpHeaders httpHeaders, DhRatingAndComments dhRatingComments, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("RatingCommentsServiceImpl->addRatingAndComments : language=" + language);
 
         if (dhRatingComments == null) {
-            return new Response<DhRating_comments>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
+            return new Response<DhRatingAndComments>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
         List<String> missingFieldsList = new ArrayList<>();
         if(Utility.isFieldEmpty(dhRatingComments.getAddedBy())) missingFieldsList.add("AddedBy");
@@ -67,43 +68,65 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
         //here content can be place,requirement & post
         String contentIdToSearch="";
         switch (dhRatingComments.getContentType()){
-            case "Place":
-                contentIdToSearch = "placeId";
-                Query queryFindContentWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
-                DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindContentWithId,DhPlace.class);
+            case AppConstants.PLACE:
+                contentIdToSearch = AppConstants.PLACE_ID;
+                Query queryFindPlaceWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
+                DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId,DhPlace.class);
                 if(queriedDhPlace == null)throw new ServerSideException("Unable to add rating into places collection");
                 Update updatePlace = new Update();
-                updatePlace.set("numberOfRatings",queriedDhPlace.getNumberOfRatings()+1);
-                double avgRating=0;
+                updatePlace.set(AppConstants.NUMBER_OF_RATINGS,queriedDhPlace.getNumberOfRatings()+1);
+                double avgPlaceRating=0;
                 if(queriedDhPlace.getAvgRating()<=0){
-                    avgRating = dhRatingComments.getRating();
+                    avgPlaceRating = dhRatingComments.getRating();
                 }
                 else{
-                    avgRating = (queriedDhPlace.getAvgRating()+ dhRatingComments.getRating())/2;
+                    avgPlaceRating = (queriedDhPlace.getAvgRating()+ dhRatingComments.getRating())/2;
                 }
-                updatePlace.set("avgRating",avgRating);
-                updatePlace.push("ratingIds", dhRatingComments.getReviewCommentId());
+                updatePlace.set(AppConstants.AVG_RATING,avgPlaceRating);
+                updatePlace.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
                 if(queriedDhPlace.getTopRatings()!=null && queriedDhPlace.getTopRatings().size()==5){
                     Update updatePopTopRating = new Update();
-                    updatePopTopRating.pop("topRatings", Update.Position.LAST);
-                    mongoTemplate.updateFirst(queryFindContentWithId,updatePopTopRating,DhPlace.class);
+                    updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
+                    mongoTemplate.updateFirst(queryFindPlaceWithId,updatePopTopRating,DhPlace.class);
                 }
-                updatePlace.push("topRatings", dhRatingComments);
-                updatePlace.set("modifiedDateTime",Utility.currentDateTimeInUTC());
-                mongoTemplate.updateFirst(queryFindContentWithId,updatePlace, DhPlace.class);
+                updatePlace.push(AppConstants.TOP_RATINGS, dhRatingComments);
+                updatePlace.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
+                mongoTemplate.updateFirst(queryFindPlaceWithId,updatePlace, DhPlace.class);
                 break;
-            case "Post":
-                contentIdToSearch = "postId";
+            case AppConstants.POST:
+                contentIdToSearch = AppConstants.POST_ID;
+                Query queryFindPostWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
+                DhPosts queriedDhPost = mongoTemplate.findOne(queryFindPostWithId,DhPosts.class);
+                if(queriedDhPost == null)throw new ServerSideException("Unable to add rating into posts collection");
+                Update updatePost = new Update();
+                updatePost.set(AppConstants.NUMBER_OF_RATINGS,queriedDhPost.getNumberOfRatings()+1);
+                double avgPostsRating=0;
+                if(queriedDhPost.getAvgRating()<=0){
+                    avgPostsRating = dhRatingComments.getRating();
+                }
+                else{
+                    avgPostsRating = (queriedDhPost.getAvgRating()+ dhRatingComments.getRating())/2;
+                }
+                updatePost.set(AppConstants.AVG_RATING,avgPostsRating);
+                updatePost.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
+                if(queriedDhPost.getTopRatings()!=null && queriedDhPost.getTopRatings().size()==5){
+                    Update updatePopTopRating = new Update();
+                    updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
+                    mongoTemplate.updateFirst(queryFindPostWithId,updatePopTopRating,DhPosts.class);
+                }
+                updatePost.push(AppConstants.TOP_RATINGS, dhRatingComments);
+                updatePost.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
+                mongoTemplate.updateFirst(queryFindPostWithId,updatePost, DhPosts.class);
                 break;
-            case "Requirement":
-                contentIdToSearch = "requirementId";
+            case AppConstants.REQUIREMENT:
+                contentIdToSearch = AppConstants.REQUIREMENT_ID;
                 break;
         }
         return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED,language),new ArrayList<>(),1);
     }
 
     @Override
-    public Response<DhRating_comments> getPaginatedRatingAndComments(Authentication authentication, HttpHeaders httpHeaders, String contentId, String contentType, String status, int page, int size, String version) {
+    public Response<DhRatingAndComments> getPaginatedRatingAndComments(Authentication authentication, HttpHeaders httpHeaders, String contentId, String contentType, String status, int page, int size, String version) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("RatingCommentsServiceImpl->getPaginatedRatingAndComments : language=" + language);
         LOGGER.info("RatingCommentsServiceImpl->getPaginatedRatingAndComments : contentId=" + contentId+" contentType="+contentType+" satus="+status+" page="+page+" size="+size);
@@ -118,15 +141,15 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
         }
         Pageable pageable = PageRequest.of(page,size);
         Criteria criteria = new Criteria();
-        criteria.and("contentId").regex(contentId,"i");
-        criteria.and("contentType").regex(contentType,"i");
-        criteria.and("status").regex(status,"i");
+        criteria.and(AppConstants.CONTENT_ID).regex(contentId,"i");
+        criteria.and(AppConstants.CONTENT_TYPE).regex(contentType,"i");
+        criteria.and(AppConstants.STATUS).regex(status,"i");
         Query queryGetRC = new Query(criteria).with(pageable);
-        List<DhRating_comments> dhRatingCommentsList = mongoTemplate.find(queryGetRC, DhRating_comments.class);
-        Page<DhRating_comments> ratingAndCommentsPage = PageableExecutionUtils.getPage(
+        List<DhRatingAndComments> dhRatingCommentsList = mongoTemplate.find(queryGetRC, DhRatingAndComments.class);
+        Page<DhRatingAndComments> ratingAndCommentsPage = PageableExecutionUtils.getPage(
                 dhRatingCommentsList,
                 pageable,
-                () -> mongoTemplate.count(queryGetRC, DhRating_comments.class));
+                () -> mongoTemplate.count(queryGetRC, DhRatingAndComments.class));
         return new Response<>(true, 201, "Query successful", dhRatingCommentsList.size(), ratingAndCommentsPage.getNumber(), ratingAndCommentsPage.getTotalPages(), ratingAndCommentsPage.getTotalElements(), dhRatingCommentsList);
     }
 }

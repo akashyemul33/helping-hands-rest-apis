@@ -4,7 +4,6 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
-import com.ayprojects.helpinghands.models.DhRating_comments;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PostsRepository;
 import com.ayprojects.helpinghands.tools.Utility;
@@ -21,7 +20,6 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.util.PatternMatchUtils;
 
 import java.util.ArrayList;
 import java.util.List;

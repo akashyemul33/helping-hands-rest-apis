@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-public class DhRating_comments extends AllCommonUsedAttributes {
+public class DhRatingAndComments extends AllCommonUsedAttributes {
     private String reviewCommentId;
     private double rating;
     private String comment;
@@ -58,7 +58,7 @@ public class DhRating_comments extends AllCommonUsedAttributes {
         this.contentId = contentId;
     }
 
-    public DhRating_comments(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String reviewCommentId, double rating, String comment, String addedBy, String contentType, String contentId) {
+    public DhRatingAndComments(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String reviewCommentId, double rating, String comment, String addedBy, String contentType, String contentId) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
