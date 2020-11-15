@@ -62,7 +62,7 @@ public class ProductsServiceImpl implements ProductsService{
         }
 
         Query queryFindCategoryWithId = new Query(Criteria.where("placeCategoryId").is(dhProduct.getMainPlaceCategoryId()));
-        queryFindCategoryWithId.addCriteria(Criteria.where("status").regex(AppConstants.STATUS_ACTIVE,"i"));
+        queryFindCategoryWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i"));
         DhPlaceCategories queriedDhPlaceCategories = mongoTemplate.findOne(queryFindCategoryWithId,DhPlaceCategories.class);
         if (queriedDhPlaceCategories==null || queriedDhPlaceCategories.getPlaceSubCategories()==null || queriedDhPlaceCategories.getPlaceSubCategories().size()==0) {
             return new Response<DhProduct>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID, language) + "ID : " + dhProduct.getMainPlaceCategoryId(), new ArrayList<>(), 0);
@@ -96,8 +96,8 @@ public class ProductsServiceImpl implements ProductsService{
         if(Utility.isFieldEmpty(subPlaceCategoryId)){
             return new Response<DhProduct>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), 0);
         }
-        Query queryToFindProductsWithSubCategoryId = new Query(Criteria.where("subPlaceCategoryId").is(subPlaceCategoryId));
-        queryToFindProductsWithSubCategoryId.addCriteria(Criteria.where("status").regex(AppConstants.STATUS_ACTIVE,"i"));
+        Query queryToFindProductsWithSubCategoryId = new Query(Criteria.where(AppConstants.SUB_PLACE_CATEGORY_ID).is(subPlaceCategoryId));
+        queryToFindProductsWithSubCategoryId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i"));
         List<DhProduct> dhProductList = mongoTemplate.find(queryToFindProductsWithSubCategoryId,DhProduct.class);
         if(dhProductList==null || dhProductList.size()==0){
             return new Response<DhProduct>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID,language),new ArrayList<>(),0);

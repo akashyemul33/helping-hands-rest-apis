@@ -37,6 +37,11 @@ public class AppConstants {
     public static final String AVG_RATING = "avgRating";
     public static final String RATINGS_IDS = "ratingIds";
     public static final String TOP_RATINGS = "topRatings";
+    public static final String PLACE_CATEGORY_ID = "placeCategoryId";
+    public static final String PLACE_SUB_CATEGORIES = "placeSubCategories";
+    public static final String POST_IDS = "postIds";
+    public static final String POST_TYPE = "postType";
+    public static final String SUB_PLACE_CATEGORY_ID = "subPlaceCategoryId";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };

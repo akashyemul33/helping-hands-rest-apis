@@ -91,12 +91,12 @@ public class PostsServiceImpl implements PostsService
 
         if(dhPosts.getPostType().equalsIgnoreCase(AppConstants.BUSINESS_POST) && !isPlaceIdMissing){
             LOGGER.info("PostsServiceImpl->addPost : It's business post");
-            Query queryFindPlaceWithId = new Query(Criteria.where("placeId").is(dhPosts.getPlaceId()));
+            Query queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPosts.getPlaceId()));
             DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId,DhPlace.class);
             if(queriedDhPlace == null)throw new ServerSideException("Unable to add posts into places collection");
             Update updatePlace = new Update();
                 LOGGER.info("PostsServiceImpl->addPost : postIds block is null, pushing post id into postIds array");
-                updatePlace.push("postIds",dhPosts.getPostId());
+                updatePlace.push(AppConstants.POST_IDS,dhPosts.getPostId());
             mongoTemplate.updateFirst(queryFindPlaceWithId,updatePlace,DhPlace.class);
         }
 
@@ -142,9 +142,9 @@ public class PostsServiceImpl implements PostsService
         Pageable pageable = PageRequest.of(page,size);
         Criteria criteria = new Criteria();
         Pattern patternPostType = Pattern.compile("^[Bb]usiness[\\s]*[Pp]ost$");
-        criteria.and("postType").regex(patternPostType);
-        criteria.and("status").regex(AppConstants.STATUS_ACTIVE,"i");
-        criteria.and("placeId").is(placeId);
+        criteria.and(AppConstants.POST_TYPE).regex(patternPostType);
+        criteria.and(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i");
+        criteria.and(AppConstants.PLACE_ID).is(placeId);
         Query queryGetPosts = new Query(criteria).with(pageable);
         List<DhPosts> dhPostsList = mongoTemplate.find(queryGetPosts, DhPosts.class);
         Page<DhPosts> dhPostsPage = PageableExecutionUtils.getPage(

@@ -105,7 +105,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         LOGGER.info("PlaceCategoryServiceImpl->findAllByStatus : language=" + language);
         String findWithStatus = Utility.isFieldEmpty(status) ? AppConstants.STATUS_ACTIVE : status;
 
-        Query query = new Query(Criteria.where("status").regex(findWithStatus,"i"));
+        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(findWithStatus,"i"));
         List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query,DhPlaceCategories.class);
         int resStatusCode;
         boolean resStatus;
@@ -141,8 +141,8 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             return new Response<PlaceSubCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY, language), new ArrayList<>(), 0);
         }
 
-        Query queryFindCategoryWithId = new Query(Criteria.where("placeCategoryId").is(mainPlaceCategoryId));
-        queryFindCategoryWithId.addCriteria(Criteria.where("status").regex(AppConstants.STATUS_ACTIVE,"i"));
+        Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_CATEGORY_ID).is(mainPlaceCategoryId));
+        queryFindCategoryWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i"));
         DhPlaceCategories queriedDhPlaceCategories = mongoTemplate.findOne(queryFindCategoryWithId,DhPlaceCategories.class);
         if (queriedDhPlaceCategories==null) {
             return new Response<PlaceSubCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID, language) + "ID : " + mainPlaceCategoryId, new ArrayList<>(), 0);
@@ -168,9 +168,9 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         placeSubCategoriesList.add(placeSubCategory);
 
         Update mainCategoryUpdate = new Update();
-        mainCategoryUpdate.push("placeSubCategories",placeSubCategory);
+        mainCategoryUpdate.push(AppConstants.PLACE_SUB_CATEGORIES,placeSubCategory);
         //mainCategoryUpdate.set("placeSubCategories",placeSubCategoriesList);
-        mainCategoryUpdate.set("modifiedDateTime",Utility.currentDateTimeInUTC());
+        mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
         mongoTemplate.updateFirst(queryFindCategoryWithId,mainCategoryUpdate,DhPlaceCategories.class);
         utility.addLog(authentication.getName(),"New sub category [" + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish() + "] has been added under [" + queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish() + "].");
         return new Response<PlaceSubCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED, language), Collections.singletonList(placeSubCategory), 1);

@@ -67,7 +67,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
 
         //here content can be place,requirement & post
         String contentIdToSearch="";
-        switch (dhRatingComments.getContentType()){
+        switch (dhRatingComments.getContentType().toUpperCase()){
             case AppConstants.PLACE:
                 contentIdToSearch = AppConstants.PLACE_ID;
                 Query queryFindPlaceWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
