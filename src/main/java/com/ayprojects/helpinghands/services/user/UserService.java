@@ -9,10 +9,11 @@ import com.ayprojects.helpinghands.models.DhUser;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface UserService {
-    Response<DhUser> signUp(DhUser dhUserDetails, HttpHeaders httpHeaders, String version);
+    Response<DhUser> addUser(HttpHeaders httpHeaders, MultipartFile userImage, String userBody, String version);
     Response<AccessTokenModel> login(AuthenticationRequest authenticationRequest, HttpHeaders httpHeaders, String version);
     Response<LoginResponse> getUserDetails(HttpHeaders httpHeaders, Authentication authentication, String version);
 }

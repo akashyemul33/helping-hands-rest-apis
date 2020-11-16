@@ -7,15 +7,6 @@ public class DhPlace extends AllCommonUsedAttributes {
     private String placeType;
     private Address placeAddress;
     private String placeMainCategoryId;
-
-    public String getAddedBy() {
-        return addedBy;
-    }
-
-    public void setAddedBy(String addedBy) {
-        this.addedBy = addedBy;
-    }
-
     private String addedBy;
     private String placeSubCategoryId;
     private String placeCategoryName;
@@ -23,7 +14,7 @@ public class DhPlace extends AllCommonUsedAttributes {
     private String placeDesc;
     private Contact placeContact;
     private boolean doorService;
-    private List<EmbededImage> placeImages;
+    private List<String> placeImages;
     private PlaceAvailabilityDays placeAvailablityDays;
     private String openingTime;
     private String closingTime;
@@ -32,21 +23,14 @@ public class DhPlace extends AllCommonUsedAttributes {
     private List<ProductsWithPrices> productsWithPrice;
     private long numberOfRatings;
     private long numberOfViews;
+    private long numberOfPosts;
     private double avgRating;
     private List<String> ratingIds;
-
-    public List<String> getPostIds() {
-        return postIds;
-    }
-
-    public void setPostIds(List<String> postIds) {
-        this.postIds = postIds;
-    }
-
     private List<String> postIds;
     private List<String> viewIds;
     private List<DhRatingAndComments> topRatings;
     private List<DhViews> topViews;
+    private List<DhPosts> topPosts;
 
     public String getPlaceId() {
         return placeId;
@@ -78,6 +62,14 @@ public class DhPlace extends AllCommonUsedAttributes {
 
     public void setPlaceMainCategoryId(String placeMainCategoryId) {
         this.placeMainCategoryId = placeMainCategoryId;
+    }
+
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
     }
 
     public String getPlaceSubCategoryId() {
@@ -128,11 +120,11 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.doorService = doorService;
     }
 
-    public List<EmbededImage> getPlaceImages() {
+    public List<String> getPlaceImages() {
         return placeImages;
     }
 
-    public void setPlaceImages(List<EmbededImage> placeImages) {
+    public void setPlaceImages(List<String> placeImages) {
         this.placeImages = placeImages;
     }
 
@@ -200,6 +192,14 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.numberOfViews = numberOfViews;
     }
 
+    public long getNumberOfPosts() {
+        return numberOfPosts;
+    }
+
+    public void setNumberOfPosts(long numberOfPosts) {
+        this.numberOfPosts = numberOfPosts;
+    }
+
     public double getAvgRating() {
         return avgRating;
     }
@@ -214,6 +214,14 @@ public class DhPlace extends AllCommonUsedAttributes {
 
     public void setRatingIds(List<String> ratingIds) {
         this.ratingIds = ratingIds;
+    }
+
+    public List<String> getPostIds() {
+        return postIds;
+    }
+
+    public void setPostIds(List<String> postIds) {
+        this.postIds = postIds;
     }
 
     public List<String> getViewIds() {
@@ -240,7 +248,15 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.topViews = topViews;
     }
 
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String addedBy, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<EmbededImage> placeImages, PlaceAvailabilityDays placeAvailablityDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<String> postIds) {
+    public List<DhPosts> getTopPosts() {
+        return topPosts;
+    }
+
+    public void setTopPosts(List<DhPosts> topPosts) {
+        this.topPosts = topPosts;
+    }
+
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String addedBy, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> placeImages, PlaceAvailabilityDays placeAvailablityDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<String> postIds, long numberOfPosts, List<DhPosts> topPosts) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
@@ -271,6 +287,8 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.topRatings = topRatings;
         this.topViews = topViews;
         this.postIds = postIds;
+        this.numberOfPosts = numberOfPosts;
+        this.topPosts = topPosts;
     }
 }
 

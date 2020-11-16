@@ -7,8 +7,10 @@ import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PostsRepository;
 import com.ayprojects.helpinghands.tools.Utility;
+import com.google.gson.Gson;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,8 +22,14 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -30,6 +38,10 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 @Service
 public class PostsServiceImpl implements PostsService
 {
+
+    @Value("${images.base_folder}")
+    String imagesBaseFolder;
+
     @Autowired
     MongoTemplate mongoTemplate;
 
@@ -40,13 +52,19 @@ public class PostsServiceImpl implements PostsService
     Utility utility;
 
     @Override
-    public Response<DhPosts> addPost(Authentication authentication, HttpHeaders httpHeaders, DhPosts dhPosts, String version) throws ServerSideException {
+    public Response<DhPosts> addPost(Authentication authentication, HttpHeaders httpHeaders, MultipartFile[] postImages, String postBody, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
-        boolean isPlaceIdMissing = false;
         LOGGER.info("PostsServiceImpl->addPost : language=" + language);
+
+        //convert postBody json string to DhPost object
+        DhPosts dhPosts = null;
+        if(!Utility.isFieldEmpty(postBody)) dhPosts = new Gson().fromJson(postBody, DhPosts.class);
+
         if (dhPosts == null) {
             return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
+
+        boolean isPlaceIdMissing = false;
         List<String> missingFieldsList = new ArrayList<>();
         if(Utility.isFieldEmpty(dhPosts.getAddedBy())) missingFieldsList.add("AddedBy");
         if(Utility.isFieldEmpty(dhPosts.getPostType())) missingFieldsList.add("PostType");
@@ -81,7 +99,34 @@ public class PostsServiceImpl implements PostsService
             resMsg = resMsg+" , these fields are missing : "+missingFieldsList;
             return new Response<DhPosts>(false,402,resMsg,new ArrayList<>(),0);
         }
-        dhPosts.setPostId(Utility.getUUID());
+
+        String uinquePostId= Utility.getUUID();
+        //store image first
+        if(postImages!=null){
+            try {
+                String imgType = dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST) ? "B" : "P";
+                String imgUploadFolder = imagesBaseFolder + "/" + dhPosts.getAddedBy() + "/posts/" + dhPosts.getPostType() + "/";
+                LOGGER.info("PostsServiceImpl->addPosts : imagesBaseFolder = " + imagesBaseFolder);
+                Path path1 = Paths.get(imgUploadFolder);
+                Files.createDirectories(path1);
+                for (MultipartFile multipartFile : postImages) {
+                    String ext = multipartFile.getOriginalFilename().split("\\.")[1];
+                    String imgFileName = imgType + "_POST_" + uinquePostId + "_" + Calendar.getInstance().getTimeInMillis() + "." + ext;
+                    String imgUploadFolderWithFile = imgUploadFolder + imgFileName;
+                    LOGGER.info("PostsServiceImpl->addPost : imgUploadFolderWithFile = " + imgUploadFolderWithFile);
+                    byte[] bytes = multipartFile.getBytes();
+                    Path filePath = Paths.get(imgUploadFolderWithFile);
+                    Files.probeContentType(filePath);
+                    Files.write(filePath, bytes);
+                    dhPosts.getPostImages().add(imgUploadFolderWithFile);
+                }
+            }
+            catch (IOException ioException){
+                return new Response<>(false,402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG,language),new ArrayList<>());
+            }
+        }
+
+        dhPosts.setPostId(uinquePostId);
         dhPosts.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         dhPosts.setCreatedDateTime(Utility.currentDateTimeInUTC());
         dhPosts.setModifiedDateTime(Utility.currentDateTimeInUTC());
@@ -89,7 +134,7 @@ public class PostsServiceImpl implements PostsService
         mongoTemplate.save(dhPosts,AppConstants.COLLECTION_DH_POSTS);
         utility.addLog(authentication.getName(),"New ["+dhPosts.getPostType()+"] post has been added.");
 
-        if(dhPosts.getPostType().equalsIgnoreCase(AppConstants.BUSINESS_POST) && !isPlaceIdMissing){
+        if(dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST) && !isPlaceIdMissing){
             LOGGER.info("PostsServiceImpl->addPost : It's business post");
             Query queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPosts.getPlaceId()));
             DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId,DhPlace.class);
@@ -97,6 +142,14 @@ public class PostsServiceImpl implements PostsService
             Update updatePlace = new Update();
                 LOGGER.info("PostsServiceImpl->addPost : postIds block is null, pushing post id into postIds array");
                 updatePlace.push(AppConstants.POST_IDS,dhPosts.getPostId());
+                updatePlace.set(AppConstants.NUMBER_OF_POSTS,queriedDhPlace.getNumberOfPosts()+1);
+            if(queriedDhPlace.getTopPosts()!=null && queriedDhPlace.getTopPosts().size()==3){
+                Update updatePopTopPost = new Update();
+                updatePopTopPost.pop(AppConstants.TOP_POSTS, Update.Position.FIRST);
+                mongoTemplate.updateFirst(queryFindPlaceWithId,updatePopTopPost,DhPlace.class);
+            }
+            updatePlace.push(AppConstants.TOP_POSTS, dhPosts);
+            updatePlace.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
             mongoTemplate.updateFirst(queryFindPlaceWithId,updatePlace,DhPlace.class);
         }
 
@@ -141,7 +194,7 @@ public class PostsServiceImpl implements PostsService
         }
         Pageable pageable = PageRequest.of(page,size);
         Criteria criteria = new Criteria();
-        Pattern patternPostType = Pattern.compile("^[Bb]usiness[\\s]*[Pp]ost$");
+        Pattern patternPostType = Pattern.compile(AppConstants.REGEX_BUSINESS_POST);
         criteria.and(AppConstants.POST_TYPE).regex(patternPostType);
         criteria.and(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i");
         criteria.and(AppConstants.PLACE_ID).is(placeId);

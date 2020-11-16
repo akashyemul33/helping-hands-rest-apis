@@ -18,8 +18,8 @@ public class AppConstants {
     public static final String MSG_SOMETHING_WENT_WRONG = "Something went wrong !";
     public static final String QUERY_SUCCESSFUL = "Query successful";
     public static final String RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID ="NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID" ;
-    public static final String BUSINESS_POST = "Business Post";
-    public static final String PUBLIC_POST = "Public Post";
+    public static final String BUSINESS_POST = "BusinessPost";
+    public static final String PUBLIC_POST = "PublicPost";
     public static final String PLACE = "PLACE";
     public static final String POST = "POST";
     public static final String REQUIREMENT = "REQUIREMENT";
@@ -34,14 +34,19 @@ public class AppConstants {
     public static final String CONTENT_TYPE = "contentType";
     public static final String STATUS = "status";
     public static final String NUMBER_OF_RATINGS = "numberOfRatings";
+    public static final String NUMBER_OF_POSTS = "numberOfPosts";
     public static final String AVG_RATING = "avgRating";
     public static final String RATINGS_IDS = "ratingIds";
     public static final String TOP_RATINGS = "topRatings";
+    public static final String TOP_POSTS = "topPosts";
     public static final String PLACE_CATEGORY_ID = "placeCategoryId";
     public static final String PLACE_SUB_CATEGORIES = "placeSubCategories";
     public static final String POST_IDS = "postIds";
     public static final String POST_TYPE = "postType";
     public static final String SUB_PLACE_CATEGORY_ID = "subPlaceCategoryId";
+    public static final String BUSINESS_PLACE = "BusinessPlace";
+    public static final String REGEX_BUSINESS_POST = "^[Bb]usiness[\\s]*[Pp]ost$";
+    public static final String REGEX_BUSINESS_PLACE = "^[Bb]usiness[\\s]*[Pp]lace$";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };

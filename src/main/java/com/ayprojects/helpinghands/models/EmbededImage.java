@@ -1,14 +1,14 @@
 package com.ayprojects.helpinghands.models;
 
 public class EmbededImage {
-    private long imageId;
+    private String imageId;
     private String imagePath;
 
-    public long getImageId() {
+    public String getImageId() {
         return imageId;
     }
 
-    public void setImageId(long imageId) {
+    public void setImageId(String imageId) {
         this.imageId = imageId;
     }
 

@@ -86,7 +86,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                 updatePlace.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
                 if(queriedDhPlace.getTopRatings()!=null && queriedDhPlace.getTopRatings().size()==5){
                     Update updatePopTopRating = new Update();
-                    updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
+                    updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.FIRST);
                     mongoTemplate.updateFirst(queryFindPlaceWithId,updatePopTopRating,DhPlace.class);
                 }
                 updatePlace.push(AppConstants.TOP_RATINGS, dhRatingComments);

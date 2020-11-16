@@ -4,7 +4,7 @@ public class DhUser extends AllCommonUsedAttributes {
     private String userId;
     private String name;
     private String password;
-    private EmbededImage profileImg;
+    private String profileImg;
     private Address addressDetails;
     private String mobileNumber;
     private String emailId;
@@ -68,11 +68,11 @@ public class DhUser extends AllCommonUsedAttributes {
         this.password = password;
     }
 
-    public EmbededImage getProfileImg() {
+    public String getProfileImg() {
         return profileImg;
     }
 
-    public void setProfile_img_path(EmbededImage profileImg) {
+    public void setProfileImg(String profileImg) {
         this.profileImg = profileImg;
     }
 
@@ -84,7 +84,7 @@ public class DhUser extends AllCommonUsedAttributes {
         this.addressDetails = addressDetails;
     }
 
-    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String name, String password, EmbededImage profileImg, Address addressDetails, String mobileNumber, String emailId, String languageSelected) {
+    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String name, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String languageSelected) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;

@@ -6,16 +6,24 @@ import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PlaceRepository;
 import com.ayprojects.helpinghands.tools.Utility;
+import com.google.gson.Gson;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -23,6 +31,8 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 @Service
 public class PlaceServiceImpl implements PlaceService{
 
+    @Value("${images.base_folder}")
+    String imagesBaseFolder;
 
     @Autowired
     MongoTemplate mongoTemplate;
@@ -34,13 +44,17 @@ public class PlaceServiceImpl implements PlaceService{
     Utility utility;
 
     @Override
-    public Response<DhPlace> addPlace(Authentication authentication, HttpHeaders httpHeaders, DhPlace dhPlace, String version) throws ServerSideException {
+    public Response<DhPlace> addPlace(Authentication authentication, HttpHeaders httpHeaders, MultipartFile[] placeImages, String placeBody, String version) throws ServerSideException{
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PlaceServiceImpl->addPlace : language=" + language);
+        //convert placebody json string to DhPlace object
+        DhPlace dhPlace = null;
+        if(!Utility.isFieldEmpty(placeBody)) dhPlace = new Gson().fromJson(placeBody, DhPlace.class);
 
         if (dhPlace == null) {
             return new Response<DhPlace>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
+
         List<String> missingFieldsList = new ArrayList<>();
         if(Utility.isFieldEmpty(dhPlace.getAddedBy())) missingFieldsList.add("AddedBy");
         if(Utility.isFieldEmpty(dhPlace.getPlaceMainCategoryId())) missingFieldsList.add("PlaceMainCategoryId");
@@ -73,13 +87,37 @@ public class PlaceServiceImpl implements PlaceService{
             resMsg = resMsg+" , these fields are missing : "+missingFieldsList;
             return new Response<DhPlace>(false,402,resMsg,new ArrayList<>(),0);
         }
+        String uinquePlaceId= Utility.getUUID();
+        //store image first
+        if(placeImages!=null){
+            try {
+                String imgType = dhPlace.getPlaceType().matches(AppConstants.REGEX_BUSINESS_PLACE) ? "B" : "P";
+                String imgUploadFolder = imagesBaseFolder + "/" + dhPlace.getAddedBy() + "/places/" + dhPlace.getPlaceType() + "/";
+                LOGGER.info("PlaceServiceImpl->addPlace : imagesBaseFolder = " + imagesBaseFolder);
+                Path path1 = Paths.get(imgUploadFolder);
+                Files.createDirectories(path1);
+                for (MultipartFile multipartFile : placeImages) {
+                    String ext = multipartFile.getOriginalFilename().split("\\.")[1];
+                    String imgFileName = imgType + "_PLACE_" + uinquePlaceId + "_" + Calendar.getInstance().getTimeInMillis() + "." + ext;
+                    String imgUploadFolderWithFile = imgUploadFolder + imgFileName;
+                    LOGGER.info("PlaceServiceImpl->addPlace : imgUploadFolderWithFile = " + imgUploadFolderWithFile);
+                    byte[] bytes = multipartFile.getBytes();
+                    Path filePath = Paths.get(imgUploadFolderWithFile);
+                    Files.probeContentType(filePath);
+                    Files.write(filePath, bytes);
+                    dhPlace.getPlaceImages().add(imgUploadFolderWithFile);
+                }
+            }
+            catch (IOException ioException){
+                return new Response<>(false,402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG,language),new ArrayList<>());
+            }
+        }
 
-        dhPlace.setPlaceId(Utility.getUUID());
+        dhPlace.setPlaceId(uinquePlaceId);
         dhPlace.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         dhPlace.setCreatedDateTime(Utility.currentDateTimeInUTC());
         dhPlace.setModifiedDateTime(Utility.currentDateTimeInUTC());
         dhPlace.setStatus(AppConstants.STATUS_ACTIVE);
-
         mongoTemplate.save(dhPlace,AppConstants.COLLECTION_DH_PLACE);
         utility.addLog(authentication.getName(),"New ["+dhPlace.getPlaceType()+"] place with category ["+dhPlace.getPlaceCategoryName()+"] has been added.");
         return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED,language),new ArrayList<>(),1);

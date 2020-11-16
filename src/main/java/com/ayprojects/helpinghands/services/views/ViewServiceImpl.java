@@ -92,7 +92,7 @@ public class ViewServiceImpl implements ViewService {
                 updatePost.push(AppConstants.VIEW_IDS, dhViews.getViewId());
                 if (queriedDhPosts.getTopViews() != null && queriedDhPosts.getTopViews().size() == 10) {
                     Update updatePopTopRating = new Update();
-                    updatePopTopRating.pop(AppConstants.TOP_VIEWS, Update.Position.LAST);
+                    updatePopTopRating.pop(AppConstants.TOP_VIEWS, Update.Position.FIRST);
                     mongoTemplate.updateFirst(queryFindPostsWithId, updatePopTopRating, DhPlace.class);
                 }
                 updatePost.push(AppConstants.TOP_VIEWS, dhViews);

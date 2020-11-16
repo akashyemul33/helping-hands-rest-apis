@@ -1,25 +1,35 @@
 package com.ayprojects.helpinghands.controllers;
 
+import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.place.PlaceService;
 import com.ayprojects.helpinghands.services.products.ProductsService;
+import com.ayprojects.helpinghands.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @ResponseStatus
@@ -29,9 +39,9 @@ public class PlaceController {
     @Autowired
     PlaceService placeService;
 
-    @RequestMapping(value="/addPlace", method= RequestMethod.POST)
-    public ResponseEntity<Response<DhPlace>> addPlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(placeService.addPlace(authentication,httpHeaders,dhPlace,version), HttpStatus.CREATED);
+    @PostMapping(value="/addPlace", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<DhPlace>> addPlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "placeBody") String placeBody, @RequestPart(value="placeImages",required = false) MultipartFile[] placeImages, @PathVariable String version) throws ServerSideException{
+            return new ResponseEntity<>(placeService.addPlace(authentication,httpHeaders,placeImages,placeBody,version), HttpStatus.CREATED);
     }
 
     @RequestMapping(value="/deletePlace", method= RequestMethod.PUT)

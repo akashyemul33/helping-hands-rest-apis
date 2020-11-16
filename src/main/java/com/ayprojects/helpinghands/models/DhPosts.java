@@ -9,7 +9,7 @@ public class DhPosts extends AllCommonUsedAttributes {
     private String addedBy;
     private String postTitle;
     private String postDesc;
-    private List<EmbededImage> postImages;
+    private List<String> postImages;
     private Contact contactDetails;
     private Address addressDetails;
     private String offerStartTime;
@@ -71,11 +71,11 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.postDesc = postDesc;
     }
 
-    public List<EmbededImage> getPostImages() {
+    public List<String> getPostImages() {
         return postImages;
     }
 
-    public void setPostImages(List<EmbededImage> postImages) {
+    public void setPostImages(List<String> postImages) {
         this.postImages = postImages;
     }
 
@@ -175,7 +175,7 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.topViews = topViews;
     }
 
-    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String postType, String placeId, String addedBy, String postTitle, String postDesc, List<EmbededImage> postImages, Contact contactDetails, Address addressDetails, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews) {
+    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String postType, String placeId, String addedBy, String postTitle, String postDesc, List<String> postImages, Contact contactDetails, Address addressDetails, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
