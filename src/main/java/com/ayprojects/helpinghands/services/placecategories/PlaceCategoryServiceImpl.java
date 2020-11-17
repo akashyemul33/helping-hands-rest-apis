@@ -3,13 +3,10 @@ package com.ayprojects.helpinghands.services.placecategories;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
-import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
-import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
-import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import javax.rmi.CORBA.Util;
-
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
-import static com.ayprojects.helpinghands.HelpingHandsApplication.main;
 
 @Service
 public class PlaceCategoryServiceImpl implements PlaceCategoryService {
@@ -64,10 +58,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS, language), new ArrayList<>(), 0);
         }
 
-        dhPlaceCategories.setSchemaVersion(AppConstants.SCHEMA_VERSION);
-        dhPlaceCategories.setCreatedDateTime(Utility.currentDateTimeInUTC());
-        dhPlaceCategories.setModifiedDateTime(Utility.currentDateTimeInUTC());
-        dhPlaceCategories.setStatus(AppConstants.STATUS_PENDING);
+        dhPlaceCategories = (DhPlaceCategories) utility.setCommonAttrs(dhPlaceCategories,AppConstants.STATUS_PENDING);
         dhPlaceCategories.setPlaceCategoryId(Utility.getUUID());
         dhPlaceCategories.setAddedBy(dhPlaceCategories.getAddedBy());
         if (dhPlaceCategories.getPlaceSubCategories() != null && dhPlaceCategories.getPlaceSubCategories().size() > 0) {
@@ -100,32 +91,18 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
     }
 
     @Override
-    public Response<List<DhPlaceCategories>> findAllByStatus(Authentication authentication, HttpHeaders httpHeaders, String status, String version) {
+    public Response<DhPlaceCategories> findAllByStatus(Authentication authentication, HttpHeaders httpHeaders, String status, String version) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PlaceCategoryServiceImpl->findAllByStatus : language=" + language);
         String findWithStatus = Utility.isFieldEmpty(status) ? AppConstants.STATUS_ACTIVE : status;
 
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(findWithStatus,"i"));
         List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query,DhPlaceCategories.class);
-        int resStatusCode;
-        boolean resStatus;
-        String resMessage;
-        int resTotalCount;
-        List<DhPlaceCategories> resData;
         if (dhPlaceCategoriesList==null) {
-            resStatus = false;
-            resStatusCode = 402;
-            resMessage = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES, language);
-            resTotalCount = 0;
-            resData = new ArrayList<>();
+            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES, language),new ArrayList<>(),0);
         } else {
-            resStatus = true;
-            resStatusCode = 201;
-            resMessage = dhPlaceCategoriesList.size() + " place categories found .";
-            resTotalCount = dhPlaceCategoriesList.size();
-            resData = dhPlaceCategoriesList;
+            return new Response<DhPlaceCategories>(true,201,dhPlaceCategoriesList.size() + " place categories found .",dhPlaceCategoriesList,dhPlaceCategoriesList.size());
         }
-        return new Response<List<DhPlaceCategories>>(resStatus, resStatusCode, resMessage, Collections.singletonList(resData), resTotalCount);
     }
 
     @Override
@@ -160,13 +137,8 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
 
         placeSubCategory.setAddedBy(placeSubCategory.getAddedBy());
         placeSubCategory.setPlaceSubCategoryId(Utility.getUUID());
-        placeSubCategory.setSchemaVersion(AppConstants.SCHEMA_VERSION);
-        placeSubCategory.setCreatedDateTime(Utility.currentDateTimeInUTC());
-        placeSubCategory.setModifiedDateTime(Utility.currentDateTimeInUTC());
-        placeSubCategory.setStatus(AppConstants.STATUS_PENDING);
-
+        placeSubCategory = (PlaceSubCategories) utility.setCommonAttrs(placeSubCategory,AppConstants.STATUS_PENDING);
         placeSubCategoriesList.add(placeSubCategory);
-
         Update mainCategoryUpdate = new Update();
         mainCategoryUpdate.push(AppConstants.PLACE_SUB_CATEGORIES,placeSubCategory);
         //mainCategoryUpdate.set("placeSubCategories",placeSubCategoriesList);

@@ -13,23 +13,12 @@ import java.util.ArrayList;
 public class AppExceptionHandler {
     @ExceptionHandler(ClientSideException.class)
 public ResponseEntity<Response<String>> clientSideExceptionResponse(ClientSideException ex) {
-    Response<String> response = new Response<String>();
-    response.setStatus(false);
-    response.setStatusCode(400);
-    response.setMessage(ex.getMessage());
-    response.setData(new ArrayList<>());
-    // System.out.println(ex.getStackTrace());
-    return new ResponseEntity<Response<String>>(response, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<Response<String>>(new Response<>(false,400,ex.getMessage(),new ArrayList<>()), HttpStatus.BAD_REQUEST);
 }
 
     @ExceptionHandler(ServerSideException.class)
     public ResponseEntity<Response<String>> serverSideExceptionResponse(ServerSideException ex) {
-        Response<String> response = new Response<String>();
-        response.setStatus(false);
-        response.setStatusCode(500);
-        response.setMessage(ex.getMessage());
-        response.setData(new ArrayList<>());
-        return new ResponseEntity<Response<String>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Response<String>>(new Response<>(false,500,ex.getMessage(),new ArrayList<>()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

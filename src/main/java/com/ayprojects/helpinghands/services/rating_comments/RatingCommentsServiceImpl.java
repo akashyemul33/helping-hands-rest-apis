@@ -5,9 +5,11 @@ import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhRatingAndComments;
+import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.RatingAndCommentsRepository;
 import com.ayprojects.helpinghands.tools.Utility;
+import com.ayprojects.helpinghands.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.rmi.CORBA.Util;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -47,21 +51,14 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
         if (dhRatingComments == null) {
             return new Response<DhRatingAndComments>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
-        List<String> missingFieldsList = new ArrayList<>();
-        if(Utility.isFieldEmpty(dhRatingComments.getAddedBy())) missingFieldsList.add("AddedBy");
-        if(dhRatingComments.getRating()<=0) missingFieldsList.add("Rating");
-        if(Utility.isFieldEmpty(dhRatingComments.getContentType())) missingFieldsList.add("ContentType");
-        if(Utility.isFieldEmpty(dhRatingComments.getContentId())) missingFieldsList.add("ContentId");
+        List<String> missingFieldsList = Validations.findMissingFieldsForRatings(dhRatingComments);
         if(missingFieldsList.size()>0){
             String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language);
             resMsg = resMsg+" , these fields are missing : "+missingFieldsList;
             return new Response<>(false, 402, resMsg, new ArrayList<>(), 0);
         }
         dhRatingComments.setReviewCommentId(Utility.getUUID());
-        dhRatingComments.setSchemaVersion(AppConstants.SCHEMA_VERSION);
-        dhRatingComments.setCreatedDateTime(Utility.currentDateTimeInUTC());
-        dhRatingComments.setModifiedDateTime(Utility.currentDateTimeInUTC());
-        dhRatingComments.setStatus(AppConstants.STATUS_ACTIVE);
+        dhRatingComments = (DhRatingAndComments) utility.setCommonAttrs(dhRatingComments,AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhRatingComments,AppConstants.COLLECTION_DH_RATING_COMMENT);
         utility.addLog(authentication.getName(),"New Rating & comment for ["+ dhRatingComments.getContentType()+"] has been added by user ["+ dhRatingComments.getAddedBy()+"].");
 
@@ -72,7 +69,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                 contentIdToSearch = AppConstants.PLACE_ID;
                 Query queryFindPlaceWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
                 DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId,DhPlace.class);
-                if(queriedDhPlace == null)throw new ServerSideException("Unable to add rating into places collection");
+                if(queriedDhPlace == null)throw new ServerSideException("Unable to add rating into places collection, seems like no place found with given id");
                 Update updatePlace = new Update();
                 updatePlace.set(AppConstants.NUMBER_OF_RATINGS,queriedDhPlace.getNumberOfRatings()+1);
                 double avgPlaceRating=0;
@@ -84,7 +81,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                 }
                 updatePlace.set(AppConstants.AVG_RATING,avgPlaceRating);
                 updatePlace.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
-                if(queriedDhPlace.getTopRatings()!=null && queriedDhPlace.getTopRatings().size()==5){
+                if(queriedDhPlace.getTopRatings()!=null && queriedDhPlace.getTopRatings().size()==AppConstants.LIMIT_RATINGS_IN_PLACES){
                     Update updatePopTopRating = new Update();
                     updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.FIRST);
                     mongoTemplate.updateFirst(queryFindPlaceWithId,updatePopTopRating,DhPlace.class);
@@ -97,7 +94,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                 contentIdToSearch = AppConstants.POST_ID;
                 Query queryFindPostWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
                 DhPosts queriedDhPost = mongoTemplate.findOne(queryFindPostWithId,DhPosts.class);
-                if(queriedDhPost == null)throw new ServerSideException("Unable to add rating into posts collection");
+                if(queriedDhPost == null)throw new ServerSideException("Unable to add rating into posts collection, seems like no post found with given id");
                 Update updatePost = new Update();
                 updatePost.set(AppConstants.NUMBER_OF_RATINGS,queriedDhPost.getNumberOfRatings()+1);
                 double avgPostsRating=0;
@@ -109,7 +106,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                 }
                 updatePost.set(AppConstants.AVG_RATING,avgPostsRating);
                 updatePost.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
-                if(queriedDhPost.getTopRatings()!=null && queriedDhPost.getTopRatings().size()==5){
+                if(queriedDhPost.getTopRatings()!=null && queriedDhPost.getTopRatings().size()==AppConstants.LIMIT_RATINGS_IN_POSTS){
                     Update updatePopTopRating = new Update();
                     updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
                     mongoTemplate.updateFirst(queryFindPostWithId,updatePopTopRating,DhPosts.class);
@@ -120,6 +117,28 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                 break;
             case AppConstants.REQUIREMENT:
                 contentIdToSearch = AppConstants.REQUIREMENT_ID;
+                Query queryFindRequirementWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
+                DhRequirements queriedDhRequirement = mongoTemplate.findOne(queryFindRequirementWithId, DhRequirements.class);
+                if(queriedDhRequirement == null)throw new ServerSideException("Unable to add rating into requirements collection, seems like no requirement found with given id");
+                Update updateRequirement = new Update();
+                updateRequirement.set(AppConstants.NUMBER_OF_RATINGS,queriedDhRequirement.getNumberOfRatings()+1);
+                double avgRequirementRating=0;
+                if(queriedDhRequirement.getAvgRating()<=0){
+                    avgRequirementRating = dhRatingComments.getRating();
+                }
+                else{
+                    avgRequirementRating = (queriedDhRequirement.getAvgRating()+ dhRatingComments.getRating())/2;
+                }
+                updateRequirement.set(AppConstants.AVG_RATING,avgRequirementRating);
+                updateRequirement.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
+                if(queriedDhRequirement.getTopRatings()!=null && queriedDhRequirement.getTopRatings().size()==AppConstants.LIMIT_RATINGS_IN_REQUIREMENTS){
+                    Update updatePopTopRating = new Update();
+                    updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
+                    mongoTemplate.updateFirst(queryFindRequirementWithId,updatePopTopRating,DhRequirements.class);
+                }
+                updateRequirement.push(AppConstants.TOP_RATINGS, dhRatingComments);
+                updateRequirement.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
+                mongoTemplate.updateFirst(queryFindRequirementWithId,updateRequirement, DhRequirements.class);
                 break;
         }
         return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED,language),new ArrayList<>(),1);

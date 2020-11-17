@@ -2,21 +2,29 @@ package com.ayprojects.helpinghands.tools;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.ResponseMessages;
+import com.ayprojects.helpinghands.models.AllCommonUsedAttributes;
 import com.ayprojects.helpinghands.models.DhLog;
-import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.services.log.LogService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -79,5 +87,41 @@ public class Utility {
             return;
         }
         logService.addLog(new DhLog(Utility.getUUID(), username, actionMsg, Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC(), AppConstants.SCHEMA_VERSION));
+    }
+
+    public static List<String> checkForEmptyStrings(Map<String,String> validationStrings){
+        List<String> emptyStringsList = new ArrayList<>();
+        if(validationStrings==null || validationStrings.size()==0)return emptyStringsList;
+
+        for(Map.Entry<String,String> entry : validationStrings.entrySet()){
+            if(Utility.isFieldEmpty(entry.getValue()))emptyStringsList.add(entry.getKey());
+        }
+        return emptyStringsList;
+    }
+
+    public List<String> uplodImages(String imgUploadFolder, MultipartFile[] multipartImages, String imagePrefix) throws IOException {
+            List<String> uploadedImageNames = new ArrayList<>();
+            if(multipartImages==null || multipartImages.length==0)return uploadedImageNames;
+            Path path1 = Paths.get(imgUploadFolder);
+            Files.createDirectories(path1);
+            for (MultipartFile multipartFile : multipartImages) {
+                String ext = multipartFile.getOriginalFilename().split("\\.")[1];
+                String imgPath = imgUploadFolder + imagePrefix + Calendar.getInstance().getTimeInMillis() + "." + ext;
+                LOGGER.info("Utility->uplodImages : imgUploadFolderWithFile = " + imgPath);
+                byte[] bytes = multipartFile.getBytes();
+                Path filePath = Paths.get(imgPath);
+                Files.probeContentType(filePath);
+                Files.write(filePath, bytes);
+                uploadedImageNames.add(imgPath);
+            }
+            return uploadedImageNames;
+    }
+
+    public AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {
+        obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
+        obj.setCreatedDateTime(currentDateTimeInUTC());
+        obj.setModifiedDateTime(currentDateTimeInUTC());
+        obj.setStatus(status);
+        return obj;
     }
 }

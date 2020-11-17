@@ -3,19 +3,50 @@ package com.ayprojects.helpinghands.models;
 import java.util.List;
 
 public class DhRequirements extends AllCommonUsedAttributes {
+    private String addedBy;
     private String requirementId;
-    private String requirement_title;
-    private String requirement_desc;
+    private String requirementTitle;
+    private String requirementDesc;
     private String priority;
     private String budget;
-    private Contact contact_details;
-    private Address address_details;
-    private boolean are_details_same_as_registered;
-    private long number_of_ratings;
-    private long number_of_views;
-    private double avg_rating;
-    private List<Long> ratings;
-    private List<Long> views;
+
+    public String getRequirementType() {
+        return requirementType;
+    }
+
+    public void setRequirementType(String requirementType) {
+        this.requirementType = requirementType;
+    }
+
+    private String requirementType;
+
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+
+    public List<String> getRequirementImages() {
+        return requirementImages;
+    }
+
+    public void setRequirementImages(List<String> requirementImages) {
+        this.requirementImages = requirementImages;
+    }
+
+    private List<String> requirementImages;
+    private Contact contactDetails;
+    private Address addressDetails;
+    private boolean areDetailsSameAsRegistered;
+    private long numberOfRatings;
+    private long numberOfViews;
+    private double avgRating;
+    private List<String> ratingIds;
+    private List<String> viewIds;
+    private List<DhRatingAndComments> topRatings;
+    private List<DhViews> topViews;
 
     public String getRequirementId() {
         return requirementId;
@@ -25,20 +56,20 @@ public class DhRequirements extends AllCommonUsedAttributes {
         this.requirementId = requirementId;
     }
 
-    public String getRequirement_title() {
-        return requirement_title;
+    public String getRequirementTitle() {
+        return requirementTitle;
     }
 
-    public void setRequirement_title(String requirement_title) {
-        this.requirement_title = requirement_title;
+    public void setRequirementTitle(String requirementTitle) {
+        this.requirementTitle = requirementTitle;
     }
 
-    public String getRequirement_desc() {
-        return requirement_desc;
+    public String getRequirementDesc() {
+        return requirementDesc;
     }
 
-    public void setRequirement_desc(String requirement_desc) {
-        this.requirement_desc = requirement_desc;
+    public void setRequirementDesc(String requirementDesc) {
+        this.requirementDesc = requirementDesc;
     }
 
     public String getPriority() {
@@ -57,87 +88,108 @@ public class DhRequirements extends AllCommonUsedAttributes {
         this.budget = budget;
     }
 
-    public Contact getContact_details() {
-        return contact_details;
+    public Contact getContactDetails() {
+        return contactDetails;
     }
 
-    public void setContact_details(Contact contact_details) {
-        this.contact_details = contact_details;
+    public void setContactDetails(Contact contactDetails) {
+        this.contactDetails = contactDetails;
     }
 
-    public Address getAddress_details() {
-        return address_details;
+    public Address getAddressDetails() {
+        return addressDetails;
     }
 
-    public void setAddress_details(Address address_details) {
-        this.address_details = address_details;
+    public void setAddressDetails(Address addressDetails) {
+        this.addressDetails = addressDetails;
     }
 
-    public boolean isAre_details_same_as_registered() {
-        return are_details_same_as_registered;
+    public boolean isAreDetailsSameAsRegistered() {
+        return areDetailsSameAsRegistered;
     }
 
-    public void setAre_details_same_as_registered(boolean are_details_same_as_registered) {
-        this.are_details_same_as_registered = are_details_same_as_registered;
+    public void setAreDetailsSameAsRegistered(boolean areDetailsSameAsRegistered) {
+        this.areDetailsSameAsRegistered = areDetailsSameAsRegistered;
     }
 
-    public long getNumber_of_ratings() {
-        return number_of_ratings;
+    public long getNumberOfRatings() {
+        return numberOfRatings;
     }
 
-    public void setNumber_of_ratings(long number_of_ratings) {
-        this.number_of_ratings = number_of_ratings;
+    public void setNumberOfRatings(long numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
     }
 
-    public long getNumber_of_views() {
-        return number_of_views;
+    public long getNumberOfViews() {
+        return numberOfViews;
     }
 
-    public void setNumber_of_views(long number_of_views) {
-        this.number_of_views = number_of_views;
+    public void setNumberOfViews(long numberOfViews) {
+        this.numberOfViews = numberOfViews;
     }
 
-    public double getAvg_rating() {
-        return avg_rating;
+    public double getAvgRating() {
+        return avgRating;
     }
 
-    public void setAvg_rating(double avg_rating) {
-        this.avg_rating = avg_rating;
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
     }
 
-    public List<Long> getRatings() {
-        return ratings;
+    public List<String> getRatingIds() {
+        return ratingIds;
     }
 
-    public void setRatings(List<Long> ratings) {
-        this.ratings = ratings;
+    public void setRatingIds(List<String> ratingIds) {
+        this.ratingIds = ratingIds;
     }
 
-    public List<Long> getViews() {
-        return views;
+    public List<String> getViewIds() {
+        return viewIds;
     }
 
-    public void setViews(List<Long> views) {
-        this.views = views;
+    public void setViewIds(List<String> viewIds) {
+        this.viewIds = viewIds;
     }
 
-    public DhRequirements(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String requirementId, String requirement_title, String requirement_desc, String priority, String budget, Contact contact_details, Address address_details, boolean are_details_same_as_registered, long number_of_ratings, long number_of_views, double avg_rating, List<Long> ratings, List<Long> views) {
+    public List<DhRatingAndComments> getTopRatings() {
+        return topRatings;
+    }
+
+    public void setTopRatings(List<DhRatingAndComments> topRatings) {
+        this.topRatings = topRatings;
+    }
+
+    public List<DhViews> getTopViews() {
+        return topViews;
+    }
+
+    public void setTopViews(List<DhViews> topViews) {
+        this.topViews = topViews;
+    }
+
+    public DhRequirements(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,String requirementId, String requirementTitle, String requirementDesc, String priority, String budget, Contact contactDetails, Address addressDetails, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<String> requirementImages,String addedBy,String requirementType) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
         this.requirementId = requirementId;
-        this.requirement_title = requirement_title;
-        this.requirement_desc = requirement_desc;
+        this.requirementTitle = requirementTitle;
+        this.requirementDesc = requirementDesc;
         this.priority = priority;
         this.budget = budget;
-        this.contact_details = contact_details;
-        this.address_details = address_details;
-        this.are_details_same_as_registered = are_details_same_as_registered;
-        this.number_of_ratings = number_of_ratings;
-        this.number_of_views = number_of_views;
-        this.avg_rating = avg_rating;
-        this.ratings = ratings;
-        this.views = views;
+        this.contactDetails = contactDetails;
+        this.addressDetails = addressDetails;
+        this.areDetailsSameAsRegistered = areDetailsSameAsRegistered;
+        this.numberOfRatings = numberOfRatings;
+        this.numberOfViews = numberOfViews;
+        this.avgRating = avgRating;
+        this.ratingIds = ratingIds;
+        this.viewIds = viewIds;
+        this.topRatings = topRatings;
+        this.topViews = topViews;
+        this.requirementImages = requirementImages;
+        this.addedBy = addedBy;
+        this.requirementType = requirementType;
     }
 }

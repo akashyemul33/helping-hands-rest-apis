@@ -16,7 +16,7 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public DhUser signUp(DhUser dhUserDetails) {
+    public DhUser addUser(DhUser dhUserDetails) {
         return userRepository.save(dhUserDetails);
     }
 

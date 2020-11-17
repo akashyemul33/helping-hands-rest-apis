@@ -41,7 +41,7 @@ public class PlaceCategoryController {
     /*returns all the maincategories with given status
     by default the status will be active*/
     @RequestMapping(value = "/getAllPlaceCategoriesWithStatus/{status}",method = RequestMethod.GET)
-    ResponseEntity<Response<List<DhPlaceCategories>>> getAllActivePlaceCategories(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String status,@PathVariable String version){
+    ResponseEntity<Response<DhPlaceCategories>> getAllActivePlaceCategories(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String status,@PathVariable String version){
         return new ResponseEntity<>(placeCategoryService.findAllByStatus(authentication,httpHeaders, status,version), HttpStatus.OK);
     }
 

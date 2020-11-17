@@ -72,10 +72,7 @@ public class ProductsServiceImpl implements ProductsService{
             if(placeSubCategory.getPlaceSubCategoryId().equalsIgnoreCase(dhProduct.getSubPlaceCategoryId())){
                 dhProduct.setAddedBy(dhProduct.getAddedBy());
                 dhProduct.setCategoryName(queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish()+"->"+placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish());
-                dhProduct.setSchemaVersion(AppConstants.SCHEMA_VERSION);
-                dhProduct.setCreatedDateTime(Utility.currentDateTimeInUTC());
-                dhProduct.setModifiedDateTime(Utility.currentDateTimeInUTC());
-                dhProduct.setStatus(AppConstants.STATUS_PENDING);
+                dhProduct = (DhProduct) utility.setCommonAttrs(dhProduct,AppConstants.STATUS_PENDING);
                 mongoTemplate.save(dhProduct,AppConstants.COLLECTION_DH_PRODUCT);
                 utility.addLog(authentication.getName(),"Product ["+dhProduct.getProductName().getProductnameInEnglish()+"] has been added under ["+queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish()+"->"+placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish()+"].");
                 String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PRODUCT_ADDED,language)+" ProductName:"+dhProduct.getProductName().getProductnameInEnglish()+" -> "+placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish();

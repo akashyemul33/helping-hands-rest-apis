@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "App Configuration Controller",description = "CRUD Api's for app configurations")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/appconfig")

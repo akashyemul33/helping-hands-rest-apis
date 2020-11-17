@@ -7,7 +7,10 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @SpringBootApplication
+@EnableSwagger2
 public class HelpingHandsApplication extends SpringBootServletInitializer {
 
 	public static final Logger LOGGER=LoggerFactory.getLogger(HelpingHandsApplication.class);

@@ -6,8 +6,6 @@ import com.ayprojects.helpinghands.models.AccessTokenModel;
 import com.ayprojects.helpinghands.models.Address;
 import com.ayprojects.helpinghands.models.AuthenticationRequest;
 import com.ayprojects.helpinghands.models.DhAppConfig;
-import com.ayprojects.helpinghands.models.DhLog;
-import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.models.DhUser;
@@ -15,7 +13,6 @@ import com.ayprojects.helpinghands.security.JwtHelper;
 import com.ayprojects.helpinghands.security.UserDetailsDecorator;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
 import com.ayprojects.helpinghands.services.appconfig.AppConfigService;
-import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.tools.Utility;
 import com.ayprojects.helpinghands.security.JwtUtils;
 import com.google.gson.Gson;
@@ -34,17 +31,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -123,36 +115,21 @@ public class UserServiceImpl implements UserService{
         String uniqueUserID = Utility.getUUID();
         //store image first
         if(userImage!=null) {
-            try {
                 String imgUploadFolder = imagesBaseFolder + "/" + uniqueUserID + "/profile/";
-                LOGGER.info("UserServiceImpl->addUser : imagesBaseFolder = " + imagesBaseFolder);
-                Path path1 = Paths.get(imgUploadFolder);
-                Files.createDirectories(path1);
-
-                String ext = userImage.getOriginalFilename().split("\\.")[1];
-                String imgFileName = "USER_" + uniqueUserID + "_" + Calendar.getInstance().getTimeInMillis() + "." + ext;
-                String imgUploadFolderWithFile = imgUploadFolder + imgFileName;
-                LOGGER.info("UserServiceImpl->addUser : imgUploadFolderWithFile = " + imgUploadFolderWithFile);
-                byte[] bytes = userImage.getBytes();
-                Path filePath = Paths.get(imgUploadFolderWithFile);
-                Files.probeContentType(filePath);
-                Files.write(filePath, bytes);
-                dhUserDetails.setProfileImg(imgUploadFolderWithFile);
-            }
-            catch (IOException ioException){
-                return new Response<>(false,402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG,language),new ArrayList<>());
-            }
+                String imgPrefix = "USER_" + uniqueUserID + "_";
+                LOGGER.info("UserServiceImpl->addUser : imagesBaseFolder = " + imagesBaseFolder+" imgPrefix="+imgPrefix);
+                try {
+                    utility.uplodImages(imgUploadFolder, new MultipartFile[]{userImage}, imgPrefix);
+                } catch (IOException ioException) {
+                    return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>());
+                }
         }
 
-        dhUserDetails.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         dhUserDetails.setUserId(uniqueUserID);
         dhUserDetails.setPassword(bCryptPasswordEncoder.encode(dhUserDetails.getPassword()));
-        dhUserDetails.setCreatedDateTime(Utility.currentDateTimeInUTC());
-        dhUserDetails.setModifiedDateTime(Utility.currentDateTimeInUTC());
-        dhUserDetails.setStatus(AppConstants.STATUS_ACTIVE);
+        dhUserDetails = (DhUser) utility.setCommonAttrs(dhUserDetails,AppConstants.STATUS_ACTIVE);
         dhUserDetails.setRoles(AppConstants.ROLE_USER);
-        dhUserDetails.setSchemaVersion(AppConstants.SCHEMA_VERSION);
-        userDao.signUp(dhUserDetails);
+        userDao.addUser(dhUserDetails);
         utility.addLog(dhUserDetails.getMobileNumber(),AppConstants.ACTION_NEW_USER_ADDED+"by userId:"+uniqueUserID);
         return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language),Collections.singletonList(dhUserDetails));
     }
@@ -162,21 +139,14 @@ public class UserServiceImpl implements UserService{
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("language="+language);
 
-        Response<AccessTokenModel> res = new Response<>();
-
         //find out user with mobile and email, as username can be either mobile or email
         UserDetailsDecorator userDetails;
         try {
             userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         } catch (UsernameNotFoundException e) {
             LOGGER.info("UserServiceImpl->login -> UserNameNotFoundException : No user found with given usernam, search for user in db with username as mobile and email");
-            res.setStatus(false);
-            res.setStatusCode(402);
-            res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_USERNAME,language));
-            res.setData(Collections.singletonList(new AccessTokenModel()));
             utility.addLog(authenticationRequest.getUsername(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_USERNAME);
-            return res;
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_USERNAME,language),Collections.singletonList(new AccessTokenModel()));
         }
 
             LOGGER.info("User is present with given username "+authenticationRequest.getUsername());
@@ -193,20 +163,12 @@ public class UserServiceImpl implements UserService{
                 String jwt = jwtHelper.createJwtForClaims(authenticationRequest.getUsername(), claims);
                 AccessTokenModel accessTokenModel = new AccessTokenModel(jwt,"","",AppConstants.JWT_TOKEN_EXPIRATION_VALUE,"");
                 //send all the details required back as a response of login
-                res.setStatus(true);
-                res.setStatusCode(201);
-                res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_LOGGED_IN,language));
-                res.setData(Collections.singletonList(accessTokenModel));
-                return res;
+                return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_LOGGED_IN,language),Collections.singletonList(accessTokenModel));
             }
             catch (BadCredentialsException e){
                 LOGGER.info("UserServiceImpl->login->BadCredentialsException : Password entered is Incorrect :exception "+e.getMessage());
-                res.setStatus(false);
-                res.setStatusCode(402);
-                res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_PASSWORD,language));
-                res.setData(Collections.singletonList(new AccessTokenModel()));
                 utility.addLog(authenticationRequest.getUsername(),AppConstants.ACTION_TRIED_LOGGING_WITH_INCORRECT_PASSWORD+"by userId:"+userDetails.getUser().getUserId());
-                return res;
+                return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_PASSWORD,language),Collections.singletonList(new AccessTokenModel()));
             }
     }
 

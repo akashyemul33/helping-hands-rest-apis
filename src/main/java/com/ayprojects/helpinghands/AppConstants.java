@@ -13,6 +13,7 @@ public class AppConstants {
     public static final String COLLECTION_DH_PRODUCT = "dhProduct";
     public static final String COLLECTION_DH_PLACE = "dhPlace";
     public static final String COLLECTION_DH_POSTS = "dhPosts";
+    public static final String COLLECTION_DH_REQUIREMENTS = "dhRequirements";
     public static final String COLLECTION_DH_RATING_COMMENT = "dhRatingAndComments";
     public static final String COLLECTION_DH_VIEWS = "dhViews";
     public static final String MSG_SOMETHING_WENT_WRONG = "Something went wrong !";
@@ -20,9 +21,9 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID ="NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID" ;
     public static final String BUSINESS_POST = "BusinessPost";
     public static final String PUBLIC_POST = "PublicPost";
-    public static final String PLACE = "PLACE";
-    public static final String POST = "POST";
-    public static final String REQUIREMENT = "REQUIREMENT";
+    public static final String PLACE = "Place";
+    public static final String POST = "Post";
+    public static final String REQUIREMENT = "Requirement";
     public static final String PLACE_ID = "placeId";
     public static final String NUMBER_OF_VIEWS = "numberOfViews";
     public static final String VIEW_IDS = "viewIds";
@@ -46,7 +47,33 @@ public class AppConstants {
     public static final String SUB_PLACE_CATEGORY_ID = "subPlaceCategoryId";
     public static final String BUSINESS_PLACE = "BusinessPlace";
     public static final String REGEX_BUSINESS_POST = "^[Bb]usiness[\\s]*[Pp]ost$";
+    public static final String REGEX_BUSINESS_REQUIREMENT = "^[Bb]usiness[\\s]*[Rr]equirement$";
+    public static final String REGEX_PUBLIC_REQUIREMENT = "^[Pp]ublic[\\s]*[Rr]equirement$";
     public static final String REGEX_BUSINESS_PLACE = "^[Bb]usiness[\\s]*[Pp]lace$";
+    public static final int LIMIT_RATINGS_IN_PLACES = 5;
+    public static final int LIMIT_RATINGS_IN_POSTS = 5;
+    public static final int LIMIT_RATINGS_IN_REQUIREMENTS = 5;
+    public static final int LIMIT_VIEWS_IN_PLACES = 10;
+    public static final int LIMIT_VIEWS_IN_POSTS = 10;
+    public static final int LIMIT_VIEWS_IN_REQUIREMENTS = 10;
+    public static final int LIMIT_POSTS_IN_PLACES = 3;
+    public static final String PUBLIC_REQUIREMENT ="PublicRequirement" ;
+    public static final String ADDED_BY = "addedBy";
+    public static final String PLACE_MAIN_CATEGORY_ID = "placeMainCategoryId";
+    public static final String PLACE_SUB_CATEGORY_ID = "placeSubCategoryId";
+    public static final String PLACE_NAME = "placeName";
+    public static final String PLACE_TYPE = "placeType";
+    public static final String PLACE_CATEGORY_NAME = "placeCategoryName";
+    public static final String PLACE_ADDRESS = "placeAddress";
+    public static final String LATTITUDE = "lat";
+    public static final String LONGITUDE = "lng";
+    public static final String FULL_ADDRESS = "fullAddress";
+    public static final String PLACE_CONTACT = "placeContact";
+    public static final String MOBILE = "mobile";
+    public static final String EMAIL = "email";
+    public static final String PLACE_AVAILABLITY_DAYS = "placeAvailablityDays";
+    public static final String POST_TITLE = "postTitle";
+    public static final String ADDRESS_DETAILS = "addressDetails";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
@@ -92,6 +119,8 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS = "PRODUCT_ALREADY_EXISTS";
     public static String RESPONSEMESSAGE_NEW_PLACE_ADDED = "NEW_PLACE_ADDED";
     public static String RESPONSEMESSAGE_NEW_POST_ADDED = "NEW_POST_ADDED";
+    public static String RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED = "NEW_REQUIREMENT_ADDED";
     public static String RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED = "NEW_RATING_COMMENT_ADDED";
 
+    public static String CONTACT_DETAILS ="contactDetails";
 }

@@ -88,7 +88,7 @@ public class DhPosts extends AllCommonUsedAttributes {
     }
 
     public Address getAddressDetails() {
-        return addressDetails;
+            return addressDetails;
     }
 
     public void setAddressDetails(Address addressDetails) {

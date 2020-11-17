@@ -7,6 +7,7 @@ import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PostsRepository;
 import com.ayprojects.helpinghands.tools.Utility;
+import com.ayprojects.helpinghands.tools.Validations;
 import com.google.gson.Gson;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Service
-public class PostsServiceImpl implements PostsService
-{
+public class PostsServiceImpl implements PostsService {
 
     @Value("${images.base_folder}")
     String imagesBaseFolder;
@@ -58,102 +60,60 @@ public class PostsServiceImpl implements PostsService
 
         //convert postBody json string to DhPost object
         DhPosts dhPosts = null;
-        if(!Utility.isFieldEmpty(postBody)) dhPosts = new Gson().fromJson(postBody, DhPosts.class);
+        if (!Utility.isFieldEmpty(postBody)) dhPosts = new Gson().fromJson(postBody, DhPosts.class);
 
         if (dhPosts == null) {
             return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
 
         boolean isPlaceIdMissing = false;
-        List<String> missingFieldsList = new ArrayList<>();
-        if(Utility.isFieldEmpty(dhPosts.getAddedBy())) missingFieldsList.add("AddedBy");
-        if(Utility.isFieldEmpty(dhPosts.getPostType())) missingFieldsList.add("PostType");
-        else if(dhPosts.getPostType().equalsIgnoreCase(AppConstants.BUSINESS_POST)) {
-            if(Utility.isFieldEmpty(dhPosts.getPlaceId())){
-                missingFieldsList.add("PlaceId");
-                isPlaceIdMissing = true;
-            }
-        }
-        if(dhPosts.getAddressDetails()==null)missingFieldsList.add("AddressBlock");
-        else {
-            if(dhPosts.getAddressDetails().getLat()==0)
-                missingFieldsList.add("Lattitude");
-            if(dhPosts.getAddressDetails().getLng()==0)
-                missingFieldsList.add("Longitude");
-            if(Utility.isFieldEmpty(dhPosts.getAddressDetails().getFullAddress())) {
-                missingFieldsList.add("Full Address");
-            }
-        }
-        if(dhPosts.getContactDetails()==null)missingFieldsList.add("ContactBlock");
-        else{
-            if(Utility.isFieldEmpty(dhPosts.getContactDetails().getMobile())){
-                missingFieldsList.add("MobileNumber");
-            }
-            if(Utility.isFieldEmpty(dhPosts.getContactDetails().getEmail())){
-                missingFieldsList.add("Email");
-            }
-        }
-        if(Utility.isFieldEmpty(dhPosts.getPostTitle())) missingFieldsList.add("PostTitle");
-        if(missingFieldsList.size()>0){
-            String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language);
-            resMsg = resMsg+" , these fields are missing : "+missingFieldsList;
-            return new Response<DhPosts>(false,402,resMsg,new ArrayList<>(),0);
+        List<String> missingFieldsList = Validations.findMissingFieldsForPosts(dhPosts);
+        if (missingFieldsList.contains(AppConstants.PLACE_ID)) isPlaceIdMissing = true;
+        if (missingFieldsList.size() > 0) {
+            String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language);
+            resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
+            return new Response<DhPosts>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 
-        String uinquePostId= Utility.getUUID();
+        String uinquePostId = Utility.getUUID();
         //store image first
-        if(postImages!=null){
+        if (postImages != null) {
+            String imgType = dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST) ? "B" : "P";
+            String imgUploadFolder = imagesBaseFolder + "/" + dhPosts.getAddedBy() + "/posts/" + dhPosts.getPostType() + "/";
+            String imgPrefix = imgType + "_PSTS_" + uinquePostId + "_";
+            LOGGER.info("PostsServiceImpl->addPosts : imagesBaseFolder = " + imagesBaseFolder + " imgPrefix=" + imgPrefix);
             try {
-                String imgType = dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST) ? "B" : "P";
-                String imgUploadFolder = imagesBaseFolder + "/" + dhPosts.getAddedBy() + "/posts/" + dhPosts.getPostType() + "/";
-                LOGGER.info("PostsServiceImpl->addPosts : imagesBaseFolder = " + imagesBaseFolder);
-                Path path1 = Paths.get(imgUploadFolder);
-                Files.createDirectories(path1);
-                for (MultipartFile multipartFile : postImages) {
-                    String ext = multipartFile.getOriginalFilename().split("\\.")[1];
-                    String imgFileName = imgType + "_POST_" + uinquePostId + "_" + Calendar.getInstance().getTimeInMillis() + "." + ext;
-                    String imgUploadFolderWithFile = imgUploadFolder + imgFileName;
-                    LOGGER.info("PostsServiceImpl->addPost : imgUploadFolderWithFile = " + imgUploadFolderWithFile);
-                    byte[] bytes = multipartFile.getBytes();
-                    Path filePath = Paths.get(imgUploadFolderWithFile);
-                    Files.probeContentType(filePath);
-                    Files.write(filePath, bytes);
-                    dhPosts.getPostImages().add(imgUploadFolderWithFile);
-                }
-            }
-            catch (IOException ioException){
-                return new Response<>(false,402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG,language),new ArrayList<>());
+                utility.uplodImages(imgUploadFolder, postImages, imgPrefix);
+            } catch (IOException ioException) {
+                return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>());
             }
         }
-
         dhPosts.setPostId(uinquePostId);
-        dhPosts.setSchemaVersion(AppConstants.SCHEMA_VERSION);
-        dhPosts.setCreatedDateTime(Utility.currentDateTimeInUTC());
-        dhPosts.setModifiedDateTime(Utility.currentDateTimeInUTC());
-        dhPosts.setStatus(AppConstants.STATUS_ACTIVE);
-        mongoTemplate.save(dhPosts,AppConstants.COLLECTION_DH_POSTS);
-        utility.addLog(authentication.getName(),"New ["+dhPosts.getPostType()+"] post has been added.");
+        dhPosts = (DhPosts) utility.setCommonAttrs(dhPosts, AppConstants.STATUS_ACTIVE);
+        mongoTemplate.save(dhPosts, AppConstants.COLLECTION_DH_POSTS);
+        utility.addLog(authentication.getName(), "New [" + dhPosts.getPostType() + "] post has been added.");
 
-        if(dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST) && !isPlaceIdMissing){
+        if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST) && !isPlaceIdMissing) {
             LOGGER.info("PostsServiceImpl->addPost : It's business post");
             Query queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPosts.getPlaceId()));
-            DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId,DhPlace.class);
-            if(queriedDhPlace == null)throw new ServerSideException("Unable to add posts into places collection");
+            DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId, DhPlace.class);
+            if (queriedDhPlace == null)
+                throw new ServerSideException("Unable to add posts into places collection");
             Update updatePlace = new Update();
-                LOGGER.info("PostsServiceImpl->addPost : postIds block is null, pushing post id into postIds array");
-                updatePlace.push(AppConstants.POST_IDS,dhPosts.getPostId());
-                updatePlace.set(AppConstants.NUMBER_OF_POSTS,queriedDhPlace.getNumberOfPosts()+1);
-            if(queriedDhPlace.getTopPosts()!=null && queriedDhPlace.getTopPosts().size()==3){
+            LOGGER.info("PostsServiceImpl->addPost : postIds block is null, pushing post id into postIds array");
+            updatePlace.push(AppConstants.POST_IDS, dhPosts.getPostId());
+            updatePlace.set(AppConstants.NUMBER_OF_POSTS, queriedDhPlace.getNumberOfPosts() + 1);
+            if (queriedDhPlace.getTopPosts() != null && queriedDhPlace.getTopPosts().size() == AppConstants.LIMIT_POSTS_IN_PLACES) {
                 Update updatePopTopPost = new Update();
                 updatePopTopPost.pop(AppConstants.TOP_POSTS, Update.Position.FIRST);
-                mongoTemplate.updateFirst(queryFindPlaceWithId,updatePopTopPost,DhPlace.class);
+                mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopPost, DhPlace.class);
             }
             updatePlace.push(AppConstants.TOP_POSTS, dhPosts);
-            updatePlace.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
-            mongoTemplate.updateFirst(queryFindPlaceWithId,updatePlace,DhPlace.class);
+            updatePlace.set(AppConstants.MODIFIED_DATE_TIME, Utility.currentDateTimeInUTC());
+            mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
         }
 
-        return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_POST_ADDED,language),new ArrayList<>(),1);
+        return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_POST_ADDED, language), new ArrayList<>(), 1);
     }
 
     @Override
@@ -173,30 +133,30 @@ public class PostsServiceImpl implements PostsService
 
     @Override
     public Response<DhPosts> getPaginatedPosts(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version) {
-        PageRequest paging = PageRequest.of(page,size);
-        Page<DhPosts> dhPostPages = postsRepository.findAllByStatus(AppConstants.STATUS_ACTIVE,paging);
+        PageRequest paging = PageRequest.of(page, size);
+        Page<DhPosts> dhPostPages = postsRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
         List<DhPosts> dhPostsList = dhPostPages.getContent();
-        return new Response<DhPosts>(true,201,"Query successful",dhPostsList.size(),dhPostPages.getNumber(),dhPostPages.getTotalPages(),dhPostPages.getTotalElements(),dhPostsList);
+        return new Response<DhPosts>(true, 201, "Query successful", dhPostsList.size(), dhPostPages.getNumber(), dhPostPages.getTotalPages(), dhPostPages.getTotalElements(), dhPostsList);
     }
 
     @Override
     public Response<DhPosts> getPaginatedPostsByPlaceId(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String placeId, String version) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PostsServiceImpl->getPaginatedPostsByPlaceId : language=" + language);
-        LOGGER.info("PostsServiceImpl->getPaginatedPostsByPlaceId : placeId=" + placeId+" page="+page+" size="+size);
+        LOGGER.info("PostsServiceImpl->getPaginatedPostsByPlaceId : placeId=" + placeId + " page=" + page + " size=" + size);
 
         List<String> missingFieldsList = new ArrayList<>();
-        if(Utility.isFieldEmpty(placeId)) missingFieldsList.add("PlaceId");
-        if(missingFieldsList.size()>0){
-            String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language);
-            resMsg = resMsg+" , these fields are missing : "+missingFieldsList;
+        if (Utility.isFieldEmpty(placeId)) missingFieldsList.add("PlaceId");
+        if (missingFieldsList.size() > 0) {
+            String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language);
+            resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
             return new Response<>(false, 402, resMsg, new ArrayList<>(), 0);
         }
-        Pageable pageable = PageRequest.of(page,size);
+        Pageable pageable = PageRequest.of(page, size);
         Criteria criteria = new Criteria();
         Pattern patternPostType = Pattern.compile(AppConstants.REGEX_BUSINESS_POST);
         criteria.and(AppConstants.POST_TYPE).regex(patternPostType);
-        criteria.and(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i");
+        criteria.and(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i");
         criteria.and(AppConstants.PLACE_ID).is(placeId);
         Query queryGetPosts = new Query(criteria).with(pageable);
         List<DhPosts> dhPostsList = mongoTemplate.find(queryGetPosts, DhPosts.class);

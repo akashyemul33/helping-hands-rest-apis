@@ -44,11 +44,6 @@ public class AppConfigServiceImpl implements AppConfigService {
         }
 
         try{
-        Response<DhAppConfig> res = new Response<>();
-        res.setStatus(true);
-        res.setStatusCode(201);
-        res.setMessage(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_APP_CONFIG_ADDED,language));
-        res.setData(Collections.singletonList(dhAppConfig));
         appConfigDao.addAppConfig(dhAppConfig);
         UserDetailsDecorator userDetails = userDetailsService.loadUserByUsername(authentication.getName());
         dhAppConfig.setCreatedDateTime(Utility.currentDateTimeInUTC());
@@ -57,7 +52,7 @@ public class AppConfigServiceImpl implements AppConfigService {
         dhAppConfig.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         appConfigDao.addAppConfig(dhAppConfig);
         utility.addLog(authentication.getName(),AppConstants.ACTION_NEW_APPCONFIG_ADDED+"by UserId:"+userDetails.getUser().getUserId());
-        return res;
+        return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_APP_CONFIG_ADDED,language),Collections.singletonList(dhAppConfig));
         }
         catch (Exception e){
             throw new ServerSideException(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_ERROR_WHILE_ADDING_APP_CONFIG,language));
@@ -67,7 +62,7 @@ public class AppConfigServiceImpl implements AppConfigService {
     @Override
     public Response<DhAppConfig> getActiveAppConfig(HttpHeaders httpHeaders, Authentication authentication, String version){
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
-        LOGGER.info("language="+language);
+        LOGGER.info("AppConfigServiceImpl->getActiveAppConfig : language="+language);
         Optional<DhAppConfig> dhAppConfig = appConfigDao.getActiveAppConfig();
         return dhAppConfig.isPresent() ?
                 new Response<DhAppConfig>(true,201,AppConstants.FOUND_APP_CONFIG,Collections.singletonList(dhAppConfig.get()), 1)
