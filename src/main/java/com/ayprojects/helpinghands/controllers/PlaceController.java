@@ -31,6 +31,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "Place API's",description = "CRUD for places")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/places")

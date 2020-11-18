@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "Requirements API's",description = "CRUD for Requirements")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/requirements")

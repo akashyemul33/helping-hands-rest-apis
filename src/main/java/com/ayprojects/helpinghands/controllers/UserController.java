@@ -1,6 +1,8 @@
 package com.ayprojects.helpinghands.controllers;
 
 
+import com.ayprojects.helpinghands.models.AccessTokenModel;
+import com.ayprojects.helpinghands.models.AuthenticationRequest;
 import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.models.DhUser;
@@ -24,6 +26,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "User API's",description = "CRUD for Users")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/users")
@@ -32,11 +37,21 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @RequestMapping(value="/login", method = RequestMethod.POST)
+    public ResponseEntity<Response<AccessTokenModel>> login(@RequestHeader HttpHeaders httpHeaders, @RequestBody AuthenticationRequest authenticationRequest, @PathVariable String version){
+        return new ResponseEntity<>(userService.login(authenticationRequest, httpHeaders,version), HttpStatus.OK);
+    }
+
+   /* @PostMapping(value="/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<DhUser>> addUser(@RequestHeader HttpHeaders httpHeaders, @RequestParam(value = "userBody") String userBody, @RequestPart(value="userImage",required = false) MultipartFile userImage, @PathVariable String version){
+        return new ResponseEntity<>(userService.addUser(httpHeaders,userImage,userBody,version), HttpStatus.CREATED);
+    }*/
+
+
     @PostMapping(value="/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DhUser>> addUser(@RequestHeader HttpHeaders httpHeaders, @RequestParam(value = "userBody") String userBody, @RequestPart(value="userImage",required = false) MultipartFile userImage, @PathVariable String version){
         return new ResponseEntity<>(userService.addUser(httpHeaders,userImage,userBody,version), HttpStatus.CREATED);
     }
-
     @RequestMapping(value = "/getUserDetails",method = RequestMethod.GET)
     ResponseEntity<Response<LoginResponse>> getInitialDataOnLogin(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version){
         return new ResponseEntity<>(userService.getUserDetails(httpHeaders,authentication,version), HttpStatus.OK);

@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "Posts API's",description = "CRUD for posts")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/posts")
@@ -44,13 +47,13 @@ public class PostsController {
         return null;
     }
 
-    @RequestMapping(value="/updatePlace", method= RequestMethod.POST)
-    public ResponseEntity<Response<DhPlace>> updatePlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @PathVariable String version) throws ServerSideException {
+    @RequestMapping(value="/updatePosts", method= RequestMethod.POST)
+    public ResponseEntity<Response<DhPosts>> updatePosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @PathVariable String version) throws ServerSideException {
         return null;
     }
 
     @RequestMapping(value = "/getPosts",method = RequestMethod.GET)
-    ResponseEntity<Response<DhProduct>> getPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String searchValue, @PathVariable String version){
+    ResponseEntity<Response<DhPosts>> getPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String searchValue, @PathVariable String version){
     return null;
     }
 

@@ -6,6 +6,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -25,5 +28,8 @@ public class HelpingHandsApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(applicationClass);
 	}
+
+
+
 
 }

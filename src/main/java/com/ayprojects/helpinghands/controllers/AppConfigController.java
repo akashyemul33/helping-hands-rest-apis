@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 
-@Api(value = "App Configuration Controller",description = "CRUD Api's for app configurations")
+@Api(value = "App Configuration API's",description = "CRUD Api's for app configurations")
 @RestController
 @ResponseStatus
-@RequestMapping("/api/v{version}/appconfig")
+@RequestMapping("/api/{version}/appconfig")
 public class AppConfigController {
 
     @Autowired

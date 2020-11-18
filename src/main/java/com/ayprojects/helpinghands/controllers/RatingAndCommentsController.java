@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "Rating and Comments API's",description = "CRUD for Ratings and Comments")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/ratingAndComments")

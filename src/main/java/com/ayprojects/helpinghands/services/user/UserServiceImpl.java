@@ -59,9 +59,6 @@ public class UserServiceImpl implements UserService{
     BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
 
     @Autowired
-    JwtUtils jwtTokenUtil;
-
-    @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired
@@ -160,6 +157,7 @@ public class UserServiceImpl implements UserService{
                         .collect(Collectors.joining(","));
                 claims.put("authorities", authorities);
                 claims.put("userId", userDetails.getUser().getUserId());
+
                 String jwt = jwtHelper.createJwtForClaims(authenticationRequest.getUsername(), claims);
                 AccessTokenModel accessTokenModel = new AccessTokenModel(jwt,"","",AppConstants.JWT_TOKEN_EXPIRATION_VALUE,"");
                 //send all the details required back as a response of login

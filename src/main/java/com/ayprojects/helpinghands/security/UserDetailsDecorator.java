@@ -1,5 +1,6 @@
 package com.ayprojects.helpinghands.security;
 
+import com.ayprojects.helpinghands.models.DhAuthorization;
 import com.ayprojects.helpinghands.models.DhUser;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +22,7 @@ public class UserDetailsDecorator implements UserDetails {
     public static final String ROLES_PREFIX = "ROLE_";
 
     private DhUser user;
+//    private DhAuthorization user;
 
     public UserDetailsDecorator(DhUser user) {
         this.user = user;

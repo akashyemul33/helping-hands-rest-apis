@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "Place category API's",description = "CRUD for place categories")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/categories")

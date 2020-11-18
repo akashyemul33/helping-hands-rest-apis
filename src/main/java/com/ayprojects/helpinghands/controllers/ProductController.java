@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "Products API's",description = "CRUD for products")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/products")
