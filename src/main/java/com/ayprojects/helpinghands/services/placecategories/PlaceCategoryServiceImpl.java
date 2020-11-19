@@ -137,7 +137,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         }
 
         placeSubCategory.setAddedBy(placeSubCategory.getAddedBy());
-        placeSubCategory.setPlaceSubCategoryId(Utility.getUUID());
+        placeSubCategory.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID+Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
         placeSubCategory = (PlaceSubCategories) utility.setCommonAttrs(placeSubCategory,AppConstants.STATUS_PENDING);
         placeSubCategoriesList.add(placeSubCategory);
         Update mainCategoryUpdate = new Update();
