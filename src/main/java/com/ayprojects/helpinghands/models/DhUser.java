@@ -9,6 +9,15 @@ public class DhUser extends AllCommonUsedAttributes {
     private String mobileNumber;
     private String emailId;
     private String[] roles;
+    private UserSettings userSettings;
+
+    public UserSettings getUserSettings() {
+        return userSettings;
+    }
+
+    public void setUserSettings(UserSettings userSettings) {
+        this.userSettings = userSettings;
+    }
 
     public String[] getRoles() {
         return roles;
@@ -84,7 +93,7 @@ public class DhUser extends AllCommonUsedAttributes {
         this.addressDetails = addressDetails;
     }
 
-    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String name, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String languageSelected) {
+    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String name, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String languageSelected,UserSettings userSettings) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
@@ -97,5 +106,6 @@ public class DhUser extends AllCommonUsedAttributes {
         this.profileImg = profileImg;
         this.addressDetails = addressDetails;
         this.languageSelected= languageSelected;
+        this.userSettings = userSettings;
     }
 }

@@ -9,6 +9,7 @@ import com.ayprojects.helpinghands.models.DhAppConfig;
 import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.models.DhUser;
+import com.ayprojects.helpinghands.models.UserSettings;
 import com.ayprojects.helpinghands.security.JwtHelper;
 import com.ayprojects.helpinghands.security.UserDetailsDecorator;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
@@ -120,8 +121,9 @@ public class UserServiceImpl implements UserService{
 
         dhUserDetails.setUserId(uniqueUserID);
         dhUserDetails.setPassword(bCryptPasswordEncoder.encode(dhUserDetails.getPassword()));
-        dhUserDetails = (DhUser) utility.setCommonAttrs(dhUserDetails,AppConstants.STATUS_ACTIVE);
         dhUserDetails.setRoles(AppConstants.ROLE_USER);
+        dhUserDetails.setUserSettings(new UserSettings(AppConstants.TOTAL_ADD_PLACES_LIMIT,AppConstants.PER_DAY_ADD_PLACES_LIMIT,AppConstants.PER_DAY_ADD_POSTS_LIMIT,AppConstants.PER_PLACE_IMAGES_LIMIT,AppConstants.PER_POST_IMAGES_LIMIT,AppConstants.PER_PLACE_PRODUCTS_LIMIT));
+        dhUserDetails = (DhUser) utility.setCommonAttrs(dhUserDetails,AppConstants.STATUS_ACTIVE);
         userDao.addUser(dhUserDetails);
         utility.addLog(dhUserDetails.getMobileNumber(),AppConstants.ACTION_NEW_USER_ADDED+"by userId:"+uniqueUserID);
         return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language),Collections.singletonList(dhUserDetails));

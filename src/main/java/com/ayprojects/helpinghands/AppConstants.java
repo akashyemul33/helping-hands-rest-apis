@@ -130,4 +130,10 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED = "NEW_RATING_COMMENT_ADDED";
 
     public static String CONTACT_DETAILS ="contactDetails";
+    public static long TOTAL_ADD_PLACES_LIMIT = 100;
+    public static long PER_DAY_ADD_PLACES_LIMIT = 10;
+    public static long PER_DAY_ADD_POSTS_LIMIT = 200;
+    public static long PER_PLACE_IMAGES_LIMIT = 16;
+    public static long PER_POST_IMAGES_LIMIT = 8;
+    public static long PER_PLACE_PRODUCTS_LIMIT = 200;
 }

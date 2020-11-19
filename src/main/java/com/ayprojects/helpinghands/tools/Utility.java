@@ -5,6 +5,7 @@ import com.ayprojects.helpinghands.ResponseMessages;
 import com.ayprojects.helpinghands.models.AllCommonUsedAttributes;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
+import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.services.log.LogService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,4 +130,5 @@ public class Utility {
         obj.setStatus(status);
         return obj;
     }
+
 }
