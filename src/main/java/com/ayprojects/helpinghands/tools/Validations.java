@@ -71,6 +71,7 @@ public class Validations {
         if(Utility.isFieldEmpty(dhPlace.getPlaceName())) missingFieldsList.add(AppConstants.PLACE_NAME);
         if(Utility.isFieldEmpty(dhPlace.getPlaceType())) missingFieldsList.add(AppConstants.PLACE_TYPE);
         if(Utility.isFieldEmpty(dhPlace.getPlaceCategoryName()))missingFieldsList.add(AppConstants.PLACE_CATEGORY_NAME);
+        if(dhPlace.getPlaceAvailablityDays()==null)missingFieldsList.add(AppConstants.PLACE_AVAILABLITY_DAYS);
         if(dhPlace.getPlaceAddress()==null)missingFieldsList.add(AppConstants.PLACE_ADDRESS);
         else {
             if(dhPlace.getPlaceAddress().getLat()==0)
@@ -90,7 +91,13 @@ public class Validations {
                 missingFieldsList.add(AppConstants.EMAIL);
             }
         }
-        if(dhPlace.getPlaceAvailablityDays()==null)missingFieldsList.add(AppConstants.PLACE_AVAILABLITY_DAYS);
+        if(dhPlace.getOwnerDetails()==null)missingFieldsList.add(AppConstants.OWNER_DETAILS);
+        else{
+            if(Utility.isFieldEmpty(dhPlace.getOwnerDetails().getOwnerName()))missingFieldsList.add(AppConstants.OWNER_NAME);
+            if(Utility.isFieldEmpty(dhPlace.getOwnerDetails().getOwnerMobileNumber()))missingFieldsList.add(AppConstants.OWNER_MOBILE_NUMBER);
+            if(Utility.isFieldEmpty(dhPlace.getOwnerDetails().getOwnerEmailId()))missingFieldsList.add(AppConstants.OWNER_EMAIL_ID);
+        }
+
         return missingFieldsList;
 
     }

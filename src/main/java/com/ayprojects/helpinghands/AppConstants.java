@@ -77,6 +77,10 @@ public class AppConstants {
     public static final String ADDRESS_DETAILS = "addressDetails";
     public static final String MAIN_PLACE_INITIAL_ID = "M_PLS_CTGRY_";
     public static final String SUB_PLACE_INITIAL_ID = "S_PLS_CTGRY_";
+    public static final String OWNER_DETAILS = "ownerDetails";
+    public static final String OWNER_NAME = "ownerName";
+    public static final String OWNER_MOBILE_NUMBER = "ownerMobileNumber";
+    public static final String OWNER_EMAIL_ID = "ownerEmailId";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
