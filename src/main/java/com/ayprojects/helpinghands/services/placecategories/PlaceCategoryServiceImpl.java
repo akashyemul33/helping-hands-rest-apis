@@ -59,7 +59,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         }
 
         dhPlaceCategories = (DhPlaceCategories) utility.setCommonAttrs(dhPlaceCategories,AppConstants.STATUS_PENDING);
-        dhPlaceCategories.setPlaceCategoryId(Utility.getUUID());
+        dhPlaceCategories.setPlaceCategoryId(AppConstants.MAIN_PLACE_INITIAL_ID+Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
         dhPlaceCategories.setAddedBy(dhPlaceCategories.getAddedBy());
         if (dhPlaceCategories.getPlaceSubCategories() != null && dhPlaceCategories.getPlaceSubCategories().size() > 0) {
             for (PlaceSubCategories placeSubCategories : dhPlaceCategories.getPlaceSubCategories()) {
@@ -67,10 +67,11 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
                     return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY, language), new ArrayList<>(), 0);
                 }
                 placeSubCategories.setAddedBy(dhPlaceCategories.getAddedBy());
-                placeSubCategories.setPlaceSubCategoryId(Utility.getUUID());
+                placeSubCategories.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID+Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
                 placeSubCategories.setCreatedDateTime(Utility.currentDateTimeInUTC());
                 placeSubCategories.setModifiedDateTime(Utility.currentDateTimeInUTC());
                 placeSubCategories.setStatus(AppConstants.STATUS_PENDING);
+                placeSubCategories.setSchemaVersion(AppConstants.SCHEMA_VERSION);
             }
         }
         placeCategoryDao.add(dhPlaceCategories);

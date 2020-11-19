@@ -11,7 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,12 +33,12 @@ public class ViewController {
     @Autowired
     ViewService viewService;
 
-    @RequestMapping(value="/addViews", method= RequestMethod.POST)
+    @PostMapping(value="/addViews")
     public ResponseEntity<Response<DhViews>> addViews(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhViews dhViews, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(viewService.addViews(authentication,httpHeaders, dhViews,version), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/getPaginatedViews",method = RequestMethod.GET)
+    @GetMapping(value = "/getPaginatedViews")
     ResponseEntity<Response<DhViews>> getPaginatedViews(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam (defaultValue = "7") int size, @RequestParam String contentId, @RequestParam String contentType, @PathVariable String version){
         return new ResponseEntity<>(viewService.getPaginatedViews(authentication,httpHeaders,contentId,contentType, AppConstants.STATUS_ACTIVE,page,size,version), HttpStatus.OK);
     }

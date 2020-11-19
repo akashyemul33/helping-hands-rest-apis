@@ -1,7 +1,8 @@
 package com.ayprojects.helpinghands;
 
 public class AppConstants {
-    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss z";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmss";
     //expiration value of 3 hours
     public static final long JWT_TOKEN_EXPIRATION_VALUE = 1000*60*60*3;
     public static final String JWT_TOKEN_ISSUER = "HelpingHandsAdmin";
@@ -74,6 +75,8 @@ public class AppConstants {
     public static final String PLACE_AVAILABLITY_DAYS = "placeAvailablityDays";
     public static final String POST_TITLE = "postTitle";
     public static final String ADDRESS_DETAILS = "addressDetails";
+    public static final String MAIN_PLACE_INITIAL_ID = "M_PLS_CTGRY_";
+    public static final String SUB_PLACE_INITIAL_ID = "S_PLS_CTGRY_";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };

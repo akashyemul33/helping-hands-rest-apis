@@ -59,8 +59,13 @@ public class Utility {
     public static String currentDateTimeInUTC() {
         DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date date = new Date();
-        return dateFormat.format(date);
+        return dateFormat.format(new Date());
+    }
+
+    public static String currentDateTimeInUTC(String dateTimeFormat) {
+        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return dateFormat.format(new Date());
     }
 
     public static String getUUID()

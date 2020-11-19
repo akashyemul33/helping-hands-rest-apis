@@ -9,4 +9,5 @@ public interface UserDao {
     DhUser login(String username, String password);
     Optional<DhUser> findByMobileNumber(String mobileNumber);
     Optional<DhUser> findByEmailId(String emailId);
+    Optional<DhUser> findByMobileNumberOrEmailId(String mobileNumber,String emailId);
 }

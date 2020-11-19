@@ -34,14 +34,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         throw new UsernameNotFoundException(username);*/
 
         //find out user with mobile and email, as username can be either mobile or email
-        Optional<DhUser> fetchedUser = userDao.findByMobileNumber(username);
-        if(!fetchedUser.isPresent()){
+        Optional<DhUser> fetchedUser = userDao.findByMobileNumberOrEmailId(username,username);
+        LOGGER.info("UserServiceImpl-> username="+username);
+        /*if(!fetchedUser.isPresent()){
             LOGGER.info("UserServiceImpl->Not found user with mobile "+ username);
             fetchedUser = userDao.findByEmailId(username);
-        }
-
+        }*/
         if(fetchedUser.isPresent())return  new UserDetailsDecorator(fetchedUser.get());
-
+        LOGGER.info("UserServiceImpl->Not found user with mobile or emailId, username entered = "+ username);
         throw new UsernameNotFoundException(username);
     }
 

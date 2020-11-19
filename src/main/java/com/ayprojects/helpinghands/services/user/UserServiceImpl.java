@@ -96,11 +96,7 @@ public class UserServiceImpl implements UserService{
             return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_ADDRESS_IS_EMPTY,language),new ArrayList<>());
         }
 
-        Optional<DhUser> queriedUser = userDao.findByMobileNumber(dhUserDetails.getMobileNumber());
-        if(!queriedUser.isPresent()){
-            LOGGER.info("UserServiceImpl->Not found user with mobile "+ dhUserDetails.getMobileNumber());
-            queriedUser = userDao.findByEmailId(dhUserDetails.getEmailId());
-        }
+        Optional<DhUser> queriedUser = userDao.findByMobileNumberOrEmailId(dhUserDetails.getMobileNumber(),dhUserDetails.getEmailId());
 
         if(queriedUser.isPresent()){
             LOGGER.info("UserServiceImpl->Found user with");

@@ -35,4 +35,9 @@ public class UserDaoImpl implements UserDao {
     public Optional<DhUser> findByEmailId(String emailId) {
         return userRepository.findByEmailId(emailId);
     }
+
+    @Override
+    public Optional<DhUser> findByMobileNumberOrEmailId(String mobileNumber, String emailId) {
+        return userRepository.findByMobileNumberOrEmailId(mobileNumber,emailId);
+    }
 }

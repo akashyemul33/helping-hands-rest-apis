@@ -15,8 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,22 +45,22 @@ public class RequirementsController {
         return new ResponseEntity<>(requirementsService.addRequirements(httpHeaders,authentication,requirementBody,requirementImages,version), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value="/deleteRequirement", method= RequestMethod.PUT)
+    @PutMapping(value="/deleteRequirement")
     public ResponseEntity<Response<DhRequirements>> deleteRequirement(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String requirementId,@PathVariable String version) throws ServerSideException {
         return null;
     }
 
-    @RequestMapping(value="/updateRequirement", method= RequestMethod.POST)
+    @PostMapping(value="/updateRequirement")
     public ResponseEntity<Response<DhRequirements>> updateRequirement(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhRequirements dhRequirements, @PathVariable String version) throws ServerSideException {
         return null;
     }
 
-    @RequestMapping(value = "/getAllRequirements",method = RequestMethod.GET)
+    @GetMapping(value = "/getAllRequirements")
     ResponseEntity<Response<DhRequirements>> getAllRequirements(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String searchValue, @PathVariable String version){
     return null;
     }
 
-    @RequestMapping(value = "/getPaginatedRequirements",method = RequestMethod.GET)
+    @GetMapping(value = "/getPaginatedRequirements")
     ResponseEntity<Response<DhRequirements>> getPaginatedRequirements(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam(defaultValue = "0") int page,@RequestParam (defaultValue = "7") int size, @PathVariable String version){
         return new ResponseEntity<>(requirementsService.getPaginatedRequirements(httpHeaders,authentication,page,size,version), HttpStatus.OK);
     }

@@ -14,7 +14,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,12 +35,12 @@ public class AppConfigController {
     @Autowired
     AppConfigService appConfigService;
 
-    @RequestMapping(value="/add", method=RequestMethod.POST)
+    @PostMapping(value="/add")
     public ResponseEntity<Response<DhAppConfig>> addAppConfig(Authentication authentication,@RequestHeader HttpHeaders httpHeaders, @RequestBody DhAppConfig dhAppConfig, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(appConfigService.addAppConfig(authentication,httpHeaders,dhAppConfig,version), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/getAppConfig",method = RequestMethod.GET)
+    @GetMapping(value = "/getAppConfig")
     ResponseEntity<Response<DhAppConfig>> getAppConfig(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(appConfigService.getActiveAppConfig(httpHeaders,authentication,version), HttpStatus.OK);
     }
