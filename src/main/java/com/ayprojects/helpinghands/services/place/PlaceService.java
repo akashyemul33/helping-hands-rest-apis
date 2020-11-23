@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface PlaceService {
-    Response<DhPlace> addPlace(Authentication authentication, HttpHeaders httpHeaders, MultipartFile[] placeImages, String placeBody, String version) throws ServerSideException;
+    Response<DhPlace> addPlace(Authentication authentication, HttpHeaders httpHeaders, DhPlace dhPlace, String version) throws ServerSideException;
     Response<DhPlace> deletePlace(Authentication authentication, HttpHeaders httpHeaders,String placeId, String version) throws ServerSideException;
     Response<DhPlace> updatePlace(Authentication authentication, HttpHeaders httpHeaders, DhPlace dhPlace, String version) throws ServerSideException;
     Response<DhPlace> getPlaces(Authentication authentication, HttpHeaders httpHeaders, String searchValue, String version);

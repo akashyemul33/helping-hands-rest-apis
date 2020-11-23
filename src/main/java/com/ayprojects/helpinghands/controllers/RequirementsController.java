@@ -40,9 +40,9 @@ public class RequirementsController {
     @Autowired
     RequirementsService requirementsService;
 
-    @PostMapping(value="/addRequirements", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<DhRequirements>> addRequirements(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "requirementBody") String requirementBody, @RequestPart(value="requirementImages",required = false) MultipartFile[] requirementImages, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(requirementsService.addRequirements(httpHeaders,authentication,requirementBody,requirementImages,version), HttpStatus.CREATED);
+    @PostMapping(value="/addRequirements")
+    public ResponseEntity<Response<DhRequirements>> addRequirements(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestBody DhRequirements dhRequirements, @PathVariable String version) throws ServerSideException {
+        return new ResponseEntity<>(requirementsService.addRequirements(httpHeaders,authentication,dhRequirements,version), HttpStatus.CREATED);
     }
 
     @PutMapping(value="/deleteRequirement")

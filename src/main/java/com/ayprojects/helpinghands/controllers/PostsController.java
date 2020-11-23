@@ -39,9 +39,9 @@ public class PostsController {
     @Autowired
     PostsService postsService;
 
-    @PostMapping(value="/addPosts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<DhPosts>> addPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "postBody") String postBody, @RequestPart(value="postImages",required = false) MultipartFile[] postImages, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(postsService.addPost(authentication,httpHeaders,postImages,postBody,version), HttpStatus.CREATED);
+    @PostMapping(value="/addPosts")
+    public ResponseEntity<Response<DhPosts>> addPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPosts dhPosts,@PathVariable String version) throws ServerSideException {
+        return new ResponseEntity<>(postsService.addPost(authentication,httpHeaders,dhPosts,version), HttpStatus.CREATED);
     }
 
     @PutMapping(value="/deletePlace")

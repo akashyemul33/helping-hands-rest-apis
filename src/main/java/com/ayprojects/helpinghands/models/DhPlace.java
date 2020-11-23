@@ -32,6 +32,19 @@ public class DhPlace extends AllCommonUsedAttributes {
     private List<DhViews> topViews;
     private List<DhPosts> topPosts;
     private OwnerDetails ownerDetails;
+    private List<String> subscribedUsers;//subscribed user id's
+
+    public DhPlace() {
+
+    }
+
+    public List<String> getSubscribedUsers() {
+        return subscribedUsers;
+    }
+
+    public void setSubscribedUsers(List<String> subscribedUsers) {
+        this.subscribedUsers = subscribedUsers;
+    }
 
     public OwnerDetails getOwnerDetails() {
         return ownerDetails;
@@ -265,16 +278,16 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.topPosts = topPosts;
     }
 
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String addedBy, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> placeImages, PlaceAvailabilityDays placeAvailablityDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<String> postIds, long numberOfPosts, List<DhPosts> topPosts,OwnerDetails ownerDetails) {
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> placeImages, PlaceAvailabilityDays placeAvailablityDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<DhPosts> topPosts, OwnerDetails ownerDetails, List<String> subscribedUsers) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
-        this.addedBy = addedBy;
         this.placeId = placeId;
         this.placeType = placeType;
         this.placeAddress = placeAddress;
         this.placeMainCategoryId = placeMainCategoryId;
+        this.addedBy = addedBy;
         this.placeSubCategoryId = placeSubCategoryId;
         this.placeCategoryName = placeCategoryName;
         this.placeName = placeName;
@@ -290,16 +303,18 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.productsWithPrice = productsWithPrice;
         this.numberOfRatings = numberOfRatings;
         this.numberOfViews = numberOfViews;
+        this.numberOfPosts = numberOfPosts;
         this.avgRating = avgRating;
         this.ratingIds = ratingIds;
+        this.postIds = postIds;
         this.viewIds = viewIds;
         this.topRatings = topRatings;
         this.topViews = topViews;
-        this.postIds = postIds;
-        this.numberOfPosts = numberOfPosts;
         this.topPosts = topPosts;
         this.ownerDetails = ownerDetails;
+        this.subscribedUsers = subscribedUsers;
     }
+
 }
 
 

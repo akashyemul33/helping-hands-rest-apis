@@ -69,13 +69,9 @@ public class UserServiceImpl implements UserService{
     private AppConfigService appConfigService;
 
     @Override
-    public Response<DhUser> addUser(HttpHeaders httpHeaders, MultipartFile userImage, String userBody, String version) {
+    public Response<DhUser> addUser(HttpHeaders httpHeaders, DhUser dhUserDetails, String version) {
         String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("language="+language);
-
-        //convert userBody json string to DhUser object
-        DhUser dhUserDetails = null;
-        if(!Utility.isFieldEmpty(userBody)) dhUserDetails = new Gson().fromJson(userBody, DhUser.class);
 
         if(dhUserDetails==null){
             return new Response<DhUser>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), 0);
@@ -89,6 +85,10 @@ public class UserServiceImpl implements UserService{
         if(Utility.isFieldEmpty(dhUserDetails.getPassword())){
             LOGGER.info("Password is empty ");
             return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_PASSWORD_IS_EMPTY,language),new ArrayList<>());
+        }
+
+        if(Utility.isFieldEmpty(dhUserDetails.getUserId())){
+            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_ID_IS_MISSING,language),new ArrayList<>());
         }
 
         Address address = dhUserDetails.getAddressDetails();
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService{
             return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS,language),dhUserResp);
         }
 
-        String uniqueUserID = Utility.getUUID();
+        /*String uniqueUserID = Utility.getUUID();
         //store image first
         if(userImage!=null) {
                 String imgUploadFolder = imagesBaseFolder + "/" + uniqueUserID + "/profile/";
@@ -119,13 +119,15 @@ public class UserServiceImpl implements UserService{
                 }
         }
 
-        dhUserDetails.setUserId(uniqueUserID);
+        dhUserDetails.setUserId(uniqueUserID);*/
         dhUserDetails.setPassword(bCryptPasswordEncoder.encode(dhUserDetails.getPassword()));
         dhUserDetails.setRoles(AppConstants.ROLE_USER);
-        dhUserDetails.setUserSettings(new UserSettings(AppConstants.TOTAL_ADD_PLACES_LIMIT,AppConstants.PER_DAY_ADD_PLACES_LIMIT,AppConstants.PER_DAY_ADD_POSTS_LIMIT,AppConstants.PER_PLACE_IMAGES_LIMIT,AppConstants.PER_POST_IMAGES_LIMIT,AppConstants.PER_PLACE_PRODUCTS_LIMIT));
+        dhUserDetails.setUserSettings(Utility.getGlobalUserSettings());
+        dhUserDetails.setUserSettingEnabled(false);
+        dhUserDetails.setSponsored(false);
         dhUserDetails = (DhUser) utility.setCommonAttrs(dhUserDetails,AppConstants.STATUS_ACTIVE);
         userDao.addUser(dhUserDetails);
-        utility.addLog(dhUserDetails.getMobileNumber(),AppConstants.ACTION_NEW_USER_ADDED+"by userId:"+uniqueUserID);
+        utility.addLog(dhUserDetails.getMobileNumber(),AppConstants.ACTION_NEW_USER_ADDED);
         return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language),Collections.singletonList(dhUserDetails));
     }
 
@@ -179,5 +181,21 @@ public class UserServiceImpl implements UserService{
                 Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED,language)
                 ,Collections.singletonList(new LoginResponse(userDetailsService.loadUserByUsername(authentication.getName()).getUser(),dhAppConfig))
                 , 1);
+    }
+
+    @Override
+    public Response<DhUser> getUserByMobile(HttpHeaders httpHeaders, String mobileNumber, String version) {
+        String language =  Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("language="+language);
+
+        if(Utility.isFieldEmpty(mobileNumber)){
+            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_MOBILE_IS_EMPTY,language),new ArrayList<>(),0);
+        }
+
+        Optional<DhUser> queriedUser = userDao.findByMobileNumber(mobileNumber);
+        if(queriedUser.isPresent()){
+            return new Response<>(true,200,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE,language),new ArrayList<>(),1);
+        }
+        return new Response<>(false,403,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE,language),new ArrayList<>(),1);
     }
 }

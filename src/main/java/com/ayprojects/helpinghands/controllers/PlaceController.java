@@ -44,9 +44,9 @@ public class PlaceController {
     @Autowired
     PlaceService placeService;
 
-    @PostMapping(value="/addPlace", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<DhPlace>> addPlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "placeBody") String placeBody, @RequestPart(value="placeImages",required = false) MultipartFile[] placeImages, @PathVariable String version) throws ServerSideException{
-            return new ResponseEntity<>(placeService.addPlace(authentication,httpHeaders,placeImages,placeBody,version), HttpStatus.CREATED);
+    @PostMapping(value="/addPlace")
+    public ResponseEntity<Response<DhPlace>> addPlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @PathVariable String version) throws ServerSideException{
+            return new ResponseEntity<>(placeService.addPlace(authentication,httpHeaders,dhPlace,version), HttpStatus.CREATED);
     }
 
     @PutMapping(value="/deletePlace")

@@ -6,6 +6,7 @@ import com.ayprojects.helpinghands.models.AllCommonUsedAttributes;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhUser;
+import com.ayprojects.helpinghands.models.UserSettings;
 import com.ayprojects.helpinghands.services.log.LogService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,10 @@ public class Utility {
             ex.getMessage();
         }
         return "";
+    }
+
+    public static UserSettings getGlobalUserSettings() {
+        return new UserSettings(AppConstants.TOTAL_ADD_PLACES_LIMIT,AppConstants.PER_DAY_ADD_PLACES_LIMIT,AppConstants.PER_DAY_ADD_POSTS_LIMIT,AppConstants.PER_PLACE_IMAGES_LIMIT,AppConstants.PER_POST_IMAGES_LIMIT,AppConstants.PER_PLACE_PRODUCTS_LIMIT,false,false,false,false);
     }
 
     public void addLog(String username,String actionMsg){

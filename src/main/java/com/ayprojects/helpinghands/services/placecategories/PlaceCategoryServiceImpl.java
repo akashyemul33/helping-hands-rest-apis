@@ -58,24 +58,26 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS, language), new ArrayList<>(), 0);
         }
 
-        dhPlaceCategories = (DhPlaceCategories) utility.setCommonAttrs(dhPlaceCategories,AppConstants.STATUS_PENDING);
-        dhPlaceCategories.setPlaceCategoryId(AppConstants.MAIN_PLACE_INITIAL_ID+Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
+        dhPlaceCategories = (DhPlaceCategories) utility.setCommonAttrs(dhPlaceCategories, AppConstants.STATUS_PENDING);
+        dhPlaceCategories.setPlaceCategoryId(AppConstants.MAIN_PLACE_INITIAL_ID + Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
         dhPlaceCategories.setAddedBy(dhPlaceCategories.getAddedBy());
         if (dhPlaceCategories.getPlaceSubCategories() != null && dhPlaceCategories.getPlaceSubCategories().size() > 0) {
+            int counter = 1;
             for (PlaceSubCategories placeSubCategories : dhPlaceCategories.getPlaceSubCategories()) {
                 if (placeSubCategories.getPlaceSubCategoryName() == null || Utility.isFieldEmpty(placeSubCategories.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish())) {
                     return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY, language), new ArrayList<>(), 0);
                 }
                 placeSubCategories.setAddedBy(dhPlaceCategories.getAddedBy());
-                placeSubCategories.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID+Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
+                placeSubCategories.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + "_" + counter + Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
                 placeSubCategories.setCreatedDateTime(Utility.currentDateTimeInUTC());
                 placeSubCategories.setModifiedDateTime(Utility.currentDateTimeInUTC());
                 placeSubCategories.setStatus(AppConstants.STATUS_PENDING);
                 placeSubCategories.setSchemaVersion(AppConstants.SCHEMA_VERSION);
+                counter++;
             }
         }
         placeCategoryDao.add(dhPlaceCategories);
-        utility.addLog(authentication.getName(),AppConstants.ACTION_NEW_PLACE_CATEGORY_ADDED);
+        utility.addLog(authentication.getName(), AppConstants.ACTION_NEW_PLACE_CATEGORY_ADDED);
         return new Response<DhPlaceCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED, language), Collections.singletonList(dhPlaceCategories), 1);
     }
 
@@ -97,17 +99,17 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         LOGGER.info("PlaceCategoryServiceImpl->findAllByStatus : language=" + language);
         String findWithStatus = Utility.isFieldEmpty(status) ? AppConstants.STATUS_ACTIVE : status;
 
-        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(findWithStatus,"i"));
-        List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query,DhPlaceCategories.class);
-        if (dhPlaceCategoriesList==null) {
-            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES, language),new ArrayList<>(),0);
+        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(findWithStatus, "i"));
+        List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query, DhPlaceCategories.class);
+        if (dhPlaceCategoriesList == null) {
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES, language), new ArrayList<>(), 0);
         } else {
-            return new Response<DhPlaceCategories>(true,201,dhPlaceCategoriesList.size() + " place categories found .",dhPlaceCategoriesList,dhPlaceCategoriesList.size());
+            return new Response<DhPlaceCategories>(true, 201, dhPlaceCategoriesList.size() + " place categories found .", dhPlaceCategoriesList, dhPlaceCategoriesList.size());
         }
     }
 
     @Override
-    public Response<PlaceSubCategories> addPlaceSubCategory(Authentication authentication, HttpHeaders httpHeaders, PlaceSubCategories placeSubCategory,String mainPlaceCategoryId ,String version) {
+    public Response<PlaceSubCategories> addPlaceSubCategory(Authentication authentication, HttpHeaders httpHeaders, PlaceSubCategories placeSubCategory, String mainPlaceCategoryId, String version) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PlaceCategoryServiceImpl->addPlaceSubCategory : language=" + language);
 
@@ -120,9 +122,9 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         }
 
         Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_CATEGORY_ID).is(mainPlaceCategoryId));
-        queryFindCategoryWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i"));
-        DhPlaceCategories queriedDhPlaceCategories = mongoTemplate.findOne(queryFindCategoryWithId,DhPlaceCategories.class);
-        if (queriedDhPlaceCategories==null) {
+        queryFindCategoryWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        DhPlaceCategories queriedDhPlaceCategories = mongoTemplate.findOne(queryFindCategoryWithId, DhPlaceCategories.class);
+        if (queriedDhPlaceCategories == null) {
             return new Response<PlaceSubCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID, language) + "ID : " + mainPlaceCategoryId, new ArrayList<>(), 0);
         }
 
@@ -137,15 +139,15 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         }
 
         placeSubCategory.setAddedBy(placeSubCategory.getAddedBy());
-        placeSubCategory.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID+Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
-        placeSubCategory = (PlaceSubCategories) utility.setCommonAttrs(placeSubCategory,AppConstants.STATUS_PENDING);
+        placeSubCategory.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
+        placeSubCategory = (PlaceSubCategories) utility.setCommonAttrs(placeSubCategory, AppConstants.STATUS_PENDING);
         placeSubCategoriesList.add(placeSubCategory);
         Update mainCategoryUpdate = new Update();
-        mainCategoryUpdate.push(AppConstants.PLACE_SUB_CATEGORIES,placeSubCategory);
+        mainCategoryUpdate.push(AppConstants.PLACE_SUB_CATEGORIES, placeSubCategory);
         //mainCategoryUpdate.set("placeSubCategories",placeSubCategoriesList);
-        mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
-        mongoTemplate.updateFirst(queryFindCategoryWithId,mainCategoryUpdate,DhPlaceCategories.class);
-        utility.addLog(authentication.getName(),"New sub category [" + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish() + "] has been added under [" + queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish() + "].");
+        mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, Utility.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(queryFindCategoryWithId, mainCategoryUpdate, DhPlaceCategories.class);
+        utility.addLog(authentication.getName(), "New sub category [" + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish() + "] has been added under [" + queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish() + "].");
         return new Response<PlaceSubCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED, language), Collections.singletonList(placeSubCategory), 1);
     }
 }

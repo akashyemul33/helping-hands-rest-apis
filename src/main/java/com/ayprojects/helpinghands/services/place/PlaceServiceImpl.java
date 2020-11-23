@@ -47,12 +47,9 @@ public class PlaceServiceImpl implements PlaceService{
     Utility utility;
 
     @Override
-    public Response<DhPlace> addPlace(Authentication authentication, HttpHeaders httpHeaders, MultipartFile[] placeImages, String placeBody, String version) throws ServerSideException{
+    public Response<DhPlace> addPlace(Authentication authentication, HttpHeaders httpHeaders, DhPlace dhPlace, String version) throws ServerSideException{
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PlaceServiceImpl->addPlace : language=" + language);
-        //convert placebody json string to DhPlace object
-        DhPlace dhPlace = null;
-        if(!Utility.isFieldEmpty(placeBody)) dhPlace = new Gson().fromJson(placeBody, DhPlace.class);
 
         if (dhPlace == null) {
             return new Response<DhPlace>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
@@ -64,22 +61,7 @@ public class PlaceServiceImpl implements PlaceService{
             resMsg = resMsg+" , these fields are missing : "+missingFieldsList;
             return new Response<DhPlace>(false,402,resMsg,new ArrayList<>(),0);
         }
-        String uinquePlaceId= Utility.getUUID();
-        //store image first
-        if(placeImages!=null){
-            String imgType = dhPlace.getPlaceType().matches(AppConstants.REGEX_BUSINESS_PLACE) ? "B" : "P";
-            String imgUploadFolder = imagesBaseFolder + "/" + dhPlace.getAddedBy() + "/places/" + dhPlace.getPlaceType() + "/";
-            String imgPrefix = imgType + "_PLCS_" + uinquePlaceId + "_";
-            LOGGER.info("PlaceServiceImpl->addPlace : imagesBaseFolder = " + imagesBaseFolder+" imgPrefix="+imgPrefix);
-            try {
-                utility.uplodImages(imgUploadFolder,placeImages,imgPrefix);
-            }
-            catch (IOException ioException){
-                return new Response<>(false,402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG,language),new ArrayList<>());
-            }
-        }
 
-        dhPlace.setPlaceId(uinquePlaceId);
         dhPlace = (DhPlace) utility.setCommonAttrs(dhPlace,AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhPlace,AppConstants.COLLECTION_DH_PLACE);
         utility.addLog(authentication.getName(),"New ["+dhPlace.getPlaceType()+"] place with category ["+dhPlace.getPlaceCategoryName()+"] has been added.");

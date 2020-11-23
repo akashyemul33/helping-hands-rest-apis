@@ -131,4 +131,55 @@ public class ResponseMessages {
     public String EN_NEW_REQUIREMENT_ADDED = "New requirement has been added successfully !";
     public String MR_NEW_REQUIREMENT_ADDED = "नवीन आवश्यकता यशस्वीरित्या जोडली गेली आहे !";
     public String HI_NEW_REQUIREMENT_ADDED = "नई आवश्यकता को सफलतापूर्वक जोड़ा गया है !";
+
+    public String EN_IMAGE_TYPE_MISSING = "Image type is missing !";
+    public String MR_IMAGE_TYPE_MISSING = "प्रतिमेचा प्रकार गहाळ आहे !";
+    public String HI_IMAGE_TYPE_MISSING = "छवि प्रकार गायब है !";
+
+    public String EN_INCORRECT_IMAGE_TYPE = "Please check your Image type, no match found for image type!";
+    public String MR_INCORRECT_IMAGE_TYPE = "कृपया आपला प्रतिमा प्रकार तपासा, प्रतिमा प्रकारासाठी कोणतीही जुळणी आढळली नाही !";
+    public String HI_INCORRECT_IMAGE_TYPE = "कृपया अपना छवि प्रकार जांचें, छवि प्रकार के लिए कोई मिलान नहीं मिला !";
+
+    public String EN_PLACE_IMAGES_ADDED = "Place images have been added successfully !";
+    public String MR_PLACE_IMAGES_ADDED = "ठिकाण प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !";
+    public String HI_PLACE_IMAGES_ADDED = "स्थान चित्र सफलतापूर्वक जोड़े गए हैं !";
+
+    public String EN_POST_IMAGES_ADDED = "Post images have been added successfully  !";
+    public String MR_POST_IMAGES_ADDED = "पोस्ट प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !";
+    public String HI_POST_IMAGES_ADDED = "पोस्ट छवियों को सफलतापूर्वक जोड़ा गया है !";
+
+    public String EN_REQ_IMAGES_ADDED = "Requirement images have been added successfully  !";
+    public String MR_REQ_IMAGES_ADDED = "आवश्यकता  प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !";
+    public String HI_REQ_IMAGES_ADDED = "आवश्यकता छवियों को सफलतापूर्वक जोड़ा गया है !";
+
+    public String EN_UNABLE_TO_ADD_PLACE_IMAGES = "Unable to add place images !";
+    public String MR_UNABLE_TO_ADD_PLACE_IMAGES = "ठिकाण प्रतिमा जोडण्यात अक्षम !";
+    public String HI_UNABLE_TO_ADD_PLACE_IMAGES = "स्थान चित्र जोड़ने में असमर्थ !";
+
+    public String EN_UNABLE_TO_ADD_POST_IMAGES = "Unable to add post images !";
+    public String MR_UNABLE_TO_ADD_POST_IMAGES = "पोस्ट प्रतिमा जोडण्यात अक्षम !";
+    public String HI_UNABLE_TO_ADD_POST_IMAGES = "पोस्ट छवियों को जोड़ने में असमर्थ !";
+
+    public String EN_UNABLE_TO_ADD_REQ_IMAGES = "Unable to add post images !";
+    public String MR_UNABLE_TO_ADD_REQ_IMAGES = "आवश्यकता प्रतिमा जोडण्यात अक्षम !";
+    public String HI_UNABLE_TO_ADD_REQ_IMAGES = "आवश्यकता छवियों को जोड़ने में असमर्थ !";
+
+    public String EN_USER_ID_IS_MISSING = "User id is missing !";
+    public String MR_USER_ID_IS_MISSING = "वापरकर्ता आयडी गहाळ आहे !";
+    public String HI_USER_ID_IS_MISSING = "उपयोगकर्ता आईडी गायब है !";
+
+    public String EN_MOBILE_IS_EMPTY = "Mobile number should not be empty !";
+    public String MR_MOBILE_IS_EMPTY = "मोबाइल नंबर रिक्त नसावा !";
+    public String HI_MOBILE_IS_EMPTY = "मोबाइल नंबर खाली नहीं होना चाहिए !";
+
+    public String EN_USER_FOUND_WITH_MOBILE = "You're already registered with us, please enter your password to use the application !";
+    public String MR_USER_FOUND_WITH_MOBILE = "आपण आधीपासून आमच्याकडे नोंदणीकृत आहात, कृपया अनुप्रयोग वापरण्यासाठी आपला संकेतशब्द प्रविष्ट करा !";
+    public String HI_USER_FOUND_WITH_MOBILE = "आप पहले से ही हमारे साथ पंजीकृत हैं, कृपया एप्लिकेशन का उपयोग करने के लिए अपना पासवर्ड दर्ज करें !";
+
+    public String EN_USER_NOT_FOUND_WITH_MOBILE = "Looks like you're new to our application, please go ahead and create your profile !";
+    public String MR_USER_NOT_FOUND_WITH_MOBILE = "आमच्या अॅप मधे आपण नवीन आहात असे दिसते आहे, कृपया पुढे जा आणि आपले प्रोफाइल तयार करा!";
+    public String HI_USER_NOT_FOUND_WITH_MOBILE = "ऐसा लगता है कि आप हमारे अॅप में नए हैं, कृपया आगे बढ़ें और अपना प्रोफ़ाइल बनाएं !";
+
+
+
 }

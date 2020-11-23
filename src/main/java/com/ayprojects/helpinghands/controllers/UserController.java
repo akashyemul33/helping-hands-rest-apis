@@ -43,9 +43,9 @@ public class UserController {
         return new ResponseEntity<>(userService.login(authenticationRequest, httpHeaders,version), HttpStatus.OK);
     }
 
-    @PostMapping(value="/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<DhUser>> addUser(@RequestHeader HttpHeaders httpHeaders, @RequestParam(value = "userBody") String userBody, @RequestPart(value="userImage",required = false) MultipartFile userImage, @PathVariable String version){
-        return new ResponseEntity<>(userService.addUser(httpHeaders,userImage,userBody,version), HttpStatus.CREATED);
+    @PostMapping(value="/addUser")
+    public ResponseEntity<Response<DhUser>> addUser(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUser, @PathVariable String version){
+        return new ResponseEntity<>(userService.addUser(httpHeaders,dhUser,version), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getUserDetails")
@@ -53,4 +53,8 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserDetails(httpHeaders,authentication,version), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getUserByMobile")
+    ResponseEntity<Response<DhUser>> getUserByMobile(@RequestHeader HttpHeaders httpHeaders,@RequestParam String mobileNumber, @PathVariable String version){
+        return new ResponseEntity<>(userService.getUserByMobile(httpHeaders,mobileNumber,version), HttpStatus.OK);
+    }
 }

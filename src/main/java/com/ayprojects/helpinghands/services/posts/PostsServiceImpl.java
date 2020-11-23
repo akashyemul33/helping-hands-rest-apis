@@ -54,46 +54,26 @@ public class PostsServiceImpl implements PostsService {
     Utility utility;
 
     @Override
-    public Response<DhPosts> addPost(Authentication authentication, HttpHeaders httpHeaders, MultipartFile[] postImages, String postBody, String version) throws ServerSideException {
+    public Response<DhPosts> addPost(Authentication authentication, HttpHeaders httpHeaders, DhPosts dhPosts, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PostsServiceImpl->addPost : language=" + language);
-
-        //convert postBody json string to DhPost object
-        DhPosts dhPosts = null;
-        if (!Utility.isFieldEmpty(postBody)) dhPosts = new Gson().fromJson(postBody, DhPosts.class);
 
         if (dhPosts == null) {
             return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
 
-        boolean isPlaceIdMissing = false;
         List<String> missingFieldsList = Validations.findMissingFieldsForPosts(dhPosts);
-        if (missingFieldsList.contains(AppConstants.PLACE_ID)) isPlaceIdMissing = true;
         if (missingFieldsList.size() > 0) {
             String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language);
             resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
             return new Response<DhPosts>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 
-        String uinquePostId = Utility.getUUID();
-        //store image first
-        if (postImages != null) {
-            String imgType = dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST) ? "B" : "P";
-            String imgUploadFolder = imagesBaseFolder + "/" + dhPosts.getAddedBy() + "/posts/" + dhPosts.getPostType() + "/";
-            String imgPrefix = imgType + "_PSTS_" + uinquePostId + "_";
-            LOGGER.info("PostsServiceImpl->addPosts : imagesBaseFolder = " + imagesBaseFolder + " imgPrefix=" + imgPrefix);
-            try {
-                utility.uplodImages(imgUploadFolder, postImages, imgPrefix);
-            } catch (IOException ioException) {
-                return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>());
-            }
-        }
-        dhPosts.setPostId(uinquePostId);
         dhPosts = (DhPosts) utility.setCommonAttrs(dhPosts, AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhPosts, AppConstants.COLLECTION_DH_POSTS);
         utility.addLog(authentication.getName(), "New [" + dhPosts.getPostType() + "] post has been added.");
 
-        if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST) && !isPlaceIdMissing) {
+        if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST)) {
             LOGGER.info("PostsServiceImpl->addPost : It's business post");
             Query queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPosts.getPlaceId()));
             DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId, DhPlace.class);

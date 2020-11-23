@@ -51,6 +51,9 @@ public class AppConstants {
     public static final String REGEX_BUSINESS_REQUIREMENT = "^[Bb]usiness[\\s]*[Rr]equirement$";
     public static final String REGEX_PUBLIC_REQUIREMENT = "^[Pp]ublic[\\s]*[Rr]equirement$";
     public static final String REGEX_BUSINESS_PLACE = "^[Bb]usiness[\\s]*[Pp]lace$";
+    public static final String REGEX_USER = "^[Uu]ser$";
+    public static final String REGEX_PUBLIC_PLACE = "^[Pp]ublic[\\s]*[Pp]lace$";
+    public static final String REGEX_PUBLIC_POST = "^[Pp]ublic[\\s]*[Pp]ost$";
     public static final int LIMIT_RATINGS_IN_PLACES = 5;
     public static final int LIMIT_RATINGS_IN_POSTS = 5;
     public static final int LIMIT_RATINGS_IN_REQUIREMENTS = 5;
@@ -81,6 +84,19 @@ public class AppConstants {
     public static final String OWNER_NAME = "ownerName";
     public static final String OWNER_MOBILE_NUMBER = "ownerMobileNumber";
     public static final String OWNER_EMAIL_ID = "ownerEmailId";
+    public static final String RESPONSEMESSAGE_PLACE_IMAGES_ADDED = "PLACE_IMAGES_ADDED";
+    public static final String RESPONSEMESSAGE_POST_IMAGES_ADDED = "POST_IMAGES_ADDED";
+    public static final String RESPONSEMESSAGE_REQ_IMAGES_ADDED = "REQ_IMAGES_ADDED";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES = "UNABLE_TO_ADD_PLACE_IMAGES";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES = "UNABLE_TO_ADD_POST_IMAGES";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES = "UNABLE_TO_ADD_REQ_IMAGES";
+    public static final String REQ_TITLE = "requirementTitle";
+    public static final String REQ_DESC = "requirementDesc";
+    public static final String RATING = "rating";
+    public static final String CURRENT_API_VERSION = "1";
+    public static final String RESPONSEMESSAGE_MOBILE_IS_EMPTY = "MOBILE_IS_EMPTY";
+    public static final String RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE = "USER_FOUND_WITH_MOBILE";
+    public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE = "USER_NOT_FOUND_WITH_MOBILE";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
@@ -99,6 +115,7 @@ public class AppConstants {
 
     public static String RESPONSEMESSAGE_USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS";
     public static String RESPONSEMESSAGE_USER_CONTACT_IS_EMPTY = "USER_CONTACT_IS_EMPTY";
+    public static String RESPONSEMESSAGE_USER_ID_IS_MISSING = "USER_ID_IS_MISSING";
     public static String RESPONSEMESSAGE_USER_ADDRESS_IS_EMPTY = "USER_ADDRESS_IS_EMPTY";
     public static String RESPONSEMESSAGE_USER_PASSWORD_IS_EMPTY = "USER_PASSWORD_IS_EMPTY";
     public static String RESPONSEMESSAGE_USER_REGISTERED = "USER_REGISTERED";
@@ -127,6 +144,8 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_NEW_PLACE_ADDED = "NEW_PLACE_ADDED";
     public static String RESPONSEMESSAGE_NEW_POST_ADDED = "NEW_POST_ADDED";
     public static String RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED = "NEW_REQUIREMENT_ADDED";
+    public static String RESPONSEMESSAGE_IMAGE_TYPE_MISSING = "IMAGE_TYPE_MISSING";
+    public static String RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE = "INCORRECT_IMAGE_TYPE";
     public static String RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED = "NEW_RATING_COMMENT_ADDED";
 
     public static String CONTACT_DETAILS ="contactDetails";

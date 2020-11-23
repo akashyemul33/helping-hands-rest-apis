@@ -1,5 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
+import java.util.List;
+
 public class DhUser extends AllCommonUsedAttributes {
     private String userId;
     private String name;
@@ -10,6 +12,63 @@ public class DhUser extends AllCommonUsedAttributes {
     private String emailId;
     private String[] roles;
     private UserSettings userSettings;
+
+    public DhUser() {
+        super();
+    }
+
+    private boolean isSponsored;
+    private String sponsoredDate;
+    private List<String> subscribedPlaces;
+    private UserActivity userActivity;
+
+    public DhUser(String uniqueUserID, String imgUrl) {
+        this.userId = uniqueUserID;
+        this.profileImg = imgUrl;
+    }
+
+    public UserActivity getUserActivity() {
+        return userActivity;
+    }
+
+    public void setUserActivity(UserActivity userActivity) {
+        this.userActivity = userActivity;
+    }
+
+    public List<String> getSubscribedPlaces() {
+        return subscribedPlaces;
+    }
+
+    public void setSubscribedPlaces(List<String> subscribedPlaces) {
+        this.subscribedPlaces = subscribedPlaces;
+    }
+
+    public boolean isUserSettingEnabled() {
+        return isUserSettingEnabled;
+    }
+
+    public boolean isSponsored() {
+        return isSponsored;
+    }
+
+    public void setSponsored(boolean sponsored) {
+        isSponsored = sponsored;
+    }
+
+    public String getSponsoredDate() {
+        return sponsoredDate;
+    }
+
+    public void setSponsoredDate(String sponsoredDate) {
+        this.sponsoredDate = sponsoredDate;
+    }
+
+    public void setUserSettingEnabled(boolean userSettingEnabled) {
+        isUserSettingEnabled = userSettingEnabled;
+    }
+
+ //decides whether user settings should be applied or not
+    private boolean isUserSettingEnabled;
 
     public UserSettings getUserSettings() {
         return userSettings;
@@ -93,19 +152,43 @@ public class DhUser extends AllCommonUsedAttributes {
         this.addressDetails = addressDetails;
     }
 
-    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String name, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String languageSelected,UserSettings userSettings) {
+    /*public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,
+    this.schemaVersion =schemaVersion;
+                          this.createdDateTime = createdDateTime;
+                          this.modifiedDateTime =modifiedDateTime;
+                          this.status=status;*/
+
+    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,String userId, String name, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
         this.userId = userId;
         this.name = name;
-        this.mobileNumber = mobileNumber;
-        this.emailId = emailId;
         this.password = password;
         this.profileImg = profileImg;
         this.addressDetails = addressDetails;
-        this.languageSelected= languageSelected;
+        this.mobileNumber = mobileNumber;
+        this.emailId = emailId;
+        this.roles = roles;
         this.userSettings = userSettings;
+        this.isSponsored = isSponsored;
+        this.sponsoredDate = sponsoredDate;
+        this.subscribedPlaces = subscribedPlaces;
+        this.userActivity = userActivity;
+        this.isUserSettingEnabled = isUserSettingEnabled;
+        this.languageSelected = languageSelected;
+    }
+
+    public DhUser(String userId, String name, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String[] roles, String languageSelected) {
+        this.userId = userId;
+        this.name = name;
+        this.password = password;
+        this.profileImg = profileImg;
+        this.addressDetails = addressDetails;
+        this.mobileNumber = mobileNumber;
+        this.emailId = emailId;
+        this.roles = roles;
+        this.languageSelected = languageSelected;
     }
 }
