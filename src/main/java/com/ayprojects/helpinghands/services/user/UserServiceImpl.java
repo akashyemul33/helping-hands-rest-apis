@@ -87,14 +87,11 @@ public class UserServiceImpl implements UserService{
             return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_PASSWORD_IS_EMPTY,language),new ArrayList<>());
         }
 
-        if(Utility.isFieldEmpty(dhUserDetails.getUserId())){
-            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_ID_IS_MISSING,language),new ArrayList<>());
+        if(Utility.isFieldEmpty(dhUserDetails.getProfileImg())){
+            dhUserDetails.setUserId(Utility.getUUID());
         }
-
-        Address address = dhUserDetails.getAddressDetails();
-        if(address==null || address.getLat()==0 || address.getLng()==0){
-            LOGGER.info("Address details are missing ");
-            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_ADDRESS_IS_EMPTY,language),new ArrayList<>());
+        else if(Utility.isFieldEmpty(dhUserDetails.getUserId())){
+            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_ID_IS_MISSING,language),new ArrayList<>());
         }
 
         Optional<DhUser> queriedUser = userDao.findByMobileNumberOrEmailId(dhUserDetails.getMobileNumber(),dhUserDetails.getEmailId());
@@ -106,20 +103,6 @@ public class UserServiceImpl implements UserService{
             return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS,language),dhUserResp);
         }
 
-        /*String uniqueUserID = Utility.getUUID();
-        //store image first
-        if(userImage!=null) {
-                String imgUploadFolder = imagesBaseFolder + "/" + uniqueUserID + "/profile/";
-                String imgPrefix = "USER_" + uniqueUserID + "_";
-                LOGGER.info("UserServiceImpl->addUser : imagesBaseFolder = " + imagesBaseFolder+" imgPrefix="+imgPrefix);
-                try {
-                    utility.uplodImages(imgUploadFolder, new MultipartFile[]{userImage}, imgPrefix);
-                } catch (IOException ioException) {
-                    return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>());
-                }
-        }
-
-        dhUserDetails.setUserId(uniqueUserID);*/
         dhUserDetails.setPassword(bCryptPasswordEncoder.encode(dhUserDetails.getPassword()));
         dhUserDetails.setRoles(AppConstants.ROLE_USER);
         dhUserDetails.setUserSettings(Utility.getGlobalUserSettings());

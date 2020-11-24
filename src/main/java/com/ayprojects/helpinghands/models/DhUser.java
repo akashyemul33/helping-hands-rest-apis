@@ -17,7 +17,7 @@ public class DhUser extends AllCommonUsedAttributes {
     }
 
     private String profileImg;
-    private Address addressDetails;
+//    private Address addressDetails;
     private String mobileNumber;
     private String emailId;
     private String[] roles;
@@ -154,13 +154,13 @@ public class DhUser extends AllCommonUsedAttributes {
         this.profileImg = profileImg;
     }
 
-    public Address getAddressDetails() {
+    /*public Address getAddressDetails() {
         return addressDetails;
     }
 
     public void setAddressDetails(Address addressDetails) {
         this.addressDetails = addressDetails;
-    }
+    }*/
 
     /*public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,
     this.schemaVersion =schemaVersion;
@@ -168,7 +168,7 @@ public class DhUser extends AllCommonUsedAttributes {
                           this.modifiedDateTime =modifiedDateTime;
                           this.status=status;*/
 
-    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected,String lastName) {
+    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImg, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected,String lastName) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
@@ -177,7 +177,6 @@ public class DhUser extends AllCommonUsedAttributes {
         this.firstName = firstName;
         this.password = password;
         this.profileImg = profileImg;
-        this.addressDetails = addressDetails;
         this.mobileNumber = mobileNumber;
         this.emailId = emailId;
         this.roles = roles;
@@ -191,12 +190,11 @@ public class DhUser extends AllCommonUsedAttributes {
         this.lastName =lastName;
     }
 
-    public DhUser(String userId, String firstName, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String[] roles, String languageSelected,String lastName) {
+    public DhUser(String userId, String firstName, String password, String profileImg,String mobileNumber, String emailId, String[] roles, String languageSelected,String lastName) {
         this.userId = userId;
         this.firstName = firstName;
         this.password = password;
         this.profileImg = profileImg;
-        this.addressDetails = addressDetails;
         this.mobileNumber = mobileNumber;
         this.emailId = emailId;
         this.roles = roles;
