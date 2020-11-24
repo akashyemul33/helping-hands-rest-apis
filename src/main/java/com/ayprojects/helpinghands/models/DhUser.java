@@ -4,8 +4,18 @@ import java.util.List;
 
 public class DhUser extends AllCommonUsedAttributes {
     private String userId;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String password;
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     private String profileImg;
     private Address addressDetails;
     private String mobileNumber;
@@ -120,12 +130,12 @@ public class DhUser extends AllCommonUsedAttributes {
         this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getPassword() {
@@ -158,13 +168,13 @@ public class DhUser extends AllCommonUsedAttributes {
                           this.modifiedDateTime =modifiedDateTime;
                           this.status=status;*/
 
-    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,String userId, String name, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected) {
+    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected,String lastName) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
         this.userId = userId;
-        this.name = name;
+        this.firstName = firstName;
         this.password = password;
         this.profileImg = profileImg;
         this.addressDetails = addressDetails;
@@ -178,11 +188,12 @@ public class DhUser extends AllCommonUsedAttributes {
         this.userActivity = userActivity;
         this.isUserSettingEnabled = isUserSettingEnabled;
         this.languageSelected = languageSelected;
+        this.lastName =lastName;
     }
 
-    public DhUser(String userId, String name, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String[] roles, String languageSelected) {
+    public DhUser(String userId, String firstName, String password, String profileImg, Address addressDetails, String mobileNumber, String emailId, String[] roles, String languageSelected,String lastName) {
         this.userId = userId;
-        this.name = name;
+        this.firstName = firstName;
         this.password = password;
         this.profileImg = profileImg;
         this.addressDetails = addressDetails;
@@ -190,5 +201,6 @@ public class DhUser extends AllCommonUsedAttributes {
         this.emailId = emailId;
         this.roles = roles;
         this.languageSelected = languageSelected;
+        this.lastName = lastName;
     }
 }

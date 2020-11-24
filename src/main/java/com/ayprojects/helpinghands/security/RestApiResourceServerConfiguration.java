@@ -22,7 +22,6 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
         resources.resourceId(RESOURCE_ID);
     }
 
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/","/api/v"+ AppConstants.CURRENT_API_VERSION+"/users/addUser","/api/v"+ AppConstants.CURRENT_API_VERSION+"/imageUpload/uploadUserImage",
