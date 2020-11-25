@@ -9,6 +9,7 @@ import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.UserSettings;
 import com.ayprojects.helpinghands.services.log.LogService;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -116,7 +117,7 @@ public class Utility {
             Path path1 = Paths.get(imgUploadFolder);
             Files.createDirectories(path1);
             for (MultipartFile multipartFile : multipartImages) {
-                String ext = multipartFile.getOriginalFilename().split("\\.")[1];
+                String ext = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
                 String imgPath = imgUploadFolder + imagePrefix + Calendar.getInstance().getTimeInMillis() + "." + ext;
                 LOGGER.info("Utility->uplodImages : imgUploadFolderWithFile = " + imgPath);
                 byte[] bytes = multipartFile.getBytes();

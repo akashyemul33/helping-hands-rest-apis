@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService{
         dhUserDetails = (DhUser) utility.setCommonAttrs(dhUserDetails,AppConstants.STATUS_ACTIVE);
         userDao.addUser(dhUserDetails);
         utility.addLog(dhUserDetails.getMobileNumber(),AppConstants.ACTION_NEW_USER_ADDED);
-        return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language),Collections.singletonList(dhUserDetails));
+        return new Response<>(true,201,dhUserDetails.getFirstName()+" Sir",Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_REGISTERED,language),Collections.singletonList(dhUserDetails));
     }
 
     @Override

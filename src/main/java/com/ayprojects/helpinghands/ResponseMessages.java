@@ -14,9 +14,9 @@ public class ResponseMessages {
     public String HI_USER_ADDRESS_IS_EMPTY = "पते का विवरण गायब है ! लेटिट्यूड एंड लॉन्गिट्यूड अनिवार्य है ।";
 
 
-    public String EN_USER_REGISTERED = "User has been registered successfully.";
-    public String MR_USER_REGISTERED = "वापरकर्ता यशस्वीरित्या नोंदणीकृत झाला आहे.";
-    public String HI_USER_REGISTERED = "उपयोगकर्ता को सफलतापूर्वक पंजीकृत किया गया है ।";
+    public String EN_USER_REGISTERED = "Welcome to Helping Hands,\nYou are registered successfully.";
+    public String MR_USER_REGISTERED = "हेलपिंग हॅन्ड्समध्ये आपले स्वागत आहे, \nआपण यशस्वीरित्या नोंदणीकृत केले आहात.";
+    public String HI_USER_REGISTERED = "हेल्पिंग हैंड्समे आपका स्वागत है,\nआप सफलतापूर्वक पंजीकृत किया हैं। ।";
 
     public String EN_USER_PASSWORD_IS_EMPTY = "Password is empty!";
     public String MR_USER_PASSWORD_IS_EMPTY = "संकेतशब्द रिक्त आहे!";
