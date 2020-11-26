@@ -180,6 +180,10 @@ public class ResponseMessages {
     public String MR_USER_NOT_FOUND_WITH_MOBILE = "आमच्या अॅप मधे आपण नवीन आहात असे दिसते आहे, कृपया पुढे जा आणि आपले प्रोफाइल तयार करा!";
     public String HI_USER_NOT_FOUND_WITH_MOBILE = "ऐसा लगता है कि आप हमारे अॅप में नए हैं, कृपया आगे बढ़ें और अपना प्रोफ़ाइल बनाएं !";
 
+    public String EN_TYPE_PLACECATEGORY_EMPTY = "Type of place category is missing !";
+    public String MR_TYPE_PLACECATEGORY_EMPTY = "ठिकाण प्रकाराचा प्रकार गहाळ आहे !";
+    public String HI_TYPE_PLACECATEGORY_EMPTY = "स्थान श्रेणी का प्रकार गायब है !";
+
 
 
 }

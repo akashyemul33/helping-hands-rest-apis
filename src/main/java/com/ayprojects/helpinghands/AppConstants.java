@@ -97,6 +97,10 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_MOBILE_IS_EMPTY = "MOBILE_IS_EMPTY";
     public static final String RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE = "USER_FOUND_WITH_MOBILE";
     public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE = "USER_NOT_FOUND_WITH_MOBILE";
+    public static final String TYPE_OF_PLACECATEGORY ="typeOfPlaceCategory" ;
+    public static final String LANG_ENGLISH = "en";
+    public static final String LANG_MARATHI = "mr";
+    public static final String LANG_HINDI = "hi";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
@@ -128,6 +132,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED = "USER_AND_APPCONFIG_DETAILS_FETCHED";
     public static String RESPONSEMESSAGE_EMPTY_BODY = "EMPTY_BODY";
     public static String RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES = "EMPTY_BODY_OR_PLACECATEGORYNAMES";
+    public static String RESPONSEMESSAGE_TYPE_PLACECATEGORY_EMPTY = "TYPE_PLACECATEGORY_EMPTY";
     public static String RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY = "PLACE_CATEGORY_NAMES_EMPTY";
     public static String RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED = "NEW_PLACE_CATEGORY_ADDED";
     public static String RESPONSEMESSAGE_NO_PLACECATEGORIES = "NO_PLACECATEGORIES";

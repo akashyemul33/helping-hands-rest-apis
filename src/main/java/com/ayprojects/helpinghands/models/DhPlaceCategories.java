@@ -4,10 +4,28 @@ import java.util.List;
 
 public class DhPlaceCategories extends AllCommonUsedAttributes {
     private String placeCategoryId;
+    private String typeOfPlaceCategory;//Business or public
     private PlaceCategoryName placeCategoryName;
     private String placeMainCategoryImageId;
     private String placeMainCategoryImagePath;
     private String addedBy;
+    private String langBasedCategoryName;
+
+    public String getLangBasedCategoryName() {
+        return langBasedCategoryName;
+    }
+
+    public void setLangBasedCategoryName(String langBasedCategoryName) {
+        this.langBasedCategoryName = langBasedCategoryName;
+    }
+
+    public String getTypeOfPlaceCategory() {
+        return typeOfPlaceCategory;
+    }
+
+    public void setTypeOfPlaceCategory(String typeOfPlaceCategory) {
+        this.typeOfPlaceCategory = typeOfPlaceCategory;
+    }
 
     public String getAddedBy() {
         return addedBy;
@@ -59,7 +77,7 @@ public class DhPlaceCategories extends AllCommonUsedAttributes {
         this.placeSubCategories = placeSubCategories;
     }
 
-    public DhPlaceCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,String placeCategoryId, PlaceCategoryName placeCategoryName, String placeMainCategoryImageId, String placeMainCategoryImagePath, List<PlaceSubCategories> placeSubCategories,String addedBy) {
+    public DhPlaceCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,String placeCategoryId, PlaceCategoryName placeCategoryName, String placeMainCategoryImageId, String placeMainCategoryImagePath, List<PlaceSubCategories> placeSubCategories,String addedBy,String typeOfPlaceCategory) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
@@ -70,6 +88,7 @@ public class DhPlaceCategories extends AllCommonUsedAttributes {
         this.placeMainCategoryImagePath = placeMainCategoryImagePath;
         this.placeSubCategories = placeSubCategories;
         this.addedBy = addedBy;
+        this.typeOfPlaceCategory = typeOfPlaceCategory;
     }
 
 }

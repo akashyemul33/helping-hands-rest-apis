@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.services.placecategories;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
+import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.lang.invoke.ConstantCallSite;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +48,10 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         LOGGER.info("PlaceCategoryServiceImpl->add : language=" + language);
         if (dhPlaceCategories == null || dhPlaceCategories.getPlaceCategoryName() == null) {
             return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES, language), new ArrayList<>(), 0);
+        }
+
+        if (Utility.isFieldEmpty(dhPlaceCategories.getTypeOfPlaceCategory())) {
+            return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_TYPE_PLACECATEGORY_EMPTY, language), new ArrayList<>(), 0);
         }
 
         if (Utility.isFieldEmpty(dhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish())) {
@@ -94,12 +100,11 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
     }
 
     @Override
-    public Response<DhPlaceCategories> findAllByStatus(Authentication authentication, HttpHeaders httpHeaders, String status, String version) {
+    public Response<DhPlaceCategories> findAllByStatus(Authentication authentication, HttpHeaders httpHeaders, String version) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PlaceCategoryServiceImpl->findAllByStatus : language=" + language);
-        String findWithStatus = Utility.isFieldEmpty(status) ? AppConstants.STATUS_ACTIVE : status;
 
-        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(findWithStatus, "i"));
+        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query, DhPlaceCategories.class);
         if (dhPlaceCategoriesList == null) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES, language), new ArrayList<>(), 0);
@@ -149,5 +154,31 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         mongoTemplate.updateFirst(queryFindCategoryWithId, mainCategoryUpdate, DhPlaceCategories.class);
         utility.addLog(authentication.getName(), "New sub category [" + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish() + "] has been added under [" + queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish() + "].");
         return new Response<PlaceSubCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED, language), Collections.singletonList(placeSubCategory), 1);
+    }
+
+    @Override
+    public Response<DhPlaceCategories> findByTypeOfCategory(Authentication authentication, HttpHeaders httpHeaders, String version, String typeOfPlaceCategory) {
+        String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("PlaceCategoryServiceImpl->findByTypeOfCategory : language=" + language);
+
+        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE , "i"));
+        query.addCriteria(Criteria.where(AppConstants.TYPE_OF_PLACECATEGORY).regex(typeOfPlaceCategory,"i"));
+        List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query, DhPlaceCategories.class);
+        if (dhPlaceCategoriesList.size() == 0) {
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES, language), new ArrayList<>(), 0);
+        } else {
+            for(int i=0;i<dhPlaceCategoriesList.size();i++){
+                //TODO send output according to lang
+                dhPlaceCategoriesList.get(i).setLangBasedCategoryName(dhPlaceCategoriesList.get(i).getPlaceCategoryName().getPlacecategorynameInEnglish());
+                if(dhPlaceCategoriesList.get(i).getPlaceSubCategories()!=null){
+                    List<PlaceSubCategories> placeSubCategoriesList = dhPlaceCategoriesList.get(i).getPlaceSubCategories();
+                    for(int j=0;j<placeSubCategoriesList.size();j++){
+                        dhPlaceCategoriesList.get(i).getPlaceSubCategories().get(j).setLangBasedSubCategoryName(placeSubCategoriesList.get(j).getPlaceSubCategoryName().getPlacesubcategorynameInEnglish());
+                    }
+                }
+
+            }
+            return new Response<DhPlaceCategories>(true, 200, dhPlaceCategoriesList.size() + " place categories found .", dhPlaceCategoriesList, dhPlaceCategoriesList.size());
+        }
     }
 }

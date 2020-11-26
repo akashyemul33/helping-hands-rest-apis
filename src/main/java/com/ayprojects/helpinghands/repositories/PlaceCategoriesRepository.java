@@ -11,4 +11,5 @@ public interface PlaceCategoriesRepository extends MongoRepository<DhPlaceCatego
     Optional<DhPlaceCategories> findByStatus(String status);
     Optional<List<DhPlaceCategories>> findAllByStatus(String status);
     Optional<DhPlaceCategories> findByPlaceCategoryNamePlacecategorynameInEnglish(String placecategorynameInEnglish);
+    Optional<DhPlaceCategories> findByTypeOfPlaceCategoryAndStatus(String typeOfPlaceCategory,String status);
 }

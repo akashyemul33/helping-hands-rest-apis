@@ -6,6 +6,15 @@ public class PlaceSubCategories extends AllCommonUsedAttributes {
     private String placeSubCategoryImageId;
     private String placeSubCategoryImagePath;
     private String addedBy;
+    private String langBasedSubCategoryName;
+
+    public String getLangBasedSubCategoryName() {
+        return langBasedSubCategoryName;
+    }
+
+    public void setLangBasedSubCategoryName(String langBasedSubCategoryName) {
+        this.langBasedSubCategoryName = langBasedSubCategoryName;
+    }
 
     public String getAddedBy() {
         return addedBy;
