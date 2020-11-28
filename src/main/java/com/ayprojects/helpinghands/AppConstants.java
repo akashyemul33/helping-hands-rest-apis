@@ -98,9 +98,9 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE = "USER_FOUND_WITH_MOBILE";
     public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE = "USER_NOT_FOUND_WITH_MOBILE";
     public static final String TYPE_OF_PLACECATEGORY ="typeOfPlaceCategory" ;
-    public static final String LANG_ENGLISH = "en";
-    public static final String LANG_MARATHI = "mr";
-    public static final String LANG_HINDI = "hi";
+    public static final String LANG_ENGLISH = "EN";
+    public static final String LANG_MARATHI = "MR";
+    public static final String LANG_HINDI = "HI";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };

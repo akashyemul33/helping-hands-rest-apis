@@ -1,17 +1,14 @@
 package com.ayprojects.helpinghands.services.products;
 
 import com.ayprojects.helpinghands.AppConstants;
-import com.ayprojects.helpinghands.dao.products.ProductDao;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
-import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
+import com.ayprojects.helpinghands.models.ProductName;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.tools.Utility;
 
-import org.bson.AbstractBsonReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -23,9 +20,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-import javax.rmi.CORBA.Util;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -39,6 +33,11 @@ public class ProductsServiceImpl implements ProductsService{
     MongoTemplate mongoTemplate;
 
     @Override
+    public Response<DhProduct> addProducts(Authentication authentication, HttpHeaders httpHeaders, List<DhProduct> dhProducts, String version) throws ServerSideException {
+        return null;
+    }
+
+    @Override
     public Response<DhProduct> addProduct(Authentication authentication, HttpHeaders httpHeaders, DhProduct dhProduct, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("ProductsServiceImpl->addProduct : language=" + language);
@@ -46,6 +45,7 @@ public class ProductsServiceImpl implements ProductsService{
         if (dhProduct == null || dhProduct.getProductName() == null) {
             return new Response<DhProduct>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY_OR_PRODUCTNAMES, language), new ArrayList<>(), 0);
         }
+
 
         if(Utility.isFieldEmpty(dhProduct.getMainPlaceCategoryId()) || Utility.isFieldEmpty(dhProduct.getSubPlaceCategoryId())){
             return new Response<DhProduct>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CATEGORY_IDS_MISSING, language), new ArrayList<>(), 0);
@@ -88,7 +88,8 @@ public class ProductsServiceImpl implements ProductsService{
     @Override
     public Response<DhProduct> findProductsBySubCategoryId(Authentication authentication, HttpHeaders httpHeaders, String subPlaceCategoryId, String version) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
-        LOGGER.info("ProductsServiceImpl->findProductsBySubCategoryId : language=" + language);
+        LOGGER.info("ProductsServiceImpl->findProductsBySubCategoryId : language=" + language+" default lang="+AppConstants.LANG_ENGLISH);
+        if(Utility.isFieldEmpty(language))language = AppConstants.LANG_ENGLISH;
 
         if(Utility.isFieldEmpty(subPlaceCategoryId)){
             return new Response<DhProduct>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), 0);
@@ -99,7 +100,37 @@ public class ProductsServiceImpl implements ProductsService{
         if(dhProductList==null || dhProductList.size()==0){
             return new Response<DhProduct>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID,language),new ArrayList<>(),0);
         }
+
+        //append lang based name to each product before sending response back
+            switch (language){
+                case AppConstants.LANG_ENGLISH:
+                    for(int i=0;i<dhProductList.size();i++)
+                    {
+                        ProductName productName=dhProductList.get(i).getProductName();
+                        if(productName!=null){
+                            dhProductList.get(i).setLangBasedProductName(productName.getProductnameInEnglish());
+                        }
+                    }
+                    break;
+                case AppConstants.LANG_MARATHI:
+                    for(int i=0;i<dhProductList.size();i++)
+                    {
+                        ProductName productName=dhProductList.get(i).getProductName();
+                        if(productName!=null){
+                            dhProductList.get(i).setLangBasedProductName(productName.getProductnameInMarathi());
+                        }
+                    }
+                    break;
+                case AppConstants.LANG_HINDI:
+                    for(int i=0;i<dhProductList.size();i++)
+                    {
+                        ProductName productName=dhProductList.get(i).getProductName();
+                        if(productName!=null){
+                            dhProductList.get(i).setLangBasedProductName(productName.getProductnameInHindi());
+                        }
+                    }
+                    break;
+            }
         return new Response<DhProduct>(true,200,AppConstants.QUERY_SUCCESSFUL,dhProductList,dhProductList.size());
     }
-
 }

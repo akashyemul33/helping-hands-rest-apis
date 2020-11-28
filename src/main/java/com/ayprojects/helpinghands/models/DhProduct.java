@@ -11,6 +11,24 @@ public class DhProduct extends AllCommonUsedAttributes {
     private String addedBy;
     private ProductName productName;
     private double avgPrice;
+    private String userEnteredProductName;
+    private String langBasedProductName;
+
+    public String getLangBasedProductName() {
+        return langBasedProductName;
+    }
+
+    public void setLangBasedProductName(String langBasedProductName) {
+        this.langBasedProductName = langBasedProductName;
+    }
+
+    public String getUserEnteredProductName() {
+        return userEnteredProductName;
+    }
+
+    public void setUserEnteredProductName(String userEnteredProductName) {
+        this.userEnteredProductName = userEnteredProductName;
+    }
 
     public String getAddedBy() {
         return addedBy;
@@ -92,7 +110,7 @@ public class DhProduct extends AllCommonUsedAttributes {
         this.avgPrice = avgPrice;
     }
 
-    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String productImageId, String productImagePath, String defaultUnit, String mainPlaceCategoryId, String subPlaceCategoryId, String categoryName, ProductName productName, double avgPrice,String addedBy) {
+    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String productImageId, String productImagePath, String defaultUnit, String mainPlaceCategoryId, String subPlaceCategoryId, String categoryName, ProductName productName, double avgPrice,String addedBy,String userEnteredProductName,String langBasedProductName) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
@@ -107,6 +125,8 @@ public class DhProduct extends AllCommonUsedAttributes {
         this.avgPrice = avgPrice;
         this.subPlaceCategoryId = subPlaceCategoryId;
         this.addedBy = addedBy;
+        this.userEnteredProductName = userEnteredProductName;
+        this.langBasedProductName = langBasedProductName;
     }
 }
 
