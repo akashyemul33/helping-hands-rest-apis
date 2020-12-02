@@ -75,7 +75,11 @@ public class AppConstants {
     public static final String PLACE_CONTACT = "placeContact";
     public static final String MOBILE = "mobile";
     public static final String EMAIL = "email";
-    public static final String PLACE_AVAILABLITY_DAYS = "placeAvailablityDays";
+    public static final String PLACE_OPENING_TIME = "placeOpeningTime";
+    public static final String PLACE_CLOSING_TIME ="placeClosingTime";
+    public static final String LUNCH_START_TIME = "lunchStartTime";
+    public static final String LUNCH_END_TIME = "lunchEndTime";
+    public static final String PLACE_AVAILABLITY_DETAILS = "placeAvailablityDetails";
     public static final String POST_TITLE = "postTitle";
     public static final String ADDRESS_DETAILS = "addressDetails";
     public static final String MAIN_PLACE_INITIAL_ID = "M_PLS_CTGRY_";
@@ -101,6 +105,8 @@ public class AppConstants {
     public static final String LANG_ENGLISH = "EN";
     public static final String LANG_MARATHI = "MR";
     public static final String LANG_HINDI = "HI";
+    public static final String PLACE_SUB_CATEGORY_NAME = "placeSubCategoryName";
+    public static final String PRODUCT_DETAILS = "productDetails";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };

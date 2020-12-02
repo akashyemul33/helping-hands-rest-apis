@@ -130,6 +130,7 @@ public class Utility {
     }
 
     public AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {
+        if(obj==null)obj = new AllCommonUsedAttributes();
         obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         obj.setCreatedDateTime(currentDateTimeInUTC());
         obj.setModifiedDateTime(currentDateTimeInUTC());

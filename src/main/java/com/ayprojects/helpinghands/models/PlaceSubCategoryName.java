@@ -5,6 +5,10 @@ public class PlaceSubCategoryName{
     private String placesubcategorynameInMarathi;
     private String placesubcategorynameInHindi;
 
+    public PlaceSubCategoryName(String nameInEnglish) {
+        this.placesubcategorynameInEnglish = nameInEnglish;
+    }
+
     public String getPlacesubcategorynameInEnglish() {
         return placesubcategorynameInEnglish;
     }

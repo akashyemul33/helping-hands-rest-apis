@@ -1,16 +1,16 @@
 package com.ayprojects.helpinghands.models;
 
-class ProductsWithPrices {
-    private String productPrice;
+public class ProductsWithPrices {
+    private double productPrice;
     private String selectedUnit;
     private ProductName productName;
     private String productId;
 
-    public String getProductPrice() {
+    public double getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(String productPrice) {
+    public void setProductPrice(double productPrice) {
         this.productPrice = productPrice;
     }
 
@@ -38,7 +38,7 @@ class ProductsWithPrices {
         this.productId = productId;
     }
 
-    public ProductsWithPrices(String productPrice, String selectedUnit, ProductName productName, String productId) {
+    public ProductsWithPrices(double productPrice, String selectedUnit, ProductName productName, String productId) {
         this.productPrice = productPrice;
         this.selectedUnit = selectedUnit;
         this.productName = productName;

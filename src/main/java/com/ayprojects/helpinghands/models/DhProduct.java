@@ -14,6 +14,10 @@ public class DhProduct extends AllCommonUsedAttributes {
     private String userEnteredProductName;
     private String langBasedProductName;
 
+    public DhProduct() {
+
+    }
+
     public String getLangBasedProductName() {
         return langBasedProductName;
     }
