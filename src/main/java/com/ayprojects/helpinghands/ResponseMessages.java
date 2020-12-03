@@ -92,9 +92,9 @@ public class ResponseMessages {
     public String MR_EMPTY_BODY_OR_PRODUCTNAMES = "इनपुट तपशील किंवा उत्पादनांची नावे गहाळ आहेत !";
     public String HI_EMPTY_BODY_OR_PRODUCTNAMES = "इनपुट विवरण या उत्पाद नाम गायब हैं !";
 
-    public String EN_PRODUCT_NAMES_EMPTY = "Please provide product names & name in english is compulsory !";
-    public String MR_PRODUCT_NAMES_EMPTY = "कृपया उत्पादनांची नावे द्या आणि इंग्रजीतील नाव अनिवार्य आहे !";
-    public String HI_PRODUCT_NAMES_EMPTY = "कृपया उत्पाद नाम प्रदान करें और अंग्रेजी में नाम अनिवार्य है !";
+    public String EN_PRODUCT_NAMES_EMPTY = "Please provide product name !";
+    public String MR_PRODUCT_NAMES_EMPTY = "कृपया उत्पादनांची नावे द्या !";
+    public String HI_PRODUCT_NAMES_EMPTY = "कृपया उत्पाद नाम प्रदान करें !";
 
     public String EN_CATEGORY_IDS_MISSING = "Main place category or sub place category id's are missing !";
     public String MR_CATEGORY_IDS_MISSING = "मुख्य ठिकाण श्रेणी किंवा उप-स्थान श्रेणी आयडी गहाळ आहेत !";

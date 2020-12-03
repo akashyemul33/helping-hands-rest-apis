@@ -108,7 +108,7 @@ public class Validations {
 
         if (dhPlace.getPlaceAddress() == null) missingFieldsList.add(AppConstants.PLACE_ADDRESS);
         else {
-            if (!dhPlace.isAddressGenerated()) {
+            if (dhPlace.isAddressGenerated()) {
                 if (dhPlace.getPlaceAddress().getLat() == 0)
                     missingFieldsList.add(AppConstants.LATTITUDE);
                 if (dhPlace.getPlaceAddress().getLng() == 0)
@@ -123,9 +123,6 @@ public class Validations {
         else {
             if (Utility.isFieldEmpty(dhPlace.getPlaceContact().getMobile())) {
                 missingFieldsList.add(AppConstants.MOBILE);
-            }
-            if (Utility.isFieldEmpty(dhPlace.getPlaceContact().getEmail())) {
-                missingFieldsList.add(AppConstants.EMAIL);
             }
         }
         if (dhPlace.getOwnerName() == null) missingFieldsList.add(AppConstants.OWNER_NAME);

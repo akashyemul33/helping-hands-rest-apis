@@ -61,4 +61,7 @@ public class ProductsWithPrices {
         this.userEnteredProductName = userEnteredProductName;
         this.productId = productId;
     }
+
+    public ProductsWithPrices() {
+    }
 }

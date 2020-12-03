@@ -107,6 +107,9 @@ public class AppConstants {
     public static final String LANG_HINDI = "HI";
     public static final String PLACE_SUB_CATEGORY_NAME = "placeSubCategoryName";
     public static final String PRODUCT_DETAILS = "productDetails";
+    public static final String KEY_PRODUCTNAME_ENG = "productnameInEnglish";
+    public static final String KEY_PRODUCTNAME_MR = "productnameInMarathi";
+    public static final String KEY_PRODUCTNAME_HI = "productnameInHindi";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };

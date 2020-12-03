@@ -112,12 +112,15 @@ public class PlaceServiceImpl implements PlaceService {
                 dhProduct.setAvgPrice(Double.parseDouble(p.getProductPrice()));
                 dhProduct.setMainPlaceCategoryId(dhPlace.getPlaceMainCategoryId());
                 dhProduct.setProductId(Utility.getUUID());
+                LOGGER.info("addPlace->productname=" + p.getUserEnteredProductName());
                 dhProduct.setUserEnteredProductName(p.getUserEnteredProductName());
                 dhProduct.setSubPlaceCategoryId(dhPlace.getPlaceSubCategoryId());
-                Response<DhProduct> addProductResp = productsService.addProduct(authentication, httpHeaders, new DhProduct(), version);
+                Response<DhProduct> addProductResp = productsService.addProduct(authentication, httpHeaders, dhProduct, version);
                 if (addProductResp.getStatusCode() == 201) {
                     LOGGER.info("PlaceServiceImpl->Added product");
                     p.setProductId(dhProduct.getProductId());
+                } else {
+                    return new Response<DhPlace>(false, 402, addProductResp.getMessage(), new ArrayList<>(), 0);
                 }
             }
         }
