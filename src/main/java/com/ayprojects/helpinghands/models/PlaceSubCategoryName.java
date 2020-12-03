@@ -38,4 +38,7 @@ public class PlaceSubCategoryName{
     public void setPlacesubcategorynameInHindi(String placesubcategorynameInHindi) {
         this.placesubcategorynameInHindi = placesubcategorynameInHindi;
     }
+
+    public PlaceSubCategoryName() {
+    }
 }

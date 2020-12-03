@@ -109,10 +109,10 @@ public class PlaceServiceImpl implements PlaceService {
                 dhProduct.setStatus(AppConstants.STATUS_PENDING);
                 dhProduct.setCategoryName(dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName());
                 dhProduct.setDefaultUnit(p.getSelectedUnit());
-                dhProduct.setAvgPrice(p.getProductPrice());
+                dhProduct.setAvgPrice(Double.parseDouble(p.getProductPrice()));
                 dhProduct.setMainPlaceCategoryId(dhPlace.getPlaceMainCategoryId());
                 dhProduct.setProductId(Utility.getUUID());
-                dhProduct.setProductName(p.getProductName());
+                dhProduct.setUserEnteredProductName(p.getUserEnteredProductName());
                 dhProduct.setSubPlaceCategoryId(dhPlace.getPlaceSubCategoryId());
                 Response<DhProduct> addProductResp = productsService.addProduct(authentication, httpHeaders, new DhProduct(), version);
                 if (addProductResp.getStatusCode() == 201) {
