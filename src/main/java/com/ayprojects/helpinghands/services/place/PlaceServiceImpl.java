@@ -93,7 +93,7 @@ public class PlaceServiceImpl implements PlaceService {
             placeSubCategories.setStatus(AppConstants.STATUS_PENDING);
             placeSubCategories.setPlaceSubCategoryId(Utility.getUUID());
             placeSubCategories.setAddedBy(dhPlace.getAddedBy());
-            placeSubCategories.setPlaceSubCategoryName(new PlaceSubCategoryName(dhPlace.getPlaceSubCategoryName()));
+            placeSubCategories.setDefaultName(dhPlace.getPlaceSubCategoryName());
             Response<PlaceSubCategories> addPlaceCategoryResp = placeCategoryService.addPlaceSubCategory(authentication, httpHeaders, placeSubCategories, dhPlace.getPlaceMainCategoryId(), version);
             if (addPlaceCategoryResp.getStatusCode() == 201) {
                 LOGGER.info("PlaceServiceImpl->Added sub category");

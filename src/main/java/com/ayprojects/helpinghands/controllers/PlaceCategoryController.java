@@ -1,6 +1,5 @@
 package com.ayprojects.helpinghands.controllers;
 
-import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
@@ -16,11 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
 import io.swagger.annotations.Api;
 
@@ -52,7 +49,7 @@ public class PlaceCategoryController {
 
     @GetMapping(value = "/getAllActivePlaceCategoriesByType")
     ResponseEntity<Response<DhPlaceCategories>> getAllActivePlaceCategoriesByType(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@PathVariable String version,@RequestParam String typeOfPlaceCategory){
-        return new ResponseEntity<>(placeCategoryService.findByTypeOfCategory(authentication,httpHeaders,version,typeOfPlaceCategory), HttpStatus.OK);
+        return new ResponseEntity<>(placeCategoryService.getAllPlaceCategoriesByType(authentication,httpHeaders,version,typeOfPlaceCategory), HttpStatus.OK);
     }
 
 }

@@ -17,5 +17,5 @@ public interface PlaceCategoryService {
     Response<DhPlaceCategories> findByStatus(Authentication authentication,HttpHeaders httpHeaders,String status);
     Response<DhPlaceCategories> findAllByStatus(Authentication authentication, HttpHeaders httpHeaders,String version);
     Response<PlaceSubCategories> addPlaceSubCategory(Authentication authentication, HttpHeaders httpHeaders, PlaceSubCategories placeSubCategories,String mainPlaceCategoryId,String version);
-    Response<DhPlaceCategories> findByTypeOfCategory(Authentication authentication, HttpHeaders httpHeaders,String version,String typeOfPlaceCategory);
+    Response<DhPlaceCategories> getAllPlaceCategoriesByType(Authentication authentication, HttpHeaders httpHeaders, String version, String typeOfPlaceCategory);
 }

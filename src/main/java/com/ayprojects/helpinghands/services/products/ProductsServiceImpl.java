@@ -85,11 +85,11 @@ public class ProductsServiceImpl implements ProductsService {
             if (placeSubCategory.getPlaceSubCategoryId().equalsIgnoreCase(dhProduct.getSubPlaceCategoryId())) {
                 dhProduct.setAddedBy(dhProduct.getAddedBy());
                 dhProduct.setProductId(Utility.getUUID());
-                dhProduct.setCategoryName(queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish() + "->" + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish());
+                dhProduct.setCategoryName(queriedDhPlaceCategories.getDefaultName() + "->" + placeSubCategory.getDefaultName());
                 dhProduct = (DhProduct) utility.setCommonAttrs(dhProduct, AppConstants.STATUS_PENDING);
                 mongoTemplate.save(dhProduct, AppConstants.COLLECTION_DH_PRODUCT);
-                utility.addLog(authentication.getName(), "Product [" + dhProduct.getUserEnteredProductName() + "] has been added under [" + queriedDhPlaceCategories.getPlaceCategoryName().getPlacecategorynameInEnglish() + "->" + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish() + "].");
-                String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PRODUCT_ADDED, language) + " ProductName:" + dhProduct.getUserEnteredProductName() + " -> " + placeSubCategory.getPlaceSubCategoryName().getPlacesubcategorynameInEnglish();
+                utility.addLog(authentication.getName(), "Product [" + dhProduct.getUserEnteredProductName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "->" + placeSubCategory.getDefaultName() + "].");
+                String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PRODUCT_ADDED, language) + " ProductName:" + dhProduct.getUserEnteredProductName() + " -> " + placeSubCategory.getDefaultName();
                 return new Response<DhProduct>(true, 201, resMsg, Collections.singletonList(dhProduct), 1);
             }
             String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID, language) + " PlaceSubCategoryId:" + dhProduct.getSubPlaceCategoryId();

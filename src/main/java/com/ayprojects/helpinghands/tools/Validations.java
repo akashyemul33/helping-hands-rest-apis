@@ -2,15 +2,21 @@ package com.ayprojects.helpinghands.tools;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.DhPlace;
+import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhViews;
+import com.ayprojects.helpinghands.models.PlaceSubCategories;
 
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ayprojects.helpinghands.AppConstants.ADDED_BY;
+import static com.ayprojects.helpinghands.AppConstants.DEFAULT_NAME;
+import static com.ayprojects.helpinghands.AppConstants.TYPE_OF_PLACE_CATEGORY;
 
 @Service
 public class Validations {
@@ -169,6 +175,37 @@ public class Validations {
         }
         if (Utility.isFieldEmpty(dhPosts.getPostTitle()))
             missingFieldsList.add(AppConstants.POST_TITLE);
+        return missingFieldsList;
+    }
+
+    public static List<String> findMissingFieldsForMainPlaceCategory(DhPlaceCategories dhPlaceCategories) {
+        List<String> missingFieldsList = new ArrayList<>();
+        if (dhPlaceCategories == null) return missingFieldsList;
+
+        if (Utility.isFieldEmpty(dhPlaceCategories.getTypeOfPlaceCategory())) {
+            missingFieldsList.add(TYPE_OF_PLACE_CATEGORY);
+        }
+
+        if (Utility.isFieldEmpty(dhPlaceCategories.getAddedBy())) {
+            missingFieldsList.add(ADDED_BY);
+        }
+
+        if (Utility.isFieldEmpty(dhPlaceCategories.getDefaultName())) {
+            missingFieldsList.add(DEFAULT_NAME);
+        }
+        return missingFieldsList;
+    }
+
+    public static List<String> findMissingFieldsForSubPlaceCategory(PlaceSubCategories placeSubCategory, String mainPlaceCategoryId) {
+        List<String> missingFieldsList = new ArrayList<>();
+        if (placeSubCategory == null) return missingFieldsList;
+
+        if (Utility.isFieldEmpty(mainPlaceCategoryId))
+            missingFieldsList.add(AppConstants.PLACE_MAIN_CATEGORY_ID);
+
+        if (Utility.isFieldEmpty(placeSubCategory.getDefaultName())) {
+            missingFieldsList.add(DEFAULT_NAME);
+        }
         return missingFieldsList;
     }
 }

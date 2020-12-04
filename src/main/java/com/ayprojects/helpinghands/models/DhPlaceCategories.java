@@ -5,18 +5,42 @@ import java.util.List;
 public class DhPlaceCategories extends AllCommonUsedAttributes {
     private String placeCategoryId;
     private String typeOfPlaceCategory;//Business or public
-    private PlaceCategoryName placeCategoryName;
     private String placeMainCategoryImageId;
     private String placeMainCategoryImagePath;
     private String addedBy;
-    private String langBasedCategoryName;
+    private String defaultName;
+    private List<LangValueObj> translations;
+    private List<PlaceSubCategories> placeSubCategories;
 
-    public String getLangBasedCategoryName() {
-        return langBasedCategoryName;
+    public DhPlaceCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeCategoryId, String typeOfPlaceCategory, String placeMainCategoryImageId, String placeMainCategoryImagePath, String addedBy, String defaultName, List<LangValueObj> translations, List<PlaceSubCategories> placeSubCategories) {
+        this.schemaVersion = schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime = modifiedDateTime;
+        this.status = status;
+        this.placeCategoryId = placeCategoryId;
+        this.typeOfPlaceCategory = typeOfPlaceCategory;
+        this.placeMainCategoryImageId = placeMainCategoryImageId;
+        this.placeMainCategoryImagePath = placeMainCategoryImagePath;
+        this.addedBy = addedBy;
+        this.defaultName = defaultName;
+        this.translations = translations;
+        this.placeSubCategories = placeSubCategories;
     }
 
-    public void setLangBasedCategoryName(String langBasedCategoryName) {
-        this.langBasedCategoryName = langBasedCategoryName;
+    public String getDefaultName() {
+        return defaultName;
+    }
+
+    public void setDefaultName(String defaultName) {
+        this.defaultName = defaultName;
+    }
+
+    public List<LangValueObj> getTranslations() {
+        return translations;
+    }
+
+    public void setTranslations(List<LangValueObj> t) {
+        this.translations = t;
     }
 
     public String getTypeOfPlaceCategory() {
@@ -35,22 +59,12 @@ public class DhPlaceCategories extends AllCommonUsedAttributes {
         this.addedBy = addedBy;
     }
 
-    private List<PlaceSubCategories> placeSubCategories;
-
     public String getPlaceCategoryId() {
         return placeCategoryId;
     }
 
     public void setPlaceCategoryId(String placeCategoryId) {
         this.placeCategoryId = placeCategoryId;
-    }
-
-    public PlaceCategoryName getPlaceCategoryName() {
-        return placeCategoryName;
-    }
-
-    public void setPlaceCategoryName(PlaceCategoryName placeCategoryName) {
-        this.placeCategoryName = placeCategoryName;
     }
 
     public String getPlaceMainCategoryImageId() {
@@ -76,19 +90,4 @@ public class DhPlaceCategories extends AllCommonUsedAttributes {
     public void setPlaceSubCategories(List<PlaceSubCategories> placeSubCategories) {
         this.placeSubCategories = placeSubCategories;
     }
-
-    public DhPlaceCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,String placeCategoryId, PlaceCategoryName placeCategoryName, String placeMainCategoryImageId, String placeMainCategoryImagePath, List<PlaceSubCategories> placeSubCategories,String addedBy,String typeOfPlaceCategory) {
-        this.schemaVersion =schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime =modifiedDateTime;
-        this.status=status;
-        this.placeCategoryId = placeCategoryId;
-        this.placeCategoryName = placeCategoryName;
-        this.placeMainCategoryImageId = placeMainCategoryImageId;
-        this.placeMainCategoryImagePath = placeMainCategoryImagePath;
-        this.placeSubCategories = placeSubCategories;
-        this.addedBy = addedBy;
-        this.typeOfPlaceCategory = typeOfPlaceCategory;
-    }
-
 }
