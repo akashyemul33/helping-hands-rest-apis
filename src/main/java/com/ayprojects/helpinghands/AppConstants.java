@@ -63,7 +63,6 @@ public class AppConstants {
     public static final int LIMIT_POSTS_IN_PLACES = 3;
     public static final String PUBLIC_REQUIREMENT ="PublicRequirement" ;
     public static final String ADDED_BY = "addedBy";
-    public static final String PLACE_MAIN_CATEGORY_ID = "placeMainCategoryId";
     public static final String PLACE_SUB_CATEGORY_ID = "placeSubCategoryId";
     public static final String PLACE_NAME = "placeName";
     public static final String PLACE_TYPE = "placeType";
@@ -112,6 +111,8 @@ public class AppConstants {
     public static final String KEY_PRODUCTNAME_HI = "productnameInHindi";
     public static final String TYPE_OF_PLACE_CATEGORY = "typeOfPlaceCategory";
     public static final String DEFAULT_NAME = "defaultName";
+    public static final String TRANSLATIONS = "translations";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY ="UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY" ;
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };

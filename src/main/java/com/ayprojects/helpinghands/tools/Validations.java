@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhViews;
@@ -87,11 +88,9 @@ public class Validations {
         if (Utility.isFieldEmpty(dhPlace.getPlaceId()))
             missingFieldsList.add(AppConstants.PLACE_ID);
         if (Utility.isFieldEmpty(dhPlace.getPlaceMainCategoryId()))
-            missingFieldsList.add(AppConstants.PLACE_MAIN_CATEGORY_ID);
+            missingFieldsList.add(AppConstants.PLACE_CATEGORY_ID);
         if (Utility.isFieldEmpty(dhPlace.getPlaceCategoryName()))
             missingFieldsList.add(AppConstants.PLACE_CATEGORY_NAME);
-        if (Utility.isFieldEmpty(dhPlace.getPlaceSubCategoryId()))
-            missingFieldsList.add(AppConstants.PLACE_SUB_CATEGORY_NAME);
         if (Utility.isFieldEmpty(dhPlace.getPlaceName()))
             missingFieldsList.add(AppConstants.PLACE_NAME);
         if (Utility.isFieldEmpty(dhPlace.getPlaceType()))
@@ -201,9 +200,26 @@ public class Validations {
         if (placeSubCategory == null) return missingFieldsList;
 
         if (Utility.isFieldEmpty(mainPlaceCategoryId))
-            missingFieldsList.add(AppConstants.PLACE_MAIN_CATEGORY_ID);
+            missingFieldsList.add(AppConstants.PLACE_CATEGORY_ID);
 
         if (Utility.isFieldEmpty(placeSubCategory.getDefaultName())) {
+            missingFieldsList.add(DEFAULT_NAME);
+        }
+        return missingFieldsList;
+    }
+
+    public static List<String> findMissingFieldsForProducts(DhProduct dhProduct) {
+        List<String> missingFieldsList = new ArrayList<>();
+        if (dhProduct == null) return missingFieldsList;
+
+        if (Utility.isFieldEmpty(dhProduct.getMainPlaceCategoryId()))
+            missingFieldsList.add(AppConstants.PLACE_CATEGORY_ID);
+
+        if (Utility.isFieldEmpty(dhProduct.getSubPlaceCategoryId())) {
+            missingFieldsList.add(AppConstants.PLACE_SUB_CATEGORY_ID);
+        }
+
+        if (Utility.isFieldEmpty(dhProduct.getDefaultName())) {
             missingFieldsList.add(DEFAULT_NAME);
         }
         return missingFieldsList;

@@ -1,5 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+
 public class LangValueObj {
     private String lang;
     private String value;

@@ -1,5 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+
 import java.util.List;
 
 public class PlaceSubCategories extends AllCommonUsedAttributes {

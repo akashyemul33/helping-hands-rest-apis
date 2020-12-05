@@ -185,5 +185,10 @@ public class ResponseMessages {
     public String HI_TYPE_PLACECATEGORY_EMPTY = "स्थान श्रेणी का प्रकार गायब है !";
 
 
+    public String EN_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "Unable to add place, please choose subcategory again !";
+    public String MR_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "जागा जोडण्यात अक्षम, कृपया पुन्हा उपश्रेणी निवडा !";
+    public String HI_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "स्थान जोड़ने में असमर्थ, कृपया फिर से उपश्रेणी चुनें !";
+
+
 
 }
