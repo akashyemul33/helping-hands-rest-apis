@@ -116,9 +116,17 @@ public class ResponseMessages {
     public String MR_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "दिलेल्या ठिकाणी उप श्रेणी आयडीसाठी कोणतीही सक्रिय उत्पादने आढळली नाहीत !";
     public String HI_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "दिए गए उप श्रेणी आईडी के लिए कोई सक्रिय उत्पाद नहीं मिला !";
 
-    public String EN_NEW_PLACE_ADDED = "New place has been added successfully !";
-    public String MR_NEW_PLACE_ADDED = "नवीन जागा यशस्वीरित्या जोडली गेली आहे !";
-    public String HI_NEW_PLACE_ADDED = "नई जगह को सफलतापूर्वक जोड़ा गया है !";
+    public String EN_NEW_PLACE_ADDED_WITH_ACTIVE = "New place has been added successfully, your people can watch it in places section .";
+    public String MR_NEW_PLACE_ADDED_WITH_ACTIVE = "नवीन ठिकाण यशस्वीरित्या जोडले गेले आहे, आपले लोक ते स्थान विभागात पाहू शकतात .";
+    public String HI_NEW_PLACE_ADDED_WITH_ACTIVE = "नई जगह को सफलतापूर्वक जोड़ा गया है, आपके लोग इसे स्थानों के अनुभाग में देख सकते हैं .";
+
+    public String EN_NEW_PLACE_ADDED_WITH_PENDING = "New place has been added successfully, your people can watch it in places section once we approve it .";
+    public String MR_NEW_PLACE_ADDED_WITH_PENDING = "नवीन ठिकाण यशस्वीरित्या जोडले गेले आहे, एकदा आम्ही ते मंजूर केले तेव्हा आपले लोक ते ठिकाणी विभागात पाहू शकतात.";
+    public String HI_NEW_PLACE_ADDED_WITH_PENDING = "नई जगह को सफलतापूर्वक जोड़ दिया गया है, जब हम इसे अनुमोदित कर देंगे तो आपके लोग इसे स्थानों के अनुभाग में देख सकते हैं।";
+
+    public String EN_CONGRATULATIONS = "Congratulations ";
+    public String MR_CONGRATULATIONS = "अभिनंदन ";
+    public String HI_CONGRATULATIONS = "बधाई हो ";
 
     public String EN_NEW_RATING_COMMENT_ADDED = "New rating and comment has been added !";
     public String MR_NEW_RATING_COMMENT_ADDED = "नवीन रेटिंग आणि टिप्पणी जोडली गेली आहे !";
@@ -188,7 +196,6 @@ public class ResponseMessages {
     public String EN_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "Unable to add place, please choose subcategory again !";
     public String MR_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "जागा जोडण्यात अक्षम, कृपया पुन्हा उपश्रेणी निवडा !";
     public String HI_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "स्थान जोड़ने में असमर्थ, कृपया फिर से उपश्रेणी चुनें !";
-
 
 
 }

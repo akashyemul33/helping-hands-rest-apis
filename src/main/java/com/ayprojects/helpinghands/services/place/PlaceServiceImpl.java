@@ -7,16 +7,13 @@ import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
-import com.ayprojects.helpinghands.models.PlaceSubCategoryName;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PlaceRepository;
 import com.ayprojects.helpinghands.services.placecategories.PlaceCategoryService;
-import com.ayprojects.helpinghands.services.placecategories.PlaceCategoryServiceImpl;
 import com.ayprojects.helpinghands.services.products.ProductsService;
 import com.ayprojects.helpinghands.tools.Utility;
 import com.ayprojects.helpinghands.tools.Validations;
-import com.google.gson.Gson;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,23 +26,9 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.lang.invoke.ConstantCallSite;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.rmi.CORBA.Util;
-
-import ch.qos.logback.core.rolling.helper.TimeBasedArchiveRemover;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -73,7 +56,7 @@ public class PlaceServiceImpl implements PlaceService {
         if (dhPlace == null) {
             return new Response<DhPlace>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
-
+        LOGGER.info("PlaceServiceImpl->addPlace : isAddressGenerated=" + dhPlace.isAddressGenerated());
         //check if placeId && placeimages present
         if (Utility.isFieldEmpty(dhPlace.getPlaceId()) || dhPlace.getPlaceImages() == null || dhPlace.getPlaceImages().size() <= 0) {
             dhPlace.setPlaceId(Utility.getUUID());
@@ -107,7 +90,7 @@ public class PlaceServiceImpl implements PlaceService {
                     canProceed = true;
                     break;
                 } else {
-                    if (ps.getTranslations() != null && ps.getTranslations().size()>0) {
+                    if (ps.getTranslations() != null && ps.getTranslations().size() > 0) {
                         for (LangValueObj langValueObj : ps.getTranslations()) {
                             if (dhPlace.getPlaceSubCategoryName().equalsIgnoreCase(langValueObj.getValue())) {
                                 LOGGER.info("sub category found with the translations obj search, it's id is " + ps.getPlaceSubCategoryId() + " name=" + ps.getDefaultName() + " and lang=" + langValueObj.getLang());
@@ -172,6 +155,7 @@ public class PlaceServiceImpl implements PlaceService {
                         queriedDhProduct = (DhProduct) utility.setCommonAttrs(queriedDhProduct, AppConstants.STATUS_ACTIVE);
                         mongoTemplate.save(queriedDhProduct, AppConstants.COLLECTION_DH_PRODUCT);
                         utility.addLog(authentication.getName(), "Product [" + p.getUserEnteredProductName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "->" + dhPlace.getSubscribedUsers() + "].");
+                        p.setProductId(queriedDhProduct.getProductId());
                     } else {
                         LOGGER.info("Found product with name " + p.getUserEnteredProductName() + " productId=" + p.getProductId());
                         p.setProductId(queriedDhProduct.getProductId());
@@ -187,12 +171,16 @@ public class PlaceServiceImpl implements PlaceService {
         mongoTemplate.save(dhPlace, AppConstants.COLLECTION_DH_PLACE);
         utility.addLog(authentication.getName(), "New [" + dhPlace.getPlaceType() + "] place with category [" + dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName() + "] has been added in status " + placeStatus);
         int statusCode = 201;//for active
+        String headingMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CONGRATULATIONS, language);
+        String responseMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE, language);
         if (AppConstants.STATUS_ACTIVE.equalsIgnoreCase(placeStatus)) {
             statusCode = 201;
+            responseMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE, language);
         } else if (AppConstants.STATUS_PENDING.equalsIgnoreCase(placeStatus)) {
             statusCode = 202;//for pending
+            responseMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, language);
         }
-        return new Response<>(true, 202, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED, language), new ArrayList<>(), 1);
+        return new Response<>(true, statusCode, headingMsg, responseMsg, new ArrayList<>());
     }
 
     @Override

@@ -28,7 +28,7 @@ import javax.rmi.CORBA.Util;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Service
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
     @Autowired
     Utility utility;
 
@@ -43,28 +43,27 @@ public class ImageServiceImpl implements ImageService{
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("RequirementsServiceImpl->addRequirements : language=" + language);
 
-        if(image==null){
-            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), 0);
+        if (image == null) {
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
 
         String uniqueUserID = Utility.getUUID();
         String imgUploadFolder = imagesBaseFolder + "/" + uniqueUserID + "/user/";
         String imgPrefix = "USER_" + uniqueUserID + "_";
 
-        if(Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)){
+        if (Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, language), new ArrayList<>());
         }
 
-        LOGGER.info("ImageServiceImpl->uploadImage : imageUploadFolder="+imagesBaseFolder+" imagePrefix = " + imgPrefix);
+        LOGGER.info("ImageServiceImpl->uploadImage : imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
 
         try {
-            String url = utility.uplodImages(imgUploadFolder,new MultipartFile[]{image},imgPrefix).get(0);
-            DhUser dhUser = new DhUser(uniqueUserID,url);
-            utility.addLog(uniqueUserID,"User image has been added");
-            return new Response<DhUser>(true,201,"Image save successfully", Collections.singletonList(dhUser));
-        }
-        catch (IOException ioException){
-            return new Response<>(false,402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG,language),new ArrayList<>());
+            String url = utility.uplodImages(imgUploadFolder, new MultipartFile[]{image}, imgPrefix).get(0);
+            DhUser dhUser = new DhUser(uniqueUserID, url);
+            utility.addLog(uniqueUserID, "User image has been added");
+            return new Response<DhUser>(true, 201, "Image save successfully", Collections.singletonList(dhUser));
+        } catch (IOException ioException) {
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>());
         }
     }
 
@@ -73,32 +72,32 @@ public class ImageServiceImpl implements ImageService{
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("RequirementsServiceImpl->addRequirements : language=" + language);
 
-        if(placeImages==null || Utility.isFieldEmpty(placeType) || Utility.isFieldEmpty(addedBy)){
-            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), 0);
+        if (placeImages == null || Utility.isFieldEmpty(placeType) || Utility.isFieldEmpty(addedBy)) {
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
 
         String imgType = placeType.matches(AppConstants.REGEX_BUSINESS_PLACE) ? "B" : "P";
-        String uinquePlaceId= Utility.getUUID();
+        String uinquePlaceId = Utility.getUUID();
         String imgUploadFolder = imagesBaseFolder + "/" + addedBy + "/places/" + placeType + "/";
         String imgPrefix = imgType + "_PLCS_" + uinquePlaceId + "_";
 
-        if(Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)){
+        if (Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, language), new ArrayList<>());
         }
 
-        LOGGER.info("ImageServiceImpl->uploadPlaceImages : imageType="+placeType+" imageUploadFolder="+imagesBaseFolder+" imagePrefix = " + imgPrefix);
+        LOGGER.info("ImageServiceImpl->uploadPlaceImages : imageType=" + placeType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> placeImageUrls = utility.uplodImages(imgUploadFolder,placeImages,imgPrefix);
+            List<String> placeImageUrls = utility.uplodImages(imgUploadFolder, placeImages, imgPrefix);
             DhPlace dhPlace = new DhPlace();
             dhPlace.setPlaceId(uinquePlaceId);
             dhPlace.setAddedBy(addedBy);
             dhPlace.setPlaceImages(placeImageUrls);
-            utility.addLog(addedBy,"Place images have been added");
-            return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED,language),new ArrayList<>(),1);
-        }
-        catch (IOException ioException){
-            LOGGER.info("ImageServiceImpl->uploadPlaceImages : exception = "+ioException.getMessage());
-            return new Response<>(false,402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES,language),new ArrayList<>());
+            dhPlace.setPlaceType(placeType);
+            utility.addLog(addedBy, "Place images have been added");
+            return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED, language), Collections.singletonList(dhPlace), 1);
+        } catch (IOException ioException) {
+            LOGGER.info("ImageServiceImpl->uploadPlaceImages : exception = " + ioException.getMessage());
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES, language), new ArrayList<>());
         }
     }
 
@@ -107,8 +106,8 @@ public class ImageServiceImpl implements ImageService{
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("ImageServiceImpl->uploadPostImages : language=" + language);
 
-        if(postImages==null || Utility.isFieldEmpty(postType) || Utility.isFieldEmpty(addedBy)){
-            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), 0);
+        if (postImages == null || Utility.isFieldEmpty(postType) || Utility.isFieldEmpty(addedBy)) {
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
 
         String imgType = postType.matches(AppConstants.REGEX_BUSINESS_POST) ? "B" : "P";
@@ -116,23 +115,22 @@ public class ImageServiceImpl implements ImageService{
         String imgUploadFolder = imagesBaseFolder + "/" + addedBy + "/posts/" + postType + "/";
         String imgPrefix = imgType + "_PSTS_" + uinquePostId + "_";
 
-        if(Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)){
+        if (Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, language), new ArrayList<>());
         }
 
-        LOGGER.info("ImageServiceImpl->uploadPostImages : imageType="+postType+" imageUploadFolder="+imagesBaseFolder+" imagePrefix = " + imgPrefix);
+        LOGGER.info("ImageServiceImpl->uploadPostImages : imageType=" + postType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> postImageUrls = utility.uplodImages(imgUploadFolder,postImages,imgPrefix);
+            List<String> postImageUrls = utility.uplodImages(imgUploadFolder, postImages, imgPrefix);
             DhPosts dhPosts = new DhPosts();
             dhPosts.setPostId(uinquePostId);
             dhPosts.setAddedBy(addedBy);
             dhPosts.setPostImages(postImageUrls);
-            utility.addLog(addedBy,"Post images have been added");
-            return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED,language),new ArrayList<>(),1);
-        }
-        catch (IOException ioException){
-            LOGGER.info("ImageServiceImpl->uploadPostImages : exception = "+ioException.getMessage());
-            return new Response<>(false,402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES,language),new ArrayList<>());
+            utility.addLog(addedBy, "Post images have been added");
+            return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED, language), new ArrayList<>(), 1);
+        } catch (IOException ioException) {
+            LOGGER.info("ImageServiceImpl->uploadPostImages : exception = " + ioException.getMessage());
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES, language), new ArrayList<>());
         }
     }
 
@@ -141,8 +139,8 @@ public class ImageServiceImpl implements ImageService{
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("ImageServiceImpl->uploadRequirementImages : language=" + language);
 
-        if(reqImages==null || Utility.isFieldEmpty(reqType) || Utility.isFieldEmpty(addedBy)){
-            return new Response<>(false,402,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY,language),new ArrayList<>(), 0);
+        if (reqImages == null || Utility.isFieldEmpty(reqType) || Utility.isFieldEmpty(addedBy)) {
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
 
         String imgType = reqType.matches(AppConstants.REGEX_BUSINESS_REQUIREMENT) ? "B" : "P";
@@ -150,23 +148,22 @@ public class ImageServiceImpl implements ImageService{
         String imgUploadFolder = imagesBaseFolder + "/" + addedBy + "/requirements/" + reqType + "/";
         String imgPrefix = imgType + "_RQMNTS_" + uinqueReqId + "_";
 
-        if(Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)){
+        if (Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, language), new ArrayList<>());
         }
 
-        LOGGER.info("ImageServiceImpl->uploadRequirementImages : imageType="+reqType+" imageUploadFolder="+imagesBaseFolder+" imagePrefix = " + imgPrefix);
+        LOGGER.info("ImageServiceImpl->uploadRequirementImages : imageType=" + reqType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> reqImageUrls = utility.uplodImages(imgUploadFolder,reqImages,imgPrefix);
+            List<String> reqImageUrls = utility.uplodImages(imgUploadFolder, reqImages, imgPrefix);
             DhRequirements dhRequirements = new DhRequirements();
             dhRequirements.setRequirementId(uinqueReqId);
             dhRequirements.setAddedBy(addedBy);
             dhRequirements.setRequirementImages(reqImageUrls);
-            utility.addLog(addedBy,"Requirement images have been added");
-            return new Response<>(true,201,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED,language),new ArrayList<>(),1);
-        }
-        catch (IOException ioException){
-            LOGGER.info("ImageServiceImpl->uploadRequirementImages : exception = "+ioException.getMessage());
-            return new Response<>(false,402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES,language),new ArrayList<>());
+            utility.addLog(addedBy, "Requirement images have been added");
+            return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED, language), new ArrayList<>(), 1);
+        } catch (IOException ioException) {
+            LOGGER.info("ImageServiceImpl->uploadRequirementImages : exception = " + ioException.getMessage());
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES, language), new ArrayList<>());
         }
     }
 }
