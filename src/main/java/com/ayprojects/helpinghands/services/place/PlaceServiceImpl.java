@@ -203,6 +203,6 @@ public class PlaceServiceImpl implements PlaceService {
         PageRequest paging = PageRequest.of(page, size);
         Page<DhPlace> dhPlacePages = placeRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
         List<DhPlace> dhPlaceList = dhPlacePages.getContent();
-        return new Response<DhPlace>(true, 201, "Query successful", dhPlaceList.size(), dhPlacePages.getNumber(), dhPlacePages.getTotalPages(), dhPlacePages.getTotalElements(), dhPlaceList);
+        return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList.size(), dhPlacePages.getNumber(), dhPlacePages.getTotalPages(), dhPlacePages.getTotalElements(), dhPlaceList);
     }
 }

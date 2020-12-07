@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhProduct;
+import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.ProductName;
 import com.ayprojects.helpinghands.models.Response;
@@ -57,8 +58,9 @@ public class ProductsServiceImpl implements ProductsService {
             return new Response<DhProduct>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 
-        Query queryFindProduct = new Query(Criteria.where(AppConstants.DEFAULT_NAME).regex(dhProduct.getDefaultName(), "i"));
-        queryFindProduct.addCriteria(Criteria.where(AppConstants.TRANSLATIONS + ".value").regex(dhProduct.getDefaultName(), "i"));
+        Query queryFindProduct = new Query(new Criteria().orOperator(Criteria.where(AppConstants.DEFAULT_NAME).regex(dhProduct.getDefaultName(), "i"),
+                Criteria.where(AppConstants.TRANSLATIONS + ".value").regex(dhProduct.getDefaultName(), "i")
+        ));
         DhProduct existingDhProduct = mongoTemplate.findOne(queryFindProduct, DhProduct.class);
         if (existingDhProduct != null) {
             return new Response<DhProduct>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS, language) + " ProductName : " + dhProduct.getDefaultName(), new ArrayList<>(), 1);
@@ -101,9 +103,24 @@ public class ProductsServiceImpl implements ProductsService {
         Query queryToFindProductsWithSubCategoryId = new Query(Criteria.where(AppConstants.SUB_PLACE_CATEGORY_ID).is(subPlaceCategoryId));
         queryToFindProductsWithSubCategoryId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         List<DhProduct> dhProductList = mongoTemplate.find(queryToFindProductsWithSubCategoryId, DhProduct.class);
+
         if (dhProductList.size() <= 0) {
             return new Response<DhProduct>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID, language), new ArrayList<>(), 0);
         }
+
+        //create langValue list, which contains all the names irrespective of language. Mapped with productId
+        /*List<DhProduct> tmpList = new ArrayList<>();
+        for (DhProduct prdct : dhProductList) {
+            if (prdct.getTranslations() != null) {
+                for (LangValueObj l : prdct.getTranslations()) {
+                    tmpList.add(new DhProduct(prdct.getProductId(), l.getValue(), prdct.getDefaultUnit(), prdct.getAvgPrice()));
+                }
+            } else {
+                //map seperate dhproduct for defaultname
+                tmpList.add(new DhProduct(prdct.getProductId(), prdct.getDefaultName(), prdct.getDefaultUnit(), prdct.getAvgPrice()));
+            }
+        }*/
+
         return new Response<DhProduct>(true, 200, AppConstants.QUERY_SUCCESSFUL, dhProductList, dhProductList.size());
     }
 }
