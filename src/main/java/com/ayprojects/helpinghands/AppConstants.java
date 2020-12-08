@@ -113,6 +113,16 @@ public class AppConstants {
     public static final String DEFAULT_NAME = "defaultName";
     public static final String TRANSLATIONS = "translations";
     public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY ="UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY" ;
+    public static final String PLACE_DESC = "placeDesc";
+    public static final String PLACE_MOBILE = "placeContact.mobile";
+    public static final String NUMBER_OF_PRODUCTS = "numberOfProducts";
+    public static final String DOOR_SERVICE = "doorService";
+    public static final String PLACE_IMAGES = "placeImages";
+    public static final String CREATED_DATETIME = "createdDateTime";
+    public static final String IA_ADDRESS_GENERATED = "isAddressGenerated";
+    public static final String USER_ID = "userId";
+    public static final String FIRST_NAME = "firstName";
+    public static final String LAST_NAME = "lastName";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };

@@ -131,7 +131,7 @@ public class Validations {
             }
         }
         if (dhPlace.getOwnerName() == null) missingFieldsList.add(AppConstants.OWNER_NAME);
-        if (dhPlace.getProductDetails() == null)
+        if (dhPlace.getProductDetails() == null || dhPlace.getProductDetails().size()<=0)
             missingFieldsList.add(AppConstants.PRODUCT_DETAILS);
 
         return missingFieldsList;

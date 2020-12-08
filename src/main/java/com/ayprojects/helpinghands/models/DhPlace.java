@@ -6,11 +6,107 @@ public class DhPlace extends AllCommonUsedAttributes {
     private String placeId;
     private String placeType;
     private Address placeAddress;
-    private boolean isAddressGenerated;
+    private boolean addressGenerated;
     private String placeMainCategoryId;
     private String addedBy;
     private String placeSubCategoryId;
     private String placeCategoryName;
+    private String placeSubCategoryName;
+    private String placeName;
+    private String placeDesc;
+    private Contact placeContact;
+    private boolean doorService;
+    private List<String> placeImages;
+    private PlaceAvailabilityDetails placeAvailablityDetails;
+    private List<ProductsWithPrices> productDetails;
+    private long numberOfRatings;
+    private long numberOfViews;
+    private long numberOfPosts;
+    private long numberOfProducts;
+    private double avgRating;
+    private List<String> ratingIds;
+    private List<String> postIds;
+    private List<String> viewIds;
+    private List<DhRatingAndComments> topRatings;
+    private List<DhViews> topViews;
+    private List<DhPosts> topPosts;
+    private String ownerName;
+    private List<String> subscribedUsers;//subscribed user id's
+    private String distance;
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getOpenCloseMsg() {
+        return openCloseMsg;
+    }
+
+    public void setOpenCloseMsg(String openCloseMsg) {
+        this.openCloseMsg = openCloseMsg;
+    }
+
+    private String openCloseMsg;
+    public DhPlace() {
+
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> placeImages, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<DhPosts> topPosts, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
+        this.schemaVersion = schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime = modifiedDateTime;
+        this.status = status;
+        this.placeId = placeId;
+        this.placeType = placeType;
+        this.placeAddress = placeAddress;
+        this.placeMainCategoryId = placeMainCategoryId;
+        this.addedBy = addedBy;
+        this.placeSubCategoryId = placeSubCategoryId;
+        this.placeCategoryName = placeCategoryName;
+        this.placeSubCategoryName = placeSubCategoryName;
+        this.placeName = placeName;
+        this.placeDesc = placeDesc;
+        this.placeContact = placeContact;
+        this.doorService = doorService;
+        this.placeImages = placeImages;
+        this.placeAvailablityDetails = placeAvailablityDetails;
+        this.productDetails = productDetails;
+        this.numberOfRatings = numberOfRatings;
+        this.numberOfViews = numberOfViews;
+        this.numberOfPosts = numberOfPosts;
+        this.avgRating = avgRating;
+        this.ratingIds = ratingIds;
+        this.postIds = postIds;
+        this.viewIds = viewIds;
+        this.topRatings = topRatings;
+        this.topViews = topViews;
+        this.topPosts = topPosts;
+        this.ownerName = ownerName;
+        this.subscribedUsers = subscribedUsers;
+        this.addressGenerated = addressGenerated;
+        this.numberOfProducts = numberOfProducts;
+    }
+
+    public long getNumberOfProducts() {
+        return numberOfProducts;
+    }
+
+    public void setNumberOfProducts(long numberOfProducts) {
+        this.numberOfProducts = numberOfProducts;
+    }
 
     public String getOwnerName() {
         return ownerName;
@@ -28,37 +124,12 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.placeSubCategoryName = placeSubCategoryName;
     }
 
-    private String placeSubCategoryName;
-    private String placeName;
-    private String placeDesc;
-    private Contact placeContact;
-    private boolean doorService;
-    private List<String> placeImages;
-    private PlaceAvailabilityDetails placeAvailablityDetails;
-    private List<ProductsWithPrices> productDetails;
-    private long numberOfRatings;
-    private long numberOfViews;
-    private long numberOfPosts;
-    private double avgRating;
-    private List<String> ratingIds;
-    private List<String> postIds;
-    private List<String> viewIds;
-    private List<DhRatingAndComments> topRatings;
-    private List<DhViews> topViews;
-    private List<DhPosts> topPosts;
-    private String ownerName;
-    private List<String> subscribedUsers;//subscribed user id's
-
-    public DhPlace() {
-
-    }
-
     public boolean isAddressGenerated() {
-        return isAddressGenerated;
+        return addressGenerated;
     }
 
-    public void setAddressGenerated(boolean addressGenerated) {
-        isAddressGenerated = addressGenerated;
+    public void setAddressGenerated(boolean isAddressGenerated) {
+        this.addressGenerated = isAddressGenerated;
     }
 
     public List<String> getSubscribedUsers() {
@@ -259,42 +330,6 @@ public class DhPlace extends AllCommonUsedAttributes {
 
     public void setTopPosts(List<DhPosts> topPosts) {
         this.topPosts = topPosts;
-    }
-
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> placeImages, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<DhPosts> topPosts, List<String> subscribedUsers, boolean isAddressGenerated, String placeSubCategoryName, String ownerName) {
-        this.schemaVersion =schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime =modifiedDateTime;
-        this.status=status;
-        this.placeId = placeId;
-        this.placeType = placeType;
-        this.placeAddress = placeAddress;
-        this.placeMainCategoryId = placeMainCategoryId;
-        this.addedBy = addedBy;
-        this.placeSubCategoryId = placeSubCategoryId;
-        this.placeCategoryName = placeCategoryName;
-        this.placeSubCategoryName = placeSubCategoryName;
-        this.placeName = placeName;
-        this.placeDesc = placeDesc;
-        this.placeContact = placeContact;
-        this.doorService = doorService;
-        this.placeImages = placeImages;
-        this.placeAvailablityDetails = placeAvailablityDetails;
-        this.productDetails = productDetails;
-        this.numberOfRatings = numberOfRatings;
-        this.numberOfViews = numberOfViews;
-        this.numberOfPosts = numberOfPosts;
-        this.avgRating = avgRating;
-        this.ratingIds = ratingIds;
-        this.postIds = postIds;
-        this.viewIds = viewIds;
-        this.topRatings = topRatings;
-        this.topViews = topViews;
-        this.topPosts = topPosts;
-        this.ownerName = ownerName;
-        this.subscribedUsers = subscribedUsers;
-        this.isAddressGenerated = isAddressGenerated;
-
     }
 
 }

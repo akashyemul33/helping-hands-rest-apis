@@ -5,7 +5,9 @@ import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhProduct;
+import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.LangValueObj;
+import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
@@ -23,12 +25,15 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ch.qos.logback.core.rolling.helper.TimeBasedArchiveRemover;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -167,6 +172,7 @@ public class PlaceServiceImpl implements PlaceService {
             return new Response<DhPlace>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 
+        dhPlace.setNumberOfProducts(dhPlace.getProductDetails().size());
         dhPlace = (DhPlace) utility.setCommonAttrs(dhPlace, placeStatus);
         mongoTemplate.save(dhPlace, AppConstants.COLLECTION_DH_PLACE);
         utility.addLog(authentication.getName(), "New [" + dhPlace.getPlaceType() + "] place with category [" + dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName() + "] has been added in status " + placeStatus);
@@ -199,10 +205,56 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public Response<DhPlace> getPaginatedPlaces(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version) {
+    public Response<DhPlace> getPaginatedPlaces(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version, double lat, double lng) {
+        /*PageRequest paging = PageRequest.of(page, size);
+        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        query.fields().include(AppConstants.PLACE_NAME);
+        query.fields().include(AppConstants.PLACE_SUB_CATEGORY_NAME);
+        query.fields().include(AppConstants.OWNER_NAME);
+        query.fields().include(AppConstants.PLACE_DESC);
+        query.fields().include(AppConstants.ADDED_BY);
+        query.fields().include(AppConstants.PLACE_CONTACT);
+        query.fields().include(AppConstants.DOOR_SERVICE);
+        query.fields().include(AppConstants.PLACE_ADDRESS);
+        query.fields().include(AppConstants.PLACE_AVAILABLITY_DETAILS);
+        query.fields().include(AppConstants.NUMBER_OF_PRODUCTS);
+        query.fields().include(AppConstants.NUMBER_OF_POSTS);
+        query.fields().include(AppConstants.NUMBER_OF_RATINGS);
+        query.fields().include(AppConstants.AVG_RATING);
+        query.fields().include(AppConstants.IA_ADDRESS_GENERATED);
+        query.fields().include(AppConstants.PLACE_IMAGES);
+        query.fields().include(AppConstants.CREATED_DATETIME);
+        query.fields().include(AppConstants.PLACE_ID);
+        query.fields().include(AppConstants.PLACE_TYPE);
+        query.with(paging);
+        List<DhPlace> dhPlaceList = mongoTemplate.find(query, DhPlace.class);
+        Page<DhPlace> dhPlacePages = PageableExecutionUtils.getPage(
+                dhPlaceList,
+                paging,
+                () -> mongoTemplate.count(query, DhPlace.class));*/
         PageRequest paging = PageRequest.of(page, size);
         Page<DhPlace> dhPlacePages = placeRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
         List<DhPlace> dhPlaceList = dhPlacePages.getContent();
+        for (DhPlace d : dhPlaceList) {
+            //calculate distance of place from given lat lng
+            if (lat != 0 && lng != 0) {
+                if (d.getPlaceAddress() != null) {
+                    double placeLat = d.getPlaceAddress().getLat();
+                    double placeLng = d.getPlaceAddress().getLng();
+                    d.setDistance("\t\t" + Utility.distance(lat, placeLat, lng, placeLng) + " away");
+                }
+            }
+            //calculate open/close msg
+            String openCloseMsg = Utility.calculatePlaceOpenCloseMsg(d.getPlaceAvailablityDetails());
+            d.setOpenCloseMsg(openCloseMsg);
+
+            String userId = d.getAddedBy();
+            Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
+            query.fields().include(AppConstants.FIRST_NAME);
+            DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
+            d.setUserName(dhUser.getFirstName());
+        }
         return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList.size(), dhPlacePages.getNumber(), dhPlacePages.getTotalPages(), dhPlacePages.getTotalElements(), dhPlaceList);
     }
 }
+
