@@ -198,4 +198,25 @@ public class ResponseMessages {
     public String HI_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "स्थान जोड़ने में असमर्थ, कृपया फिर से उपश्रेणी चुनें !";
 
 
+    public String EN_OPEN_24INTO7 = "Open;for 24*7";
+    public String MR_OPEN_24INTO7 = "खुला;24 * 7 साठी";
+    public String HI_OPEN_24INTO7 = "खुला;24 * 7 के लिए ";
+
+    public String EN_CLOSED_OPENS_AT = "Closed;Opens at ";
+    public String MR_CLOSED_OPENS_AT = "बंद;वाजता उघडते ";
+    public String HI_CLOSED_OPENS_AT = "बन्द;पर खुलता है ";
+
+    public String EN_LUNCH_HOURS = "Open;On Lunch hours";
+    public String MR_LUNCH_HOURS = "उघडा;दुपारच्या जेवणाच्या वेळी";
+    public String HI_LUNCH_HOURS = "खुला;दोपहर के खाने पर";
+
+    public String EN_OPEN_CLOSES_AT = "Open;Closes at ";
+    public String MR_OPEN_CLOSES_AT = "उघडा;बंद केले जाईल";
+    public String HI_OPEN_CLOSES_AT = "खुला;बंद किया जाएगा";
+
+    public String EN_UNKNOWN = "Unknwon";
+    public String MR_UNKNOWN = "अज्ञात";
+    public String HI_UNKNOWN = "अनजान";
+
+
 }

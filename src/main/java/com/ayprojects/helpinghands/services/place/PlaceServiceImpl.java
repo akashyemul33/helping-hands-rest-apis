@@ -7,7 +7,6 @@ import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.LangValueObj;
-import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
@@ -25,15 +24,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import ch.qos.logback.core.rolling.helper.TimeBasedArchiveRemover;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -206,6 +202,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public Response<DhPlace> getPaginatedPlaces(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version, double lat, double lng) {
+        String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("PlaceServiceImpl->getPaginatedPlaces : language=" + language);
         /*PageRequest paging = PageRequest.of(page, size);
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         query.fields().include(AppConstants.PLACE_NAME);
@@ -232,6 +230,7 @@ public class PlaceServiceImpl implements PlaceService {
                 dhPlaceList,
                 paging,
                 () -> mongoTemplate.count(query, DhPlace.class));*/
+        LOGGER.info("PlaceServiceImpl->getPaginatedPlaces : lat=%s" + lat + " lng=%s" + lng);
         PageRequest paging = PageRequest.of(page, size);
         Page<DhPlace> dhPlacePages = placeRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
         List<DhPlace> dhPlaceList = dhPlacePages.getContent();
@@ -241,18 +240,27 @@ public class PlaceServiceImpl implements PlaceService {
                 if (d.getPlaceAddress() != null) {
                     double placeLat = d.getPlaceAddress().getLat();
                     double placeLng = d.getPlaceAddress().getLng();
-                    d.setDistance("\t\t" + Utility.distance(lat, placeLat, lng, placeLng) + " away");
+                    d.setDistance("\t" + "(" + Utility.distance(lat, placeLat, lng, placeLng) + ")");
+                } else {
+                    d.setDistance(Utility.getResponseMessage(AppConstants.MSG_UNKNOWN, language));
                 }
+            } else {
+                d.setDistance(Utility.getResponseMessage(AppConstants.MSG_UNKNOWN, language));
             }
             //calculate open/close msg
-            String openCloseMsg = Utility.calculatePlaceOpenCloseMsg(d.getPlaceAvailablityDetails());
-            d.setOpenCloseMsg(openCloseMsg);
+            String[] openCloseMsg = Utility.calculatePlaceOpenCloseMsg(d.getPlaceAvailablityDetails(), language);
+            boolean isOpen = openCloseMsg.length > 1 && (openCloseMsg[1].equalsIgnoreCase(AppConstants.OPEN));
+            LOGGER.info("PlaceServiceImpl->getPaginatedPlaces : isOpen=" + isOpen);
+            d.setPlaceOpen(isOpen);
+            d.setOpenCloseMsg(openCloseMsg[0]);
 
+            //get user name from id
             String userId = d.getAddedBy();
             Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
             query.fields().include(AppConstants.FIRST_NAME);
             DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
-            d.setUserName(dhUser.getFirstName());
+            if (dhUser != null) d.setUserName(dhUser.getFirstName());
+
         }
         return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList.size(), dhPlacePages.getNumber(), dhPlacePages.getTotalPages(), dhPlacePages.getTotalElements(), dhPlaceList);
     }

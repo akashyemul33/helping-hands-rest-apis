@@ -65,7 +65,7 @@ public class PlaceController {
     }
 
     @GetMapping(value = "/getPaginatedPlaces")
-    ResponseEntity<Response<DhPlace>> getPaginatedPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam(defaultValue = "0") int page,@RequestParam (defaultValue = "7") int size, @PathVariable String version,double lat,double lng){
+    ResponseEntity<Response<DhPlace>> getPaginatedPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam(defaultValue = "0") int page,@RequestParam (defaultValue = "7") int size,@RequestParam double lat,@RequestParam double lng, @PathVariable String version){
         return new ResponseEntity<>(placeService.getPaginatedPlaces(authentication,httpHeaders,page,size,version,lat,lng), HttpStatus.OK);
     }
 

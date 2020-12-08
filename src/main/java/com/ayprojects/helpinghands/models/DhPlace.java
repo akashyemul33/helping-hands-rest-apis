@@ -35,6 +35,16 @@ public class DhPlace extends AllCommonUsedAttributes {
     private String distance;
     private String userName;
 
+    public boolean isPlaceOpen() {
+        return placeOpen;
+    }
+
+    public void setPlaceOpen(boolean placeOpen) {
+        this.placeOpen = placeOpen;
+    }
+
+    private boolean placeOpen;
+
     public String getUserName() {
         return userName;
     }

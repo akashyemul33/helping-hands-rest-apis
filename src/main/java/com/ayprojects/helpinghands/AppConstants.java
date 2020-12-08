@@ -1,6 +1,7 @@
 package com.ayprojects.helpinghands;
 
 public class AppConstants {
+    public static final String DATE_FORMAT_HOUR_MIN = "HH:mm";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmss";
     //expiration value of 3 hours
@@ -123,6 +124,14 @@ public class AppConstants {
     public static final String USER_ID = "userId";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
+    public static final String MSG_OPEN_24INTO7 = "OPEN_24INTO7" ;
+    public static final String MSG_CLOSED_OPENS_AT = "CLOSED_OPENS_AT" ;
+    public static final String MSG_LUNCH_HOURS = "LUNCH_HOURS" ;
+    public static final String MSG_OPEN_CLOSES_AT = "OPEN_CLOSES_AT" ;
+    public static final long HOUR_IN_MILLIS = 1 * 60*60*1000;
+    public static final String CLOSED = "Closed";
+    public static final String OPEN = "Open";
+    public static final String MSG_UNKNOWN = "UNKNOWN";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
@@ -184,4 +193,6 @@ public class AppConstants {
     public static long PER_PLACE_IMAGES_LIMIT = 16;
     public static long PER_POST_IMAGES_LIMIT = 8;
     public static long PER_PLACE_PRODUCTS_LIMIT = 200;
+
+    public static String  MSG_DISTANCE_CALC_FAILED = "DISTANCE_CALC_FAILED";
 }
