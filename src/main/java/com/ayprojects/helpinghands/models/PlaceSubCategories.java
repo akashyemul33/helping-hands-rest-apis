@@ -8,14 +8,33 @@ public class PlaceSubCategories extends AllCommonUsedAttributes {
     private String placeSubCategoryId;
     private String defaultName;
     private List<LangValueObj> translations;
-    private String placeSubCategoryImageId;
     private String placeSubCategoryImagePath;
     private String addedBy;
+    private String placeMainCategoryId;
+
+    public String getPlaceMainCategoryId() {
+        return placeMainCategoryId;
+    }
+
+    public void setPlaceMainCategoryId(String placeMainCategoryId) {
+        this.placeMainCategoryId = placeMainCategoryId;
+    }
+
+    public String getPlaceMainCategoryName() {
+        return placeMainCategoryName;
+    }
+
+    public void setPlaceMainCategoryName(String placeMainCategoryName) {
+        this.placeMainCategoryName = placeMainCategoryName;
+    }
+
+    private String placeMainCategoryName;
+
 
     public PlaceSubCategories() {
 
     }
-    public PlaceSubCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeSubCategoryId, String defaultName, List<LangValueObj> translations, String placeSubCategoryImageId, String placeSubCategoryImagePath, String addedBy) {
+    public PlaceSubCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeSubCategoryId, String defaultName, List<LangValueObj> translations,String placeSubCategoryImagePath, String addedBy) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
@@ -23,7 +42,6 @@ public class PlaceSubCategories extends AllCommonUsedAttributes {
         this.placeSubCategoryId = placeSubCategoryId;
         this.defaultName = defaultName;
         this.translations = translations;
-        this.placeSubCategoryImageId = placeSubCategoryImageId;
         this.placeSubCategoryImagePath = placeSubCategoryImagePath;
         this.addedBy = addedBy;
     }
@@ -58,14 +76,6 @@ public class PlaceSubCategories extends AllCommonUsedAttributes {
 
     public void setPlaceSubCategoryId(String placeSubCategoryId) {
         this.placeSubCategoryId = placeSubCategoryId;
-    }
-
-    public String getPlaceSubCategoryImageId() {
-        return placeSubCategoryImageId;
-    }
-
-    public void setPlaceSubCategoryImageId(String placeSubCategoryImageId) {
-        this.placeSubCategoryImageId = placeSubCategoryImageId;
     }
 
     public String getPlaceSubCategoryImagePath() {

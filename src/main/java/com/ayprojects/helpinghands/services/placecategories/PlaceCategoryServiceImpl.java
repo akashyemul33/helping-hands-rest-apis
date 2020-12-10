@@ -5,6 +5,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
+import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
@@ -103,12 +104,31 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
 
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query, DhPlaceCategories.class);
-        if (dhPlaceCategoriesList == null) {
+        if (dhPlaceCategoriesList.size() <= 0) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES, language), new ArrayList<>(), 0);
         } else {
+
+            //remove the sub categories with status other than active
+            //and for active subcategories add maincategoryid and name.
+            for (DhPlaceCategories mc : dhPlaceCategoriesList) {
+                if (mc != null && mc.getPlaceSubCategories() != null && mc.getPlaceSubCategories().size() > 0) {
+                    for (PlaceSubCategories sc : mc.getPlaceSubCategories()) {
+                        if(sc!=null) {
+                            if (!sc.getStatus().equalsIgnoreCase(AppConstants.STATUS_ACTIVE)) {
+                                mc.getPlaceSubCategories().remove(sc);
+                            } else {
+                                sc.setPlaceMainCategoryId(mc.getPlaceCategoryId());
+                                sc.setPlaceMainCategoryName(Utility.getMainCategoryName(mc, language));
+                            }
+                        }
+                    }
+                }
+            }
+
             return new Response<DhPlaceCategories>(true, 201, dhPlaceCategoriesList.size() + " place categories found .", dhPlaceCategoriesList, dhPlaceCategoriesList.size());
         }
     }
+
 
     @Override
     public Response<PlaceSubCategories> addPlaceSubCategory(Authentication authentication, HttpHeaders httpHeaders, PlaceSubCategories placeSubCategory, String mainPlaceCategoryId, String version) {
@@ -165,9 +185,25 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         query.addCriteria(Criteria.where(AppConstants.TYPE_OF_PLACECATEGORY).regex(typeOfPlaceCategory, "i"));
         List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query, DhPlaceCategories.class);
-        if (dhPlaceCategoriesList.size() == 0) {
+        if (dhPlaceCategoriesList.size() <= 0) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES, language), new ArrayList<>(), 0);
         } else {
+            //remove the sub categories with status other than active
+            //and for active subcategories add maincategoryid and name.
+            for (DhPlaceCategories mc : dhPlaceCategoriesList) {
+                if (mc != null && mc.getPlaceSubCategories() != null && mc.getPlaceSubCategories().size() > 0) {
+                    for (PlaceSubCategories sc : mc.getPlaceSubCategories()) {
+                        if(sc!=null) {
+                            if (!sc.getStatus().equalsIgnoreCase(AppConstants.STATUS_ACTIVE)) {
+                                mc.getPlaceSubCategories().remove(sc);
+                            } else {
+                                sc.setPlaceMainCategoryId(mc.getPlaceCategoryId());
+                                sc.setPlaceMainCategoryName(Utility.getMainCategoryName(mc, language));
+                            }
+                        }
+                    }
+                }
+            }
             return new Response<DhPlaceCategories>(true, 200, dhPlaceCategoriesList.size() + " place categories found .", dhPlaceCategoriesList, dhPlaceCategoriesList.size());
         }
     }

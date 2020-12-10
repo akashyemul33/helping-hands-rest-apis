@@ -4,6 +4,8 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.ResponseMessages;
 import com.ayprojects.helpinghands.models.AllCommonUsedAttributes;
 import com.ayprojects.helpinghands.models.DhLog;
+import com.ayprojects.helpinghands.models.DhPlaceCategories;
+import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.UserSettings;
 import com.ayprojects.helpinghands.services.log.LogService;
@@ -181,6 +183,16 @@ public class Utility {
 
     public static double convertMetres(double km) {
         return km * 1000;
+    }
+
+    public static String getMainCategoryName(DhPlaceCategories mc, String language) {
+        if (mc == null) return null;
+        if (mc.getTranslations() == null) return mc.getDefaultName();
+
+        for (LangValueObj l : mc.getTranslations()) {
+            if (l.getLang().equalsIgnoreCase(language)) return l.getValue();
+        }
+        return mc.getDefaultName();
     }
 
     public void addLog(String username, String actionMsg) {

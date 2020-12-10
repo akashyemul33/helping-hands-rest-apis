@@ -104,10 +104,19 @@ public class Validations {
                     missingFieldsList.add(AppConstants.PLACE_OPENING_TIME);
                 if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getPlaceClosingTime()))
                     missingFieldsList.add(AppConstants.PLACE_CLOSING_TIME);
-                if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getLunchStartTime()))
-                    missingFieldsList.add(AppConstants.LUNCH_START_TIME);
-                if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getLunchEndTime()))
-                    missingFieldsList.add(AppConstants.LUNCH_END_TIME);
+                if (!dhPlace.getPlaceAvailablityDetails().getHaveNoLunchHours()) {
+                    if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getLunchStartTime()))
+                        missingFieldsList.add(AppConstants.LUNCH_START_TIME);
+                    if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getLunchEndTime()))
+                        missingFieldsList.add(AppConstants.LUNCH_END_TIME);
+                }
+            }
+
+            if (dhPlace.getPlaceAvailablityDetails().isHaveExchangeFacility()) {
+                if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getExchangeStartTime()))
+                    missingFieldsList.add(AppConstants.EXCHANGE_START_TIME);
+                if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getExchangeEndTime()))
+                    missingFieldsList.add(AppConstants.EXCHANGE_END_TIME);
             }
         }
 
@@ -131,7 +140,7 @@ public class Validations {
             }
         }
         if (dhPlace.getOwnerName() == null) missingFieldsList.add(AppConstants.OWNER_NAME);
-        if (dhPlace.getProductDetails() == null || dhPlace.getProductDetails().size()<=0)
+        if (dhPlace.getProductDetails() == null || dhPlace.getProductDetails().size() <= 0)
             missingFieldsList.add(AppConstants.PRODUCT_DETAILS);
 
         return missingFieldsList;

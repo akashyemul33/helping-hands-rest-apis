@@ -79,6 +79,8 @@ public class AppConstants {
     public static final String PLACE_CLOSING_TIME ="placeClosingTime";
     public static final String LUNCH_START_TIME = "lunchStartTime";
     public static final String LUNCH_END_TIME = "lunchEndTime";
+    public static final String EXCHANGE_START_TIME = "exchangeStartTime";
+    public static final String EXCHANGE_END_TIME = "exchangeEndTime";
     public static final String PLACE_AVAILABLITY_DETAILS = "placeAvailablityDetails";
     public static final String POST_TITLE = "postTitle";
     public static final String ADDRESS_DETAILS = "addressDetails";

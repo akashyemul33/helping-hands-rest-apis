@@ -1,6 +1,12 @@
 package com.ayprojects.helpinghands.models;
 
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
+
+import org.springframework.data.annotation.Transient;
+
 import java.util.List;
+
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class DhPlace extends AllCommonUsedAttributes {
     private String placeId;
@@ -32,46 +38,15 @@ public class DhPlace extends AllCommonUsedAttributes {
     private List<DhPosts> topPosts;
     private String ownerName;
     private List<String> subscribedUsers;//subscribed user id's
+    @Transient
     private String distance;
     private String userName;
-
-    public boolean isPlaceOpen() {
-        return placeOpen;
-    }
-
-    public void setPlaceOpen(boolean placeOpen) {
-        this.placeOpen = placeOpen;
-    }
-
+    @Transient
     private boolean placeOpen;
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getOpenCloseMsg() {
-        return openCloseMsg;
-    }
-
-    public void setOpenCloseMsg(String openCloseMsg) {
-        this.openCloseMsg = openCloseMsg;
-    }
-
     private String openCloseMsg;
+
     public DhPlace() {
 
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public void setDistance(String distance) {
-        this.distance = distance;
     }
 
     public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> placeImages, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<DhPosts> topPosts, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
@@ -108,6 +83,38 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.subscribedUsers = subscribedUsers;
         this.addressGenerated = addressGenerated;
         this.numberOfProducts = numberOfProducts;
+    }
+
+    public boolean isPlaceOpen() {
+        return placeOpen;
+    }
+
+    public void setPlaceOpen(boolean placeOpen) {
+        this.placeOpen = placeOpen;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getOpenCloseMsg() {
+        return openCloseMsg;
+    }
+
+    public void setOpenCloseMsg(String openCloseMsg) {
+        this.openCloseMsg = openCloseMsg;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 
     public long getNumberOfProducts() {

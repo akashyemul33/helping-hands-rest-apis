@@ -5,21 +5,19 @@ import java.util.List;
 public class DhPlaceCategories extends AllCommonUsedAttributes {
     private String placeCategoryId;
     private String typeOfPlaceCategory;//Business or public
-    private String placeMainCategoryImageId;
     private String placeMainCategoryImagePath;
     private String addedBy;
     private String defaultName;
     private List<LangValueObj> translations;
     private List<PlaceSubCategories> placeSubCategories;
 
-    public DhPlaceCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeCategoryId, String typeOfPlaceCategory, String placeMainCategoryImageId, String placeMainCategoryImagePath, String addedBy, String defaultName, List<LangValueObj> translations, List<PlaceSubCategories> placeSubCategories) {
+    public DhPlaceCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeCategoryId, String typeOfPlaceCategory,String placeMainCategoryImagePath, String addedBy, String defaultName, List<LangValueObj> translations, List<PlaceSubCategories> placeSubCategories) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
         this.status = status;
         this.placeCategoryId = placeCategoryId;
         this.typeOfPlaceCategory = typeOfPlaceCategory;
-        this.placeMainCategoryImageId = placeMainCategoryImageId;
         this.placeMainCategoryImagePath = placeMainCategoryImagePath;
         this.addedBy = addedBy;
         this.defaultName = defaultName;
@@ -65,14 +63,6 @@ public class DhPlaceCategories extends AllCommonUsedAttributes {
 
     public void setPlaceCategoryId(String placeCategoryId) {
         this.placeCategoryId = placeCategoryId;
-    }
-
-    public String getPlaceMainCategoryImageId() {
-        return placeMainCategoryImageId;
-    }
-
-    public void setPlaceMainCategoryImageId(String placeMainCategoryImageId) {
-        this.placeMainCategoryImageId = placeMainCategoryImageId;
     }
 
     public String getPlaceMainCategoryImagePath() {

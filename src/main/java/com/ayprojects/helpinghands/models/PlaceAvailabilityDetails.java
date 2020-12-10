@@ -4,43 +4,57 @@ public class PlaceAvailabilityDetails {
     private boolean provide24into7;
     private String placeOpeningTime;
     private String placeClosingTime;
+    private boolean haveNoLunchHours;
     private String lunchStartTime;
     private String lunchEndTime;
-    private boolean sun;
-    private boolean mon;
-    private boolean tue;
-    private boolean wed;
-    private boolean thu;
-    private boolean fri;
-    private boolean sat;
+    private boolean haveExchangeFacility;
+
+    public boolean isAnyTimeExchange() {
+        return anyTimeExchange;
+    }
+
+    public void setAnyTimeExchange(boolean anyTimeExchange) {
+        this.anyTimeExchange = anyTimeExchange;
+    }
+
+    private boolean anyTimeExchange;
+    private String exchangeStartTime;
+    private String exchangeEndTime;
+
+    public boolean getHaveNoLunchHours() {
+        return haveNoLunchHours;
+    }
+
+    public void setHaveNoLunchHours(boolean haveNoLunchHours) {
+        this.haveNoLunchHours = haveNoLunchHours;
+    }
+
+    public boolean isHaveExchangeFacility() {
+        return haveExchangeFacility;
+    }
+
+    public void setHaveExchangeFacility(boolean haveExchangeFacility) {
+        this.haveExchangeFacility = haveExchangeFacility;
+    }
+
+    public String getExchangeStartTime() {
+        return exchangeStartTime;
+    }
+
+    public void setExchangeStartTime(String exchangeStartTime) {
+        this.exchangeStartTime = exchangeStartTime;
+    }
+
+    public String getExchangeEndTime() {
+        return exchangeEndTime;
+    }
+
+    public void setExchangeEndTime(String exchangeEndTime) {
+        this.exchangeEndTime = exchangeEndTime;
+    }
 
     public PlaceAvailabilityDetails() {
 
-    }
-
-    public PlaceAvailabilityDetails(boolean sun, boolean mon, boolean tue, boolean wed, boolean thu, boolean fri, boolean sat) {
-        this.sun = sun;
-        this.mon = mon;
-        this.tue = tue;
-        this.wed = wed;
-        this.thu = thu;
-        this.fri = fri;
-        this.sat = sat;
-    }
-
-    public PlaceAvailabilityDetails(boolean provide24into7, String placeOpeningTime, String placeClosingTime, String lunchStartTime, String lunchEndTime, boolean sun, boolean mon, boolean tue, boolean wed, boolean thu, boolean fri, boolean sat) {
-        this.provide24into7 = provide24into7;
-        this.placeOpeningTime = placeOpeningTime;
-        this.placeClosingTime = placeClosingTime;
-        this.lunchStartTime = lunchStartTime;
-        this.lunchEndTime = lunchEndTime;
-        this.sun = sun;
-        this.mon = mon;
-        this.tue = tue;
-        this.wed = wed;
-        this.thu = thu;
-        this.fri = fri;
-        this.sat = sat;
     }
 
     public boolean isProvide24into7() {
@@ -82,6 +96,14 @@ public class PlaceAvailabilityDetails {
     public void setLunchEndTime(String lunchEndTime) {
         this.lunchEndTime = lunchEndTime;
     }
+
+    private boolean sun;
+    private boolean mon;
+    private boolean tue;
+    private boolean wed;
+    private boolean thu;
+    private boolean fri;
+    private boolean sat;
 
     public boolean isSun() {
         return sun;
@@ -138,4 +160,15 @@ public class PlaceAvailabilityDetails {
     public void setSat(boolean sat) {
         this.sat = sat;
     }
+
+    public PlaceAvailabilityDetails(boolean sun, boolean mon, boolean tue, boolean wed, boolean thu, boolean fri, boolean sat) {
+        this.sun = sun;
+        this.mon = mon;
+        this.tue = tue;
+        this.wed = wed;
+        this.thu = thu;
+        this.fri = fri;
+        this.sat = sat;
+    }
+
 }

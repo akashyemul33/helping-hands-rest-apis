@@ -1,10 +1,36 @@
 package com.ayprojects.helpinghands.models;
 
+import java.util.List;
+
 public class ProductsWithPrices {
     private String productPrice;
     private String selectedUnit;
     private String userEnteredProductName;
+    private String color;
+    private String size;
+    private String productDesc;
     private String productId;
+
+    public List<String> getLikeIds() {
+        return likeIds;
+    }
+
+    public void setLikeIds(List<String> likeIds) {
+        this.likeIds = likeIds;
+    }
+
+    private List<String> likeIds;
+
+    public ProductsWithPrices(String productPrice, String selectedUnit, String userEnteredProductName, String color, String size, String productDesc, String productId, List<String> likeIds) {
+        this.productPrice = productPrice;
+        this.selectedUnit = selectedUnit;
+        this.userEnteredProductName = userEnteredProductName;
+        this.color = color;
+        this.size = size;
+        this.productDesc = productDesc;
+        this.productId = productId;
+        this.likeIds = likeIds;
+    }
 
     public ProductsWithPrices(String price, String unit, String productNameStr) {
         this.productPrice = price;
@@ -18,7 +44,32 @@ public class ProductsWithPrices {
         this.userEnteredProductName = userEnteredProductName;
         this.productId = productId;
     }
+
     public ProductsWithPrices() {
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getProductDesc() {
+        return productDesc;
+    }
+
+    public void setProductDesc(String productDesc) {
+        this.productDesc = productDesc;
     }
 
     public String getUserEnteredProductName() {
