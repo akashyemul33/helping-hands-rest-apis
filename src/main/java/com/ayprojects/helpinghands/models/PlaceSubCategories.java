@@ -6,11 +6,26 @@ import java.util.List;
 
 public class PlaceSubCategories extends AllCommonUsedAttributes {
     private String placeSubCategoryId;
-    private String defaultName;
-    private List<LangValueObj> translations;
     private String placeSubCategoryImagePath;
     private String addedBy;
     private String placeMainCategoryId;
+    private String placeMainCategoryName;
+
+    public PlaceSubCategories() {
+
+    }
+
+    public PlaceSubCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeSubCategoryId, String defaultName, List<LangValueObj> translations, String placeSubCategoryImagePath, String addedBy) {
+        this.schemaVersion = schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime = modifiedDateTime;
+        this.status = status;
+        this.placeSubCategoryId = placeSubCategoryId;
+        this.defaultName = defaultName;
+        this.translations = translations;
+        this.placeSubCategoryImagePath = placeSubCategoryImagePath;
+        this.addedBy = addedBy;
+    }
 
     public String getPlaceMainCategoryId() {
         return placeMainCategoryId;
@@ -26,24 +41,6 @@ public class PlaceSubCategories extends AllCommonUsedAttributes {
 
     public void setPlaceMainCategoryName(String placeMainCategoryName) {
         this.placeMainCategoryName = placeMainCategoryName;
-    }
-
-    private String placeMainCategoryName;
-
-
-    public PlaceSubCategories() {
-
-    }
-    public PlaceSubCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeSubCategoryId, String defaultName, List<LangValueObj> translations,String placeSubCategoryImagePath, String addedBy) {
-        this.schemaVersion = schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime = modifiedDateTime;
-        this.status = status;
-        this.placeSubCategoryId = placeSubCategoryId;
-        this.defaultName = defaultName;
-        this.translations = translations;
-        this.placeSubCategoryImagePath = placeSubCategoryImagePath;
-        this.addedBy = addedBy;
     }
 
     public String getDefaultName() {

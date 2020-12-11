@@ -8,23 +8,25 @@ import java.util.List;
 @Document
 public class DhProduct extends AllCommonUsedAttributes {
     private String productId;
+    private String productImageId;
+    private String productImagePath;
     private String defaultUnit;
     private String mainPlaceCategoryId;
     private String subPlaceCategoryId;
     private String categoryName;
     private String addedBy;
-    private String defaultName;
-    private List<LangValueObj> translations;
     private String avgPrice;
     public DhProduct() {
 
     }
-    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId,String defaultUnit, String mainPlaceCategoryId, String subPlaceCategoryId, String categoryName, String addedBy, String defaultName, List<LangValueObj> translations, String avgPrice) {
+    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String productImageId, String productImagePath, String defaultUnit, String mainPlaceCategoryId, String subPlaceCategoryId, String categoryName, String addedBy, String defaultName, List<LangValueObj> translations, String avgPrice) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
         this.status = status;
         this.productId = productId;
+        this.productImageId = productImageId;
+        this.productImagePath = productImagePath;
         this.defaultUnit = defaultUnit;
         this.mainPlaceCategoryId = mainPlaceCategoryId;
         this.subPlaceCategoryId = subPlaceCategoryId;
@@ -32,6 +34,12 @@ public class DhProduct extends AllCommonUsedAttributes {
         this.addedBy = addedBy;
         this.defaultName = defaultName;
         this.translations = translations;
+        this.avgPrice = avgPrice;
+    }
+
+    public DhProduct(String defaultUnit, String defaultName, String avgPrice) {
+        this.defaultUnit = defaultUnit;
+        this.defaultName = defaultName;
         this.avgPrice = avgPrice;
     }
 
@@ -73,6 +81,22 @@ public class DhProduct extends AllCommonUsedAttributes {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getProductImageId() {
+        return productImageId;
+    }
+
+    public void setProductImageId(String productImageId) {
+        this.productImageId = productImageId;
+    }
+
+    public String getProductImagePath() {
+        return productImagePath;
+    }
+
+    public void setProductImagePath(String productImagePath) {
+        this.productImagePath = productImagePath;
     }
 
     public String getDefaultUnit() {

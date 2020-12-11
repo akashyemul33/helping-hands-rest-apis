@@ -113,10 +113,12 @@ public class Validations {
             }
 
             if (dhPlace.getPlaceAvailablityDetails().isHaveExchangeFacility()) {
-                if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getExchangeStartTime()))
-                    missingFieldsList.add(AppConstants.EXCHANGE_START_TIME);
-                if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getExchangeEndTime()))
-                    missingFieldsList.add(AppConstants.EXCHANGE_END_TIME);
+                if (!dhPlace.getPlaceAvailablityDetails().isAnyTimeExchange()) {
+                    if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getExchangeStartTime()))
+                        missingFieldsList.add(AppConstants.EXCHANGE_START_TIME);
+                    if (Utility.isFieldEmpty(dhPlace.getPlaceAvailablityDetails().getExchangeEndTime()))
+                        missingFieldsList.add(AppConstants.EXCHANGE_END_TIME);
+                }
             }
         }
 

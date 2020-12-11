@@ -7,8 +7,6 @@ public class DhPlaceCategories extends AllCommonUsedAttributes {
     private String typeOfPlaceCategory;//Business or public
     private String placeMainCategoryImagePath;
     private String addedBy;
-    private String defaultName;
-    private List<LangValueObj> translations;
     private List<PlaceSubCategories> placeSubCategories;
 
     public DhPlaceCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeCategoryId, String typeOfPlaceCategory,String placeMainCategoryImagePath, String addedBy, String defaultName, List<LangValueObj> translations, List<PlaceSubCategories> placeSubCategories) {

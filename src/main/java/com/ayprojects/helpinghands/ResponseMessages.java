@@ -13,7 +13,6 @@ public class ResponseMessages {
     public String MR_USER_ADDRESS_IS_EMPTY = "पत्त्याचा तपशील गहाळ आहे! अक्षांश आणि रेखांश अनिवार्य आहेत.";
     public String HI_USER_ADDRESS_IS_EMPTY = "पते का विवरण गायब है ! लेटिट्यूड एंड लॉन्गिट्यूड अनिवार्य है ।";
 
-
     public String EN_USER_REGISTERED = "Welcome to Helping Hands,\nYou are registered successfully.";
     public String MR_USER_REGISTERED = "हेलपिंग हॅन्ड्समध्ये आपले स्वागत आहे, \nआपण यशस्वीरित्या नोंदणीकृत केले आहात.";
     public String HI_USER_REGISTERED = "हेल्पिंग हैंड्समे आपका स्वागत है,\nआप सफलतापूर्वक पंजीकृत किया हैं। ।";
@@ -206,9 +205,13 @@ public class ResponseMessages {
     public String MR_CLOSED_OPENS_AT = "बंद;वाजता उघडते ";
     public String HI_CLOSED_OPENS_AT = "बन्द;पर खुलता है ";
 
-    public String EN_LUNCH_HOURS = "Open;On Lunch hours";
+    public String EN_LUNCH_HOURS = "Open;On Lunch Hours";
     public String MR_LUNCH_HOURS = "उघडा;दुपारच्या जेवणाच्या वेळी";
     public String HI_LUNCH_HOURS = "खुला;दोपहर के खाने पर";
+
+    public String EN_NO_LUNCH_HOURS = "Open;No Lunch Hours";
+    public String MR_NO_LUNCH_HOURS = "उघडा;दुपारचे जेवण नाही";
+    public String HI_NO_LUNCH_HOURS = "खुला;दोपहर का भोजन नहीं";
 
     public String EN_OPEN_CLOSES_AT = "Open;Closes at ";
     public String MR_OPEN_CLOSES_AT = "उघडा;बंद केले जाईल";

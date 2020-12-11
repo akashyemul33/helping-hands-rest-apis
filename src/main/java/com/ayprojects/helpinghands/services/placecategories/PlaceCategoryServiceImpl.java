@@ -24,8 +24,10 @@ import org.springframework.stereotype.Service;
 import java.lang.invoke.ConstantCallSite;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.main;
@@ -113,7 +115,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             for (DhPlaceCategories mc : dhPlaceCategoriesList) {
                 if (mc != null && mc.getPlaceSubCategories() != null && mc.getPlaceSubCategories().size() > 0) {
                     for (PlaceSubCategories sc : mc.getPlaceSubCategories()) {
-                        if(sc!=null) {
+                        if (sc != null) {
                             if (!sc.getStatus().equalsIgnoreCase(AppConstants.STATUS_ACTIVE)) {
                                 mc.getPlaceSubCategories().remove(sc);
                             } else {
@@ -192,18 +194,30 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             //and for active subcategories add maincategoryid and name.
             for (DhPlaceCategories mc : dhPlaceCategoriesList) {
                 if (mc != null && mc.getPlaceSubCategories() != null && mc.getPlaceSubCategories().size() > 0) {
-                    for (PlaceSubCategories sc : mc.getPlaceSubCategories()) {
-                        if(sc!=null) {
+                    List<Integer> scToRemoveIndex = new ArrayList<>();
+                    for (int j = 0; j < mc.getPlaceSubCategories().size(); j++) {
+                        PlaceSubCategories sc = mc.getPlaceSubCategories().get(j);
+                        if (sc != null) {
                             if (!sc.getStatus().equalsIgnoreCase(AppConstants.STATUS_ACTIVE)) {
-                                mc.getPlaceSubCategories().remove(sc);
+                                //add indexes of subcategories in a list, so that we can remove them later after this for loop
+                                //to avoid concurrent modfiication exceptions
+                                scToRemoveIndex.add(j);
                             } else {
                                 sc.setPlaceMainCategoryId(mc.getPlaceCategoryId());
                                 sc.setPlaceMainCategoryName(Utility.getMainCategoryName(mc, language));
                             }
                         }
                     }
+
+                    //remove the subcategories from main list
+                    for (int index : scToRemoveIndex) {
+                        LOGGER.info("PlaceCategoryServiceImpl->getAllPlaceCategoriesByType-> going to remove : categoryname=" + mc.getPlaceSubCategories().get(index).getDefaultName());
+                        mc.getPlaceSubCategories().remove(index);
+                    }
+
                 }
             }
+
             return new Response<DhPlaceCategories>(true, 200, dhPlaceCategoriesList.size() + " place categories found .", dhPlaceCategoriesList, dhPlaceCategoriesList.size());
         }
     }

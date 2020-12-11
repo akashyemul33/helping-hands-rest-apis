@@ -10,16 +10,17 @@ public class ProductsWithPrices {
     private String size;
     private String productDesc;
     private String productId;
-
-    public List<String> getLikeIds() {
-        return likeIds;
-    }
-
-    public void setLikeIds(List<String> likeIds) {
-        this.likeIds = likeIds;
-    }
-
     private List<String> likeIds;
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    private List<String> images;
 
     public ProductsWithPrices(String productPrice, String selectedUnit, String userEnteredProductName, String color, String size, String productDesc, String productId, List<String> likeIds) {
         this.productPrice = productPrice;
@@ -46,6 +47,23 @@ public class ProductsWithPrices {
     }
 
     public ProductsWithPrices() {
+    }
+
+    public ProductsWithPrices(String enteredProductPrice, String enteredProductUnit, String enteredProductName, String enteredProductColor, String enteredProductSize, String enteredProductDesc) {
+        this.productPrice = enteredProductPrice;
+        this.selectedUnit = enteredProductUnit;
+        this.userEnteredProductName = enteredProductName;
+        this.color = enteredProductColor;
+        this.size = enteredProductSize;
+        this.productDesc = enteredProductDesc;
+    }
+
+    public List<String> getLikeIds() {
+        return likeIds;
+    }
+
+    public void setLikeIds(List<String> likeIds) {
+        this.likeIds = likeIds;
     }
 
     public String getColor() {

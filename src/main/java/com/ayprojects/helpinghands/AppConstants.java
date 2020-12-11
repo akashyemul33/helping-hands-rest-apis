@@ -129,6 +129,7 @@ public class AppConstants {
     public static final String MSG_OPEN_24INTO7 = "OPEN_24INTO7" ;
     public static final String MSG_CLOSED_OPENS_AT = "CLOSED_OPENS_AT" ;
     public static final String MSG_LUNCH_HOURS = "LUNCH_HOURS" ;
+    public static final String MSG_NO_LUNCH_HOURS = "NO_LUNCH_HOURS" ;
     public static final String MSG_OPEN_CLOSES_AT = "OPEN_CLOSES_AT" ;
     public static final long HOUR_IN_MILLIS = 1 * 60*60*1000;
     public static final String CLOSED = "Closed";

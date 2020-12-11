@@ -162,10 +162,13 @@ public class Utility {
             if (currentTime.before(openingTime) || currentTime.after(closingTime)) {
                 return new String[]{Utility.getResponseMessage(AppConstants.MSG_CLOSED_OPENS_AT, language) + " " + p.getPlaceOpeningTime(), AppConstants.CLOSED};
             } else {
-                if (currentTime.after(lunchStartTime) && currentTime.before(lunchEndTime)) {
-                    return new String[]{Utility.getResponseMessage(AppConstants.MSG_LUNCH_HOURS, language), AppConstants.OPEN};
-                } else if ((currentTime.getTime() - closingTime.getTime()) <= AppConstants.HOUR_IN_MILLIS) {
+
+                if ((currentTime.getTime() - closingTime.getTime()) <= AppConstants.HOUR_IN_MILLIS) {
                     return new String[]{Utility.getResponseMessage(AppConstants.MSG_OPEN_CLOSES_AT, language) + " " + p.getPlaceClosingTime(), AppConstants.OPEN};
+                } else if (p.getHaveNoLunchHours()) {
+                    return new String[]{Utility.getResponseMessage(AppConstants.MSG_NO_LUNCH_HOURS, language), AppConstants.OPEN};
+                } else if (p.getHaveNoLunchHours() && currentTime.after(lunchStartTime) && currentTime.before(lunchEndTime)) {
+                    return new String[]{Utility.getResponseMessage(AppConstants.MSG_LUNCH_HOURS, language), AppConstants.OPEN};
                 }
             }
 
