@@ -23,6 +23,10 @@ public class DhPosts extends AllCommonUsedAttributes {
     private List<DhRatingAndComments> topRatings;
     private List<DhViews> topViews;
 
+    public DhPosts() {
+
+    }
+
     public String getPostId() {
         return postId;
     }

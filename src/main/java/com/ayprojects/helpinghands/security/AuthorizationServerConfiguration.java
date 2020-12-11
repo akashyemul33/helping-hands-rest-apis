@@ -95,3 +95,4 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     }
 
 }
+

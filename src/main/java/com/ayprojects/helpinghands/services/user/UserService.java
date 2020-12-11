@@ -13,7 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface UserService {
-    Response<DhUser> addUser(HttpHeaders httpHeaders, MultipartFile userImage, String userBody, String version);
+    Response<DhUser> addUser(HttpHeaders httpHeaders, DhUser dhUser, String version);
     Response<AccessTokenModel> login(AuthenticationRequest authenticationRequest, HttpHeaders httpHeaders, String version);
     Response<LoginResponse> getUserDetails(HttpHeaders httpHeaders, Authentication authentication, String version);
+    Response<DhUser> getUserByMobile(HttpHeaders httpHeaders, String mobileNumber, String version);
 }

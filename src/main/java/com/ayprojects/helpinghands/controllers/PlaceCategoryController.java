@@ -1,6 +1,5 @@
 package com.ayprojects.helpinghands.controllers;
 
-import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
@@ -16,11 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
 import io.swagger.annotations.Api;
 
@@ -45,9 +42,14 @@ public class PlaceCategoryController {
 
     /*returns all the maincategories with given status
     by default the status will be active*/
-    @GetMapping(value = "/getAllPlaceCategoriesWithStatus/{status}")
-    ResponseEntity<Response<DhPlaceCategories>> getAllActivePlaceCategories(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String status,@PathVariable String version){
-        return new ResponseEntity<>(placeCategoryService.findAllByStatus(authentication,httpHeaders, status,version), HttpStatus.OK);
+    @GetMapping(value = "/getAllActivePlaceCategories")
+    ResponseEntity<Response<DhPlaceCategories>> getAllActivePlaceCategories(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@PathVariable String version){
+        return new ResponseEntity<>(placeCategoryService.findAllByStatus(authentication,httpHeaders,version), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getAllActivePlaceCategoriesByType")
+    ResponseEntity<Response<DhPlaceCategories>> getAllActivePlaceCategoriesByType(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@PathVariable String version,@RequestParam String typeOfPlaceCategory){
+        return new ResponseEntity<>(placeCategoryService.getAllPlaceCategoriesByType(authentication,httpHeaders,version,typeOfPlaceCategory), HttpStatus.OK);
     }
 
 }

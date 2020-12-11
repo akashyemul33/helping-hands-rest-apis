@@ -14,7 +14,7 @@ public class ProductDaoImpl implements ProductDao{
     @Autowired
     ProductsRepository productsRepository;
     @Override
-    public Optional<DhProduct> findByProductNameProductnameInEnglish(String productnameInEnglish) {
-        return productsRepository.findByProductNameProductnameInEnglish(productnameInEnglish);
+    public Optional<DhProduct> findByDefaultName(String defaultName) {
+        return productsRepository.findByDefaultName(defaultName);
     }
 }

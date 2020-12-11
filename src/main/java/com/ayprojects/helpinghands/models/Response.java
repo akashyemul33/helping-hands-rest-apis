@@ -7,6 +7,16 @@ public class Response<T> {
     private Boolean status;
     private Integer statusCode;
     private String message;
+
+    public String getHeading() {
+        return heading;
+    }
+
+    public void setHeading(String heading) {
+        this.heading = heading;
+    }
+
+    private String heading;
     private Integer totalCount;
     private Integer currentPage;
     private Integer totalPages;
@@ -61,6 +71,13 @@ public class Response<T> {
         this.setStatusCode(statusCode);
         this.setMessage(message);
         this.setData(data);
+    }
+public Response(Boolean status, Integer statusCode, String heading,String message, List<T> data) {
+        this.setStatus(status);
+        this.setStatusCode(statusCode);
+        this.setMessage(message);
+        this.setData(data);
+        this.heading = heading;
     }
 
     public Response(Boolean status, Integer statusCode, String message, List<T> data, Integer totalCount) {

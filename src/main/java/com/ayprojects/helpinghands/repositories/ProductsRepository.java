@@ -11,5 +11,5 @@ import java.util.Optional;
 import javax.swing.text.html.Option;
 
 public interface ProductsRepository extends MongoRepository<DhProduct,String> {
-    Optional<DhProduct> findByProductNameProductnameInEnglish(String productnameInEnglish);
+    Optional<DhProduct> findByDefaultName(String defaultName);
 }

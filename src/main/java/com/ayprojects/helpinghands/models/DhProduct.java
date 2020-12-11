@@ -1,5 +1,11 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
+
+@Document
 public class DhProduct extends AllCommonUsedAttributes {
     private String productId;
     private String productImageId;
@@ -9,8 +15,49 @@ public class DhProduct extends AllCommonUsedAttributes {
     private String subPlaceCategoryId;
     private String categoryName;
     private String addedBy;
-    private ProductName productName;
-    private double avgPrice;
+    private String avgPrice;
+    public DhProduct() {
+
+    }
+    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String productImageId, String productImagePath, String defaultUnit, String mainPlaceCategoryId, String subPlaceCategoryId, String categoryName, String addedBy, String defaultName, List<LangValueObj> translations, String avgPrice) {
+        this.schemaVersion = schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime = modifiedDateTime;
+        this.status = status;
+        this.productId = productId;
+        this.productImageId = productImageId;
+        this.productImagePath = productImagePath;
+        this.defaultUnit = defaultUnit;
+        this.mainPlaceCategoryId = mainPlaceCategoryId;
+        this.subPlaceCategoryId = subPlaceCategoryId;
+        this.categoryName = categoryName;
+        this.addedBy = addedBy;
+        this.defaultName = defaultName;
+        this.translations = translations;
+        this.avgPrice = avgPrice;
+    }
+
+    public DhProduct(String defaultUnit, String defaultName, String avgPrice) {
+        this.defaultUnit = defaultUnit;
+        this.defaultName = defaultName;
+        this.avgPrice = avgPrice;
+    }
+
+    public String getDefaultName() {
+        return defaultName;
+    }
+
+    public void setDefaultName(String defaultName) {
+        this.defaultName = defaultName;
+    }
+
+    public List<LangValueObj> getTranslations() {
+        return translations;
+    }
+
+    public void setTranslations(List<LangValueObj> translations) {
+        this.translations = translations;
+    }
 
     public String getAddedBy() {
         return addedBy;
@@ -76,37 +123,12 @@ public class DhProduct extends AllCommonUsedAttributes {
         this.categoryName = categoryName;
     }
 
-    public ProductName getProductName() {
-        return productName;
-    }
-
-    public void setProductName(ProductName productName) {
-        this.productName = productName;
-    }
-
-    public double getAvgPrice() {
+    public String getAvgPrice() {
         return avgPrice;
     }
 
-    public void setAvgPrice(double avgPrice) {
+    public void setAvgPrice(String avgPrice) {
         this.avgPrice = avgPrice;
-    }
-
-    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String productImageId, String productImagePath, String defaultUnit, String mainPlaceCategoryId, String subPlaceCategoryId, String categoryName, ProductName productName, double avgPrice,String addedBy) {
-        this.schemaVersion =schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime =modifiedDateTime;
-        this.status=status;
-        this.productId = productId;
-        this.productImageId = productImageId;
-        this.productImagePath = productImagePath;
-        this.defaultUnit = defaultUnit;
-        this.mainPlaceCategoryId = mainPlaceCategoryId;
-        this.categoryName = categoryName;
-        this.productName = productName;
-        this.avgPrice = avgPrice;
-        this.subPlaceCategoryId = subPlaceCategoryId;
-        this.addedBy = addedBy;
     }
 }
 

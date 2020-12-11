@@ -26,8 +26,8 @@ public class PlaceCategoryDaoImpl implements PlaceCategoryDao {
     }
 
     @Override
-    public Optional<DhPlaceCategories> findByPlaceCategoryNamePlacecategorynameInEnglish(String placecategorynameInEnglish) {
-        return placeCategoriesRepository.findByPlaceCategoryNamePlacecategorynameInEnglish(placecategorynameInEnglish);
+    public Optional<DhPlaceCategories> findByDefaultName(String defaultName) {
+        return placeCategoriesRepository.findByDefaultName(defaultName);
     }
 
     @Override

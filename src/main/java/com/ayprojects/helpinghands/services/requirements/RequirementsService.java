@@ -17,9 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface RequirementsService {
-    Response<DhRequirements> addRequirements( HttpHeaders httpHeaders, Authentication authentication, String requirementBody,MultipartFile[] requirementImages,String version) throws ServerSideException;
+    Response<DhRequirements> addRequirements(HttpHeaders httpHeaders, Authentication authentication, DhRequirements dhRequirements, String version) throws ServerSideException;
     Response<DhRequirements> deleteRequirement( HttpHeaders httpHeaders, Authentication authentication,  String requirementId,String version) throws ServerSideException ;
     Response<DhRequirements> updateRequirement( HttpHeaders httpHeaders, Authentication authentication,  DhRequirements dhRequirements, String version) throws ServerSideException ;
     Response<DhRequirements> getAllRequirements( HttpHeaders httpHeaders, Authentication authentication, String searchValue,String version);
     Response<DhRequirements> getPaginatedRequirements( HttpHeaders httpHeaders, Authentication authentication,int page, int size, String version);
+
 }

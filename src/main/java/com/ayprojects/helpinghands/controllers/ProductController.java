@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import io.swagger.annotations.Api;
 
 @Api(value = "Products API's",description = "CRUD for products")
@@ -32,8 +34,13 @@ public class ProductController {
     @Autowired
     ProductsService productsService;
     @PostMapping(value="/addProduct")
-    public ResponseEntity<Response<DhProduct>> addProduct(@RequestHeader HttpHeaders httpHeaders,Authentication authentication, @RequestBody DhProduct dhProduct, @PathVariable String version) throws ServerSideException {
+    public ResponseEntity<Response<DhProduct>> addProduct(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhProduct dhProduct, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(productsService.addProduct(authentication,httpHeaders,dhProduct,version), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value="/addProducts")
+    public ResponseEntity<Response<DhProduct>> addProduct(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody List<DhProduct> dhProducts, @PathVariable String version) throws ServerSideException {
+        return new ResponseEntity<>(productsService.addProducts(authentication,httpHeaders,dhProducts,version), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getProductsForSubCategory")

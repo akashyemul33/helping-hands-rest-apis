@@ -49,13 +49,9 @@ public class RequirementsServiceImpl implements RequirementsService {
     Utility utility;
 
     @Override
-    public Response<DhRequirements> addRequirements(HttpHeaders httpHeaders, Authentication authentication, String requirementBody, MultipartFile[] requirementImages, String version) throws ServerSideException {
+    public Response<DhRequirements> addRequirements(HttpHeaders httpHeaders, Authentication authentication, DhRequirements dhRequirements, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("RequirementsServiceImpl->addRequirements : language=" + language);
-
-        //convert requirementBody json string to DhRequirements object
-        DhRequirements dhRequirements = null;
-        if(!Utility.isFieldEmpty(requirementBody)) dhRequirements = new Gson().fromJson(requirementBody, DhRequirements.class);
 
         if (dhRequirements == null) {
             return new Response<DhRequirements>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
@@ -70,22 +66,6 @@ public class RequirementsServiceImpl implements RequirementsService {
             return new Response<DhRequirements>(false,402,resMsg,new ArrayList<>(),0);
         }
 
-        String unqueRequirementId= Utility.getUUID();
-        //store image first
-        if(requirementImages!=null){
-                //set default requirement type to PUBLIC
-                if(Utility.isFieldEmpty(dhRequirements.getRequirementType())) dhRequirements.setRequirementType(AppConstants.PUBLIC_REQUIREMENT);
-                String imgType = dhRequirements.getRequirementType().matches(AppConstants.REGEX_BUSINESS_REQUIREMENT) ? "B" : "P";
-                String imgUploadFolder = imagesBaseFolder + "/" + dhRequirements.getAddedBy() + "/requirements/" + dhRequirements.getRequirementType() + "/";
-                String imgPrefix =  imgType + "_RQMNTS_" + unqueRequirementId + "_";
-                LOGGER.info("RequirementServiceImpl->addRequirements : imagesBaseFolder = " + imagesBaseFolder);
-                try {
-                    utility.uplodImages(imgUploadFolder, requirementImages, imgPrefix);
-                } catch (IOException ioException) {
-                    return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>());
-                }
-        }
-        dhRequirements.setRequirementId(unqueRequirementId);
         dhRequirements = (DhRequirements) utility.setCommonAttrs(dhRequirements,AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhRequirements,AppConstants.COLLECTION_DH_REQUIREMENTS);
         utility.addLog(authentication.getName(),"New ["+dhRequirements.getRequirementType()+"]  has been added.");

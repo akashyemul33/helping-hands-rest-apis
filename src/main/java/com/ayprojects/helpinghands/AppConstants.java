@@ -1,6 +1,7 @@
 package com.ayprojects.helpinghands;
 
 public class AppConstants {
+    public static final String DATE_FORMAT_HOUR_MIN = "HH:mm";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmss";
     //expiration value of 3 hours
@@ -51,6 +52,9 @@ public class AppConstants {
     public static final String REGEX_BUSINESS_REQUIREMENT = "^[Bb]usiness[\\s]*[Rr]equirement$";
     public static final String REGEX_PUBLIC_REQUIREMENT = "^[Pp]ublic[\\s]*[Rr]equirement$";
     public static final String REGEX_BUSINESS_PLACE = "^[Bb]usiness[\\s]*[Pp]lace$";
+    public static final String REGEX_USER = "^[Uu]ser$";
+    public static final String REGEX_PUBLIC_PLACE = "^[Pp]ublic[\\s]*[Pp]lace$";
+    public static final String REGEX_PUBLIC_POST = "^[Pp]ublic[\\s]*[Pp]ost$";
     public static final int LIMIT_RATINGS_IN_PLACES = 5;
     public static final int LIMIT_RATINGS_IN_POSTS = 5;
     public static final int LIMIT_RATINGS_IN_REQUIREMENTS = 5;
@@ -60,7 +64,6 @@ public class AppConstants {
     public static final int LIMIT_POSTS_IN_PLACES = 3;
     public static final String PUBLIC_REQUIREMENT ="PublicRequirement" ;
     public static final String ADDED_BY = "addedBy";
-    public static final String PLACE_MAIN_CATEGORY_ID = "placeMainCategoryId";
     public static final String PLACE_SUB_CATEGORY_ID = "placeSubCategoryId";
     public static final String PLACE_NAME = "placeName";
     public static final String PLACE_TYPE = "placeType";
@@ -72,11 +75,66 @@ public class AppConstants {
     public static final String PLACE_CONTACT = "placeContact";
     public static final String MOBILE = "mobile";
     public static final String EMAIL = "email";
-    public static final String PLACE_AVAILABLITY_DAYS = "placeAvailablityDays";
+    public static final String PLACE_OPENING_TIME = "placeOpeningTime";
+    public static final String PLACE_CLOSING_TIME ="placeClosingTime";
+    public static final String LUNCH_START_TIME = "lunchStartTime";
+    public static final String LUNCH_END_TIME = "lunchEndTime";
+    public static final String EXCHANGE_START_TIME = "exchangeStartTime";
+    public static final String EXCHANGE_END_TIME = "exchangeEndTime";
+    public static final String PLACE_AVAILABLITY_DETAILS = "placeAvailablityDetails";
     public static final String POST_TITLE = "postTitle";
     public static final String ADDRESS_DETAILS = "addressDetails";
     public static final String MAIN_PLACE_INITIAL_ID = "M_PLS_CTGRY_";
     public static final String SUB_PLACE_INITIAL_ID = "S_PLS_CTGRY_";
+    public static final String OWNER_DETAILS = "ownerDetails";
+    public static final String OWNER_NAME = "ownerName";
+    public static final String OWNER_MOBILE_NUMBER = "ownerMobileNumber";
+    public static final String OWNER_EMAIL_ID = "ownerEmailId";
+    public static final String RESPONSEMESSAGE_PLACE_IMAGES_ADDED = "PLACE_IMAGES_ADDED";
+    public static final String RESPONSEMESSAGE_POST_IMAGES_ADDED = "POST_IMAGES_ADDED";
+    public static final String RESPONSEMESSAGE_REQ_IMAGES_ADDED = "REQ_IMAGES_ADDED";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES = "UNABLE_TO_ADD_PLACE_IMAGES";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES = "UNABLE_TO_ADD_POST_IMAGES";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES = "UNABLE_TO_ADD_REQ_IMAGES";
+    public static final String REQ_TITLE = "requirementTitle";
+    public static final String REQ_DESC = "requirementDesc";
+    public static final String RATING = "rating";
+    public static final String CURRENT_API_VERSION = "1";
+    public static final String RESPONSEMESSAGE_MOBILE_IS_EMPTY = "MOBILE_IS_EMPTY";
+    public static final String RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE = "USER_FOUND_WITH_MOBILE";
+    public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE = "USER_NOT_FOUND_WITH_MOBILE";
+    public static final String TYPE_OF_PLACECATEGORY ="typeOfPlaceCategory" ;
+    public static final String LANG_ENGLISH = "EN";
+    public static final String LANG_MARATHI = "MR";
+    public static final String LANG_HINDI = "HI";
+    public static final String PLACE_SUB_CATEGORY_NAME = "placeSubCategoryName";
+    public static final String PRODUCT_DETAILS = "productDetails";
+    public static final String KEY_PRODUCTNAME_ENG = "productnameInEnglish";
+    public static final String KEY_PRODUCTNAME_MR = "productnameInMarathi";
+    public static final String KEY_PRODUCTNAME_HI = "productnameInHindi";
+    public static final String TYPE_OF_PLACE_CATEGORY = "typeOfPlaceCategory";
+    public static final String DEFAULT_NAME = "defaultName";
+    public static final String TRANSLATIONS = "translations";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY ="UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY" ;
+    public static final String PLACE_DESC = "placeDesc";
+    public static final String PLACE_MOBILE = "placeContact.mobile";
+    public static final String NUMBER_OF_PRODUCTS = "numberOfProducts";
+    public static final String DOOR_SERVICE = "doorService";
+    public static final String PLACE_IMAGES = "placeImages";
+    public static final String CREATED_DATETIME = "createdDateTime";
+    public static final String IA_ADDRESS_GENERATED = "isAddressGenerated";
+    public static final String USER_ID = "userId";
+    public static final String FIRST_NAME = "firstName";
+    public static final String LAST_NAME = "lastName";
+    public static final String MSG_OPEN_24INTO7 = "OPEN_24INTO7" ;
+    public static final String MSG_CLOSED_OPENS_AT = "CLOSED_OPENS_AT" ;
+    public static final String MSG_LUNCH_HOURS = "LUNCH_HOURS" ;
+    public static final String MSG_NO_LUNCH_HOURS = "NO_LUNCH_HOURS" ;
+    public static final String MSG_OPEN_CLOSES_AT = "OPEN_CLOSES_AT" ;
+    public static final long HOUR_IN_MILLIS = 1 * 60*60*1000;
+    public static final String CLOSED = "Closed";
+    public static final String OPEN = "Open";
+    public static final String MSG_UNKNOWN = "UNKNOWN";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
@@ -95,6 +153,7 @@ public class AppConstants {
 
     public static String RESPONSEMESSAGE_USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS";
     public static String RESPONSEMESSAGE_USER_CONTACT_IS_EMPTY = "USER_CONTACT_IS_EMPTY";
+    public static String RESPONSEMESSAGE_USER_ID_IS_MISSING = "USER_ID_IS_MISSING";
     public static String RESPONSEMESSAGE_USER_ADDRESS_IS_EMPTY = "USER_ADDRESS_IS_EMPTY";
     public static String RESPONSEMESSAGE_USER_PASSWORD_IS_EMPTY = "USER_PASSWORD_IS_EMPTY";
     public static String RESPONSEMESSAGE_USER_REGISTERED = "USER_REGISTERED";
@@ -107,6 +166,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED = "USER_AND_APPCONFIG_DETAILS_FETCHED";
     public static String RESPONSEMESSAGE_EMPTY_BODY = "EMPTY_BODY";
     public static String RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES = "EMPTY_BODY_OR_PLACECATEGORYNAMES";
+    public static String RESPONSEMESSAGE_TYPE_PLACECATEGORY_EMPTY = "TYPE_PLACECATEGORY_EMPTY";
     public static String RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY = "PLACE_CATEGORY_NAMES_EMPTY";
     public static String RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED = "NEW_PLACE_CATEGORY_ADDED";
     public static String RESPONSEMESSAGE_NO_PLACECATEGORIES = "NO_PLACECATEGORIES";
@@ -120,10 +180,22 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_NEW_PRODUCT_ADDED = "NEW_PRODUCT_ADDED";
     public static String RESPONSEMESSAGE_SOMETHING_WENT_WRONG = "SOMETHING_WENT_WRONG";
     public static String RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS = "PRODUCT_ALREADY_EXISTS";
-    public static String RESPONSEMESSAGE_NEW_PLACE_ADDED = "NEW_PLACE_ADDED";
+    public static String RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE = "NEW_PLACE_ADDED_WITH_ACTIVE";
+    public static String RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING = "NEW_PLACE_ADDED_WITH_PENDING";
+    public static String RESPONSEMESSAGE_CONGRATULATIONS = "CONGRATULATIONS";
     public static String RESPONSEMESSAGE_NEW_POST_ADDED = "NEW_POST_ADDED";
     public static String RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED = "NEW_REQUIREMENT_ADDED";
+    public static String RESPONSEMESSAGE_IMAGE_TYPE_MISSING = "IMAGE_TYPE_MISSING";
+    public static String RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE = "INCORRECT_IMAGE_TYPE";
     public static String RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED = "NEW_RATING_COMMENT_ADDED";
 
     public static String CONTACT_DETAILS ="contactDetails";
+    public static long TOTAL_ADD_PLACES_LIMIT = 100;
+    public static long PER_DAY_ADD_PLACES_LIMIT = 10;
+    public static long PER_DAY_ADD_POSTS_LIMIT = 200;
+    public static long PER_PLACE_IMAGES_LIMIT = 16;
+    public static long PER_POST_IMAGES_LIMIT = 8;
+    public static long PER_PLACE_PRODUCTS_LIMIT = 200;
+
+    public static String  MSG_DISTANCE_CALC_FAILED = "DISTANCE_CALC_FAILED";
 }

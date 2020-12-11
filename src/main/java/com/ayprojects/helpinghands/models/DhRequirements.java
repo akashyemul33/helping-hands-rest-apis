@@ -10,6 +10,10 @@ public class DhRequirements extends AllCommonUsedAttributes {
     private String priority;
     private String budget;
 
+    public DhRequirements() {
+
+    }
+
     public String getRequirementType() {
         return requirementType;
     }

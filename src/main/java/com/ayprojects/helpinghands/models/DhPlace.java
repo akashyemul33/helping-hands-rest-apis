@@ -1,29 +1,34 @@
 package com.ayprojects.helpinghands.models;
 
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
+
+import org.springframework.data.annotation.Transient;
+
 import java.util.List;
+
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class DhPlace extends AllCommonUsedAttributes {
     private String placeId;
     private String placeType;
     private Address placeAddress;
+    private boolean addressGenerated;
     private String placeMainCategoryId;
     private String addedBy;
     private String placeSubCategoryId;
     private String placeCategoryName;
+    private String placeSubCategoryName;
     private String placeName;
     private String placeDesc;
     private Contact placeContact;
     private boolean doorService;
     private List<String> placeImages;
-    private PlaceAvailabilityDays placeAvailablityDays;
-    private String openingTime;
-    private String closingTime;
-    private String lunchHourStartTime;
-    private String lunchHourEndTime;
-    private List<ProductsWithPrices> productsWithPrice;
+    private PlaceAvailabilityDetails placeAvailablityDetails;
+    private List<ProductsWithPrices> productDetails;
     private long numberOfRatings;
     private long numberOfViews;
     private long numberOfPosts;
+    private long numberOfProducts;
     private double avgRating;
     private List<String> ratingIds;
     private List<String> postIds;
@@ -31,6 +36,126 @@ public class DhPlace extends AllCommonUsedAttributes {
     private List<DhRatingAndComments> topRatings;
     private List<DhViews> topViews;
     private List<DhPosts> topPosts;
+    private String ownerName;
+    private List<String> subscribedUsers;//subscribed user id's
+    @Transient
+    private String distance;
+    private String userName;
+    @Transient
+    private boolean placeOpen;
+    private String openCloseMsg;
+
+    public DhPlace() {
+
+    }
+
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> placeImages, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<DhPosts> topPosts, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
+        this.schemaVersion = schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime = modifiedDateTime;
+        this.status = status;
+        this.placeId = placeId;
+        this.placeType = placeType;
+        this.placeAddress = placeAddress;
+        this.placeMainCategoryId = placeMainCategoryId;
+        this.addedBy = addedBy;
+        this.placeSubCategoryId = placeSubCategoryId;
+        this.placeCategoryName = placeCategoryName;
+        this.placeSubCategoryName = placeSubCategoryName;
+        this.placeName = placeName;
+        this.placeDesc = placeDesc;
+        this.placeContact = placeContact;
+        this.doorService = doorService;
+        this.placeImages = placeImages;
+        this.placeAvailablityDetails = placeAvailablityDetails;
+        this.productDetails = productDetails;
+        this.numberOfRatings = numberOfRatings;
+        this.numberOfViews = numberOfViews;
+        this.numberOfPosts = numberOfPosts;
+        this.avgRating = avgRating;
+        this.ratingIds = ratingIds;
+        this.postIds = postIds;
+        this.viewIds = viewIds;
+        this.topRatings = topRatings;
+        this.topViews = topViews;
+        this.topPosts = topPosts;
+        this.ownerName = ownerName;
+        this.subscribedUsers = subscribedUsers;
+        this.addressGenerated = addressGenerated;
+        this.numberOfProducts = numberOfProducts;
+    }
+
+    public boolean isPlaceOpen() {
+        return placeOpen;
+    }
+
+    public void setPlaceOpen(boolean placeOpen) {
+        this.placeOpen = placeOpen;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getOpenCloseMsg() {
+        return openCloseMsg;
+    }
+
+    public void setOpenCloseMsg(String openCloseMsg) {
+        this.openCloseMsg = openCloseMsg;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public long getNumberOfProducts() {
+        return numberOfProducts;
+    }
+
+    public void setNumberOfProducts(long numberOfProducts) {
+        this.numberOfProducts = numberOfProducts;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getPlaceSubCategoryName() {
+        return placeSubCategoryName;
+    }
+
+    public void setPlaceSubCategoryName(String placeSubCategoryName) {
+        this.placeSubCategoryName = placeSubCategoryName;
+    }
+
+    public boolean isAddressGenerated() {
+        return addressGenerated;
+    }
+
+    public void setAddressGenerated(boolean isAddressGenerated) {
+        this.addressGenerated = isAddressGenerated;
+    }
+
+    public List<String> getSubscribedUsers() {
+        return subscribedUsers;
+    }
+
+    public void setSubscribedUsers(List<String> subscribedUsers) {
+        this.subscribedUsers = subscribedUsers;
+    }
 
     public String getPlaceId() {
         return placeId;
@@ -128,52 +253,20 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.placeImages = placeImages;
     }
 
-    public PlaceAvailabilityDays getPlaceAvailablityDays() {
-        return placeAvailablityDays;
+    public PlaceAvailabilityDetails getPlaceAvailablityDetails() {
+        return placeAvailablityDetails;
     }
 
-    public void setPlaceAvailablityDays(PlaceAvailabilityDays placeAvailablityDays) {
-        this.placeAvailablityDays = placeAvailablityDays;
+    public void setPlaceAvailablityDetails(PlaceAvailabilityDetails placeAvailablityDetails) {
+        this.placeAvailablityDetails = placeAvailablityDetails;
     }
 
-    public String getOpeningTime() {
-        return openingTime;
+    public List<ProductsWithPrices> getProductDetails() {
+        return productDetails;
     }
 
-    public void setOpeningTime(String openingTime) {
-        this.openingTime = openingTime;
-    }
-
-    public String getClosingTime() {
-        return closingTime;
-    }
-
-    public void setClosingTime(String closingTime) {
-        this.closingTime = closingTime;
-    }
-
-    public String getLunchHourStartTime() {
-        return lunchHourStartTime;
-    }
-
-    public void setLunchHourStartTime(String lunchHourStartTime) {
-        this.lunchHourStartTime = lunchHourStartTime;
-    }
-
-    public String getLunchHourEndTime() {
-        return lunchHourEndTime;
-    }
-
-    public void setLunchHourEndTime(String lunchHourEndTime) {
-        this.lunchHourEndTime = lunchHourEndTime;
-    }
-
-    public List<ProductsWithPrices> getProductsWithPrice() {
-        return productsWithPrice;
-    }
-
-    public void setProductsWithPrice(List<ProductsWithPrices> productsWithPrice) {
-        this.productsWithPrice = productsWithPrice;
+    public void setProductDetails(List<ProductsWithPrices> productDetails) {
+        this.productDetails = productDetails;
     }
 
     public long getNumberOfRatings() {
@@ -256,40 +349,6 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.topPosts = topPosts;
     }
 
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String addedBy, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> placeImages, PlaceAvailabilityDays placeAvailablityDays, String openingTime, String closingTime, String lunchHourStartTime, String lunchHourEndTime, List<ProductsWithPrices> productsWithPrice, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<String> postIds, long numberOfPosts, List<DhPosts> topPosts) {
-        this.schemaVersion =schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime =modifiedDateTime;
-        this.status=status;
-        this.addedBy = addedBy;
-        this.placeId = placeId;
-        this.placeType = placeType;
-        this.placeAddress = placeAddress;
-        this.placeMainCategoryId = placeMainCategoryId;
-        this.placeSubCategoryId = placeSubCategoryId;
-        this.placeCategoryName = placeCategoryName;
-        this.placeName = placeName;
-        this.placeDesc = placeDesc;
-        this.placeContact = placeContact;
-        this.doorService = doorService;
-        this.placeImages = placeImages;
-        this.placeAvailablityDays = placeAvailablityDays;
-        this.openingTime = openingTime;
-        this.closingTime = closingTime;
-        this.lunchHourStartTime = lunchHourStartTime;
-        this.lunchHourEndTime = lunchHourEndTime;
-        this.productsWithPrice = productsWithPrice;
-        this.numberOfRatings = numberOfRatings;
-        this.numberOfViews = numberOfViews;
-        this.avgRating = avgRating;
-        this.ratingIds = ratingIds;
-        this.viewIds = viewIds;
-        this.topRatings = topRatings;
-        this.topViews = topViews;
-        this.postIds = postIds;
-        this.numberOfPosts = numberOfPosts;
-        this.topPosts = topPosts;
-    }
 }
 
 

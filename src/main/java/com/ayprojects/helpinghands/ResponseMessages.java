@@ -13,10 +13,9 @@ public class ResponseMessages {
     public String MR_USER_ADDRESS_IS_EMPTY = "पत्त्याचा तपशील गहाळ आहे! अक्षांश आणि रेखांश अनिवार्य आहेत.";
     public String HI_USER_ADDRESS_IS_EMPTY = "पते का विवरण गायब है ! लेटिट्यूड एंड लॉन्गिट्यूड अनिवार्य है ।";
 
-
-    public String EN_USER_REGISTERED = "User has been registered successfully.";
-    public String MR_USER_REGISTERED = "वापरकर्ता यशस्वीरित्या नोंदणीकृत झाला आहे.";
-    public String HI_USER_REGISTERED = "उपयोगकर्ता को सफलतापूर्वक पंजीकृत किया गया है ।";
+    public String EN_USER_REGISTERED = "Welcome to Helping Hands,\nYou are registered successfully.";
+    public String MR_USER_REGISTERED = "हेलपिंग हॅन्ड्समध्ये आपले स्वागत आहे, \nआपण यशस्वीरित्या नोंदणीकृत केले आहात.";
+    public String HI_USER_REGISTERED = "हेल्पिंग हैंड्समे आपका स्वागत है,\nआप सफलतापूर्वक पंजीकृत किया हैं। ।";
 
     public String EN_USER_PASSWORD_IS_EMPTY = "Password is empty!";
     public String MR_USER_PASSWORD_IS_EMPTY = "संकेतशब्द रिक्त आहे!";
@@ -92,9 +91,9 @@ public class ResponseMessages {
     public String MR_EMPTY_BODY_OR_PRODUCTNAMES = "इनपुट तपशील किंवा उत्पादनांची नावे गहाळ आहेत !";
     public String HI_EMPTY_BODY_OR_PRODUCTNAMES = "इनपुट विवरण या उत्पाद नाम गायब हैं !";
 
-    public String EN_PRODUCT_NAMES_EMPTY = "Please provide product names & name in english is compulsory !";
-    public String MR_PRODUCT_NAMES_EMPTY = "कृपया उत्पादनांची नावे द्या आणि इंग्रजीतील नाव अनिवार्य आहे !";
-    public String HI_PRODUCT_NAMES_EMPTY = "कृपया उत्पाद नाम प्रदान करें और अंग्रेजी में नाम अनिवार्य है !";
+    public String EN_PRODUCT_NAMES_EMPTY = "Please provide product name !";
+    public String MR_PRODUCT_NAMES_EMPTY = "कृपया उत्पादनांची नावे द्या !";
+    public String HI_PRODUCT_NAMES_EMPTY = "कृपया उत्पाद नाम प्रदान करें !";
 
     public String EN_CATEGORY_IDS_MISSING = "Main place category or sub place category id's are missing !";
     public String MR_CATEGORY_IDS_MISSING = "मुख्य ठिकाण श्रेणी किंवा उप-स्थान श्रेणी आयडी गहाळ आहेत !";
@@ -116,9 +115,17 @@ public class ResponseMessages {
     public String MR_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "दिलेल्या ठिकाणी उप श्रेणी आयडीसाठी कोणतीही सक्रिय उत्पादने आढळली नाहीत !";
     public String HI_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "दिए गए उप श्रेणी आईडी के लिए कोई सक्रिय उत्पाद नहीं मिला !";
 
-    public String EN_NEW_PLACE_ADDED = "New place has been added successfully !";
-    public String MR_NEW_PLACE_ADDED = "नवीन जागा यशस्वीरित्या जोडली गेली आहे !";
-    public String HI_NEW_PLACE_ADDED = "नई जगह को सफलतापूर्वक जोड़ा गया है !";
+    public String EN_NEW_PLACE_ADDED_WITH_ACTIVE = "New place has been added successfully, your people can watch it in places section .";
+    public String MR_NEW_PLACE_ADDED_WITH_ACTIVE = "नवीन ठिकाण यशस्वीरित्या जोडले गेले आहे, आपले लोक ते स्थान विभागात पाहू शकतात .";
+    public String HI_NEW_PLACE_ADDED_WITH_ACTIVE = "नई जगह को सफलतापूर्वक जोड़ा गया है, आपके लोग इसे स्थानों के अनुभाग में देख सकते हैं .";
+
+    public String EN_NEW_PLACE_ADDED_WITH_PENDING = "New place has been added successfully, your people can watch it in places section once we approve it .";
+    public String MR_NEW_PLACE_ADDED_WITH_PENDING = "नवीन ठिकाण यशस्वीरित्या जोडले गेले आहे, एकदा आम्ही ते मंजूर केले तेव्हा आपले लोक ते ठिकाणी विभागात पाहू शकतात.";
+    public String HI_NEW_PLACE_ADDED_WITH_PENDING = "नई जगह को सफलतापूर्वक जोड़ दिया गया है, जब हम इसे अनुमोदित कर देंगे तो आपके लोग इसे स्थानों के अनुभाग में देख सकते हैं।";
+
+    public String EN_CONGRATULATIONS = "Congratulations ";
+    public String MR_CONGRATULATIONS = "अभिनंदन ";
+    public String HI_CONGRATULATIONS = "बधाई हो ";
 
     public String EN_NEW_RATING_COMMENT_ADDED = "New rating and comment has been added !";
     public String MR_NEW_RATING_COMMENT_ADDED = "नवीन रेटिंग आणि टिप्पणी जोडली गेली आहे !";
@@ -131,4 +138,88 @@ public class ResponseMessages {
     public String EN_NEW_REQUIREMENT_ADDED = "New requirement has been added successfully !";
     public String MR_NEW_REQUIREMENT_ADDED = "नवीन आवश्यकता यशस्वीरित्या जोडली गेली आहे !";
     public String HI_NEW_REQUIREMENT_ADDED = "नई आवश्यकता को सफलतापूर्वक जोड़ा गया है !";
+
+    public String EN_IMAGE_TYPE_MISSING = "Image type is missing !";
+    public String MR_IMAGE_TYPE_MISSING = "प्रतिमेचा प्रकार गहाळ आहे !";
+    public String HI_IMAGE_TYPE_MISSING = "छवि प्रकार गायब है !";
+
+    public String EN_INCORRECT_IMAGE_TYPE = "Please check your Image type, no match found for image type!";
+    public String MR_INCORRECT_IMAGE_TYPE = "कृपया आपला प्रतिमा प्रकार तपासा, प्रतिमा प्रकारासाठी कोणतीही जुळणी आढळली नाही !";
+    public String HI_INCORRECT_IMAGE_TYPE = "कृपया अपना छवि प्रकार जांचें, छवि प्रकार के लिए कोई मिलान नहीं मिला !";
+
+    public String EN_PLACE_IMAGES_ADDED = "Place images have been added successfully !";
+    public String MR_PLACE_IMAGES_ADDED = "ठिकाण प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !";
+    public String HI_PLACE_IMAGES_ADDED = "स्थान चित्र सफलतापूर्वक जोड़े गए हैं !";
+
+    public String EN_POST_IMAGES_ADDED = "Post images have been added successfully  !";
+    public String MR_POST_IMAGES_ADDED = "पोस्ट प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !";
+    public String HI_POST_IMAGES_ADDED = "पोस्ट छवियों को सफलतापूर्वक जोड़ा गया है !";
+
+    public String EN_REQ_IMAGES_ADDED = "Requirement images have been added successfully  !";
+    public String MR_REQ_IMAGES_ADDED = "आवश्यकता  प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !";
+    public String HI_REQ_IMAGES_ADDED = "आवश्यकता छवियों को सफलतापूर्वक जोड़ा गया है !";
+
+    public String EN_UNABLE_TO_ADD_PLACE_IMAGES = "Unable to add place images !";
+    public String MR_UNABLE_TO_ADD_PLACE_IMAGES = "ठिकाण प्रतिमा जोडण्यात अक्षम !";
+    public String HI_UNABLE_TO_ADD_PLACE_IMAGES = "स्थान चित्र जोड़ने में असमर्थ !";
+
+    public String EN_UNABLE_TO_ADD_POST_IMAGES = "Unable to add post images !";
+    public String MR_UNABLE_TO_ADD_POST_IMAGES = "पोस्ट प्रतिमा जोडण्यात अक्षम !";
+    public String HI_UNABLE_TO_ADD_POST_IMAGES = "पोस्ट छवियों को जोड़ने में असमर्थ !";
+
+    public String EN_UNABLE_TO_ADD_REQ_IMAGES = "Unable to add post images !";
+    public String MR_UNABLE_TO_ADD_REQ_IMAGES = "आवश्यकता प्रतिमा जोडण्यात अक्षम !";
+    public String HI_UNABLE_TO_ADD_REQ_IMAGES = "आवश्यकता छवियों को जोड़ने में असमर्थ !";
+
+    public String EN_USER_ID_IS_MISSING = "User id is missing !";
+    public String MR_USER_ID_IS_MISSING = "वापरकर्ता आयडी गहाळ आहे !";
+    public String HI_USER_ID_IS_MISSING = "उपयोगकर्ता आईडी गायब है !";
+
+    public String EN_MOBILE_IS_EMPTY = "Mobile number should not be empty !";
+    public String MR_MOBILE_IS_EMPTY = "मोबाइल नंबर रिक्त नसावा !";
+    public String HI_MOBILE_IS_EMPTY = "मोबाइल नंबर खाली नहीं होना चाहिए !";
+
+    public String EN_USER_FOUND_WITH_MOBILE = "You're already registered with us, please enter your password to use the application !";
+    public String MR_USER_FOUND_WITH_MOBILE = "आपण आधीपासून आमच्याकडे नोंदणीकृत आहात, कृपया अनुप्रयोग वापरण्यासाठी आपला संकेतशब्द प्रविष्ट करा !";
+    public String HI_USER_FOUND_WITH_MOBILE = "आप पहले से ही हमारे साथ पंजीकृत हैं, कृपया एप्लिकेशन का उपयोग करने के लिए अपना पासवर्ड दर्ज करें !";
+
+    public String EN_USER_NOT_FOUND_WITH_MOBILE = "Looks like you're new to our application, please go ahead and create your profile !";
+    public String MR_USER_NOT_FOUND_WITH_MOBILE = "आमच्या अॅप मधे आपण नवीन आहात असे दिसते आहे, कृपया पुढे जा आणि आपले प्रोफाइल तयार करा!";
+    public String HI_USER_NOT_FOUND_WITH_MOBILE = "ऐसा लगता है कि आप हमारे अॅप में नए हैं, कृपया आगे बढ़ें और अपना प्रोफ़ाइल बनाएं !";
+
+    public String EN_TYPE_PLACECATEGORY_EMPTY = "Type of place category is missing !";
+    public String MR_TYPE_PLACECATEGORY_EMPTY = "ठिकाण प्रकाराचा प्रकार गहाळ आहे !";
+    public String HI_TYPE_PLACECATEGORY_EMPTY = "स्थान श्रेणी का प्रकार गायब है !";
+
+
+    public String EN_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "Unable to add place, please choose subcategory again !";
+    public String MR_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "जागा जोडण्यात अक्षम, कृपया पुन्हा उपश्रेणी निवडा !";
+    public String HI_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "स्थान जोड़ने में असमर्थ, कृपया फिर से उपश्रेणी चुनें !";
+
+
+    public String EN_OPEN_24INTO7 = "Open;for 24*7";
+    public String MR_OPEN_24INTO7 = "खुला;24 * 7 साठी";
+    public String HI_OPEN_24INTO7 = "खुला;24 * 7 के लिए ";
+
+    public String EN_CLOSED_OPENS_AT = "Closed;Opens at ";
+    public String MR_CLOSED_OPENS_AT = "बंद;वाजता उघडते ";
+    public String HI_CLOSED_OPENS_AT = "बन्द;पर खुलता है ";
+
+    public String EN_LUNCH_HOURS = "Open;On Lunch Hours";
+    public String MR_LUNCH_HOURS = "उघडा;दुपारच्या जेवणाच्या वेळी";
+    public String HI_LUNCH_HOURS = "खुला;दोपहर के खाने पर";
+
+    public String EN_NO_LUNCH_HOURS = "Open;No Lunch Hours";
+    public String MR_NO_LUNCH_HOURS = "उघडा;दुपारचे जेवण नाही";
+    public String HI_NO_LUNCH_HOURS = "खुला;दोपहर का भोजन नहीं";
+
+    public String EN_OPEN_CLOSES_AT = "Open;Closes at ";
+    public String MR_OPEN_CLOSES_AT = "उघडा;बंद केले जाईल";
+    public String HI_OPEN_CLOSES_AT = "खुला;बंद किया जाएगा";
+
+    public String EN_UNKNOWN = "Unknwon";
+    public String MR_UNKNOWN = "अज्ञात";
+    public String HI_UNKNOWN = "अनजान";
+
+
 }
