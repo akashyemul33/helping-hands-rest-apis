@@ -135,6 +135,14 @@ public class AppConstants {
     public static final String CLOSED = "Closed";
     public static final String OPEN = "Open";
     public static final String MSG_UNKNOWN = "UNKNOWN";
+    public static final String USER_INITIAL = "USER_";
+    public static final String USER_DIR = "/user/";
+    public static final String PLACE_INITIAL = "_PLCS_";
+    public static final String PLACE_DIR = "/places/";
+    public static final String POST_INITIAL = "_PSTS_";
+    public static final String POST_DIR = "/posts/";
+    public static final String REQUIREMENT_DIR = "/requirements/";
+    public static final String REQUIREMENT_INITIAL = "_RQMNTS_";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };

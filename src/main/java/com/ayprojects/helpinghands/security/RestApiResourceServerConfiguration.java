@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 public class RestApiResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-    public static final String RESOURCE_ID = "restservice";
+    public static final String RESOURCE_ID = "hh_images";
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
@@ -24,8 +24,10 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests().anyRequest().permitAll();
         http.authorizeRequests().antMatchers("/","/api/v"+ AppConstants.CURRENT_API_VERSION+"/users/addUser","/api/v"+ AppConstants.CURRENT_API_VERSION+"/imageUpload/uploadUserImage",
-                "/api/v"+ AppConstants.CURRENT_API_VERSION+"/users/getUserByMobile").permitAll()
+                "/api/v"+ AppConstants.CURRENT_API_VERSION+"/users/getUserByMobile",
+                "/hh_images/**").permitAll()
                 .antMatchers("/api/**").authenticated();
         /*http
                 .cors()

@@ -38,6 +38,9 @@ public class ImageServiceImpl implements ImageService {
     @Value("${images.base_folder}")
     String imagesBaseFolder;
 
+    String fileDivider = "/";
+    String nameDivider = "_";
+
     @Override
     public Response<DhUser> uploadUserImage(HttpHeaders httpHeaders, MultipartFile image, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
@@ -48,8 +51,8 @@ public class ImageServiceImpl implements ImageService {
         }
 
         String uniqueUserID = Utility.getUUID();
-        String imgUploadFolder = imagesBaseFolder + "/" + uniqueUserID + "/user/";
-        String imgPrefix = "USER_" + uniqueUserID + "_";
+        String imgUploadFolder = imagesBaseFolder + fileDivider + uniqueUserID + AppConstants.USER_DIR;
+        String imgPrefix = AppConstants.USER_INITIAL + uniqueUserID + nameDivider;
 
         if (Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, language), new ArrayList<>());
@@ -78,8 +81,8 @@ public class ImageServiceImpl implements ImageService {
 
         String imgType = placeType.matches(AppConstants.REGEX_BUSINESS_PLACE) ? "B" : "P";
         String uinquePlaceId = Utility.getUUID();
-        String imgUploadFolder = imagesBaseFolder + "/" + addedBy + "/places/" + placeType + "/";
-        String imgPrefix = imgType + "_PLCS_" + uinquePlaceId + "_";
+        String imgUploadFolder = imagesBaseFolder + fileDivider + addedBy + AppConstants.PLACE_DIR + placeType + fileDivider;
+        String imgPrefix = imgType + AppConstants.PLACE_INITIAL + uinquePlaceId + nameDivider;
 
         if (Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, language), new ArrayList<>());
@@ -112,8 +115,8 @@ public class ImageServiceImpl implements ImageService {
 
         String imgType = postType.matches(AppConstants.REGEX_BUSINESS_POST) ? "B" : "P";
         String uinquePostId = Utility.getUUID();
-        String imgUploadFolder = imagesBaseFolder + "/" + addedBy + "/posts/" + postType + "/";
-        String imgPrefix = imgType + "_PSTS_" + uinquePostId + "_";
+        String imgUploadFolder = imagesBaseFolder + fileDivider + addedBy + AppConstants.POST_DIR + postType + fileDivider;
+        String imgPrefix = imgType + AppConstants.POST_INITIAL + uinquePostId + nameDivider;
 
         if (Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, language), new ArrayList<>());
@@ -145,8 +148,8 @@ public class ImageServiceImpl implements ImageService {
 
         String imgType = reqType.matches(AppConstants.REGEX_BUSINESS_REQUIREMENT) ? "B" : "P";
         String uinqueReqId = Utility.getUUID();
-        String imgUploadFolder = imagesBaseFolder + "/" + addedBy + "/requirements/" + reqType + "/";
-        String imgPrefix = imgType + "_RQMNTS_" + uinqueReqId + "_";
+        String imgUploadFolder = imagesBaseFolder + fileDivider + addedBy + AppConstants.REQUIREMENT_DIR + reqType + fileDivider;
+        String imgPrefix = imgType + AppConstants.REQUIREMENT_INITIAL + uinqueReqId + nameDivider;
 
         if (Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, language), new ArrayList<>());
