@@ -1,5 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.List;
 
 public class NameAndTranslationsObj {

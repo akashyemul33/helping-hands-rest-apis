@@ -1,5 +1,9 @@
 package com.ayprojects.helpinghands.models;
 
+import java.util.List;
+
+import javax.print.DocFlavor;
+
 public class DhAppConfig extends AllCommonUsedAttributes {
     private int appConfigId;
     private boolean languageSupport;
@@ -10,6 +14,15 @@ public class DhAppConfig extends AllCommonUsedAttributes {
     private Languages languages;
     private String addedBy;
     private Modules modules;
+    private List<LangValueObj> units;
+
+    public List<LangValueObj> getUnits() {
+        return units;
+    }
+
+    public void setUnits(List<LangValueObj> units) {
+        this.units = units;
+    }
 
     public String getAddedBy() {
         return addedBy;
