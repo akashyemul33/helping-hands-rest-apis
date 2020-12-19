@@ -11,7 +11,7 @@ public class DhPosts extends AllCommonUsedAttributes {
     private String postDesc;
     private List<String> postImages;
     private Contact contactDetails;
-    private Address addressDetails;
+    private String fullAddress;
     private String offerStartTime;
     private String offerEndTime;
     private boolean areDetailsSameAsRegistered;
@@ -91,13 +91,6 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.contactDetails = contactDetails;
     }
 
-    public Address getAddressDetails() {
-            return addressDetails;
-    }
-
-    public void setAddressDetails(Address addressDetails) {
-        this.addressDetails = addressDetails;
-    }
 
     public String getOfferStartTime() {
         return offerStartTime;
@@ -179,7 +172,15 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.topViews = topViews;
     }
 
-    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String postType, String placeId, String addedBy, String postTitle, String postDesc, List<String> postImages, Contact contactDetails, Address addressDetails, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews) {
+    public String getFullAddress() {
+        return fullAddress;
+    }
+
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
+    }
+
+    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String postType, String placeId, String addedBy, String postTitle, String postDesc, List<String> postImages, Contact contactDetails, String fullAddress, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
@@ -192,7 +193,7 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.postDesc = postDesc;
         this.postImages = postImages;
         this.contactDetails = contactDetails;
-        this.addressDetails = addressDetails;
+        this.fullAddress = fullAddress;
         this.offerStartTime = offerStartTime;
         this.offerEndTime = offerEndTime;
         this.areDetailsSameAsRegistered = areDetailsSameAsRegistered;

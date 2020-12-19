@@ -7,7 +7,6 @@ import java.util.List;
 public class NameAndTranslationsObj {
     public String defaultName;
     public List<LangValueObj> translations;
-
     public String getDefaultName() {
         return defaultName;
     }

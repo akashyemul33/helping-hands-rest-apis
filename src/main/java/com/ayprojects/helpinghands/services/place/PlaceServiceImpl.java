@@ -264,5 +264,25 @@ public class PlaceServiceImpl implements PlaceService {
         }
         return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList.size(), dhPlacePages.getNumber(), dhPlacePages.getTotalPages(), dhPlacePages.getTotalElements(), dhPlaceList);
     }
+
+    @Override
+    public Response<DhPlace> getBusinessPlacesOfUserWhileAddingPost(Authentication authentication, HttpHeaders httpHeaders, String version, String userId){
+        String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("PlaceServiceImpl->getBusinessPlacesOfUser : language=" + language);
+
+        if(Utility.isFieldEmpty(userId)){
+            return new Response<DhPlace>(false, 402, "Empty UserId", new ArrayList<>(), 0);
+        }
+
+        Query query = new Query(Criteria.where(AppConstants.ADDED_BY).is(userId));
+        query.addCriteria(Criteria.where(AppConstants.PLACE_TYPE).regex(AppConstants.BUSINESS_PLACE,"i"));
+        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i"));
+        query.fields().include(AppConstants.PLACE_TYPE);
+        query.fields().include(AppConstants.PLACE_NAME);
+        query.fields().include(AppConstants.PLACE_ADDRESS+"."+AppConstants.FULL_ADDRESS);
+        List<DhPlace> dhPlaceList = mongoTemplate.find(query,DhPlace.class);
+        return new Response<DhPlace>(true, 200, "Query successful",dhPlaceList);
+    }
+
 }
 

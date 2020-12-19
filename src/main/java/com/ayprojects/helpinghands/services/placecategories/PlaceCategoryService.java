@@ -1,5 +1,6 @@
 package com.ayprojects.helpinghands.services.placecategories;
 
+import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
@@ -18,4 +19,5 @@ public interface PlaceCategoryService {
     Response<DhPlaceCategories> findAllByStatus(Authentication authentication, HttpHeaders httpHeaders,String version);
     Response<PlaceSubCategories> addPlaceSubCategory(Authentication authentication, HttpHeaders httpHeaders, PlaceSubCategories placeSubCategories,String mainPlaceCategoryId,String version);
     Response<DhPlaceCategories> getAllPlaceCategoriesByType(Authentication authentication, HttpHeaders httpHeaders, String version, String typeOfPlaceCategory);
+
 }

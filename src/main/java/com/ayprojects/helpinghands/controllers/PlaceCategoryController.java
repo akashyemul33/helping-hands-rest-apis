@@ -1,5 +1,6 @@
 package com.ayprojects.helpinghands.controllers;
 
+import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;

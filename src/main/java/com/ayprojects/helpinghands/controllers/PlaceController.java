@@ -69,4 +69,8 @@ public class PlaceController {
         return new ResponseEntity<>(placeService.getPaginatedPlaces(authentication,httpHeaders,page,size,version,lat,lng), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getBusinessPlacesOfUserWhileAddingPost")
+    ResponseEntity<Response<DhPlace>> getBusinessPlacesOfUserWhileAddingPost(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId){
+        return new ResponseEntity<>(placeService.getBusinessPlacesOfUserWhileAddingPost(authentication,httpHeaders,version,userId), HttpStatus.OK);
+    }
 }
