@@ -221,5 +221,17 @@ public class ResponseMessages {
     public String MR_UNKNOWN = "अज्ञात";
     public String HI_UNKNOWN = "अनजान";
 
+    public String EN_USER_NOT_FOUND_WITH_USERID = "User not found !";
+    public String MR_USER_NOT_FOUND_WITH_USERID = "वापरकर्ता आढळला नाही !";
+    public String HI_USER_NOT_FOUND_WITH_USERID = "उपयोगकर्ता नहीं मिला !";
+
+    public String EN_INVALID_POSTTYPE = "Invalid Post Type !";
+    public String MR_INVALID_POSTTYPE = "अवैध पोस्ट प्रकार !";
+    public String HI_INVALID_POSTTYPE = "अमान्य पोस्ट प्रकार !";
+
+    public String EN_PLACE_NOT_FOUND_WITH_PLACEID = "Place not found !";
+    public String MR_PLACE_NOT_FOUND_WITH_PLACEID = "जागा सापडली नाही !";
+    public String HI_PLACE_NOT_FOUND_WITH_PLACEID = "जगह नहीं मिली !";
+
 
 }

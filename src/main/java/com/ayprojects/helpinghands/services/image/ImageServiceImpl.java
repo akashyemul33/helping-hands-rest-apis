@@ -130,7 +130,7 @@ public class ImageServiceImpl implements ImageService {
             dhPosts.setAddedBy(addedBy);
             dhPosts.setPostImages(postImageUrls);
             utility.addLog(addedBy, "Post images have been added");
-            return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED, language), new ArrayList<>(), 1);
+            return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED, language), Collections.singletonList(dhPosts), 1);
         } catch (IOException ioException) {
             LOGGER.info("ImageServiceImpl->uploadPostImages : exception = " + ioException.getMessage());
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES, language), new ArrayList<>());

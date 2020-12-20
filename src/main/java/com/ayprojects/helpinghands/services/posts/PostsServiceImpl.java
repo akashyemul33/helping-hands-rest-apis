@@ -6,10 +6,12 @@ import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PostsRepository;
+import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.tools.Utility;
 import com.ayprojects.helpinghands.tools.Validations;
 import com.google.gson.Gson;
 
+import org.slf4j.helpers.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -36,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static com.ayprojects.helpinghands.AppConstants.BUSINESS_POST;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Service
@@ -53,32 +56,64 @@ public class PostsServiceImpl implements PostsService {
     @Autowired
     Utility utility;
 
+    @Autowired
+    CommonService commonService;
+
     @Override
     public Response<DhPosts> addPost(Authentication authentication, HttpHeaders httpHeaders, DhPosts dhPosts, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PostsServiceImpl->addPost : language=" + language);
 
+        String emptyBodyResMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language);
         if (dhPosts == null) {
-            return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
+            return new Response<DhPosts>(false, 402, emptyBodyResMsg, new ArrayList<>(), 0);
+        }
+
+        //check if postId present && postImages present
+        if (Utility.isFieldEmpty(dhPosts.getPlaceId()) || dhPosts.getPostImages() == null || dhPosts.getPostImages().size() <= 0) {
+            dhPosts.setPostId(Utility.getUUID());
         }
 
         List<String> missingFieldsList = Validations.findMissingFieldsForPosts(dhPosts);
         if (missingFieldsList.size() > 0) {
-            String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language);
-            resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
-            return new Response<DhPosts>(false, 402, resMsg, new ArrayList<>(), 0);
+            emptyBodyResMsg = emptyBodyResMsg + " , these fields are missing : " + missingFieldsList;
+            return new Response<DhPosts>(false, 402, emptyBodyResMsg, new ArrayList<>(), 0);
+        } else {
+            if (!dhPosts.getPostType().equalsIgnoreCase(AppConstants.PUBLIC_POST) && !dhPosts.getPostType().equalsIgnoreCase(BUSINESS_POST)) {
+                return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE, language), new ArrayList<>(), 0);
+            }
         }
 
+
+        //check for user existence
+        if (!commonService.checkUserExistence(dhPosts.getAddedBy())) {
+            return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, language), new ArrayList<>(), 0);
+        }
+
+        //check whether place exists with given placeId
+        DhPlace queriedDhPlace = null;
+        Query queryFindPlaceWithId = null;
+        boolean isBusinessPost = false;
+        if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST)) {
+            isBusinessPost = true;
+            queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPosts.getPlaceId()));
+            queryFindPlaceWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i"));
+            queryFindPlaceWithId.fields().include(AppConstants.TOP_POSTS);
+            queryFindPlaceWithId.fields().include(AppConstants.NUMBER_OF_POSTS);
+            queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId, DhPlace.class);
+            if (queriedDhPlace == null) {
+                return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID, language), new ArrayList<>(), 0);
+            }
+        }
+
+        //store posts
         dhPosts = (DhPosts) utility.setCommonAttrs(dhPosts, AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhPosts, AppConstants.COLLECTION_DH_POSTS);
         utility.addLog(authentication.getName(), "New [" + dhPosts.getPostType() + "] post has been added.");
 
-        if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST)) {
+        //update the place if post is businesspost
+        if (isBusinessPost) {
             LOGGER.info("PostsServiceImpl->addPost : It's business post");
-            Query queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPosts.getPlaceId()));
-            DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId, DhPlace.class);
-            if (queriedDhPlace == null)
-                throw new ServerSideException("Unable to add posts into places collection");
             Update updatePlace = new Update();
             LOGGER.info("PostsServiceImpl->addPost : postIds block is null, pushing post id into postIds array");
             updatePlace.push(AppConstants.POST_IDS, dhPosts.getPostId());

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.AppConstants.ADDED_BY;
+import static com.ayprojects.helpinghands.AppConstants.BUSINESS_POST;
 import static com.ayprojects.helpinghands.AppConstants.DEFAULT_NAME;
 import static com.ayprojects.helpinghands.AppConstants.TYPE_OF_PLACE_CATEGORY;
 
@@ -157,34 +158,37 @@ public class Validations {
         if (Utility.isFieldEmpty(dhPosts.getPostType()))
             missingFieldsList.add(AppConstants.POST_TYPE);
         if (Utility.isFieldEmpty(dhPosts.getPostId())) missingFieldsList.add(AppConstants.POST_ID);
-        else if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST)) {
+
+
+        if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST)) {
             if (Utility.isFieldEmpty(dhPosts.getPlaceId())) {
                 missingFieldsList.add(AppConstants.PLACE_ID);
             }
         }
-        if (dhPosts.getAddressDetails() == null)
-            missingFieldsList.add(AppConstants.ADDRESS_DETAILS);
-        else {
-            if (dhPosts.getAddressDetails().getLat() == 0)
-                missingFieldsList.add(AppConstants.LATTITUDE);
-            if (dhPosts.getAddressDetails().getLng() == 0)
-                missingFieldsList.add(AppConstants.LONGITUDE);
-            if (Utility.isFieldEmpty(dhPosts.getAddressDetails().getFullAddress())) {
-                missingFieldsList.add(AppConstants.FULL_ADDRESS);
-            }
-        }
+
+        if (Utility.isFieldEmpty(dhPosts.getFullAddress()))
+            missingFieldsList.add(AppConstants.FULL_ADDRESS);
+
         if (dhPosts.getContactDetails() == null)
             missingFieldsList.add(AppConstants.CONTACT_DETAILS);
         else {
             if (Utility.isFieldEmpty(dhPosts.getContactDetails().getMobile())) {
                 missingFieldsList.add(AppConstants.MOBILE);
             }
-            if (Utility.isFieldEmpty(dhPosts.getContactDetails().getEmail())) {
-                missingFieldsList.add(AppConstants.EMAIL);
-            }
         }
+
         if (Utility.isFieldEmpty(dhPosts.getPostTitle()))
             missingFieldsList.add(AppConstants.POST_TITLE);
+
+        if (Utility.isFieldEmpty(dhPosts.getPostDesc()))
+            missingFieldsList.add(AppConstants.POST_DESC);
+
+        if (Utility.isFieldEmpty(dhPosts.getOfferStartTime()) && !Utility.isFieldEmpty(dhPosts.getOfferEndTime())) {
+            missingFieldsList.add(AppConstants.POST_OFFER_START_TIME);
+        } else if (Utility.isFieldEmpty(dhPosts.getOfferEndTime()) && !Utility.isFieldEmpty(dhPosts.getOfferStartTime())) {
+            missingFieldsList.add(AppConstants.POST_OFFER_END_TIME);
+        }
+
         return missingFieldsList;
     }
 

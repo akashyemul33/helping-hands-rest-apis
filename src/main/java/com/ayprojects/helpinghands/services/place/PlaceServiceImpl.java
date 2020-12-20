@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
+import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.LangValueObj;
@@ -11,6 +12,7 @@ import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PlaceRepository;
+import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.services.placecategories.PlaceCategoryService;
 import com.ayprojects.helpinghands.services.products.ProductsService;
 import com.ayprojects.helpinghands.tools.Utility;
@@ -49,6 +51,9 @@ public class PlaceServiceImpl implements PlaceService {
     @Autowired
     ProductsService productsService;
 
+    @Autowired
+    CommonService commonService;
+
     @Override
     public Response<DhPlace> addPlace(Authentication authentication, HttpHeaders httpHeaders, DhPlace dhPlace, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
@@ -69,6 +74,10 @@ public class PlaceServiceImpl implements PlaceService {
             String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language);
             resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
             return new Response<DhPlace>(false, 402, resMsg, new ArrayList<>(), 0);
+        }
+
+        if (!commonService.checkUserExistence(dhPlace.getAddedBy())) {
+            return new Response<DhPlace>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, language), new ArrayList<>(), 0);
         }
 
         //Check for mainCategory existence
@@ -266,22 +275,24 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public Response<DhPlace> getBusinessPlacesOfUserWhileAddingPost(Authentication authentication, HttpHeaders httpHeaders, String version, String userId){
+    public Response<DhPlace> getBusinessPlacesOfUserWhileAddingPost(Authentication authentication, HttpHeaders httpHeaders, String version, String userId) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PlaceServiceImpl->getBusinessPlacesOfUser : language=" + language);
 
-        if(Utility.isFieldEmpty(userId)){
+        if (Utility.isFieldEmpty(userId)) {
             return new Response<DhPlace>(false, 402, "Empty UserId", new ArrayList<>(), 0);
         }
 
         Query query = new Query(Criteria.where(AppConstants.ADDED_BY).is(userId));
-        query.addCriteria(Criteria.where(AppConstants.PLACE_TYPE).regex(AppConstants.BUSINESS_PLACE,"i"));
-        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i"));
+        query.addCriteria(Criteria.where(AppConstants.PLACE_TYPE).regex(AppConstants.BUSINESS_PLACE, "i"));
+        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         query.fields().include(AppConstants.PLACE_TYPE);
+        query.fields().include(AppConstants.PLACE_ID);
         query.fields().include(AppConstants.PLACE_NAME);
-        query.fields().include(AppConstants.PLACE_ADDRESS+"."+AppConstants.FULL_ADDRESS);
-        List<DhPlace> dhPlaceList = mongoTemplate.find(query,DhPlace.class);
-        return new Response<DhPlace>(true, 200, "Query successful",dhPlaceList);
+        query.fields().include(AppConstants.PLACE_ADDRESS);
+        query.fields().include(AppConstants.PLACE_CONTACT);
+        List<DhPlace> dhPlaceList = mongoTemplate.find(query, DhPlace.class);
+        return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList);
     }
 
 }

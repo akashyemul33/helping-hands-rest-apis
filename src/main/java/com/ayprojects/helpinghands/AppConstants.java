@@ -1,5 +1,7 @@
 package com.ayprojects.helpinghands;
 
+import java.util.Collection;
+
 public class AppConstants {
     public static final String DATE_FORMAT_HOUR_MIN = "HH:mm";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -103,6 +105,8 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_MOBILE_IS_EMPTY = "MOBILE_IS_EMPTY";
     public static final String RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE = "USER_FOUND_WITH_MOBILE";
     public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE = "USER_NOT_FOUND_WITH_MOBILE";
+    public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID = "USER_NOT_FOUND_WITH_USERID";
+    public static final String RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID = "PLACE_NOT_FOUND_WITH_PLACEID";
     public static final String TYPE_OF_PLACECATEGORY ="typeOfPlaceCategory" ;
     public static final String LANG_ENGLISH = "EN";
     public static final String LANG_MARATHI = "MR";
@@ -143,6 +147,11 @@ public class AppConstants {
     public static final String POST_DIR = "/posts/";
     public static final String REQUIREMENT_DIR = "/requirements/";
     public static final String REQUIREMENT_INITIAL = "_RQMNTS_";
+    public static final String POST_DESC = "postDesc";
+    public static final String POST_OFFER_END_TIME = "offerEndTime";
+    public static final String POST_OFFER_START_TIME = "offerStartTime";
+    public static final String OBJECT_ID = "_id";
+    public static final String LANDMARK = "landmark";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
@@ -173,6 +182,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_ERROR_WHILE_FETCHING_APP_CONFIG = "ERROR_WHILE_FETCHING_APP_CONFIG";
     public static String RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED = "USER_AND_APPCONFIG_DETAILS_FETCHED";
     public static String RESPONSEMESSAGE_EMPTY_BODY = "EMPTY_BODY";
+    public static String RESPONSEMESSAGE_INVALID_POSTTYPE = "INVALID_POSTTYPE";
     public static String RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES = "EMPTY_BODY_OR_PLACECATEGORYNAMES";
     public static String RESPONSEMESSAGE_TYPE_PLACECATEGORY_EMPTY = "TYPE_PLACECATEGORY_EMPTY";
     public static String RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY = "PLACE_CATEGORY_NAMES_EMPTY";

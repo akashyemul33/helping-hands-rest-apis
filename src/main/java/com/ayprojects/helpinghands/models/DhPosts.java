@@ -12,9 +12,9 @@ public class DhPosts extends AllCommonUsedAttributes {
     private List<String> postImages;
     private Contact contactDetails;
     private String fullAddress;
+    private String fullName;
     private String offerStartTime;
     private String offerEndTime;
-    private boolean areDetailsSameAsRegistered;
     private long numberOfRatings;
     private long numberOfViews;
     private double avgRating;
@@ -25,6 +25,40 @@ public class DhPosts extends AllCommonUsedAttributes {
 
     public DhPosts() {
 
+    }
+
+    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String postType, String placeId, String addedBy, String postTitle, String postDesc, List<String> postImages, Contact contactDetails, String fullAddress, String offerStartTime, String offerEndTime, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, String fullName) {
+        this.schemaVersion = schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime = modifiedDateTime;
+        this.status = status;
+        this.postId = postId;
+        this.postType = postType;
+        this.placeId = placeId;
+        this.addedBy = addedBy;
+        this.postTitle = postTitle;
+        this.postDesc = postDesc;
+        this.postImages = postImages;
+        this.contactDetails = contactDetails;
+        this.fullAddress = fullAddress;
+        this.offerStartTime = offerStartTime;
+        this.offerEndTime = offerEndTime;
+        this.numberOfRatings = numberOfRatings;
+        this.numberOfViews = numberOfViews;
+        this.avgRating = avgRating;
+        this.ratingIds = ratingIds;
+        this.viewIds = viewIds;
+        this.topRatings = topRatings;
+        this.topViews = topViews;
+        this.fullName = fullName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPostId() {
@@ -91,7 +125,6 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.contactDetails = contactDetails;
     }
 
-
     public String getOfferStartTime() {
         return offerStartTime;
     }
@@ -106,14 +139,6 @@ public class DhPosts extends AllCommonUsedAttributes {
 
     public void setOfferEndTime(String offerEndTime) {
         this.offerEndTime = offerEndTime;
-    }
-
-    public boolean isAreDetailsSameAsRegistered() {
-        return areDetailsSameAsRegistered;
-    }
-
-    public void setAreDetailsSameAsRegistered(boolean areDetailsSameAsRegistered) {
-        this.areDetailsSameAsRegistered = areDetailsSameAsRegistered;
     }
 
     public long getNumberOfRatings() {
@@ -178,32 +203,6 @@ public class DhPosts extends AllCommonUsedAttributes {
 
     public void setFullAddress(String fullAddress) {
         this.fullAddress = fullAddress;
-    }
-
-    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String postType, String placeId, String addedBy, String postTitle, String postDesc, List<String> postImages, Contact contactDetails, String fullAddress, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews) {
-        this.schemaVersion =schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime =modifiedDateTime;
-        this.status=status;
-        this.postId = postId;
-        this.postType = postType;
-        this.placeId = placeId;
-        this.addedBy = addedBy;
-        this.postTitle = postTitle;
-        this.postDesc = postDesc;
-        this.postImages = postImages;
-        this.contactDetails = contactDetails;
-        this.fullAddress = fullAddress;
-        this.offerStartTime = offerStartTime;
-        this.offerEndTime = offerEndTime;
-        this.areDetailsSameAsRegistered = areDetailsSameAsRegistered;
-        this.numberOfRatings = numberOfRatings;
-        this.numberOfViews = numberOfViews;
-        this.avgRating = avgRating;
-        this.ratingIds = ratingIds;
-        this.viewIds = viewIds;
-        this.topRatings = topRatings;
-        this.topViews = topViews;
     }
 }
 

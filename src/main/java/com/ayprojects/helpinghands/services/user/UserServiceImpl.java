@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -64,6 +65,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private Utility utility;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     @Autowired
     private AppConfigService appConfigService;
@@ -181,4 +185,5 @@ public class UserServiceImpl implements UserService{
         }
         return new Response<>(false,403,Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE,language),new ArrayList<>(),1);
     }
+
 }

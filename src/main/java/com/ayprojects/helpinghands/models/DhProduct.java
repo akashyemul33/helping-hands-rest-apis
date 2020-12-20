@@ -16,6 +16,8 @@ public class DhProduct extends AllCommonUsedAttributes {
     private String categoryName;
     private String addedBy;
     private String avgPrice;
+    public String defaultName;
+    public List<LangValueObj> translations;
     public DhProduct() {
 
     }
@@ -130,5 +132,6 @@ public class DhProduct extends AllCommonUsedAttributes {
     public void setAvgPrice(String avgPrice) {
         this.avgPrice = avgPrice;
     }
+
 }
 
