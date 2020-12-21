@@ -1,9 +1,13 @@
 package com.ayprojects.helpinghands;
 
 public class ResponseMessages {
-    public String EN_USER_ALREADY_EXISTS = "User already exists!";
-    public String MR_USER_ALREADY_EXISTS = "वापरकर्ता आधीपासून विद्यमान आहे!";
-    public String HI_USER_ALREADY_EXISTS = "उपयोगकर्ता पहले से मौजूद है!";
+    public String EN_USER_ALREADY_EXISTS_WITH_MOBILE = "User already exists with given mobile number !";
+    public String MR_USER_ALREADY_EXISTS_WITH_MOBILE = "दिलेल्या मोबाइल नंबरसह वापरकर्ता आधीपासून विद्यमान आहे !";
+    public String HI_USER_ALREADY_EXISTS_WITH_MOBILE = "उपयोगकर्ता पहले से ही दिए गए मोबाइल नंबर के साथ मौजूद है !";
+
+    public String EN_USER_ALREADY_EXISTS_WITH_EMAIL = "User already exists with given email !";
+    public String MR_USER_ALREADY_EXISTS_WITH_EMAIL = "दिलेल्या ईमेलसह वापरकर्ता आधीपासून विद्यमान आहे !";
+    public String HI_USER_ALREADY_EXISTS_WITH_EMAIL = "उपयोगकर्ता पहले से ही दिए गए ईमेल के साथ मौजूद है !";
 
     public String EN_USER_CONTACT_IS_EMPTY = "Contact details are missing! MobileNumber & Email are compulsory.";
     public String MR_USER_CONTACT_IS_EMPTY = "संपर्क तपशील गहाळ आहेत! मोबाइल नंबर आणि ईमेल अनिवार्य आहेत.";

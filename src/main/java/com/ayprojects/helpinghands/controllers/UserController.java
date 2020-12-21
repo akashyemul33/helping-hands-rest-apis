@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/getUserByMobile")
-    ResponseEntity<Response<DhUser>> getUserByMobile(@RequestHeader HttpHeaders httpHeaders,@RequestParam String mobileNumber, @PathVariable String version){
-        return new ResponseEntity<>(userService.getUserByMobile(httpHeaders,mobileNumber,version), HttpStatus.OK);
+    ResponseEntity<Response<DhUser>> getUserByMobile(@RequestHeader HttpHeaders httpHeaders,@RequestParam String mobileNumber,@RequestParam String countryCode , @PathVariable String version){
+        return new ResponseEntity<>(userService.getUserByMobile(httpHeaders,mobileNumber,countryCode,version), HttpStatus.OK);
     }
 }

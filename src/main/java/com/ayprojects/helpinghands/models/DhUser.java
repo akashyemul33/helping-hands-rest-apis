@@ -7,6 +7,15 @@ public class DhUser extends AllCommonUsedAttributes {
     private String firstName;
     private String lastName;
     private String password;
+    private String countryCode;
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
 
     public String getLastName() {
         return lastName;

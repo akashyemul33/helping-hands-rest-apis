@@ -11,4 +11,5 @@ public interface UserRepository extends MongoRepository<DhUser,String> {
     Optional<DhUser> findByEmailId(String emailId);
     Optional<DhUser> findByUserId(String userId);
     Optional<DhUser> findByMobileNumberOrEmailId(String mobileNumber,String emailId);
+    Optional<DhUser> findByMobileNumberAndCountryCode(String mobileNumber,String countryCode);
 }
