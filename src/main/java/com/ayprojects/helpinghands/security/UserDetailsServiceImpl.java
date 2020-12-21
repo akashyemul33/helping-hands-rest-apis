@@ -1,5 +1,6 @@
 package com.ayprojects.helpinghands.security;
 
+import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.dao.authrorization.AuthorizationDao;
 import com.ayprojects.helpinghands.dao.user.UserDao;
 import com.ayprojects.helpinghands.models.DhAuthorization;
@@ -40,7 +41,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             LOGGER.info("UserServiceImpl->Not found user with mobile "+ username);
             fetchedUser = userDao.findByEmailId(username);
         }*/
-        if(fetchedUser.isPresent())return  new UserDetailsDecorator(fetchedUser.get());
+        if(fetchedUser.isPresent()){
+            return  new UserDetailsDecorator(fetchedUser.get());
+        }
         LOGGER.info("UserServiceImpl->Not found user with mobile or emailId, username entered = "+ username);
         throw new UsernameNotFoundException(username);
     }

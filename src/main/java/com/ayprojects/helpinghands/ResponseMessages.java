@@ -9,6 +9,10 @@ public class ResponseMessages {
     public String MR_USER_ALREADY_EXISTS_WITH_EMAIL = "दिलेल्या ईमेलसह वापरकर्ता आधीपासून विद्यमान आहे !";
     public String HI_USER_ALREADY_EXISTS_WITH_EMAIL = "उपयोगकर्ता पहले से ही दिए गए ईमेल के साथ मौजूद है !";
 
+    public String EN_NOT_ACTIVE_USER = "You're not an Active User, Please contact us for more details !";
+    public String MR_NOT_ACTIVE_USER = "आपण एक सक्रिय वापरकर्ता नाही, कृपया अधिक माहितीसाठी आमच्याशी संपर्क साधा !";
+    public String HI_NOT_ACTIVE_USER = "आप एक सक्रिय उपयोगकर्ता नहीं हैं, कृपया अधिक जानकारी के लिए हमसे संपर्क करें !";
+
     public String EN_USER_CONTACT_IS_EMPTY = "Contact details are missing! MobileNumber & Email are compulsory.";
     public String MR_USER_CONTACT_IS_EMPTY = "संपर्क तपशील गहाळ आहेत! मोबाइल नंबर आणि ईमेल अनिवार्य आहेत.";
     public String HI_USER_CONTACT_IS_EMPTY = "संपर्क विवरण गायब हैं! मोबाइल नंबर और ईमेल अनिवार्य है ।";

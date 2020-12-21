@@ -182,7 +182,12 @@ public class UserServiceImpl implements UserService {
         Optional<DhUser> queriedUser = userDao.findByMobileNumber(mobileNumber);
 
         if (queriedUser != null && queriedUser.isPresent()) {
-            return new Response<>(true, 200, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE, language), new ArrayList<>(), 1);
+            if (queriedUser.get().getStatus().equalsIgnoreCase(AppConstants.STATUS_ACTIVE)) {
+                return new Response<>(true, 200, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE, language), new ArrayList<>(), 1);
+            } else {
+                return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NOT_ACTIVE_USER, language), new ArrayList<>());
+            }
+
         }
         return new Response<>(false, 403, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE, language), new ArrayList<>(), 1);
     }

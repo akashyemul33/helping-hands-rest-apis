@@ -155,8 +155,12 @@ public class Utility {
             Date currentTime = format.parse(currentHourMin);
             Date openingTime = format.parse(p.getPlaceOpeningTime());
             Date closingTime = format.parse(p.getPlaceClosingTime());
-            Date lunchStartTime = format.parse(p.getLunchStartTime());
-            Date lunchEndTime = format.parse(p.getLunchEndTime());
+            Date lunchStartTime = null;
+            Date lunchEndTime = null;
+            if (!p.getHaveNoLunchHours()) {
+                lunchStartTime = format.parse(p.getLunchStartTime());
+                lunchEndTime = format.parse(p.getLunchEndTime());
+            }
 
             //if before opening time
             if (currentTime.before(openingTime) || currentTime.after(closingTime)) {

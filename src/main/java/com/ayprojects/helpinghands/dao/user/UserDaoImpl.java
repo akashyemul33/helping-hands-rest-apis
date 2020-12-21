@@ -32,6 +32,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Optional<DhUser> findByMobileNumberAndStatus(String mobileNumber, String status) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<DhUser> findByMobileNumberAndCountryCode(String mobileNumber, String countryCode) {
         return userRepository.findByMobileNumberAndCountryCode(mobileNumber,countryCode);
     }
