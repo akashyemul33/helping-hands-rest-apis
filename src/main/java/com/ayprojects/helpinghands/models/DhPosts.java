@@ -22,6 +22,15 @@ public class DhPosts extends AllCommonUsedAttributes {
     private List<String> viewIds;
     private List<DhRatingAndComments> topRatings;
     private List<DhViews> topViews;
+    private String offerMsg;
+
+    public String getOfferMsg() {
+        return offerMsg;
+    }
+
+    public void setOfferMsg(String offerMsg) {
+        this.offerMsg = offerMsg;
+    }
 
     public DhPosts() {
 

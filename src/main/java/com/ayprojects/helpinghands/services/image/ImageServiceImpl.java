@@ -7,10 +7,10 @@ import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.services.aws.AmazonClient;
 import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.tools.Utility;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -23,19 +23,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.rmi.CORBA.Util;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Service
 public class ImageServiceImpl implements ImageService {
+
+    private AmazonClient amazonClient;
+
+    @Autowired
+    ImageServiceImpl(AmazonClient amazonClient) {
+        this.amazonClient = amazonClient;
+    }
+
     @Autowired
     Utility utility;
 
     @Autowired
     LogService logService;
 
-    @Value("${images.base_folder}")
+    @Value("${images.s3.base_folder}")
     String imagesBaseFolder;
 
     String fileDivider = "/";
@@ -61,7 +68,7 @@ public class ImageServiceImpl implements ImageService {
         LOGGER.info("ImageServiceImpl->uploadImage : imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
 
         try {
-            String url = utility.uplodImages(imgUploadFolder, new MultipartFile[]{image}, imgPrefix).get(0);
+            String url = amazonClient.uplodImages(imgUploadFolder, new MultipartFile[]{image}, imgPrefix).get(0);
             DhUser dhUser = new DhUser(uniqueUserID, url);
             utility.addLog(uniqueUserID, "User image has been added");
             return new Response<DhUser>(true, 201, "Image save successfully", Collections.singletonList(dhUser));
@@ -90,7 +97,7 @@ public class ImageServiceImpl implements ImageService {
 
         LOGGER.info("ImageServiceImpl->uploadPlaceImages : imageType=" + placeType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> placeImageUrls = utility.uplodImages(imgUploadFolder, placeImages, imgPrefix);
+            List<String> placeImageUrls = amazonClient.uplodImages(imgUploadFolder, placeImages, imgPrefix);
             DhPlace dhPlace = new DhPlace();
             dhPlace.setPlaceId(uinquePlaceId);
             dhPlace.setAddedBy(addedBy);
@@ -124,7 +131,7 @@ public class ImageServiceImpl implements ImageService {
 
         LOGGER.info("ImageServiceImpl->uploadPostImages : imageType=" + postType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> postImageUrls = utility.uplodImages(imgUploadFolder, postImages, imgPrefix);
+            List<String> postImageUrls = amazonClient.uplodImages(imgUploadFolder, postImages, imgPrefix);
             DhPosts dhPosts = new DhPosts();
             dhPosts.setPostId(uinquePostId);
             dhPosts.setAddedBy(addedBy);
@@ -157,7 +164,7 @@ public class ImageServiceImpl implements ImageService {
 
         LOGGER.info("ImageServiceImpl->uploadRequirementImages : imageType=" + reqType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> reqImageUrls = utility.uplodImages(imgUploadFolder, reqImages, imgPrefix);
+            List<String> reqImageUrls = amazonClient.uplodImages(imgUploadFolder, reqImages, imgPrefix);
             DhRequirements dhRequirements = new DhRequirements();
             dhRequirements.setRequirementId(uinqueReqId);
             dhRequirements.setAddedBy(addedBy);
@@ -169,4 +176,6 @@ public class ImageServiceImpl implements ImageService {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES, language), new ArrayList<>());
         }
     }
+
+
 }

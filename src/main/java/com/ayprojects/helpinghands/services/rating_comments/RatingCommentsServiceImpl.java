@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.rmi.CORBA.Util;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 

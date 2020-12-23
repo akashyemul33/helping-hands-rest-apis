@@ -17,6 +17,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -209,24 +211,6 @@ public class Utility {
         logService.addLog(new DhLog(Utility.getUUID(), username, actionMsg, Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC(), AppConstants.SCHEMA_VERSION));
     }
 
-    public List<String> uplodImages(String imgUploadFolder, MultipartFile[] multipartImages, String imagePrefix) throws IOException {
-        List<String> uploadedImageNames = new ArrayList<>();
-        if (multipartImages == null || multipartImages.length == 0) return uploadedImageNames;
-        Path path1 = Paths.get(imgUploadFolder);
-        Files.createDirectories(path1);
-        for (MultipartFile multipartFile : multipartImages) {
-            String ext = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
-            String imgPath = imgUploadFolder + imagePrefix + Calendar.getInstance().getTimeInMillis() + "." + ext;
-            LOGGER.info("Utility->uplodImages : imgUploadFolderWithFile = " + imgPath);
-            byte[] bytes = multipartFile.getBytes();
-            Path filePath = Paths.get(imgPath);
-            Files.probeContentType(filePath);
-            Files.write(filePath, bytes);
-            uploadedImageNames.add(imgPath);
-        }
-        return uploadedImageNames;
-    }
-
     public AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {
         if (obj == null) obj = new AllCommonUsedAttributes();
         obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
@@ -235,4 +219,6 @@ public class Utility {
         obj.setStatus(status);
         return obj;
     }
+
+
 }
