@@ -42,7 +42,7 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     LogService logService;
 
-    @Value("${images.s3.base_folder}")
+    @Value("${amazonProperties.images.s3.base_folder}")
     String imagesBaseFolder;
 
     String fileDivider = "/";

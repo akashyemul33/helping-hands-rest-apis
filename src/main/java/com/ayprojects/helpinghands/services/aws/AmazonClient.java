@@ -2,8 +2,10 @@ package com.ayprojects.helpinghands.services.aws;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Region;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.S3ClientOptions;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -37,10 +39,6 @@ public class AmazonClient {
     private String endpointUrl;
     @Value("${amazonProperties.bucketName}")
     private String bucketName;
-    @Value("${amazonProperties.accessKey}")
-    private String accessKey;
-    @Value("${amazonProperties.secretKey}")
-    private String secretKey;
     @Value("${amazonProperties.region}")
     private String region;
 
@@ -48,11 +46,9 @@ public class AmazonClient {
     private void initializeAmazon() {
         LOGGER.info("initializeAmazon->endPointUrl="+endpointUrl);
         LOGGER.info("initializeAmazon->bucketName="+bucketName);
-        LOGGER.info("initializeAmazon->accessKey="+accessKey);
-        LOGGER.info("initializeAmazon->secretKey="+secretKey);
         LOGGER.info("initializeAmazon->region="+region);
-        BasicAWSCredentials creds = new BasicAWSCredentials(this.accessKey, this.secretKey);
-        this.s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(creds)).withRegion(region).build();
+
+        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(region).build();
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
@@ -110,6 +106,7 @@ public class AmazonClient {
             String fileUrl = endpointUrl + "/" + bucketName + "/" + objKey;
             LOGGER.info("Utility->uplodImages : imgUploadFolderWithFile = " + fileUrl);
             uploadedImageNames.add(fileUrl);
+            file.delete();
         }
         return uploadedImageNames;
     }
