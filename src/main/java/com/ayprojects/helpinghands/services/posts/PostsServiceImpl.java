@@ -44,9 +44,6 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 @Service
 public class PostsServiceImpl implements PostsService {
 
-    @Value("${images.base_folder}")
-    String imagesBaseFolder;
-
     @Autowired
     MongoTemplate mongoTemplate;
 
@@ -151,7 +148,7 @@ public class PostsServiceImpl implements PostsService {
         PageRequest paging = PageRequest.of(page, size);
         Page<DhPosts> dhPostPages = postsRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
         List<DhPosts> dhPostsList = dhPostPages.getContent();
-        return new Response<DhPosts>(true, 201, "Query successful", dhPostsList.size(), dhPostPages.getNumber(), dhPostPages.getTotalPages(), dhPostPages.getTotalElements(), dhPostsList);
+        return new Response<DhPosts>(true, 200, "Query successful", dhPostsList.size(), dhPostPages.getNumber(), dhPostPages.getTotalPages(), dhPostPages.getTotalElements(), dhPostsList);
     }
 
     @Override
@@ -179,6 +176,6 @@ public class PostsServiceImpl implements PostsService {
                 dhPostsList,
                 pageable,
                 () -> mongoTemplate.count(queryGetPosts, DhPosts.class));
-        return new Response<>(true, 201, "Query successful", dhPostsList.size(), dhPostsPage.getNumber(), dhPostsPage.getTotalPages(), dhPostsPage.getTotalElements(), dhPostsList);
+        return new Response<>(true, 200, "Query successful", dhPostsList.size(), dhPostsPage.getNumber(), dhPostsPage.getTotalPages(), dhPostsPage.getTotalElements(), dhPostsList);
     }
 }
