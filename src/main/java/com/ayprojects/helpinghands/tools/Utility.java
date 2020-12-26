@@ -4,26 +4,22 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.ResponseMessages;
 import com.ayprojects.helpinghands.models.AllCommonUsedAttributes;
 import com.ayprojects.helpinghands.models.DhLog;
+import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
+import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.UserSettings;
 import com.ayprojects.helpinghands.services.log.LogService;
 
-import org.apache.commons.io.FilenameUtils;
-import org.slf4j.helpers.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -202,6 +198,25 @@ public class Utility {
             if (l.getLang().equalsIgnoreCase(language)) return l.getValue();
         }
         return mc.getDefaultName();
+    }
+
+    public static DhUser getUserDetailsFromId(String userId, MongoTemplate mongoTemplate,boolean firstNameOfUser,boolean lastNameOfUser,boolean userImage) {
+        if(Utility.isFieldEmpty(userId) || mongoTemplate==null)return null;
+
+        Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
+        if(firstNameOfUser) query.fields().include(AppConstants.FIRST_NAME);
+        if(lastNameOfUser) query.fields().include(AppConstants.LAST_NAME);
+        if(userImage) query.fields().include(AppConstants.USER_PROFILE_IMG);
+        return mongoTemplate.findOne(query, DhUser.class);
+    }
+
+    public static DhPlace getPlaceDetailsFromId(String placeId,MongoTemplate mongoTemplate,boolean placeName,boolean placeCategory){
+        if(Utility.isFieldEmpty(placeId) || mongoTemplate==null)return null;
+
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
+        if(placeName) query.fields().include(AppConstants.PLACE_NAME);
+        if(placeCategory) query.fields().include(AppConstants.PLACE_SUB_CATEGORY_NAME);
+        return mongoTemplate.findOne(query, DhPlace.class);
     }
 
     public void addLog(String username, String actionMsg) {

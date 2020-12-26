@@ -241,5 +241,9 @@ public class ResponseMessages {
     public String MR_PLACE_NOT_FOUND_WITH_PLACEID = "जागा सापडली नाही !";
     public String HI_PLACE_NOT_FOUND_WITH_PLACEID = "जगह नहीं मिली !";
 
+    public String EN_OFFER_MSG = "Offer valid from ";
+    public String MR_OFFER_MSG = "ऑफर वैधता ";
+    public String HI_OFFER_MSG = "प्रस्ताव की वैधता ";
+
 
 }

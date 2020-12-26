@@ -263,12 +263,8 @@ public class PlaceServiceImpl implements PlaceService {
             d.setPlaceOpen(isOpen);
             d.setOpenCloseMsg(openCloseMsg[0]);
 
-            //get user name from id
-            String userId = d.getAddedBy();
-            Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
-            query.fields().include(AppConstants.FIRST_NAME);
-            DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
-            if (dhUser != null) d.setUserName(dhUser.getFirstName());
+            DhUser dhUser = Utility.getUserDetailsFromId(d.getAddedBy(),mongoTemplate,true,false,false);
+            if(dhUser!=null)d.setUserName(dhUser.getFirstName());
 
         }
         return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList.size(), dhPlacePages.getNumber(), dhPlacePages.getTotalPages(), dhPlacePages.getTotalElements(), dhPlaceList);

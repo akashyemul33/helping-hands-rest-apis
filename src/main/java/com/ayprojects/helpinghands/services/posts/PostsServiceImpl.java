@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PostsRepository;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
@@ -94,7 +95,7 @@ public class PostsServiceImpl implements PostsService {
         if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST)) {
             isBusinessPost = true;
             queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPosts.getPlaceId()));
-            queryFindPlaceWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i"));
+            queryFindPlaceWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
             queryFindPlaceWithId.fields().include(AppConstants.TOP_POSTS);
             queryFindPlaceWithId.fields().include(AppConstants.NUMBER_OF_POSTS);
             queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId, DhPlace.class);
@@ -145,9 +146,35 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public Response<DhPosts> getPaginatedPosts(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version) {
+        String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("PostsServiceImpl->addPost : language=" + language);
+
         PageRequest paging = PageRequest.of(page, size);
         Page<DhPosts> dhPostPages = postsRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
         List<DhPosts> dhPostsList = dhPostPages.getContent();
+        for (DhPosts d : dhPostsList) {
+
+            if (!Utility.isFieldEmpty(d.getOfferStartTime()) && !Utility.isFieldEmpty(d.getOfferEndTime())) {
+                String offerMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_OFFER_MSG, language);
+                offerMsg = String.format("%s %s - %s", offerMsg, d.getOfferStartTime(), d.getOfferEndTime());
+                d.setOfferMsg(offerMsg);
+            }
+
+            DhUser dhUser = Utility.getUserDetailsFromId(d.getAddedBy(), mongoTemplate, true, false, true);
+            if (dhUser != null) {
+                d.setUserName(dhUser.getFirstName());
+                d.setUserImage(dhUser.getProfileImg());
+            }
+
+            if (Utility.isFieldEmpty(d.getPlaceId())) {
+                DhPlace dhPlace = Utility.getPlaceDetailsFromId(d.getPlaceId(), mongoTemplate, true, true);
+                if (dhPlace != null) {
+                    d.setPlaceName(dhPlace.getPlaceName());
+                    d.setPlaceCategory(dhPlace.getPlaceSubCategoryName());
+                }
+            }
+        }
+
         return new Response<DhPosts>(true, 200, "Query successful", dhPostsList.size(), dhPostPages.getNumber(), dhPostPages.getTotalPages(), dhPostPages.getTotalElements(), dhPostsList);
     }
 

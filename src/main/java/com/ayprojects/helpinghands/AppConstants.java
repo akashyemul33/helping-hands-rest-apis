@@ -152,6 +152,8 @@ public class AppConstants {
     public static final String POST_OFFER_START_TIME = "offerStartTime";
     public static final String OBJECT_ID = "_id";
     public static final String LANDMARK = "landmark";
+    public static final String USER_PROFILE_IMG = "profileImg";
+    public static final String RESPONSEMESSAGE_OFFER_MSG = "OFFER_MSG";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] LANGUAGES = { "en", "hi","mr" };
