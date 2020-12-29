@@ -1,14 +1,11 @@
-package com.ayprojects.helpinghands.services.aws;
+package com.ayprojects.helpinghands.util.aws;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Region;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.S3ClientOptions;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.rmi.CORBA.Util;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -43,11 +37,7 @@ public class AmazonClient {
     private String region;
 
     @PostConstruct
-    private void initializeAmazon() {
-        LOGGER.info("initializeAmazon->endPointUrl="+endpointUrl);
-        LOGGER.info("initializeAmazon->bucketName="+bucketName);
-        LOGGER.info("initializeAmazon->region="+region);
-
+    public void initializeAmazon() {
         this.s3Client = AmazonS3ClientBuilder.standard().withRegion(region).build();
     }
 
@@ -56,35 +46,34 @@ public class AmazonClient {
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
-    private static File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
+    public File convertMultipartFile(MultipartFile multipartFile) throws IOException {
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            throw new IllegalArgumentException("Got null arguement for MultipartFile");
+        }
+        File convFile = new File(multipartFile.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
+        fos.write(multipartFile.getBytes());
         fos.close();
         return convFile;
     }
 
-    private static String generateFileName(MultipartFile multiPart) {
-        return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
-    }
     public String deleteFileFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
         s3Client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
         return "Successfully deleted";
     }
 
-    public String uploadFile(MultipartFile multipartFile,String fileUrl) {
 
-        try {
-            File file = convertMultiPartToFile(multipartFile);
-            String fileName = generateFileName(multipartFile);
-            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
-            uploadFileTos3bucket(fileName, file);
-            file.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public String getFileExtension(String fileName, String typeOfFile) {
+        if (Utility.isFieldEmpty(fileName)){
+            if(Utility.isFieldEmpty(typeOfFile)) {
+                throw new NullPointerException("Got both filename and typeOfFile empty");
+            }
+            else{
+                return typeOfFile;
+            }
         }
-        return fileUrl;
+        return FilenameUtils.getExtension(fileName);
     }
 
     public List<String> uplodImages(String imgUploadFolder, MultipartFile[] multipartImages, String imagePrefix) throws IOException {
@@ -93,7 +82,7 @@ public class AmazonClient {
 
         for (MultipartFile multipartFile : multipartImages) {
 
-            File file = convertMultiPartToFile(multipartFile);
+            File file = convertMultipartFile(multipartFile);
 
             //create s3 obj key
             String ext = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
@@ -109,6 +98,22 @@ public class AmazonClient {
             file.delete();
         }
         return uploadedImageNames;
+    }
+
+    public AmazonS3 getS3Client() {
+        return s3Client;
+    }
+
+    public String getEndpointUrl() {
+        return endpointUrl;
+    }
+
+    public String getBucketName() {
+        return bucketName;
+    }
+
+    public String getRegion() {
+        return region;
     }
 
 }

@@ -7,7 +7,7 @@ import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.services.aws.AmazonClient;
+import com.ayprojects.helpinghands.util.aws.AmazonClient;
 import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
