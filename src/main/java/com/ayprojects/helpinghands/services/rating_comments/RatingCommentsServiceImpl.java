@@ -8,8 +8,8 @@ import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.RatingAndCommentsRepository;
-import com.ayprojects.helpinghands.tools.Utility;
-import com.ayprojects.helpinghands.tools.Validations;
+import com.ayprojects.helpinghands.util.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

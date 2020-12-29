@@ -4,7 +4,6 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
-import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.LangValueObj;
@@ -15,8 +14,8 @@ import com.ayprojects.helpinghands.repositories.PlaceRepository;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.services.placecategories.PlaceCategoryService;
 import com.ayprojects.helpinghands.services.products.ProductsService;
-import com.ayprojects.helpinghands.tools.Utility;
-import com.ayprojects.helpinghands.tools.Validations;
+import com.ayprojects.helpinghands.util.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -251,10 +250,10 @@ public class PlaceServiceImpl implements PlaceService {
                     double placeLng = d.getPlaceAddress().getLng();
                     d.setDistance("\t" + "(" + Utility.distance(lat, placeLat, lng, placeLng) + ")");
                 } else {
-                    d.setDistance(Utility.getResponseMessage(AppConstants.MSG_UNKNOWN, language));
+                    d.setDistance(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNKNOWN, language));
                 }
             } else {
-                d.setDistance(Utility.getResponseMessage(AppConstants.MSG_UNKNOWN, language));
+                d.setDistance(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNKNOWN, language));
             }
             //calculate open/close msg
             String[] openCloseMsg = Utility.calculatePlaceOpenCloseMsg(d.getPlaceAvailablityDetails(), language);

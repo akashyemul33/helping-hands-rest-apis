@@ -1,4 +1,4 @@
-package com.ayprojects.helpinghands.tools;
+package com.ayprojects.helpinghands.util.tools;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.ResponseMessages;
@@ -142,7 +142,7 @@ public class Utility {
     public static String[] calculatePlaceOpenCloseMsg(PlaceAvailabilityDetails p, String language) {
         if (p == null) return new String[]{""};
         if (p.isProvide24into7()) {
-            return new String[]{Utility.getResponseMessage(AppConstants.MSG_OPEN_24INTO7, language), AppConstants.OPEN};
+            return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_OPEN_24INTO7, language), AppConstants.OPEN};
         }
         Calendar now = Calendar.getInstance();
         String currentHourMin = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
@@ -162,15 +162,15 @@ public class Utility {
 
             //if before opening time
             if (currentTime.before(openingTime) || currentTime.after(closingTime)) {
-                return new String[]{Utility.getResponseMessage(AppConstants.MSG_CLOSED_OPENS_AT, language) + " " + p.getPlaceOpeningTime(), AppConstants.CLOSED};
+                return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CLOSED_OPENS_AT, language) + " " + p.getPlaceOpeningTime(), AppConstants.CLOSED};
             } else {
 
                 if ((currentTime.getTime() - closingTime.getTime()) <= AppConstants.HOUR_IN_MILLIS) {
-                    return new String[]{Utility.getResponseMessage(AppConstants.MSG_OPEN_CLOSES_AT, language) + " " + p.getPlaceClosingTime(), AppConstants.OPEN};
+                    return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT, language) + " " + p.getPlaceClosingTime(), AppConstants.OPEN};
                 } else if (p.getHaveNoLunchHours()) {
-                    return new String[]{Utility.getResponseMessage(AppConstants.MSG_NO_LUNCH_HOURS, language), AppConstants.OPEN};
+                    return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_LUNCH_HOURS, language), AppConstants.OPEN};
                 } else if (p.getHaveNoLunchHours() && currentTime.after(lunchStartTime) && currentTime.before(lunchEndTime)) {
-                    return new String[]{Utility.getResponseMessage(AppConstants.MSG_LUNCH_HOURS, language), AppConstants.OPEN};
+                    return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_LUNCH_HOURS, language), AppConstants.OPEN};
                 }
             }
 
@@ -201,7 +201,8 @@ public class Utility {
     }
 
     public static DhUser getUserDetailsFromId(String userId, MongoTemplate mongoTemplate,boolean firstNameOfUser,boolean lastNameOfUser,boolean userImage) {
-        if(Utility.isFieldEmpty(userId) || mongoTemplate==null)return null;
+        if(Utility.isFieldEmpty(userId))throw new NullPointerException("Cannot fetch user details with empty userId");
+        if(mongoTemplate==null)throw new NullPointerException("Cannot fetch place details with null mongoTemplate object.");
 
         Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
         if(firstNameOfUser) query.fields().include(AppConstants.FIRST_NAME);
@@ -211,7 +212,8 @@ public class Utility {
     }
 
     public static DhPlace getPlaceDetailsFromId(String placeId,MongoTemplate mongoTemplate,boolean placeName,boolean placeCategory){
-        if(Utility.isFieldEmpty(placeId) || mongoTemplate==null)return null;
+        if(Utility.isFieldEmpty(placeId))throw new NullPointerException("Cannot fetch place details with empty placeId");
+        if(mongoTemplate==null)throw new NullPointerException("Cannot fetch place details with null mongoTemplate object.");
 
         Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
         if(placeName) query.fields().include(AppConstants.PLACE_NAME);

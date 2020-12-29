@@ -9,7 +9,7 @@ import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.aws.AmazonClient;
 import com.ayprojects.helpinghands.services.log.LogService;
-import com.ayprojects.helpinghands.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

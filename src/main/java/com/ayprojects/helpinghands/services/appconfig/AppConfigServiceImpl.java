@@ -4,12 +4,10 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.dao.appconfig.AppConfigDao;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhAppConfig;
-import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.security.UserDetailsDecorator;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
-import com.ayprojects.helpinghands.services.log.LogService;
-import com.ayprojects.helpinghands.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 

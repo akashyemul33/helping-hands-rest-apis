@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.controllers;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
-import com.ayprojects.helpinghands.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Utility;
 
 
 public class tmp {

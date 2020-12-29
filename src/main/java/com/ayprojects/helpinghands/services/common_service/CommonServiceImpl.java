@@ -3,17 +3,13 @@ package com.ayprojects.helpinghands.services.common_service;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhUser;
-import com.ayprojects.helpinghands.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-
-import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Service
 public class CommonServiceImpl implements CommonService {

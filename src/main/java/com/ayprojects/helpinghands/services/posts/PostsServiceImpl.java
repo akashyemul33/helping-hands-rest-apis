@@ -8,13 +8,10 @@ import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PostsRepository;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
-import com.ayprojects.helpinghands.tools.Utility;
-import com.ayprojects.helpinghands.tools.Validations;
-import com.google.gson.Gson;
+import com.ayprojects.helpinghands.util.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Validations;
 
-import org.slf4j.helpers.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,17 +23,9 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import static com.ayprojects.helpinghands.AppConstants.BUSINESS_POST;
@@ -160,18 +149,20 @@ public class PostsServiceImpl implements PostsService {
                 d.setOfferMsg(offerMsg);
             }
 
-            DhUser dhUser = Utility.getUserDetailsFromId(d.getAddedBy(), mongoTemplate, true, false, true);
-            if (dhUser != null) {
+            try {
+                DhUser dhUser = Utility.getUserDetailsFromId(d.getAddedBy(), mongoTemplate, true, false, true);
                 d.setUserName(dhUser.getFirstName());
                 d.setUserImage(dhUser.getProfileImg());
+            } catch (NullPointerException e) {
+                LOGGER.info("getPaginatedPosts->catch while fetching userdetails->message:" + e.getMessage());
             }
 
-            if (Utility.isFieldEmpty(d.getPlaceId())) {
+            try {
                 DhPlace dhPlace = Utility.getPlaceDetailsFromId(d.getPlaceId(), mongoTemplate, true, true);
-                if (dhPlace != null) {
-                    d.setPlaceName(dhPlace.getPlaceName());
-                    d.setPlaceCategory(dhPlace.getPlaceSubCategoryName());
-                }
+                d.setPlaceName(dhPlace.getPlaceName());
+                d.setPlaceCategory(dhPlace.getPlaceSubCategoryName());
+            } catch (NullPointerException e) {
+                LOGGER.info("getPaginatedPosts->catch while fetching placedetails->message:" + e.getMessage());
             }
         }
 

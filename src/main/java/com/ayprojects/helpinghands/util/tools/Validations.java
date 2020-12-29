@@ -1,4 +1,4 @@
-package com.ayprojects.helpinghands.tools;
+package com.ayprojects.helpinghands.util.tools;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.DhPlace;
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.AppConstants.ADDED_BY;
-import static com.ayprojects.helpinghands.AppConstants.BUSINESS_POST;
 import static com.ayprojects.helpinghands.AppConstants.DEFAULT_NAME;
 import static com.ayprojects.helpinghands.AppConstants.TYPE_OF_PLACE_CATEGORY;
 
