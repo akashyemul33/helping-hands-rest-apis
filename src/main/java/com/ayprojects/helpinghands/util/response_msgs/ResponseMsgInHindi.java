@@ -67,7 +67,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
 
     private Map<String, String> responseMsgsMap;
 
-    public ResponseMsgInHindi() {
+    protected ResponseMsgInHindi() {
         if (responseMsgsMap == null) {
             responseMsgsMap = new HashMap<>();
             responseMsgsMap.put(RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE, "उपयोगकर्ता पहले से ही दिए गए मोबाइल नंबर के साथ मौजूद है !");

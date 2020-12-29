@@ -66,7 +66,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_USER_REGI
 public class ResponseMsgInEnglish extends AbstractResponseMessages {
     private Map<String, String> responseMsgsMap;
 
-    public ResponseMsgInEnglish() {
+    protected ResponseMsgInEnglish() {
         if (responseMsgsMap == null) {
             responseMsgsMap = new HashMap<>();
             responseMsgsMap.put(RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE, "User already exists with given mobile number !");

@@ -156,7 +156,7 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_OFFER_MSG = "OFFER_MSG";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
-    public static String[] LANGUAGES = { "en", "hi","mr" };
+    public static String[] SUPPORTED_LANGUAGES = { "en", "hi","mr" };
     public static String LABEL_HEADER_APPLANGUAGE ="App-Language";
     public static String STATUS_ACTIVE = "Active";
     public static String SCHEMA_VERSION = "1.0.0";

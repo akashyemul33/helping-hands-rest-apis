@@ -3,9 +3,11 @@ package com.ayprojects.helpinghands.util.response_msgs.classes;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgInEnglish;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.NoSuchElementException;
 
@@ -17,19 +19,19 @@ public class ResponseMsgInEnglishTest {
 
     @BeforeAll
     static void setup() {
-        responseMsgInEnglish = new ResponseMsgInEnglish();
+        responseMsgInEnglish = new NestedResponseMsgInEnglish();
     }
 
     @Test
     void givenEmptyKeyWhenGetResponseMsgFromEnglishThenThrowException() {
-        assertThrows(IllegalArgumentException.class, new Executable() {
+        Assertions.assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
                 responseMsgInEnglish.getResponseMsg(null);
             }
         });
 
-        assertThrows(IllegalArgumentException.class, new Executable() {
+        Assertions.assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
                 responseMsgInEnglish.getResponseMsg("");
@@ -39,14 +41,14 @@ public class ResponseMsgInEnglishTest {
 
     @Test
     void givenNonExistingKeyWhenGetResponseMsgFromEnglishThenThrowException() {
-        assertThrows(NoSuchElementException.class, new Executable() {
+        Assertions.assertThrows(NoSuchElementException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
                 responseMsgInEnglish.getResponseMsg(AppConstants.PLACE_SUB_CATEGORY_NAME);
             }
         });
 
-        assertThrows(NoSuchElementException.class, new Executable() {
+        Assertions.assertThrows(NoSuchElementException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
                 responseMsgInEnglish.getResponseMsg(AppConstants.PLACE_SUB_CATEGORY_ID);
@@ -58,7 +60,7 @@ public class ResponseMsgInEnglishTest {
     @Test
     void givenExistingKeyWhenGetResponseMsgFromEnglishThenAssociatedValue() {
         String userAlreadyExistsWithMobile = "User already exists with given mobile number !";
-        assertEquals(userAlreadyExistsWithMobile, responseMsgInEnglish.getResponseMsg(AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE));
+        Assertions.assertEquals(userAlreadyExistsWithMobile, responseMsgInEnglish.getResponseMsg(AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE));
     }
 }
 

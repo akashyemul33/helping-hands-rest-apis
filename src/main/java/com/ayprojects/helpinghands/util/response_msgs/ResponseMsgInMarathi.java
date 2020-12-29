@@ -67,7 +67,7 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
 
     private final Map<String, String> responseMsgsMap;
 
-    public ResponseMsgInMarathi() {
+    protected ResponseMsgInMarathi() {
         responseMsgsMap = new HashMap<>();
         responseMsgsMap.put(RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE, "दिलेल्या मोबाइल नंबरसह वापरकर्ता आधीपासून विद्यमान आहे !");
         responseMsgsMap.put(RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_EMAIL, "दिलेल्या ईमेलसह वापरकर्ता आधीपासून विद्यमान आहे !");

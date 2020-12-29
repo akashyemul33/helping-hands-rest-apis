@@ -44,7 +44,7 @@ public class Utility {
     public static String getLanguageFromHeader(HttpHeaders headers) {
         String lang = "en";
 
-        String[] languages = AppConstants.LANGUAGES;
+        String[] languages = AppConstants.SUPPORTED_LANGUAGES;
         List<String> languageList = Arrays.asList(languages);
         if (headers.get(AppConstants.LABEL_HEADER_APPLANGUAGE) != null) {
             lang = headers.get(AppConstants.LABEL_HEADER_APPLANGUAGE).get(0);
