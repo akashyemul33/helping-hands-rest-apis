@@ -68,11 +68,13 @@ public class ImageServiceImpl implements ImageService {
         LOGGER.info("ImageServiceImpl->uploadImage : imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
 
         try {
-            String url = amazonClient.uplodImages(imgUploadFolder, new MultipartFile[]{image}, imgPrefix).get(0);
+            String url = amazonClient.uploadImagesToS3(imgUploadFolder, new MultipartFile[]{image}, imgPrefix).get(0);
             DhUser dhUser = new DhUser(uniqueUserID, url);
             utility.addLog(uniqueUserID, "User image has been added");
             return new Response<DhUser>(true, 201, "Image save successfully", Collections.singletonList(dhUser));
         } catch (IOException ioException) {
+            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>());
+        } catch (Exception e) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>());
         }
     }
@@ -97,7 +99,7 @@ public class ImageServiceImpl implements ImageService {
 
         LOGGER.info("ImageServiceImpl->uploadPlaceImages : imageType=" + placeType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> placeImageUrls = amazonClient.uplodImages(imgUploadFolder, placeImages, imgPrefix);
+            List<String> placeImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder, placeImages, imgPrefix);
             DhPlace dhPlace = new DhPlace();
             dhPlace.setPlaceId(uinquePlaceId);
             dhPlace.setAddedBy(addedBy);
@@ -105,7 +107,7 @@ public class ImageServiceImpl implements ImageService {
             dhPlace.setPlaceType(placeType);
             utility.addLog(addedBy, "Place images have been added");
             return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED, language), Collections.singletonList(dhPlace), 1);
-        } catch (IOException ioException) {
+        } catch (Exception ioException) {
             LOGGER.info("ImageServiceImpl->uploadPlaceImages : exception = " + ioException.getMessage());
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES, language), new ArrayList<>());
         }
@@ -131,14 +133,14 @@ public class ImageServiceImpl implements ImageService {
 
         LOGGER.info("ImageServiceImpl->uploadPostImages : imageType=" + postType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> postImageUrls = amazonClient.uplodImages(imgUploadFolder, postImages, imgPrefix);
+            List<String> postImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder, postImages, imgPrefix);
             DhPosts dhPosts = new DhPosts();
             dhPosts.setPostId(uinquePostId);
             dhPosts.setAddedBy(addedBy);
             dhPosts.setPostImages(postImageUrls);
             utility.addLog(addedBy, "Post images have been added");
             return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED, language), Collections.singletonList(dhPosts), 1);
-        } catch (IOException ioException) {
+        } catch (Exception ioException) {
             LOGGER.info("ImageServiceImpl->uploadPostImages : exception = " + ioException.getMessage());
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES, language), new ArrayList<>());
         }
@@ -164,14 +166,14 @@ public class ImageServiceImpl implements ImageService {
 
         LOGGER.info("ImageServiceImpl->uploadRequirementImages : imageType=" + reqType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> reqImageUrls = amazonClient.uplodImages(imgUploadFolder, reqImages, imgPrefix);
+            List<String> reqImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder, reqImages, imgPrefix);
             DhRequirements dhRequirements = new DhRequirements();
             dhRequirements.setRequirementId(uinqueReqId);
             dhRequirements.setAddedBy(addedBy);
             dhRequirements.setRequirementImages(reqImageUrls);
             utility.addLog(addedBy, "Requirement images have been added");
             return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED, language), new ArrayList<>(), 1);
-        } catch (IOException ioException) {
+        } catch (Exception ioException) {
             LOGGER.info("ImageServiceImpl->uploadRequirementImages : exception = " + ioException.getMessage());
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES, language), new ArrayList<>());
         }

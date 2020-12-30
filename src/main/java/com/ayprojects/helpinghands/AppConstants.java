@@ -10,7 +10,7 @@ public class AppConstants {
     public static final long JWT_TOKEN_EXPIRATION_VALUE = 1000*60*60*3;
     public static final String JWT_TOKEN_ISSUER = "HelpingHandsAdmin";
     public static final String JWT_TOKEN_AUDIENCE = "HelpingHandsMobileAndWebUsers";
-    public static final String SECRET_KEY = "helping-hands-secret-key";
+    public static final String JWT_SECRET_KEY = "helping-hands-secret-key";
     public static final String[] ROLE_USER = {"USER"} ;
     public static final String STATUS_PENDING = "Pending";
     public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
@@ -154,6 +154,9 @@ public class AppConstants {
     public static final String LANDMARK = "landmark";
     public static final String USER_PROFILE_IMG = "profileImg";
     public static final String RESPONSEMESSAGE_OFFER_MSG = "OFFER_MSG";
+    public static final String ACCESS_KEY = "";
+    public static final String SECRET_KEY = "";
+    public static final String FILETYPE_PNG = "png";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 
     public static String[] SUPPORTED_LANGUAGES = { "en", "hi","mr" };

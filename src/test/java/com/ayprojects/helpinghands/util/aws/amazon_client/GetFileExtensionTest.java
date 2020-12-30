@@ -1,5 +1,6 @@
 package com.ayprojects.helpinghands.util.aws.amazon_client;
 
+import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.util.aws.AmazonClient;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -73,11 +74,32 @@ public class GetFileExtensionTest {
         assertTrue(b);
     }
 
-    /*@Test
-    void givenNullOriginalFileNameThenFileType(){
-        String fileType = "png";
-        String filename = "";
-        assertEquals(fileType,amazonClient.getFileExtension(filename,fileType));
-    }*/
+
+
+    @Test
+    void givenInvalidExtensionThenException(){
+        assertThrows(Exception.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                amazonClient.getFileExtension("abc.Pnga", null);
+            }
+        });
+        assertThrows(Exception.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                amazonClient.getFileExtension("abc.text", null);
+            }
+        });
+    }
+
+    @Test
+    void givenValidExtensionThenValue(){
+        assertEquals("png",amazonClient.getFileExtension("abc.Png", null));
+        assertEquals("png",amazonClient.getFileExtension("", AppConstants.FILETYPE_PNG));
+        assertEquals("png",amazonClient.getFileExtension("ab", AppConstants.FILETYPE_PNG));
+        assertEquals("jpeg",amazonClient.getFileExtension("ab.jpeg",null));
+        assertEquals("jpeg",amazonClient.getFileExtension("ab.jpeg",null));
+        assertEquals("svg",amazonClient.getFileExtension("ab.svg",AppConstants.FILETYPE_PNG));
+    }
 
 }

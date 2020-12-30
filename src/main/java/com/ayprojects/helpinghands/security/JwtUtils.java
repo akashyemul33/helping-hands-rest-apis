@@ -4,7 +4,6 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.AccessTokenModel;
 import com.ayprojects.helpinghands.models.DhUser;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -19,7 +18,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtils {
 
     private Claims extractAllClaims(String token){
-        return Jwts.parser().setSigningKey(AppConstants.SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(AppConstants.JWT_SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
     public  <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
@@ -55,7 +54,7 @@ public class JwtUtils {
                 .setAudience(AppConstants.JWT_TOKEN_AUDIENCE)
                 .setExpiration(new Date(System.currentTimeMillis()+ AppConstants.JWT_TOKEN_EXPIRATION_VALUE))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .signWith(SignatureAlgorithm.HS512,AppConstants.SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS512,AppConstants.JWT_SECRET_KEY).compact();
 
         AccessTokenModel accessTokenModel = new AccessTokenModel();
         accessTokenModel.setAccess_token(jwtString);
