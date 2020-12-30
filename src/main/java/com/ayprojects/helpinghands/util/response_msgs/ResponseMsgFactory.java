@@ -5,7 +5,7 @@ import com.ayprojects.helpinghands.util.tools.Utility;
 
 public class ResponseMsgFactory {
 
-    public String getResponseMsg(String lang, String responseMsgKey) {
+    public static String getResponseMsg(String lang, String responseMsgKey) {
         if (Utility.isFieldEmpty(responseMsgKey)) {
             throw new IllegalArgumentException("Got null responseMsgKey parameter");
         }

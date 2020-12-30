@@ -68,10 +68,10 @@ public class ImageServiceImpl implements ImageService {
         LOGGER.info("ImageServiceImpl->uploadImage : imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
 
         try {
-            String url = amazonClient.uploadImagesToS3(imgUploadFolder, new MultipartFile[]{image}, imgPrefix).get(0);
+            String url = amazonClient.uploadImagesToS3(imgUploadFolder+imgPrefix, new MultipartFile[]{image}).get(0);
             DhUser dhUser = new DhUser(uniqueUserID, url);
             utility.addLog(uniqueUserID, "User image has been added");
-            return new Response<DhUser>(true, 201, "Image save successfully", Collections.singletonList(dhUser));
+            return new Response<DhUser>(true, 201, "Image saved successfully", new ArrayList<>());
         } catch (IOException ioException) {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>());
         } catch (Exception e) {
@@ -99,7 +99,7 @@ public class ImageServiceImpl implements ImageService {
 
         LOGGER.info("ImageServiceImpl->uploadPlaceImages : imageType=" + placeType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> placeImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder, placeImages, imgPrefix);
+            List<String> placeImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder+imgPrefix, placeImages);
             DhPlace dhPlace = new DhPlace();
             dhPlace.setPlaceId(uinquePlaceId);
             dhPlace.setAddedBy(addedBy);
@@ -133,7 +133,7 @@ public class ImageServiceImpl implements ImageService {
 
         LOGGER.info("ImageServiceImpl->uploadPostImages : imageType=" + postType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> postImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder, postImages, imgPrefix);
+            List<String> postImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder+imgPrefix, postImages);
             DhPosts dhPosts = new DhPosts();
             dhPosts.setPostId(uinquePostId);
             dhPosts.setAddedBy(addedBy);
@@ -166,7 +166,7 @@ public class ImageServiceImpl implements ImageService {
 
         LOGGER.info("ImageServiceImpl->uploadRequirementImages : imageType=" + reqType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> reqImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder, reqImages, imgPrefix);
+            List<String> reqImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder+imgPrefix, reqImages);
             DhRequirements dhRequirements = new DhRequirements();
             dhRequirements.setRequirementId(uinqueReqId);
             dhRequirements.setAddedBy(addedBy);

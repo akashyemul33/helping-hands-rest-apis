@@ -46,7 +46,7 @@ public class UploadSingleImageToS3Test {
         assertThrows(NullPointerException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(null, bucketName, endpointUrl, null, null, null);
+                amazonClient.uploadSingleImageToS3(null, bucketName, endpointUrl, null, null);
             }
         });
     }
@@ -56,14 +56,14 @@ public class UploadSingleImageToS3Test {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, null, endpointUrl, null, null, null);
+                amazonClient.uploadSingleImageToS3(s3Client, null, endpointUrl, null, null);
             }
         });
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, null, endpointUrl, null, null, null);
+                amazonClient.uploadSingleImageToS3(s3Client, null, endpointUrl, null, null);
             }
         });
     }
@@ -73,52 +73,33 @@ public class UploadSingleImageToS3Test {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, bucketName, null, null, null, null);
+                amazonClient.uploadSingleImageToS3(s3Client, bucketName, null, null, null);
             }
         });
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, bucketName, null, null, null, null);
-            }
-        });
-    }
-
-    @Test
-    void givenEmptyImgUploadFolderThenException() throws IOException {
-        InputStream inputStream = new FileInputStream("/home/ay/Desktop/sad.svg");
-        MultipartFile multipartFile = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream);
-        assertThrows(IllegalArgumentException.class, new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, null, multipartFile, null);
-            }
-        });
-
-        assertThrows(IllegalArgumentException.class, new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, "", multipartFile, null);
+                amazonClient.uploadSingleImageToS3(s3Client, bucketName, null, null, null);
             }
         });
     }
 
     @Test
-    void givenEmptyImgPrefixThenException() throws IOException {
+    void givenEmptyImgUploadKeyThenException() throws IOException {
         InputStream inputStream = new FileInputStream("/home/ay/Desktop/sad.svg");
         MultipartFile multipartFile = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream);
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, "abc", multipartFile, null);
+                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, multipartFile, null);
             }
         });
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, "abc", multipartFile, "");
+                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, multipartFile, "");
             }
         });
     }
@@ -128,7 +109,7 @@ public class UploadSingleImageToS3Test {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, null, null, null);
+                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, null, null);
             }
         });
     }
@@ -137,16 +118,15 @@ public class UploadSingleImageToS3Test {
     void singleImgShouldBeUploadedWithProperRetrunUrl() throws Exception {
         InputStream inputStream = new FileInputStream("/home/ay/Desktop/sad.svg");
         MultipartFile multipartFile = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream);
-        String imgUploadFolder = "abc";
-        String imgPrefix = "temp_";
+        String imgUploadKey = "abc/temp_";
         String ext = "svg";
-        String objKey = String.format("%s%s%s.%s",
-                imgUploadFolder, imgPrefix, Calendar.getInstance().getTimeInMillis(), ext);
+        String objKey = String.format("%s%s.%s",
+                imgUploadKey, Calendar.getInstance().getTimeInMillis(), ext);
         String resultFileUrl = endpointUrl + "/" + bucketName + "/" + objKey;
         LOGGER.info("resultFileUrl=" + resultFileUrl);
-        String regexResultMatch = String.format("^%s/%s/%s%s.*.%s$",
-                endpointUrl, bucketName, imgUploadFolder, imgPrefix, ext);
-        String retruned = amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, imgUploadFolder, multipartFile, imgPrefix);
+        String regexResultMatch = String.format("^%s/%s/%s.*.%s$",
+                endpointUrl, bucketName, imgUploadKey, ext);
+        String retruned = amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, multipartFile,imgUploadKey);
         LOGGER.info("returned=" + retruned);
         assertTrue(retruned.matches(regexResultMatch));
     }
@@ -155,12 +135,11 @@ public class UploadSingleImageToS3Test {
     void givenFileWithoutExtensionThenException() throws IOException {
         InputStream inputStream = new FileInputStream("/home/ay/Desktop/sad.svg");
         MultipartFile multipartFile = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.txt", String.valueOf(ContentType.IMAGE_SVG), inputStream);
-        String imgUploadFolder = "abc";
-        String imgPrefix = "temp_";
+        String imgUploadKey = "abc/temp_";
         assertThrows(Exception.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, imgUploadFolder, multipartFile, imgPrefix);
+                amazonClient.uploadSingleImageToS3(s3Client, bucketName, endpointUrl, multipartFile,imgUploadKey);
             }
         });
     }

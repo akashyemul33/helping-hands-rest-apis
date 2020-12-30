@@ -103,7 +103,11 @@ public class AmazonClient {
         throw new IllegalArgumentException("Invalid image file extension !");
     }
 
-    public String uploadSingleImageToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl, String imgUploadFolder, MultipartFile multipartFile, String imagePrefix) throws Exception {
+    public String uploadSingleImageToS3(String imgUploadKey, MultipartFile multipartFile) throws Exception {
+        return uploadSingleImageToS3(s3Client, bucketName, endpointUrl,multipartFile,imgUploadKey);
+    }
+
+    public String uploadSingleImageToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl,MultipartFile multipartFile, String imgUploadKey) throws Exception {
         if (amazonS3 == null)
             throw new NullPointerException("Got null AmazonS3 object as arguement !");
         if (Utility.isFieldEmpty(bucketName)) {
@@ -115,16 +119,13 @@ public class AmazonClient {
         if (Utility.isFieldEmpty(endpointUrl)) {
             throw new IllegalArgumentException("Empty endpointurl !");
         }
-        if (Utility.isFieldEmpty(imgUploadFolder)) {
-            throw new IllegalArgumentException("Empty imgUploadFolder !");
-        }
-        if (Utility.isFieldEmpty(imagePrefix)) {
-            throw new IllegalArgumentException("Empty imagePrefix !");
+        if (Utility.isFieldEmpty(imgUploadKey)) {
+            throw new IllegalArgumentException("Empty imgUploadKey !");
         }
 
         File convertMultipartFile = convertMultipartFile(multipartFile);
         String ext = getFileExtension(multipartFile.getOriginalFilename(), AppConstants.FILETYPE_PNG);
-        String objKey = imgUploadFolder + imagePrefix + Calendar.getInstance().getTimeInMillis() + "." + ext;
+        String objKey = imgUploadKey + Calendar.getInstance().getTimeInMillis() + "." + ext;
         //upload file to s3 bucket
         uploadFileTos3bucket(amazonS3, bucketName, objKey, convertMultipartFile);
         //add uploaded file s3 url to list
@@ -138,7 +139,7 @@ public class AmazonClient {
 
     }
 
-    public List<String> uploadImagesToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl, String imgUploadFolder, MultipartFile[] multipartFiles, String imagePrefix) throws Exception {
+    public List<String> uploadImagesToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl, String imgUploadKey, MultipartFile[] multipartFiles) throws Exception {
         if (amazonS3 == null)
             throw new NullPointerException("Got null AmazonS3 object as arguement !");
         if (Utility.isFieldEmpty(bucketName)) {
@@ -150,23 +151,19 @@ public class AmazonClient {
         if (Utility.isFieldEmpty(endpointUrl)) {
             throw new IllegalArgumentException("Empty endpointurl !");
         }
-        if (Utility.isFieldEmpty(imgUploadFolder)) {
-            throw new IllegalArgumentException("Empty imgUploadFolder !");
+        if (Utility.isFieldEmpty(imgUploadKey)) {
+            throw new IllegalArgumentException("Empty imgUploadKey !");
         }
-        if (Utility.isFieldEmpty(imagePrefix)) {
-            throw new IllegalArgumentException("Empty imagePrefix !");
-        }
-
         List<String> uploadedImageNames = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
-            String returnUrl = uploadSingleImageToS3(amazonS3, bucketName, endpointUrl, imgUploadFolder, multipartFile, imagePrefix);
+            String returnUrl = uploadSingleImageToS3(amazonS3, bucketName, endpointUrl, multipartFile,imgUploadKey);
             uploadedImageNames.add(returnUrl);
         }
         return uploadedImageNames;
     }
 
-    public List<String> uploadImagesToS3(String imgUploadFolder, MultipartFile[] multipartImages, String imagePrefix) throws Exception {
-        return uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadFolder, multipartImages, imagePrefix);
+    public List<String> uploadImagesToS3(String imgUploadKey, MultipartFile[] multipartImages) throws Exception {
+        return uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadKey,multipartImages);
     }
 
     public AmazonS3 getS3Client() {

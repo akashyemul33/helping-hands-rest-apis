@@ -20,8 +20,8 @@ import java.io.InputStream;
 import java.util.Calendar;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UploadMultipleImagesToS3Test {
@@ -47,14 +47,14 @@ public class UploadMultipleImagesToS3Test {
         assertThrows(Exception.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client,bucketName,endpointUrl,null, null, null);
+                amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, null, null);
             }
         });
 
         assertThrows(Exception.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client,bucketName,endpointUrl,null, new MultipartFile[0], null);
+                amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, null, new MultipartFile[0]);
             }
         });
 
@@ -65,7 +65,7 @@ public class UploadMultipleImagesToS3Test {
         assertThrows(NullPointerException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(null, bucketName, endpointUrl, null, null, null);
+                amazonClient.uploadImagesToS3(null, bucketName, endpointUrl, null, null);
             }
         });
     }
@@ -75,14 +75,14 @@ public class UploadMultipleImagesToS3Test {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client, null, endpointUrl, null, null, null);
+                amazonClient.uploadImagesToS3(s3Client, null, endpointUrl, null, null);
             }
         });
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client, null, endpointUrl, null, null, null);
+                amazonClient.uploadImagesToS3(s3Client, "", endpointUrl, null, null);
             }
         });
     }
@@ -92,54 +92,34 @@ public class UploadMultipleImagesToS3Test {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client, bucketName, null, null, null, null);
+                amazonClient.uploadImagesToS3(s3Client, bucketName, null, null, null);
             }
         });
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client, bucketName, null, null, null, null);
+                amazonClient.uploadImagesToS3(s3Client, bucketName, "", null, null);
             }
         });
     }
 
     @Test
-    void givenEmptyImgUploadFolderThenException() throws IOException {
+    void givenEmptyImgUploadKeyThenException() throws IOException {
         InputStream inputStream = new FileInputStream("/home/ay/Desktop/sad.svg");
         MultipartFile multipartFile = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream);
         MultipartFile[] multipartFiles = new MultipartFile[]{multipartFile};
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, null, multipartFiles, null);
+                amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, null, multipartFiles);
             }
         });
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, "", multipartFiles, null);
-            }
-        });
-    }
-
-    @Test
-    void givenEmptyImgPrefixThenException() throws IOException {
-        InputStream inputStream = new FileInputStream("/home/ay/Desktop/sad.svg");
-        MultipartFile multipartFile = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream);
-        MultipartFile[] multipartFiles = new MultipartFile[]{multipartFile};
-        assertThrows(IllegalArgumentException.class, new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, "abc", multipartFiles, null);
-            }
-        });
-
-        assertThrows(IllegalArgumentException.class, new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, "abc", multipartFiles, "");
+                amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, "", multipartFiles);
             }
         });
     }
@@ -149,16 +129,15 @@ public class UploadMultipleImagesToS3Test {
         InputStream inputStream = new FileInputStream("/home/ay/Desktop/sad.svg");
         MultipartFile multipartFile = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream);
         MultipartFile[] multipartFiles = new MultipartFile[]{multipartFile};
-        String imgUploadFolder = "abc";
-        String imgPrefix = "temp_";
+        String imgUploadFolder = "abc/temp_";
         String ext = "svg";
-        String objKey = String.format("%s%s%s.%s",
-                imgUploadFolder, imgPrefix, Calendar.getInstance().getTimeInMillis(), ext);
+        String objKey = String.format("%s%s.%s",
+                imgUploadFolder, Calendar.getInstance().getTimeInMillis(), ext);
         String resultFileUrl = endpointUrl + "/" + bucketName + "/" + objKey;
         LOGGER.info("resultFileUrl=" + resultFileUrl);
-        String regexResultMatch = String.format("^%s/%s/%s%s.*.%s$",
-                endpointUrl, bucketName, imgUploadFolder, imgPrefix, ext);
-        List<String> retruned = amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadFolder, multipartFiles, imgPrefix);
+        String regexResultMatch = String.format("^%s/%s/%s.*.%s$",
+                endpointUrl, bucketName, imgUploadFolder, ext);
+        List<String> retruned = amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadFolder, multipartFiles);
         LOGGER.info("returned=" + retruned.get(0));
         assertTrue(retruned.get(0).matches(regexResultMatch));
 
@@ -172,18 +151,17 @@ public class UploadMultipleImagesToS3Test {
         MultipartFile multipartFile1 = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream);
         MultipartFile multipartFile2 = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream2);
         MultipartFile multipartFile3 = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream3);
-        MultipartFile[] multipartFiles = new MultipartFile[]{multipartFile1,multipartFile2,multipartFile3};
-        String imgUploadFolder = "abc";
-        String imgPrefix = "temp_";
+        MultipartFile[] multipartFiles = new MultipartFile[]{multipartFile1, multipartFile2, multipartFile3};
+        String imgUploadFolder = "abc/temp_";
         String ext = "svg";
-        String objKey = String.format("%s%s%s.%s",
-                imgUploadFolder, imgPrefix, Calendar.getInstance().getTimeInMillis(), ext);
+        String objKey = String.format("%s%s.%s",
+                imgUploadFolder, Calendar.getInstance().getTimeInMillis(), ext);
         String resultFileUrl = endpointUrl + "/" + bucketName + "/" + objKey;
         LOGGER.info("resultFileUrl=" + resultFileUrl);
-        String regexResultMatch = String.format("^%s/%s/%s%s.*.%s$",
-                endpointUrl, bucketName, imgUploadFolder, imgPrefix, ext);
-        List<String> retruned = amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadFolder, multipartFiles, imgPrefix);
-        for(String str:retruned){
+        String regexResultMatch = String.format("^%s/%s/%s.*.%s$",
+                endpointUrl, bucketName, imgUploadFolder, ext);
+        List<String> retruned = amazonClient.uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadFolder, multipartFiles);
+        for (String str : retruned) {
             LOGGER.info("returned=" + str);
             assertTrue(str.matches(regexResultMatch));
         }

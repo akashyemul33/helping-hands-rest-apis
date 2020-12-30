@@ -1,13 +1,12 @@
 package com.ayprojects.helpinghands.controllers;
 
 
+import com.ayprojects.helpinghands.api.classes.AddUserApi;
+import com.ayprojects.helpinghands.api.classes.ApiOperations;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhAppConfig;
-import com.ayprojects.helpinghands.models.DhUser;
-import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.appconfig.AppConfigService;
-import com.ayprojects.helpinghands.services.user.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +40,8 @@ public class AppConfigController {
 
     @GetMapping(value = "/getAppConfig")
     ResponseEntity<Response<DhAppConfig>> getAppConfig(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version) throws ServerSideException {
+
+
         return new ResponseEntity<>(appConfigService.getActiveAppConfig(httpHeaders,authentication,version), HttpStatus.OK);
     }
 
