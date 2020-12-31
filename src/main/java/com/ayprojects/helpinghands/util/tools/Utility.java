@@ -225,7 +225,7 @@ public class Utility {
         if (logService == null || Utility.isFieldEmpty(username) || Utility.isFieldEmpty(actionMsg)) {
             return;
         }
-        logService.addLog(new DhLog(Utility.getUUID(), username, actionMsg, Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC(), AppConstants.SCHEMA_VERSION));
+        logService.addLog(new DhLog(username,actionMsg));
     }
 
     public AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {

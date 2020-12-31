@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
-public class GetImgFolderAndPrefixTest {
+public class GetUserImgUploadKeyMethodTest {
 
     @Test
     void givenEmptyUserIdThenException(){
@@ -24,7 +24,6 @@ public class GetImgFolderAndPrefixTest {
                 GetImageFoldersAndPrefix.getUserImgUploadKey(null);
             }
         });
-
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override

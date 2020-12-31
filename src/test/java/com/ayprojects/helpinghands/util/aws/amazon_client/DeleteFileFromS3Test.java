@@ -10,42 +10,34 @@ import com.ayprojects.helpinghands.util.aws.AmazonClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpringBootTest
 public class DeleteFileFromS3Test {
 
-    private static AmazonClient amazonClient;
-    private static AmazonS3 s3Client;
-    private static String bucketName;
-    private static String endpointUrl;
-    private static String region;
-
-    //Dont forget to remove access and secret key while commiting the code
-    @BeforeAll
-    static void setup() {
-        amazonClient = new AmazonClient();
-        bucketName = "helping-hands-data";
-        endpointUrl = "https://s3.ap-south-1.amazonaws.com";
-        region = "ap-south-1";
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(AppConstants.ACCESS_KEY, AppConstants.SECRET_KEY);
-        s3Client = AmazonS3ClientBuilder.standard().withRegion(region).withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
-    }
-
+    @Autowired
+    private AmazonClient amazonClient;
+    private final String bucketName = "helping-hands-data";
+    private final String endpointUrl = "https://s3.ap-south-1.amazonaws.com";
+    private final String region = "ap-south-1";
+    
     @Test
     void givenEmptyUrlThenS3Exception() {
         assertThrows(Exception.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.deleteFileFromS3Bucket(s3Client, bucketName, null);
+                amazonClient.deleteFileFromS3Bucket(amazonClient.getS3Client(), bucketName, null);
             }
         });
 
         assertThrows(Exception.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.deleteFileFromS3Bucket(s3Client, bucketName, "");
+                amazonClient.deleteFileFromS3Bucket(amazonClient.getS3Client(), bucketName, "");
             }
         });
     }
@@ -55,14 +47,14 @@ public class DeleteFileFromS3Test {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                amazonClient.deleteFileFromS3Bucket(s3Client, bucketName, "/");
+                amazonClient.deleteFileFromS3Bucket(amazonClient.getS3Client(), bucketName, "/");
             }
         });
     }
 
     @Test
     void givenValidFileUrlThenException() {
-        assertTrue(amazonClient.deleteFileFromS3Bucket(s3Client, bucketName, "app_images/ebad1d8b-96c2-4785-8d00-3762fcc0a18c/posts/BusinessPost/B_PSTS_967eeef9-880c-4c01-937c-c9a3318808dc_1608903414052.jpg"));
+        assertTrue(amazonClient.deleteFileFromS3Bucket(amazonClient.getS3Client(), bucketName, "app_images/ebad1d8b-96c2-4785-8d00-3762fcc0a18c/posts/BusinessPost/B_PSTS_967eeef9-880c-4c01-937c-c9a3318808dc_1608903414052.jpg"));
     }
 
     //Intentionally asserting false,
@@ -70,7 +62,7 @@ public class DeleteFileFromS3Test {
     @Test
     void givenValidFileUrlWithoutExtensionThenShouldNotDelete() {
         String fileUrl = "app_images/ebad1d8b-96c2-4785-8d00-3762fcc0a18c/posts/BusinessPost/app_images/ebad1d8b-96c2-4785-8d00-3762fcc0a18c/posts/BusinessPost/";
-        amazonClient.deleteFileFromS3Bucket(s3Client, bucketName, fileUrl);
+        amazonClient.deleteFileFromS3Bucket(amazonClient.getS3Client(), bucketName, fileUrl);
         boolean haveYouVerifiedInS3 = true;//Go to s3, and verify , then mark this flag to true
         assert haveYouVerifiedInS3;
     }

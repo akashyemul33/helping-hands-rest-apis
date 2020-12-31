@@ -6,21 +6,19 @@ import com.ayprojects.helpinghands.util.aws.AmazonClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpringBootTest
 public class GetFileExtensionTest {
 
-    private static AmazonClient amazonClient;
-
-    @BeforeAll
-    static void setup() {
-        amazonClient = new AmazonClient();
-    }
-
+    @Autowired
+    private AmazonClient amazonClient;
 
     @Test
     void givenEmptyOriginalFileNameAndEmptyFileTypeThenException() {

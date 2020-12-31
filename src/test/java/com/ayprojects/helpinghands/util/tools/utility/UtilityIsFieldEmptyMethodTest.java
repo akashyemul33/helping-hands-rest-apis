@@ -1,4 +1,4 @@
-package com.ayprojects.helpinghands.util.tools.utility.isFieldEmpty;
+package com.ayprojects.helpinghands.util.tools.utility;
 
 import com.ayprojects.helpinghands.util.tools.Utility;
 
@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mapstruct.MappingConstants.NULL;
 
-public class UtilityTest {
+public class UtilityIsFieldEmptyMethodTest {
 
     @Test
     void givenNullWhenUtilityIsFieldEmptyThenTrue(){

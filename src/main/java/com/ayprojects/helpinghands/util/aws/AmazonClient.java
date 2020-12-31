@@ -1,5 +1,7 @@
 package com.ayprojects.helpinghands.util.aws;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -7,6 +9,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.ayprojects.helpinghands.AppConstants;
+import com.ayprojects.helpinghands.Temp;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.apache.commons.io.FilenameUtils;
@@ -39,7 +42,18 @@ public class AmazonClient {
 
     @PostConstruct
     public void initializeAmazon() {
-        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(region).build();
+        //TODO uncomment these lines, Do not use s3Client with access and secret key
+//        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(region).build(); //use this one
+
+        //TODO remove these lines unnecessary for production
+        try {
+            Temp.getAwsKeys();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            System.out.println("initializeAmazon->exception="+ioException.getMessage());
+        }
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(AppConstants.ACCESS_KEY, AppConstants.SECRET_KEY);
+        s3Client = AmazonS3ClientBuilder.standard().withRegion(region).withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
     }
 
     public PutObjectResult uploadFileTos3bucket(AmazonS3 amazonS3, String bucketName, String fileName, File file) {

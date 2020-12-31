@@ -6,6 +6,8 @@ import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,14 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
+@SpringBootTest
 public class ConvertMultipartFileTest {
 
-    private static AmazonClient amazonClient;
-
-    @BeforeAll
-    static void setup() {
-        amazonClient = new AmazonClient();
-    }
+    @Autowired
+     AmazonClient amazonClient;
 
     @Test
     void givenNullFileWhenConvertMultipartFileThenException() {

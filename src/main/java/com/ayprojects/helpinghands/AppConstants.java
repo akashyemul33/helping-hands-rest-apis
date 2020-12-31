@@ -56,6 +56,7 @@ public class AppConstants {
     public static final String REGEX_BUSINESS_PLACE = "^[Bb]usiness[\\s]*[Pp]lace$";
     public static final String REGEX_USER = "^[Uu]ser$";
     public static final String REGEX_PUBLIC_PLACE = "^[Pp]ublic[\\s]*[Pp]lace$";
+    public static final String PUBLIC_PLACE = "PublicPlace";
     public static final String REGEX_PUBLIC_POST = "^[Pp]ublic[\\s]*[Pp]ost$";
     public static final int LIMIT_RATINGS_IN_PLACES = 5;
     public static final int LIMIT_RATINGS_IN_POSTS = 5;
@@ -154,8 +155,8 @@ public class AppConstants {
     public static final String LANDMARK = "landmark";
     public static final String USER_PROFILE_IMG = "profileImg";
     public static final String RESPONSEMESSAGE_OFFER_MSG = "OFFER_MSG";
-    public static final String ACCESS_KEY = "";
-    public static final String SECRET_KEY = "";
+    public static String ACCESS_KEY = "";
+    public static String SECRET_KEY = "";
     public static final String FILETYPE_PNG = "png";
     //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
 

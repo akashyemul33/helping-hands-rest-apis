@@ -6,6 +6,9 @@ import com.ayprojects.helpinghands.models.AllCommonUsedAttributes;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ApiOperations<T> {
     AddBehaviour<T> addBehaviour;
     UploadBehaviour uploadBehaviour;

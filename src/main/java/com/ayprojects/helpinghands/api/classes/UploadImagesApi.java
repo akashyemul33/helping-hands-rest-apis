@@ -38,7 +38,7 @@ public class UploadImagesApi implements UploadBehaviour {
         try {
             String finalKey = amazonClient.uploadSingleImageToS3(imgUploadKey, image);
             DhUser dhUser = new DhUser(uniqueUserID, finalKey);
-            new AddLogApi(new DhLog(Utility.getUUID(), uniqueUserID, "User image has been added", Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC(), AppConstants.SCHEMA_VERSION));
+//            new AddLogApi(new DhLog(Utility.getUUID(), uniqueUserID, "User image has been added", Utility.currentDateTimeInUTC(), Utility.currentDateTimeInUTC()));
             return new Response<DhUser>(true, 201, "Image saved successfully", new ArrayList<>());
         } catch (Exception e) {
             e.printStackTrace();
