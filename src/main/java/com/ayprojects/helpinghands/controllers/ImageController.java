@@ -51,9 +51,9 @@ public class ImageController {
         return new ResponseEntity<>(imageService.uploadPostImages(httpHeaders,authentication,postType,addedBy,postImages,version), HttpStatus.CREATED);
     }
 
-    @PostMapping(value="/uploadRequirementImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    /*@PostMapping(value="/uploadRequirementImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DhRequirements>> uploadReqImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "reqType",required = true) String reqType, @RequestParam(value = "addedBy",required = true) String addedBy, @RequestPart(value="reqImages",required = true) MultipartFile[] reqImages, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(imageService.uploadRequirementImages(httpHeaders,authentication,reqType,addedBy,reqImages,version), HttpStatus.CREATED);
-    }
+    }*/
 
 }

@@ -155,6 +155,10 @@ public class AppConstants {
     public static final String LANDMARK = "landmark";
     public static final String USER_PROFILE_IMG = "profileImg";
     public static final String RESPONSEMESSAGE_OFFER_MSG = "OFFER_MSG";
+    public static final String RESPONSEMESSAGE_EMPTY_MOBILE = "EMPTY_MOBILE";
+    public static final String RESPONSEMESSAGE_EMPTY_EMAIL = "EMPTY_EMAIL";
+    public static final String RESPONSEMESSAGE_MOBILE_ALREADY_USED = "MOBILE_ALREADY_USED";
+    public static final String RESPONSEMESSAGE_EMAIL_ALREADY_USED = "EMAIL_ALREADY_USED";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static final String FILETYPE_PNG = "png";
@@ -164,7 +168,6 @@ public class AppConstants {
     public static String LABEL_HEADER_APPLANGUAGE ="App-Language";
     public static String STATUS_ACTIVE = "Active";
     public static String SCHEMA_VERSION = "1.0.0";
-    public static String FOUND_APP_CONFIG = "Found app config with status Active";
 
     //actions
     public static final String ACTION_NEW_USER_ADDED = "New user has been added." ;
@@ -205,6 +208,9 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_NO_CATEGORY_FOUND_WITH_ID = "CATEGORY_IDS_MISSING";
     public static String RESPONSEMESSAGE_NEW_PRODUCT_ADDED = "NEW_PRODUCT_ADDED";
     public static String RESPONSEMESSAGE_SOMETHING_WENT_WRONG = "SOMETHING_WENT_WRONG";
+    public static String RESPONSEMESSAGE_AUTHENTICATION_REQD = "AUTHENTICATION_REQD";
+    public static String RESPONSEMESSAGE_APP_CONFIG_NOT_FOUND = "APP_CONFIG_NOT_FOUND";
+    public static String RESPONSEMESSAGE_APP_CONFIG_FOUND = "APP_CONFIG_FOUND";
     public static String RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS = "PRODUCT_ALREADY_EXISTS";
     public static String RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE = "NEW_PLACE_ADDED_WITH_ACTIVE";
     public static String RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING = "NEW_PLACE_ADDED_WITH_PENDING";

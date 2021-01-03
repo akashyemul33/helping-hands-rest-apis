@@ -31,13 +31,8 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 public class ImageServiceImpl implements ImageService {
 
     @Autowired
-    Utility utility;
-    @Autowired
     LogService logService;
-    //    @Value("${amazonProperties.images.s3.base_folder}")
-    String imagesBaseFolder;
-    String fileDivider = "/";
-    String nameDivider = "_";
+
     @Autowired
     AmazonClient amazonClient;
 
@@ -96,31 +91,29 @@ public class ImageServiceImpl implements ImageService {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
 
-        String imgType = postType.matches(AppConstants.REGEX_BUSINESS_POST) ? "B" : "P";
-        String uinquePostId = Utility.getUUID();
-        String imgUploadFolder = imagesBaseFolder + fileDivider + addedBy + AppConstants.POST_DIR + postType + fileDivider;
-        String imgPrefix = imgType + AppConstants.POST_INITIAL + uinquePostId + nameDivider;
+        String uniquePostID = Utility.getUUID();
+        String postImgUploadKey = GetImageFoldersAndPrefix.getPostImgUploadKey(uniquePostID, postType);
 
-        if (Utility.isFieldEmpty(imagesBaseFolder) || Utility.isFieldEmpty(imgPrefix)) {
-            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, language), new ArrayList<>());
-        }
 
-        LOGGER.info("ImageServiceImpl->uploadPostImages : imageType=" + postType + " imageUploadFolder=" + imagesBaseFolder + " imagePrefix = " + imgPrefix);
         try {
-            List<String> postImageUrls = amazonClient.uploadImagesToS3(imgUploadFolder + imgPrefix, postImages);
+            List<String> postImageUrls = amazonClient.uploadImagesToS3(postImgUploadKey, postImages);
             DhPosts dhPosts = new DhPosts();
-            dhPosts.setPostId(uinquePostId);
+            dhPosts.setPostId(uniquePostID);
             dhPosts.setAddedBy(addedBy);
             dhPosts.setPostImages(postImageUrls);
-            utility.addLog(addedBy, "Post images have been added");
-            return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED, language), Collections.singletonList(dhPosts), 1);
-        } catch (Exception ioException) {
+            logService.addLog(new DhLog(addedBy, "Post images have been added"));
+            String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED);
+            return new Response<>(true, 201,successMsg , Collections.singletonList(dhPosts), 1);
+        }
+        catch (Exception ioException) {
             LOGGER.info("ImageServiceImpl->uploadPostImages : exception = " + ioException.getMessage());
-            return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES, language), new ArrayList<>());
+            String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES);
+            return new Response<>(false, 402, errorMsg, new ArrayList<>());
         }
     }
 
-    @Override
+
+    /*@Override
     public Response<DhRequirements> uploadRequirementImages(HttpHeaders httpHeaders, Authentication authentication, String reqType, String addedBy, MultipartFile[] reqImages, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("ImageServiceImpl->uploadRequirementImages : language=" + language);
@@ -152,6 +145,6 @@ public class ImageServiceImpl implements ImageService {
             return new Response<>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES, language), new ArrayList<>());
         }
     }
-
+*/
 
 }

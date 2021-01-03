@@ -4,13 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_APP_CONFIG_ADDED;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_APP_CONFIG_FOUND;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_APP_CONFIG_NOT_FOUND;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_AUTHENTICATION_REQD;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CATEGORY_IDS_MISSING;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CLOSED_OPENS_AT;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CONGRATULATIONS;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMAIL_ALREADY_USED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_BODY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_BODY_OR_PRODUCTNAMES;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_MOBILE;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_ERROR_WHILE_ADDING_APP_CONFIG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_ERROR_WHILE_FETCHING_APP_CONFIG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_IMAGE_TYPE_MISSING;
@@ -19,6 +24,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INCORRECT
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INCORRECT_USERNAME;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_LUNCH_HOURS;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_ALREADY_USED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_IS_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE;
@@ -128,6 +134,13 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_INVALID_POSTTYPE, "अवैध पोस्ट प्रकार !");
         responseMsgsMap.put(RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID, "जागा सापडली नाही !");
         responseMsgsMap.put(RESPONSEMESSAGE_OFFER_MSG, "ऑफर वैधता ");
+        responseMsgsMap.put(RESPONSEMESSAGE_AUTHENTICATION_REQD, "प्रमाणीकरण आवश्यक !");
+        responseMsgsMap.put(RESPONSEMESSAGE_APP_CONFIG_NOT_FOUND, "अॅप कॉन्फिगरेशन आढळले नाही !");
+        responseMsgsMap.put(RESPONSEMESSAGE_APP_CONFIG_FOUND, "सक्रिय स्थितीसह अॅप कॉन्फिगरेशन आढळले.");
+        responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_MOBILE, "मोबाइल रिकामा असू नये !");
+        responseMsgsMap.put(RESPONSEMESSAGE_MOBILE_ALREADY_USED, "मोबाइल नंबर आधीपासून वापरलेला आहे !");
+        responseMsgsMap.put(RESPONSEMESSAGE_EMAIL_ALREADY_USED, "ईमेल आधीच वापरलेला आहे !");
+
     }
 
     public Map<String, String> getResponseMsgsMap() {

@@ -38,11 +38,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping(value = "/login")
-    public ResponseEntity<Response<AccessTokenModel>> login(@RequestHeader HttpHeaders httpHeaders, @RequestBody AuthenticationRequest authenticationRequest, @PathVariable String version) {
-        return new ResponseEntity<>(userService.login(authenticationRequest, httpHeaders, version), HttpStatus.OK);
-    }
-
     @PostMapping(value = "/addUser")
     public ResponseEntity<Response<DhUser>> addUser(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUser, @PathVariable String version) {
         ApiOperations<DhUser> a = new ApiOperations<>();

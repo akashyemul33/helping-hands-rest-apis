@@ -7,17 +7,26 @@ import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.DhRequirements;
+import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.DhViews;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
+import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.repositories.UserRepository;
+import com.ayprojects.helpinghands.security.UserDetailsDecorator;
+import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
+import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.AppConstants.ADDED_BY;
 import static com.ayprojects.helpinghands.AppConstants.DEFAULT_NAME;
 import static com.ayprojects.helpinghands.AppConstants.TYPE_OF_PLACE_CATEGORY;
+import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Service
 public class Validations {
@@ -237,5 +246,39 @@ public class Validations {
             missingFieldsList.add(DEFAULT_NAME);
         }
         return missingFieldsList;
+    }
+
+    public static Response<DhUser> validateAddUser(String language, DhUser dhUserDetails, UserDetailsServiceImpl userDetailsService, UserRepository userRepository) {
+        if (userDetailsService == null) userDetailsService = new UserDetailsServiceImpl();
+        if (dhUserDetails == null) {
+            return new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        }
+
+        if (Utility.isFieldEmpty(dhUserDetails.getMobileNumber()))
+            return new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MOBILE_IS_EMPTY), new ArrayList<>());
+
+        try {
+            UserDetailsDecorator userDetailsDecorator = userDetailsService.loadUserByUsername(dhUserDetails.getMobileNumber());
+            return new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MOBILE_ALREADY_USED), new ArrayList<>());
+        } catch (UsernameNotFoundException e) {
+            LOGGER.info("validateAddUser=" + e.getMessage());
+        }
+
+        if (!Utility.isFieldEmpty(dhUserDetails.getEmailId()) && userRepository.findByEmailId(dhUserDetails.getEmailId()).isPresent()) {
+            return new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMAIL_ALREADY_USED), new ArrayList<>());
+        }
+
+
+        if (Utility.isFieldEmpty(dhUserDetails.getPassword())) {
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_PASSWORD_IS_EMPTY), new ArrayList<>());
+        }
+
+        if (Utility.isFieldEmpty(dhUserDetails.getProfileImg())) {
+            dhUserDetails.setUserId(Utility.getUUID());
+        } else if (Utility.isFieldEmpty(dhUserDetails.getUserId())) {
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_ID_IS_MISSING), new ArrayList<>());
+        }
+
+        return new Response<>(true, 201, dhUserDetails.getFirstName() + " Sir", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_REGISTERED), Collections.singletonList(dhUserDetails));
     }
 }

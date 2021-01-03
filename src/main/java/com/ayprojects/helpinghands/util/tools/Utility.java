@@ -228,7 +228,7 @@ public class Utility {
         logService.addLog(new DhLog(username,actionMsg));
     }
 
-    public AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {
+    public static AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {
         if (obj == null) obj = new AllCommonUsedAttributes();
         obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         obj.setCreatedDateTime(currentDateTimeInUTC());

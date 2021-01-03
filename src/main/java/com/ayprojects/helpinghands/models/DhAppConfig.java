@@ -16,6 +16,10 @@ public class DhAppConfig extends AllCommonUsedAttributes {
     private Modules modules;
     private List<LangValueObj> units;
 
+    public DhAppConfig() {
+
+    }
+
     public List<LangValueObj> getUnits() {
         return units;
     }

@@ -22,7 +22,6 @@ public class UserDetailsDecorator implements UserDetails {
     public static final String ROLES_PREFIX = "ROLE_";
 
     private DhUser user;
-//    private DhAuthorization user;
 
     public UserDetailsDecorator(DhUser user) {
         this.user = user;
