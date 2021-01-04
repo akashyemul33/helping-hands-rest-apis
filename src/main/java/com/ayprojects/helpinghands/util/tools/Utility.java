@@ -61,18 +61,6 @@ public class Utility {
         return s == null || s.length() == 0;
     }
 
-    public static String currentDateTimeInUTC() {
-        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return dateFormat.format(new Date());
-    }
-
-    public static String currentDateTimeInUTC(String dateTimeFormat) {
-        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return dateFormat.format(new Date());
-    }
-
     public static String getUUID() {
         return UUID.randomUUID().toString();
     }
@@ -200,41 +188,46 @@ public class Utility {
         return mc.getDefaultName();
     }
 
-    public static DhUser getUserDetailsFromId(String userId, MongoTemplate mongoTemplate,boolean firstNameOfUser,boolean lastNameOfUser,boolean userImage) {
-        if(Utility.isFieldEmpty(userId))throw new NullPointerException("Cannot fetch user details with empty userId");
-        if(mongoTemplate==null)throw new NullPointerException("Cannot fetch place details with null mongoTemplate object.");
+    public static DhUser getUserDetailsFromId(String userId, MongoTemplate mongoTemplate, boolean firstNameOfUser, boolean lastNameOfUser, boolean userImage) {
+        if (Utility.isFieldEmpty(userId))
+            throw new NullPointerException("Cannot fetch user details with empty userId");
+        if (mongoTemplate == null)
+            throw new NullPointerException("Cannot fetch place details with null mongoTemplate object.");
 
         Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
-        if(firstNameOfUser) query.fields().include(AppConstants.FIRST_NAME);
-        if(lastNameOfUser) query.fields().include(AppConstants.LAST_NAME);
-        if(userImage) query.fields().include(AppConstants.USER_PROFILE_IMG);
+        if (firstNameOfUser) query.fields().include(AppConstants.FIRST_NAME);
+        if (lastNameOfUser) query.fields().include(AppConstants.LAST_NAME);
+        if (userImage) query.fields().include(AppConstants.USER_PROFILE_IMG);
         return mongoTemplate.findOne(query, DhUser.class);
     }
 
-    public static DhPlace getPlaceDetailsFromId(String placeId,MongoTemplate mongoTemplate,boolean placeName,boolean placeCategory){
-        if(Utility.isFieldEmpty(placeId))throw new NullPointerException("Cannot fetch place details with empty placeId");
-        if(mongoTemplate==null)throw new NullPointerException("Cannot fetch place details with null mongoTemplate object.");
+    public static DhPlace getPlaceDetailsFromId(String placeId, MongoTemplate mongoTemplate, boolean placeName, boolean placeCategory) {
+        if (Utility.isFieldEmpty(placeId))
+            throw new NullPointerException("Cannot fetch place details with empty placeId");
+        if (mongoTemplate == null)
+            throw new NullPointerException("Cannot fetch place details with null mongoTemplate object.");
 
         Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
-        if(placeName) query.fields().include(AppConstants.PLACE_NAME);
-        if(placeCategory) query.fields().include(AppConstants.PLACE_SUB_CATEGORY_NAME);
+        if (placeName) query.fields().include(AppConstants.PLACE_NAME);
+        if (placeCategory) query.fields().include(AppConstants.PLACE_SUB_CATEGORY_NAME);
         return mongoTemplate.findOne(query, DhPlace.class);
+    }
+
+    public static AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {
+        if (obj == null) obj = new AllCommonUsedAttributes();
+        obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
+        CalendarOperations calendarOperations = new CalendarOperations();
+        obj.setCreatedDateTime(calendarOperations.currentDateTimeInUTC());
+        obj.setModifiedDateTime(calendarOperations.currentDateTimeInUTC());
+        obj.setStatus(status);
+        return obj;
     }
 
     public void addLog(String username, String actionMsg) {
         if (logService == null || Utility.isFieldEmpty(username) || Utility.isFieldEmpty(actionMsg)) {
             return;
         }
-        logService.addLog(new DhLog(username,actionMsg));
-    }
-
-    public static AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {
-        if (obj == null) obj = new AllCommonUsedAttributes();
-        obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
-        obj.setCreatedDateTime(currentDateTimeInUTC());
-        obj.setModifiedDateTime(currentDateTimeInUTC());
-        obj.setStatus(status);
-        return obj;
+        logService.addLog(new DhLog(username, actionMsg));
     }
 
 

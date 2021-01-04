@@ -14,6 +14,7 @@ import com.ayprojects.helpinghands.repositories.PlaceRepository;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.services.placecategories.PlaceCategoryService;
 import com.ayprojects.helpinghands.services.products.ProductsService;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 import com.ayprojects.helpinghands.util.tools.Validations;
 
@@ -25,6 +26,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,8 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 @Service
 public class PlaceServiceImpl implements PlaceService {
 
+    @Autowired
+    CalendarOperations calendarOperations;
     @Autowired
     MongoTemplate mongoTemplate;
     @Value("${images.base_folder}")
@@ -117,13 +121,13 @@ public class PlaceServiceImpl implements PlaceService {
                 PlaceSubCategories psc = new PlaceSubCategories();
                 psc.setDefaultName(dhPlace.getPlaceSubCategoryName());
                 psc.setAddedBy(dhPlace.getAddedBy());
-                psc.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
+                psc.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + calendarOperations.getTimeAtFileEnd());
                 psc = (PlaceSubCategories) utility.setCommonAttrs(psc, AppConstants.STATUS_PENDING);
                 List<PlaceSubCategories> pscList = queriedDhPlaceCategories.getPlaceSubCategories();
                 pscList.add(psc);
                 Update mainCategoryUpdate = new Update();
                 mainCategoryUpdate.push(AppConstants.PLACE_SUB_CATEGORIES, psc);
-                mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, Utility.currentDateTimeInUTC());
+                mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindCategoryWithId, mainCategoryUpdate, DhPlaceCategories.class);
                 utility.addLog(authentication.getName(), "New sub category while adding place [" + psc.getDefaultName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "].");
                 dhPlace.setPlaceSubCategoryId(psc.getPlaceSubCategoryId());

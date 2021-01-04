@@ -5,6 +5,7 @@ import com.ayprojects.helpinghands.api.behaviours.AddBehaviour;
 import com.ayprojects.helpinghands.dao.log.LogDao;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class AddLogApi implements AddBehaviour<DhLog> {
 
     DhLog dhLog;
 
+    @Autowired
+    CalendarOperations calendarOperations;
 
     public AddLogApi(){}//do not remove, its needed
     public AddLogApi(DhLog dhLog) {
@@ -34,8 +37,8 @@ public class AddLogApi implements AddBehaviour<DhLog> {
             throw new IllegalArgumentException("Action should be set in DhLog object.");
 
         dhLog.setLogId(Utility.getUUID());
-        dhLog.setCreatedDateTime(Utility.currentDateTimeInUTC());
-        dhLog.setModifiedDateTime(Utility.currentDateTimeInUTC());
+        dhLog.setCreatedDateTime(calendarOperations.currentDateTimeInUTC());
+        dhLog.setModifiedDateTime(calendarOperations.currentDateTimeInUTC());
         dhLog.setSchemaVersion(AppConstants.SCHEMA_VERSION);
 
         logDao.addLog(dhLog);

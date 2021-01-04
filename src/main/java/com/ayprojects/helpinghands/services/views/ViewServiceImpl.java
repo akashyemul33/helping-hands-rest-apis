@@ -7,6 +7,7 @@ import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhViews;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 import com.ayprojects.helpinghands.util.tools.Validations;
 
@@ -36,6 +37,9 @@ public class ViewServiceImpl implements ViewService {
 
     @Autowired
     Utility utility;
+
+    @Autowired
+    CalendarOperations calendarOperations;
 
     @Override
     public Response<DhViews> addViews(Authentication authentication, HttpHeaders httpHeaders, DhViews dhViews, String version) throws ServerSideException {
@@ -74,7 +78,7 @@ public class ViewServiceImpl implements ViewService {
                     mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopView, DhPlace.class);
                 }
                 updatePlace.push(AppConstants.TOP_VIEWS, dhViews);
-                updatePlace.set(AppConstants.MODIFIED_DATE_TIME, Utility.currentDateTimeInUTC());
+                updatePlace.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
                 break;
             case AppConstants.POST:
@@ -92,7 +96,7 @@ public class ViewServiceImpl implements ViewService {
                     mongoTemplate.updateFirst(queryFindPostsWithId, updatePopTopRating, DhPlace.class);
                 }
                 updatePost.push(AppConstants.TOP_VIEWS, dhViews);
-                updatePost.set(AppConstants.MODIFIED_DATE_TIME, Utility.currentDateTimeInUTC());
+                updatePost.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPostsWithId, updatePost, DhPosts.class);
                 break;
             case AppConstants.REQUIREMENT:
@@ -110,7 +114,7 @@ public class ViewServiceImpl implements ViewService {
                     mongoTemplate.updateFirst(queryFindRequirementWithId, updatePopTopRating, DhRequirements.class);
                 }
                 updateRequirement.push(AppConstants.TOP_VIEWS, dhViews);
-                updateRequirement.set(AppConstants.MODIFIED_DATE_TIME, Utility.currentDateTimeInUTC());
+                updateRequirement.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindRequirementWithId, updateRequirement, DhRequirements.class);
                 break;
         }

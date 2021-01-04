@@ -70,7 +70,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .refreshTokenValiditySeconds(expiration)
                 .resourceIds(RestApiResourceServerConfiguration.RESOURCE_ID)
                 .secret(bCryptPasswordEncoder.encode(clientSecret));
-//              .redirectUris(redirectUri);
+//                .redirectUris(redirectUri);
     }
 
 }

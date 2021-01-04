@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.services.log;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.dao.log.LogDao;
 import com.ayprojects.helpinghands.models.DhLog;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ public class LogServiceImpl implements LogService {
 
     @Autowired
     LogDao logDao;
+
+    @Autowired
+    CalendarOperations calendarOperations;
 
     @Override
     public DhLog addLog(DhLog dhLog) {
@@ -29,8 +33,8 @@ public class LogServiceImpl implements LogService {
         }
 
         dhLog.setLogId(Utility.isFieldEmpty(dhLog.getLogId()) ? Utility.getUUID() : dhLog.getLogId());
-        dhLog.setCreatedDateTime(Utility.isFieldEmpty(dhLog.getCreatedDateTime()) ? Utility.currentDateTimeInUTC() : dhLog.getCreatedDateTime());
-        dhLog.setModifiedDateTime(Utility.isFieldEmpty(dhLog.getModifiedDateTime()) ? Utility.currentDateTimeInUTC() : dhLog.getModifiedDateTime());
+        dhLog.setCreatedDateTime(Utility.isFieldEmpty(dhLog.getCreatedDateTime()) ? calendarOperations.currentDateTimeInUTC() : dhLog.getCreatedDateTime());
+        dhLog.setModifiedDateTime(Utility.isFieldEmpty(dhLog.getModifiedDateTime()) ? calendarOperations.currentDateTimeInUTC() : dhLog.getModifiedDateTime());
         dhLog.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         dhLog.setStatus(AppConstants.STATUS_ACTIVE);
         return logDao.addLog(dhLog);

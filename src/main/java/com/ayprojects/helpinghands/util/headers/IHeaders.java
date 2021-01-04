@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface IHeaders {
-//    String getLanguageFromHeader(HttpHeaders httpHeaders);
+
     public static String getLanguageFromHeader(HttpHeaders httpHeaders){
         if (httpHeaders == null || httpHeaders.isEmpty()) {
             return AppConstants.LANG_ENGLISH;

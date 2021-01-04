@@ -59,7 +59,7 @@ public class GetFileExtensionTest {
 
     @Test
     void fileExtensionShouldBeOfImageOnlyForNow() {
-        String[] validImgFormats = new String[]{"[pP][nN][gG]", "[jJ][pP][gG][eE]", "[jJ][pP][gG]"};
+        String[] validImgFormats = new String[]{"[pP][nN][gG]", "[jJ][pP][eE][gG]","[sS][vV][gG]", "[jJ][pP][gG]"};
         String extension = amazonClient.getFileExtension("abc.Png", null);
         LOGGER.info("extension=" + extension);
         boolean b = false;

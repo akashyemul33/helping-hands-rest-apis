@@ -8,6 +8,7 @@ import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PostsRepository;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 import com.ayprojects.helpinghands.util.tools.Validations;
 
@@ -45,6 +46,8 @@ public class PostsServiceImpl implements PostsService {
 
     @Autowired
     CommonService commonService;
+    @Autowired
+    CalendarOperations calendarOperations;
 
     @Override
     public Response<DhPosts> addPost(Authentication authentication, HttpHeaders httpHeaders, DhPosts dhPosts, String version) throws ServerSideException {
@@ -111,7 +114,7 @@ public class PostsServiceImpl implements PostsService {
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopPost, DhPlace.class);
             }
             updatePlace.push(AppConstants.TOP_POSTS, dhPosts);
-            updatePlace.set(AppConstants.MODIFIED_DATE_TIME, Utility.currentDateTimeInUTC());
+            updatePlace.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
         }
 

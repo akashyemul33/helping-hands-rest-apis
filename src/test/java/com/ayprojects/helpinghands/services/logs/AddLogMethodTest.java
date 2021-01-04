@@ -4,6 +4,7 @@ package com.ayprojects.helpinghands.services.logs;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.services.log.LogService;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,9 @@ public class AddLogMethodTest {
 
     @Autowired
     LogService logService;
+
+    @Autowired
+    CalendarOperations calendarOperations;
 
     @Test
     void contextShouldBeLoaded() {
@@ -120,8 +124,8 @@ public class AddLogMethodTest {
         String expectedLogId = Utility.getUUID();
         String expectedUserName = "A";
         String expectedAction = "Abc";
-        String expectedCreatedDateTime = Utility.currentDateTimeInUTC();
-        String expectedModifiedDateTime = Utility.currentDateTimeInUTC();
+        String expectedCreatedDateTime = calendarOperations.currentDateTimeInUTC();
+        String expectedModifiedDateTime = calendarOperations.currentDateTimeInUTC();
         DhLog dhLog = new DhLog(expectedUserName, expectedAction);
         dhLog.setLogId(expectedLogId);
         dhLog.setCreatedDateTime(expectedCreatedDateTime);

@@ -56,7 +56,7 @@ public class GetUserDetailsTest {
     @Test
     void givenEmptyAuthenticatioObjectThen402() {
         Response<LoginResponse> expectedResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_AUTHENTICATION_REQD), new ArrayList<>());
-        Response<LoginResponse> actualResponse = userService.getUserDetails(null, null, AppConstants.CURRENT_API_VERSION);
+        Response<LoginResponse> actualResponse = userService.getUserDetails(null, null,"", "",AppConstants.CURRENT_API_VERSION);
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertTrue(expectedResponse.getMessage().equalsIgnoreCase(actualResponse.getMessage()));
@@ -69,7 +69,7 @@ public class GetUserDetailsTest {
         dhAppConfig.setStatus(AppConstants.STATUS_PENDING);
         when(appConfigDao.getActiveAppConfig()).thenReturn(Optional.of(dhAppConfig));
 
-        Response<LoginResponse> actualResponse = userService.getUserDetails(null, authentication, AppConstants.CURRENT_API_VERSION);
+        Response<LoginResponse> actualResponse = userService.getUserDetails(null, authentication, "","",AppConstants.CURRENT_API_VERSION);
         Response<LoginResponse> expectedResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>());
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
@@ -78,13 +78,13 @@ public class GetUserDetailsTest {
     }
 
     @Test
-    void givenAuthenticationReceivedValidAppConfigThen200() {
+    void givenAuthenticationReceivedValidAppConfigWithEmptyLastLogoutTimeThen200() {
         Authentication authentication = GetAuthenticationObj.getValidAuthenticationObj(userDao, authenticationManager);
         DhAppConfig dhAppConfig = new DhAppConfig();
         dhAppConfig.setStatus(AppConstants.STATUS_ACTIVE);
         when(appConfigDao.getActiveAppConfig()).thenReturn(Optional.of(dhAppConfig));
 
-        Response<LoginResponse> actualResponse = userService.getUserDetails(null, authentication, AppConstants.CURRENT_API_VERSION);
+        Response<LoginResponse> actualResponse = userService.getUserDetails(null, authentication, "","",AppConstants.CURRENT_API_VERSION);
         Response<LoginResponse> expectedResponse = new Response<>(true,
                 200,
                 ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED)
@@ -96,5 +96,22 @@ public class GetUserDetailsTest {
         assertTrue(actualResponse.getData() != null && actualResponse.getData().get(0) != null && actualResponse.getData().get(0).getDhUser() != null && actualResponse.getData().get(0).getDhAppConfig() != null);
     }
 
+    @Test
+    void givenAuthenticationReceivedValidAppConfigWithNonEmptyLastLogoutTimeThen200() {
+        Authentication authentication = GetAuthenticationObj.getValidAuthenticationObj(userDao, authenticationManager);
+        DhAppConfig dhAppConfig = new DhAppConfig();
+        dhAppConfig.setStatus(AppConstants.STATUS_ACTIVE);
+        when(appConfigDao.getActiveAppConfig()).thenReturn(Optional.of(dhAppConfig));
 
+        Response<LoginResponse> actualResponse = userService.getUserDetails(null, authentication, "","2020-12-21 06:29:40",AppConstants.CURRENT_API_VERSION);
+        Response<LoginResponse> expectedResponse = new Response<>(true,
+                200,
+                ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED)
+                , null
+                , 1);
+        assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
+        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
+        assertTrue(expectedResponse.getMessage().equalsIgnoreCase(actualResponse.getMessage()));
+        assertTrue(actualResponse.getData() != null && actualResponse.getData().get(0) != null && actualResponse.getData().get(0).getDhUser() != null && actualResponse.getData().get(0).getDhAppConfig() != null);
+    }
 }

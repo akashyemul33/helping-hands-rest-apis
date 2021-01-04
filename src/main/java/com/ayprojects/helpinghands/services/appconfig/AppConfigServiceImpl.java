@@ -9,6 +9,7 @@ import com.ayprojects.helpinghands.security.UserDetailsDecorator;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
 import com.ayprojects.helpinghands.util.headers.IHeaders;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -27,6 +29,9 @@ public class AppConfigServiceImpl implements AppConfigService {
 
     @Autowired
     AppConfigDao appConfigDao;
+
+    @Autowired
+    CalendarOperations calendarOperations;
 
     @Autowired
     Utility utility;
@@ -44,13 +49,12 @@ public class AppConfigServiceImpl implements AppConfigService {
 
         try {
             appConfigDao.addAppConfig(dhAppConfig);
-            UserDetailsDecorator userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-            dhAppConfig.setCreatedDateTime(Utility.currentDateTimeInUTC());
-            dhAppConfig.setModifiedDateTime(Utility.currentDateTimeInUTC());
+            dhAppConfig.setCreatedDateTime(calendarOperations.currentDateTimeInUTC());
+            dhAppConfig.setModifiedDateTime(calendarOperations.currentDateTimeInUTC());
             dhAppConfig.setStatus(AppConstants.STATUS_PENDING);
             dhAppConfig.setSchemaVersion(AppConstants.SCHEMA_VERSION);
             appConfigDao.addAppConfig(dhAppConfig);
-            utility.addLog(authentication.getName(), AppConstants.ACTION_NEW_APPCONFIG_ADDED + "by UserId:" + userDetails.getUser().getUserId());
+            utility.addLog(authentication.getName(), AppConstants.ACTION_NEW_APPCONFIG_ADDED + "by UserName:" + authentication.getName());
             return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_APP_CONFIG_ADDED, language), Collections.singletonList(dhAppConfig));
         } catch (Exception e) {
             throw new ServerSideException(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_ERROR_WHILE_ADDING_APP_CONFIG, language));

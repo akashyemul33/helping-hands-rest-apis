@@ -8,6 +8,106 @@ public class DhUser extends AllCommonUsedAttributes {
     private String lastName;
     private String password;
     private String countryCode;
+    private String logInTime;
+    private String lastLogInTime;
+    private String lastLogOutTime;
+
+    public String getTriedToLoginTime() {
+        return triedToLoginTime;
+    }
+
+    public void setTriedToLoginTime(String triedToLoginTime) {
+        this.triedToLoginTime = triedToLoginTime;
+    }
+
+    private String triedToLoginTime;
+    private String profileImg;
+    //    private Address addressDetails;
+    private String mobileNumber;
+    private String emailId;
+    private String[] roles;
+    private UserSettings userSettings;
+    private boolean isSponsored;
+    private String sponsoredDate;
+    private List<String> subscribedPlaces;
+    private UserActivity userActivity;
+    //decides whether user settings should be applied or not
+    private boolean isUserSettingEnabled;
+    private String languageSelected;
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
+    private String fcmToken;
+
+    public DhUser() {
+        super();
+    }
+    public DhUser(String uniqueUserID, String imgUrl) {
+        this.userId = uniqueUserID;
+        this.profileImg = imgUrl;
+    }
+    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImg, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected, String lastName) {
+        this.schemaVersion = schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime = modifiedDateTime;
+        this.status = status;
+        this.userId = userId;
+        this.firstName = firstName;
+        this.password = password;
+        this.profileImg = profileImg;
+        this.mobileNumber = mobileNumber;
+        this.emailId = emailId;
+        this.roles = roles;
+        this.userSettings = userSettings;
+        this.isSponsored = isSponsored;
+        this.sponsoredDate = sponsoredDate;
+        this.subscribedPlaces = subscribedPlaces;
+        this.userActivity = userActivity;
+        this.isUserSettingEnabled = isUserSettingEnabled;
+        this.languageSelected = languageSelected;
+        this.lastName = lastName;
+    }
+    public DhUser(String userId, String firstName, String password, String profileImg, String mobileNumber, String emailId, String[] roles, String languageSelected, String lastName) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.password = password;
+        this.profileImg = profileImg;
+        this.mobileNumber = mobileNumber;
+        this.emailId = emailId;
+        this.roles = roles;
+        this.languageSelected = languageSelected;
+        this.lastName = lastName;
+    }
+
+    public String getLastLogInTime() {
+        return lastLogInTime;
+    }
+
+    public void setLastLogInTime(String lastLogInTime) {
+        this.lastLogInTime = lastLogInTime;
+    }
+
+    public String getLastLogOutTime() {
+        return lastLogOutTime;
+    }
+
+    public void setLastLogOutTime(String lastLogOutTime) {
+        this.lastLogOutTime = lastLogOutTime;
+    }
+
+    public String getLogInTime() {
+        return logInTime;
+    }
+
+    public void setLogInTime(String logInTime) {
+        this.logInTime = logInTime;
+    }
 
     public String getCountryCode() {
         return countryCode;
@@ -23,27 +123,6 @@ public class DhUser extends AllCommonUsedAttributes {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    private String profileImg;
-//    private Address addressDetails;
-    private String mobileNumber;
-    private String emailId;
-    private String[] roles;
-    private UserSettings userSettings;
-
-    public DhUser() {
-        super();
-    }
-
-    private boolean isSponsored;
-    private String sponsoredDate;
-    private List<String> subscribedPlaces;
-    private UserActivity userActivity;
-
-    public DhUser(String uniqueUserID, String imgUrl) {
-        this.userId = uniqueUserID;
-        this.profileImg = imgUrl;
     }
 
     public UserActivity getUserActivity() {
@@ -66,6 +145,10 @@ public class DhUser extends AllCommonUsedAttributes {
         return isUserSettingEnabled;
     }
 
+    public void setUserSettingEnabled(boolean userSettingEnabled) {
+        isUserSettingEnabled = userSettingEnabled;
+    }
+
     public boolean isSponsored() {
         return isSponsored;
     }
@@ -81,13 +164,6 @@ public class DhUser extends AllCommonUsedAttributes {
     public void setSponsoredDate(String sponsoredDate) {
         this.sponsoredDate = sponsoredDate;
     }
-
-    public void setUserSettingEnabled(boolean userSettingEnabled) {
-        isUserSettingEnabled = userSettingEnabled;
-    }
-
- //decides whether user settings should be applied or not
-    private boolean isUserSettingEnabled;
 
     public UserSettings getUserSettings() {
         return userSettings;
@@ -112,8 +188,6 @@ public class DhUser extends AllCommonUsedAttributes {
     public void setLanguageSelected(String languageSelected) {
         this.languageSelected = languageSelected;
     }
-
-    private String languageSelected;
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -161,53 +235,5 @@ public class DhUser extends AllCommonUsedAttributes {
 
     public void setProfileImg(String profileImg) {
         this.profileImg = profileImg;
-    }
-
-    /*public Address getAddressDetails() {
-        return addressDetails;
-    }
-
-    public void setAddressDetails(Address addressDetails) {
-        this.addressDetails = addressDetails;
-    }*/
-
-    /*public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status,
-    this.schemaVersion =schemaVersion;
-                          this.createdDateTime = createdDateTime;
-                          this.modifiedDateTime =modifiedDateTime;
-                          this.status=status;*/
-
-    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImg, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected,String lastName) {
-        this.schemaVersion =schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime =modifiedDateTime;
-        this.status=status;
-        this.userId = userId;
-        this.firstName = firstName;
-        this.password = password;
-        this.profileImg = profileImg;
-        this.mobileNumber = mobileNumber;
-        this.emailId = emailId;
-        this.roles = roles;
-        this.userSettings = userSettings;
-        this.isSponsored = isSponsored;
-        this.sponsoredDate = sponsoredDate;
-        this.subscribedPlaces = subscribedPlaces;
-        this.userActivity = userActivity;
-        this.isUserSettingEnabled = isUserSettingEnabled;
-        this.languageSelected = languageSelected;
-        this.lastName =lastName;
-    }
-
-    public DhUser(String userId, String firstName, String password, String profileImg,String mobileNumber, String emailId, String[] roles, String languageSelected,String lastName) {
-        this.userId = userId;
-        this.firstName = firstName;
-        this.password = password;
-        this.profileImg = profileImg;
-        this.mobileNumber = mobileNumber;
-        this.emailId = emailId;
-        this.roles = roles;
-        this.languageSelected = languageSelected;
-        this.lastName = lastName;
     }
 }

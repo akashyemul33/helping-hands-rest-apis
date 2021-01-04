@@ -76,8 +76,8 @@ public class AppConstants {
     public static final String LONGITUDE = "lng";
     public static final String FULL_ADDRESS = "fullAddress";
     public static final String PLACE_CONTACT = "placeContact";
-    public static final String MOBILE = "mobile";
-    public static final String EMAIL = "email";
+    public static final String MOBILE = "mobileNumber";
+    public static final String EMAIL = "emailId";
     public static final String PLACE_OPENING_TIME = "placeOpeningTime";
     public static final String PLACE_CLOSING_TIME ="placeClosingTime";
     public static final String LUNCH_START_TIME = "lunchStartTime";
@@ -159,6 +159,16 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_EMPTY_EMAIL = "EMPTY_EMAIL";
     public static final String RESPONSEMESSAGE_MOBILE_ALREADY_USED = "MOBILE_ALREADY_USED";
     public static final String RESPONSEMESSAGE_EMAIL_ALREADY_USED = "EMAIL_ALREADY_USED";
+    public static final String FCM_TOKEN = "fcmToken";
+    public static final String LOGIN_TIME = "logInTime";
+    public static final String TRIED_TO_LOGIN_TIME = "triedToLoginTime";
+    public static final String LAST_LOGIN_TIME = "lastLogInTime";
+    public static final String LAST_LOGOUT_TIME = "lastLogOutTime";
+    public static final String STATUS_NOTREGISTERED = "NotRegistered";
+    public static final String STATUS_REGISTERED = "Registered";
+    public static final String UTC = "UTC";
+    public static final String COUNTRY_CODE = "countryCode";
+    public static final String KEY_SCHEMA_VERSION = "schemaVersion";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static final String FILETYPE_PNG = "png";

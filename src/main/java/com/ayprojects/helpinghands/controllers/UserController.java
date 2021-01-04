@@ -3,8 +3,6 @@ package com.ayprojects.helpinghands.controllers;
 
 import com.ayprojects.helpinghands.api.classes.AddUserApi;
 import com.ayprojects.helpinghands.api.classes.ApiOperations;
-import com.ayprojects.helpinghands.models.AccessTokenModel;
-import com.ayprojects.helpinghands.models.AuthenticationRequest;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
@@ -25,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-
 import io.swagger.annotations.Api;
 
 @Api(value = "User API's", description = "CRUD for ")
@@ -40,18 +36,16 @@ public class UserController {
 
     @PostMapping(value = "/addUser")
     public ResponseEntity<Response<DhUser>> addUser(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUser, @PathVariable String version) {
-        ApiOperations<DhUser> a = new ApiOperations<>();
-        a.setAddBehaviour(new AddUserApi(httpHeaders, dhUser, version));
-        return new ResponseEntity<>(a.add(), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.addUser(httpHeaders,dhUser,version), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getUserDetails")
-    ResponseEntity<Response<LoginResponse>> getInitialDataOnLogin(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version) {
-        return new ResponseEntity<>(userService.getUserDetails(httpHeaders, authentication, version), HttpStatus.OK);
+    ResponseEntity<Response<LoginResponse>> getInitialDataOnLogin(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String fcmToken,@RequestParam String lastLogoutTime, @PathVariable String version) {
+        return new ResponseEntity<>(userService.getUserDetails(httpHeaders, authentication, fcmToken, lastLogoutTime,version), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getUserByMobile")
-    ResponseEntity<Response<DhUser>> getUserByMobile(@RequestHeader HttpHeaders httpHeaders, @RequestParam String mobileNumber, @RequestParam String countryCode, @PathVariable String version) {
-        return new ResponseEntity<>(userService.getUserByMobile(httpHeaders, mobileNumber, countryCode, version), HttpStatus.OK);
+    ResponseEntity<Response<DhUser>> getUserByMobile(@RequestHeader HttpHeaders httpHeaders, @RequestParam String mobileNumber, @RequestParam String countryCode, @RequestParam String fcmToken, @PathVariable String version) {
+        return new ResponseEntity<>(userService.getUserByMobile(httpHeaders, mobileNumber, countryCode, fcmToken, version), HttpStatus.OK);
     }
 }
