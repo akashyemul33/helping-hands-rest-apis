@@ -175,6 +175,7 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_EMPTY_DEFAULTNAME ="EMPTY_DEFAULTNAME" ;
     public static final String RESPONSEMESSAGE_MAINCATEGORYID_MISSING ="MAINCATEGORYID_MISSING" ;
     public static final String RESPONSEMESSAGE_SUBCATEGORYID_MISSING ="SUBCATEGORYID_MISSING" ;
+    public static final String STATUS_PENDING_NEW_SUBCATEGORY = "Pending(New Subcategory)";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static final String FILETYPE_PNG = "png";

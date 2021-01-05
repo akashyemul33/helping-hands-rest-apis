@@ -3,10 +3,10 @@ package com.ayprojects.helpinghands.api.classes;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.behaviours.AddBehaviour;
+import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhProduct;
-import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
@@ -37,23 +37,45 @@ public class AddPlaceApi implements AddBehaviour<DhPlace> {
 
     @Override
     public Response<DhPlace> add(String language, MongoTemplate mongoTemplate, DhPlace dhPlace) {
-
-        String placeStatus = AppConstants.STATUS_ACTIVE;
-
         dhPlace = setPlaceIdIfNotExists(dhPlace);
-
         Response<DhPlace> validationResponse = validateAddPlace(mongoTemplate, language, dhPlace);
         if (!validationResponse.getStatus())
             return validationResponse;
 
-        CalendarOperations calendarOperations = new CalendarOperations();
+        String placeStatus;
+        String existingSubCategoryId = getSubCategoryIdIfAlreadyExists(mongoTemplate, dhPlace);
+        if (Utility.isFieldEmpty(existingSubCategoryId)) {
+            placeStatus = AppConstants.STATUS_PENDING_NEW_SUBCATEGORY;
+            String newlyAddedSubCategoryId = createSubCategoryAndStoreInPending(language, mongoTemplate, dhPlace);
+            dhPlace.setPlaceSubCategoryId(newlyAddedSubCategoryId);
+        } else {
+            placeStatus = AppConstants.STATUS_ACTIVE;
+            dhPlace.setPlaceSubCategoryId(existingSubCategoryId);
+        }
 
-        boolean canProceed = false;
-        DhPlaceCategories queriedDhPlaceCategories = getMainCategoryById(dhPlace.getPlaceMainCategoryId(), mongoTemplate);
+        for (ProductsWithPrices productsWithPrices : dhPlace.getProductDetails()) {
+            if (Utility.isFieldEmpty(productsWithPrices.getProductId())) {
+                String productId = getProductIdIfProductAlreadyExists(mongoTemplate, productsWithPrices);
+                if (Utility.isFieldEmpty(productId)) {
+                    prepareDhProductAndStoreItInDb(mongoTemplate, productsWithPrices);
+                } else {
+                    productsWithPrices.setProductId(productId);
+                }
+            }
+        }
+
+        dhPlace = prepareDhPlaceAndStoreItInDb(mongoTemplate, dhPlace, placeStatus);
+        validationResponse.setLogActionMsg("New [" + dhPlace.getPlaceType() + "] place with category [" + dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName() + "] has been added in status " + placeStatus);
+        String responseMsg = getResponseMsgForStatus(language, placeStatus);
+        int statusCode = AppConstants.STATUS_ACTIVE.equalsIgnoreCase(placeStatus) ? 201 : 202;
+        String headingMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CONGRATULATIONS);
+        return new Response<>(true, statusCode, headingMsg, responseMsg, new ArrayList<>());
+
+
         //check for sub category existence
         //check whether category existence if user didn't send subcategoryId
-        if (Utility.isFieldEmpty(dhPlace.getPlaceSubCategoryId())) {
-            //TODO add category to db, but first check with the sub category name whether it exists
+        /*if (Utility.isFieldEmpty(dhPlace.getPlaceSubCategoryId())) {
+
             for (PlaceSubCategories ps : queriedDhPlaceCategories.getPlaceSubCategories()) {
                 if (dhPlace.getPlaceSubCategoryName().equalsIgnoreCase(ps.getDefaultName())) {
                     LOGGER.info("sub category found with the default name search, it's id is " + ps.getPlaceSubCategoryId() + " name=" + ps.getDefaultName());
@@ -152,11 +174,78 @@ public class AddPlaceApi implements AddBehaviour<DhPlace> {
             statusCode = 202;//for pending
             responseMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING);
         }
-        return new Response<>(true, statusCode, headingMsg, responseMsg, new ArrayList<>());
+        return new Response<>(true, statusCode, headingMsg, responseMsg, new ArrayList<>());*/
     }
 
-    public DhPlace setPlaceIdIfNotExists(@NonNull DhPlace dhPlace) {
-        if (Utility.isFieldEmpty(dhPlace.getPlaceId())) {
+    private String createSubCategoryAndStoreInPending(String language, MongoTemplate mongoTemplate, DhPlace dhPlace) {
+        CalendarOperations calendarOperations = new CalendarOperations();
+        PlaceSubCategories psc = new PlaceSubCategories();
+        psc.setDefaultName(dhPlace.getPlaceSubCategoryName());
+        psc.setAddedBy(dhPlace.getAddedBy());
+        psc.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + calendarOperations.getTimeAtFileEnd());
+        psc = (PlaceSubCategories) ApiOperations.setCommonAttrs(psc, AppConstants.STATUS_PENDING);
+
+        Update mainCategoryUpdate = new Update();
+        mainCategoryUpdate.push(AppConstants.PLACE_SUB_CATEGORIES, psc);
+        mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+
+        Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_MAIN_CATEGORY_ID).is(dhPlace.getPlaceMainCategoryId()));
+        queryFindCategoryWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+
+        mongoTemplate.updateFirst(queryFindCategoryWithId, mainCategoryUpdate, DhPlaceCategories.class);
+
+        new AddLogApi().add(language, mongoTemplate, new DhLog(dhPlace.getAddedBy(), "New sub category while adding place [" + psc.getDefaultName() + "] has been added under [" + dhPlace.getPlaceCategoryName() + "]."));
+
+        return psc.getPlaceSubCategoryId();
+    }
+
+    private String getResponseMsgForStatus(String language, String placeStatus) {
+        if (AppConstants.STATUS_ACTIVE.equalsIgnoreCase(placeStatus)) {
+            return ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE);
+        } else {
+            return ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING);
+        }
+    }
+
+    private DhPlace prepareDhPlaceAndStoreItInDb(MongoTemplate mongoTemplate, DhPlace dhPlace, String placeStatus) {
+        dhPlace.setNumberOfProducts(dhPlace.getProductDetails().size());
+        dhPlace = (DhPlace) ApiOperations.setCommonAttrs(dhPlace, placeStatus);
+        return mongoTemplate.save(dhPlace, AppConstants.COLLECTION_DH_PLACE);
+    }
+
+    private void prepareDhProductAndStoreItInDb(String language,MongoTemplate mongoTemplate, ProductsWithPrices productsWithPrices,DhPlace dhPlace) {
+        //TODO prepare product for dhPlace and store it in db
+        DhProduct queriedDhProduct = new DhProduct();
+        queriedDhProduct.setProductId(Utility.getUUID());
+        queriedDhProduct.setDefaultUnit(productsWithPrices.getSelectedUnit());
+        queriedDhProduct.setMainPlaceCategoryId(dhPlace.getPlaceMainCategoryId());
+        queriedDhProduct.setSubPlaceCategoryId(dhPlace.getPlaceSubCategoryId());
+        queriedDhProduct.setCategoryName(dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName());
+        queriedDhProduct.setAddedBy(dhPlace.getAddedBy());
+        queriedDhProduct.setDefaultName(productsWithPrices.getUserEnteredProductName());
+        queriedDhProduct.setAvgPrice(productsWithPrices.getProductPrice());
+        queriedDhProduct = (DhProduct) ApiOperations.setCommonAttrs(queriedDhProduct, AppConstants.STATUS_ACTIVE);
+        mongoTemplate.save(queriedDhProduct, AppConstants.COLLECTION_DH_PRODUCT);
+        new AddLogApi().add(language,mongoTemplate,new DhLog(dhPlace.getAddedBy(),"Product [" + p.getUserEnteredProductName() + "] has been added under [" + dhPlace.getPlaceSubCategoryName() + "->" + dhPlace.getSubscribedUsers() + "]."));
+        productsWithPrices.setProductId(queriedDhProduct.getProductId());
+    }
+
+    private String getProductIdIfProductAlreadyExists(MongoTemplate mongoTemplate, ProductsWithPrices productsWithPrices) {
+//        TODO check for product id and return if already exists
+        return null;
+    }
+
+    private String getSubCategoryIdIfAlreadyExists(@NonNull MongoTemplate mongoTemplate, DhPlace dhPlace) {
+//TODO check for sub category id and return if already exists
+        return null;
+    }
+
+    private String getSubCategoryId(DhPlace dhPlace) {
+        return null;
+    }
+
+    public DhPlace setPlaceIdIfNotExists(DhPlace dhPlace) {
+        if (dhPlace != null && Utility.isFieldEmpty(dhPlace.getPlaceId())) {
             dhPlace.setPlaceId(Utility.getUUID());
         }
         return dhPlace;
