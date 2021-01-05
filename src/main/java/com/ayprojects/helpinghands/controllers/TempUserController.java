@@ -1,6 +1,9 @@
 package com.ayprojects.helpinghands.controllers;
 
 
+import com.ayprojects.helpinghands.api.ApiOperations;
+import com.ayprojects.helpinghands.api.classes.AddUserApi;
+import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
@@ -26,20 +29,23 @@ import io.swagger.annotations.Api;
 @Api(value = "User API's", description = "CRUD for ")
 @RestController
 @ResponseStatus
-@RequestMapping("/api/v{version}/users")
-public class UserController {
+@RequestMapping("/api/v{version}/tempusers")
+public class TempUserController {
 
     @Autowired
     UserService userService;
 
+    @Autowired
+    ApiOperations<DhUser> apiOperations;
+
     @PostMapping(value = "/addUser")
-    public ResponseEntity<Response<DhUser>> addUser(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUser, @PathVariable String version) {
-        return new ResponseEntity<>(userService.addUser(httpHeaders,dhUser,version), HttpStatus.CREATED);
+    public ResponseEntity<Response<DhUser>> addUser(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUser, @PathVariable String version) throws ServerSideException {
+        return new ResponseEntity<>(apiOperations.add(null, httpHeaders, dhUser, version), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getUserDetails")
-    ResponseEntity<Response<LoginResponse>> getInitialDataOnLogin(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String fcmToken,@RequestParam String lastLogoutTime, @PathVariable String version) {
-        return new ResponseEntity<>(userService.getUserDetails(httpHeaders, authentication, fcmToken, lastLogoutTime,version), HttpStatus.OK);
+    ResponseEntity<Response<LoginResponse>> getInitialDataOnLogin(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String fcmToken, @RequestParam String lastLogoutTime, @PathVariable String version) {
+        return new ResponseEntity<>(userService.getUserDetails(httpHeaders, authentication, fcmToken, lastLogoutTime, version), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getUserByMobile")

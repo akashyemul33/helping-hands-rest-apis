@@ -19,6 +19,7 @@ import com.ayprojects.helpinghands.util.tools.Utility;
 import com.ayprojects.helpinghands.util.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     @Autowired
     CommonService commonService;
@@ -58,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public Response<DhUser> addUser(HttpHeaders httpHeaders, DhUser dhUserDetails, String version) {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
 
-        Response<DhUser> returnResponse = Validations.validateAddUser(language, dhUserDetails, userDetailsService, userRepository);
+        Response<DhUser> returnResponse = Validations.validateAddUser(language, dhUserDetails,mongoTemplate, null);
         LOGGER.info("returnResponse=>"+returnResponse.getMessage());
         if (returnResponse.getStatus()) {
             dhUserDetails.setPassword(bCryptPasswordEncoder.encode(dhUserDetails.getPassword()));

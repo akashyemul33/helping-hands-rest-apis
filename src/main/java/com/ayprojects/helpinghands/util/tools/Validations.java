@@ -11,11 +11,13 @@ import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.DhViews;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.repositories.UserRepository;
 import com.ayprojects.helpinghands.security.UserDetailsDecorator;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -97,7 +99,7 @@ public class Validations {
         if (Utility.isFieldEmpty(dhPlace.getPlaceId()))
             missingFieldsList.add(AppConstants.PLACE_ID);
         if (Utility.isFieldEmpty(dhPlace.getPlaceMainCategoryId()))
-            missingFieldsList.add(AppConstants.PLACE_CATEGORY_ID);
+            missingFieldsList.add(AppConstants.PLACE_MAIN_CATEGORY_ID);
         if (Utility.isFieldEmpty(dhPlace.getPlaceCategoryName()))
             missingFieldsList.add(AppConstants.PLACE_CATEGORY_NAME);
         if (Utility.isFieldEmpty(dhPlace.getPlaceName()))
@@ -223,7 +225,7 @@ public class Validations {
         if (placeSubCategory == null) return missingFieldsList;
 
         if (Utility.isFieldEmpty(mainPlaceCategoryId))
-            missingFieldsList.add(AppConstants.PLACE_CATEGORY_ID);
+            missingFieldsList.add(AppConstants.PLACE_MAIN_CATEGORY_ID);
 
         if (Utility.isFieldEmpty(placeSubCategory.getDefaultName())) {
             missingFieldsList.add(DEFAULT_NAME);
@@ -236,7 +238,7 @@ public class Validations {
         if (dhProduct == null) return missingFieldsList;
 
         if (Utility.isFieldEmpty(dhProduct.getMainPlaceCategoryId()))
-            missingFieldsList.add(AppConstants.PLACE_CATEGORY_ID);
+            missingFieldsList.add(AppConstants.PLACE_MAIN_CATEGORY_ID);
 
         if (Utility.isFieldEmpty(dhProduct.getSubPlaceCategoryId())) {
             missingFieldsList.add(AppConstants.PLACE_SUB_CATEGORY_ID);
@@ -248,8 +250,7 @@ public class Validations {
         return missingFieldsList;
     }
 
-    public static Response<DhUser> validateAddUser(String language, DhUser dhUserDetails, UserDetailsServiceImpl userDetailsService, UserRepository userRepository) {
-        if (userDetailsService == null) userDetailsService = new UserDetailsServiceImpl();
+        public static Response<DhUser> validateAddUser(String language, DhUser dhUserDetails, MongoTemplate mongoTemplate, UserDetailsServiceImpl userDetailsService) {
         if (dhUserDetails == null) {
             return new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
@@ -264,8 +265,12 @@ public class Validations {
             LOGGER.info("validateAddUser=" + e.getMessage());
         }
 
-        if (!Utility.isFieldEmpty(dhUserDetails.getEmailId()) && userRepository.findByEmailId(dhUserDetails.getEmailId()).isPresent()) {
-            return new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMAIL_ALREADY_USED), new ArrayList<>());
+        if (!Utility.isFieldEmpty(dhUserDetails.getEmailId())) {
+            Query queryFindUserByEmailId = new Query(Criteria.where(AppConstants.EMAIL).is(dhUserDetails.getEmailId()));
+            DhUser userByEmailId = mongoTemplate.findOne(queryFindUserByEmailId, DhUser.class);
+            if (userByEmailId != null) {
+                return new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMAIL_ALREADY_USED), new ArrayList<>());
+            }
         }
 
 

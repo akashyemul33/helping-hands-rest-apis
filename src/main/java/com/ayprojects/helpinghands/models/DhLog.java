@@ -5,6 +5,10 @@ public class DhLog extends AllCommonUsedAttributes {
     private String action;
     private String userName;
 
+    public DhLog(String action) {
+        this.action = action;
+    }
+
     public String getUserName() {
         return userName;
     }

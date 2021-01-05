@@ -148,7 +148,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             return new Response<PlaceSubCategories>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 
-        Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_CATEGORY_ID).is(mainPlaceCategoryId));
+        Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_MAIN_CATEGORY_ID).is(mainPlaceCategoryId));
         queryFindCategoryWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         DhPlaceCategories queriedDhPlaceCategories = mongoTemplate.findOne(queryFindCategoryWithId, DhPlaceCategories.class);
         if (queriedDhPlaceCategories == null) {

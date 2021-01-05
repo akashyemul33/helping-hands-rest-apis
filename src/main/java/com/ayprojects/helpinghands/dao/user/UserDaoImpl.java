@@ -14,7 +14,6 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     UserRepository userRepository;
 
-
     @Override
     public DhUser addUser(DhUser dhUserDetails) {
         return userRepository.save(dhUserDetails);

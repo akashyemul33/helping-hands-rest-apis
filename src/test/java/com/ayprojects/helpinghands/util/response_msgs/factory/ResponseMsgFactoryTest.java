@@ -27,7 +27,7 @@ public class ResponseMsgFactoryTest {
     }
 
     @Test
-    void givenNullKeyWhenGetResponseMsgFromFactoryThenNull() {
+    void givenNullKeyThenException() {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
@@ -43,7 +43,7 @@ public class ResponseMsgFactoryTest {
     }
 
     @Test
-    void givenEmptyLangButValidKeyWhenGetResponseMsgFromFactoryThenValueFromEnglish() {
+    void givenEmptyLangButValidKeyThenValueFromEnglish() {
         ResponseMsgInEnglish responseMsgInEnglish = new NestedResponseMsgInEnglish();
         String keyMobile = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE;
         String keyEmail = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_EMAIL;
@@ -54,7 +54,7 @@ public class ResponseMsgFactoryTest {
     }
 
     @Test
-    void givenInvalidLangWithValidKeyWhenGetResponseMsgFromFactoryThenValueFromEnglish() {
+    void givenInvalidLangWithValidKeyThenValueFromEnglish() {
         ResponseMsgInEnglish responseMsgInEnglish = new NestedResponseMsgInEnglish();
         String keyMobile = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE;
         String keyEmail = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_EMAIL;
@@ -65,7 +65,7 @@ public class ResponseMsgFactoryTest {
     }
 
     @Test
-    void givenMarthiLangWhenGetResponseMsgFromFactoryThenValueInMarathi() {
+    void givenMarthiLangThenValueInMarathi() {
         ResponseMsgInMarathi responseMsgInMarathi = new NestedResponseMsgInMarathi();
         String keyMobile = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE;
         String keyEmail = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_EMAIL;
@@ -77,7 +77,7 @@ public class ResponseMsgFactoryTest {
     }
 
     @Test
-    void givenHindiLangWhenGetResponseMsgFromFactoryThenValueInHindi() {
+    void givenHindiLangThenValueInHindi() {
         String keyMobile = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE;
         String keyEmail = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_EMAIL;
         ResponseMsgInHindi responseMsgInHindi = new NestedResponseMsgInHindi();
@@ -89,7 +89,7 @@ public class ResponseMsgFactoryTest {
     }
 
     @Test
-    void givenEnglishLangWhenGetResponseMsgFromFactoryThenValueInEnglish() {
+    void givenEnglishLangThenValueInEnglish() {
         ResponseMsgInEnglish responseMsgInEnglish = new NestedResponseMsgInEnglish();
         String keyMobile = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE;
         String keyEmail = AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_EMAIL;

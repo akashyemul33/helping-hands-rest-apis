@@ -1,8 +1,6 @@
 package com.ayprojects.helpinghands.controllers;
 
 
-import com.ayprojects.helpinghands.api.classes.AddUserApi;
-import com.ayprojects.helpinghands.api.classes.ApiOperations;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhAppConfig;
 import com.ayprojects.helpinghands.models.Response;

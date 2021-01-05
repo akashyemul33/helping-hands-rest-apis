@@ -11,7 +11,7 @@ public class DhPlaceCategories extends AllCommonUsedAttributes {
     public String defaultName;
     public List<LangValueObj> translations;
 
-    public DhPlaceCategories(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeCategoryId, String typeOfPlaceCategory,String placeMainCategoryImagePath, String addedBy, String defaultName, List<LangValueObj> translations, List<PlaceSubCategories> placeSubCategories) {
+    public DhPlaceCategories() {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;

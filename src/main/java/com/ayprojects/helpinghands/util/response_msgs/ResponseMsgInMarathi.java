@@ -15,7 +15,9 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMAIL_ALR
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_BODY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_BODY_OR_PRODUCTNAMES;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_DEFAULTNAME;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_MOBILE;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_ERROR_WHILE_ADDING_APP_CONFIG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_ERROR_WHILE_FETCHING_APP_CONFIG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_IMAGE_TYPE_MISSING;
@@ -24,6 +26,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INCORRECT
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INCORRECT_USERNAME;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_LUNCH_HOURS;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MAINCATEGORYID_MISSING;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_ALREADY_USED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_IS_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED;
@@ -140,7 +143,9 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_MOBILE, "मोबाइल रिकामा असू नये !");
         responseMsgsMap.put(RESPONSEMESSAGE_MOBILE_ALREADY_USED, "मोबाइल नंबर आधीपासून वापरलेला आहे !");
         responseMsgsMap.put(RESPONSEMESSAGE_EMAIL_ALREADY_USED, "ईमेल आधीच वापरलेला आहे !");
-
+        responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY, "ठिकाण श्रेणीचा प्रकार रिक्त नसावा !");
+        responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_DEFAULTNAME, "डीफॉल्ट नाव रिक्त नसावे !");
+        responseMsgsMap.put(RESPONSEMESSAGE_MAINCATEGORYID_MISSING, "मुख्य श्रेणी आयडी रिक्त नसावा !");
     }
 
     public Map<String, String> getResponseMsgsMap() {
