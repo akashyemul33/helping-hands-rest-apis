@@ -215,32 +215,6 @@ public class PlaceServiceImpl implements PlaceService {
     public Response<DhPlace> getPaginatedPlaces(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version, double lat, double lng) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PlaceServiceImpl->getPaginatedPlaces : language=" + language);
-        /*PageRequest paging = PageRequest.of(page, size);
-        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        query.fields().include(AppConstants.PLACE_NAME);
-        query.fields().include(AppConstants.PLACE_SUB_CATEGORY_NAME);
-        query.fields().include(AppConstants.OWNER_NAME);
-        query.fields().include(AppConstants.PLACE_DESC);
-        query.fields().include(AppConstants.ADDED_BY);
-        query.fields().include(AppConstants.PLACE_CONTACT);
-        query.fields().include(AppConstants.DOOR_SERVICE);
-        query.fields().include(AppConstants.PLACE_ADDRESS);
-        query.fields().include(AppConstants.PLACE_AVAILABLITY_DETAILS);
-        query.fields().include(AppConstants.NUMBER_OF_PRODUCTS);
-        query.fields().include(AppConstants.NUMBER_OF_POSTS);
-        query.fields().include(AppConstants.NUMBER_OF_RATINGS);
-        query.fields().include(AppConstants.AVG_RATING);
-        query.fields().include(AppConstants.IA_ADDRESS_GENERATED);
-        query.fields().include(AppConstants.PLACE_IMAGES);
-        query.fields().include(AppConstants.CREATED_DATETIME);
-        query.fields().include(AppConstants.PLACE_ID);
-        query.fields().include(AppConstants.PLACE_TYPE);
-        query.with(paging);
-        List<DhPlace> dhPlaceList = mongoTemplate.find(query, DhPlace.class);
-        Page<DhPlace> dhPlacePages = PageableExecutionUtils.getPage(
-                dhPlaceList,
-                paging,
-                () -> mongoTemplate.count(query, DhPlace.class));*/
         LOGGER.info("PlaceServiceImpl->getPaginatedPlaces : lat=%s" + lat + " lng=%s" + lng);
         PageRequest paging = PageRequest.of(page, size);
         Page<DhPlace> dhPlacePages = placeRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);

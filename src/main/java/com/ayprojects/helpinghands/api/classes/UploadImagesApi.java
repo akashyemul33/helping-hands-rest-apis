@@ -18,10 +18,12 @@ import com.ayprojects.helpinghands.util.tools.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 
+@Component
 public class UploadImagesApi implements UploadBehaviour {
     @Autowired
     AmazonClient amazonClient;

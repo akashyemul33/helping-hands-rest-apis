@@ -1,8 +1,9 @@
-package com.ayprojects.helpinghands.api.classes;
+package com.ayprojects.helpinghands.api.classes.add_strategy;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
-import com.ayprojects.helpinghands.api.behaviours.AddBehaviour;
+import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
+import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhProduct;
@@ -11,19 +12,25 @@ import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class AddProductApi implements AddBehaviour<DhProduct> {
+@Component
+public class StrategyAddProductApi implements StrategyAddBehaviour<DhProduct> {
+    @Autowired
+    MongoTemplate mongoTemplate;
+
     @Override
-    public Response<DhProduct> add(String language, MongoTemplate mongoTemplate, DhProduct dhProduct) throws ServerSideException {
+    public Response<DhProduct> add(String language, DhProduct dhProduct) throws ServerSideException {
         Response<DhProduct> returnResponse = validateAddDhProduct(dhProduct, language);
         if (returnResponse.getStatus()) {
-            if (checkProductAlreadyExists(dhProduct, mongoTemplate)) {
+            if (checkProductAlreadyExists(dhProduct)) {
                 return new Response<DhProduct>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS) + " ProductName : " + dhProduct.getDefaultName(), new ArrayList<>(), 1);
             }
             DhPlaceCategories queriedDhPlaceCategories = findMainCategoryWithId(mongoTemplate, dhProduct);
@@ -51,13 +58,18 @@ public class AddProductApi implements AddBehaviour<DhProduct> {
         return returnResponse;
     }
 
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.AddProductStrategy;
+    }
+
     private DhPlaceCategories findMainCategoryWithId(MongoTemplate mongoTemplate, DhProduct dhProduct) {
         Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_MAIN_CATEGORY_ID).is(dhProduct.getMainPlaceCategoryId()));
         queryFindCategoryWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         return mongoTemplate.findOne(queryFindCategoryWithId, DhPlaceCategories.class);
     }
 
-    private boolean checkProductAlreadyExists(DhProduct dhProduct, MongoTemplate mongoTemplate) {
+    private boolean checkProductAlreadyExists(DhProduct dhProduct) {
         Query queryFindProduct = new Query(new Criteria().orOperator(Criteria.where(AppConstants.DEFAULT_NAME).regex(dhProduct.getDefaultName(), "i"),
                 Criteria.where(AppConstants.TRANSLATIONS + ".value").regex(dhProduct.getDefaultName(), "i")
         ));

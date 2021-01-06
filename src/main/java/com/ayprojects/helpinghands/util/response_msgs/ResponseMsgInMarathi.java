@@ -27,6 +27,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INCORRECT
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_LUNCH_HOURS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MAINCATEGORYID_MISSING;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_ALREADY_USED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_IS_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED;
@@ -146,6 +147,7 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY, "ठिकाण श्रेणीचा प्रकार रिक्त नसावा !");
         responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_DEFAULTNAME, "डीफॉल्ट नाव रिक्त नसावे !");
         responseMsgsMap.put(RESPONSEMESSAGE_MAINCATEGORYID_MISSING, "मुख्य श्रेणी आयडी रिक्त नसावा !");
+        responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "क्वेरी पॅरामीटर्स गहाळ आहेत !");
     }
 
     public Map<String, String> getResponseMsgsMap() {
@@ -155,6 +157,6 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
 
     @Override
     public String getResponseMsg(String key) {
-        return getResponseMsgFromMap(key,responseMsgsMap);
+        return getResponseMsgFromMap(key, responseMsgsMap);
     }
 }

@@ -27,6 +27,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INCORRECT
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_LUNCH_HOURS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MAINCATEGORYID_MISSING;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_ALREADY_USED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_IS_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED;
@@ -146,6 +147,7 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY, "Type of place category should not be empty !");
             responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_DEFAULTNAME, "Default name should not be empty !");
             responseMsgsMap.put(RESPONSEMESSAGE_MAINCATEGORYID_MISSING, "Main category id must not be empty !");
+            responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "Missing query parameters !");
         }
     }
 

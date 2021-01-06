@@ -3,18 +3,13 @@ package com.ayprojects.helpinghands.api.logs;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
-import com.ayprojects.helpinghands.api.classes.AddLogApi;
 import com.ayprojects.helpinghands.dao.log.LogDao;
 import com.ayprojects.helpinghands.models.DhLog;
-import com.ayprojects.helpinghands.models.Response;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

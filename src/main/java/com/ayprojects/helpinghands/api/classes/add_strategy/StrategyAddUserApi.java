@@ -1,8 +1,9 @@
-package com.ayprojects.helpinghands.api.classes;
+package com.ayprojects.helpinghands.api.classes.add_strategy;
 
 import com.ayprojects.helpinghands.AppConstants;
-import com.ayprojects.helpinghands.api.behaviours.AddBehaviour;
-import com.ayprojects.helpinghands.models.DhLog;
+import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
+import com.ayprojects.helpinghands.api.enums.StrategyName;
+import com.ayprojects.helpinghands.dao.user.UserDao;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.security.UserDetailsDecorator;
@@ -10,36 +11,40 @@ import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.Utility;
-import com.mongodb.lang.NonNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
-@Service
-public class AddUserApi implements AddBehaviour<DhUser> {
+@Component
+public class StrategyAddUserApi implements StrategyAddBehaviour<DhUser> {
 
-    private final UserDetailsServiceImpl userDetailsService;
-    private final CommonService commonService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
-    public AddUserApi(UserDetailsServiceImpl ud, CommonService commonService) {
-        this.userDetailsService = ud;
-        this.commonService = commonService;
-    }
+    @Autowired
+    private CommonService commonService;
+
+    @Autowired
+    UserDao userDao;
 
     @Override
-    public Response<DhUser> add(String language, @NonNull MongoTemplate mongoTemplate, DhUser dhUser) {
+    public Response<DhUser> add(String language, DhUser dhUser) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        Response<DhUser> returnResponse = validateAddUser(language, dhUser, mongoTemplate, userDetailsService);
+        Response<DhUser> returnResponse = validateAddUser(language, dhUser);
         LOGGER.info("returnResponse=>" + returnResponse.getMessage());
         if (returnResponse.getStatus()) {
             dhUser.setPassword(bCryptPasswordEncoder.encode(dhUser.getPassword()));
@@ -48,7 +53,7 @@ public class AddUserApi implements AddBehaviour<DhUser> {
             dhUser.setUserSettingEnabled(false);
             dhUser.setSponsored(false);
             dhUser = (DhUser) Utility.setCommonAttrs(dhUser, AppConstants.STATUS_ACTIVE);
-            mongoTemplate.save(dhUser);
+            userDao.addUser(dhUser);
             returnResponse.setLogActionMsg("New user registered .");
             commonService.markRegisteredInNewUserSupport(dhUser);
             returnResponse.setData(Collections.singletonList(dhUser));
@@ -57,7 +62,12 @@ public class AddUserApi implements AddBehaviour<DhUser> {
         return returnResponse;
     }
 
-    public Response<DhUser> validateAddUser(String language, DhUser dhUserDetails, MongoTemplate mongoTemplate, UserDetailsServiceImpl userDetailsService) {
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.AddUserStrategy;
+    }
+
+    public Response<DhUser> validateAddUser(String language, DhUser dhUserDetails) {
         if (dhUserDetails == null) {
             return new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
@@ -76,9 +86,8 @@ public class AddUserApi implements AddBehaviour<DhUser> {
         }
 
         if (!Utility.isFieldEmpty(dhUserDetails.getEmailId())) {
-            Query queryFindUserByEmailId = new Query(Criteria.where(AppConstants.EMAIL).is(dhUserDetails.getEmailId()));
-            DhUser userByEmailId = mongoTemplate.findOne(queryFindUserByEmailId, DhUser.class);
-            if (userByEmailId != null) {
+            Optional<DhUser> queriedUserByEmail = userDao.findByEmailId(dhUserDetails.getEmailId());
+            if (queriedUserByEmail.isPresent()) {
                 return new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMAIL_ALREADY_USED), new ArrayList<>());
             }
         }

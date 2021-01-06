@@ -1,33 +1,37 @@
-package com.ayprojects.helpinghands.api.classes;
+package com.ayprojects.helpinghands.api.classes.add_strategy;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
-import com.ayprojects.helpinghands.api.behaviours.AddBehaviour;
+import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
+import com.ayprojects.helpinghands.api.enums.StrategyName;
+import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
-import com.mongodb.lang.NonNull;
 
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
-import static com.ayprojects.helpinghands.AppConstants.DEFAULT_NAME;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
-public class AddPlaceMainCategoryApi implements AddBehaviour<DhPlaceCategories> {
+@Component
+public class StrategyAddPlaceMainCategoryApi implements StrategyAddBehaviour<DhPlaceCategories> {
+    @Autowired
+    PlaceCategoryDao placeCategoryDao;
+
     @Override
-    public Response<DhPlaceCategories> add(String language, MongoTemplate mongoTemplate, DhPlaceCategories dhPlaceCategories) {
+    public Response<DhPlaceCategories> add(String language, DhPlaceCategories dhPlaceCategories) {
         if (dhPlaceCategories == null) {
-            return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>());
+            return new Response<DhPlaceCategories>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
-        Response<DhPlaceCategories> returnResponse = validatePlaceMainCategory(mongoTemplate, language, dhPlaceCategories);
+        Response<DhPlaceCategories> returnResponse = validatePlaceMainCategory(language, dhPlaceCategories);
         LOGGER.info("returnResponse=>" + returnResponse.getMessage());
         if (returnResponse.getStatus()) {
             CalendarOperations calendarOperations = new CalendarOperations();
@@ -37,7 +41,7 @@ public class AddPlaceMainCategoryApi implements AddBehaviour<DhPlaceCategories> 
                 int counter = 1;
                 for (PlaceSubCategories placeSubCategories : dhPlaceCategories.getPlaceSubCategories()) {
                     if (Utility.isFieldEmpty(placeSubCategories.getDefaultName())) {
-                        return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY, language), new ArrayList<>(), 0);
+                        return new Response<DhPlaceCategories>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY), new ArrayList<>(), 0);
                     }
                     placeSubCategories.setAddedBy(dhPlaceCategories.getAddedBy());
                     placeSubCategories.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + "_" + counter + calendarOperations.getTimeAtFileEnd());
@@ -47,20 +51,18 @@ public class AddPlaceMainCategoryApi implements AddBehaviour<DhPlaceCategories> 
             }
             returnResponse.setLogActionMsg(AppConstants.ACTION_NEW_PLACE_CATEGORY_ADDED);
             returnResponse.setData(Collections.singletonList(dhPlaceCategories));
-            mongoTemplate.save(dhPlaceCategories);
+            placeCategoryDao.add(dhPlaceCategories);
         }
         LOGGER.info("addPlaceMainCategory->" + returnResponse.getMessage());
         return returnResponse;
     }
 
-    public DhPlaceCategories getDhPlaceCategoryByDefaultName(String defaultName, @NonNull MongoTemplate mongoTemplate) {
-        if (Utility.isFieldEmpty(defaultName))
-            throw new IllegalArgumentException("Default name must not be empty !");
-        Query query = new Query(Criteria.where(DEFAULT_NAME).regex(defaultName, "i"));
-        return mongoTemplate.findOne(query, DhPlaceCategories.class);
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.AddPlaceMainCategoryStrategy;
     }
 
-    public Response<DhPlaceCategories> validatePlaceMainCategory(@NonNull MongoTemplate mongoTemplate, String language, DhPlaceCategories dhPlaceCategories) {
+    public Response<DhPlaceCategories> validatePlaceMainCategory(String language, DhPlaceCategories dhPlaceCategories) {
         if (dhPlaceCategories == null) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
@@ -78,15 +80,16 @@ public class AddPlaceMainCategoryApi implements AddBehaviour<DhPlaceCategories> 
         }
 
         try {
-            DhPlaceCategories existingDhPlaceCategories = getDhPlaceCategoryByDefaultName(dhPlaceCategories.getDefaultName(), mongoTemplate);
-            if (existingDhPlaceCategories != null) {
-                return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS, language), new ArrayList<>(), 0);
+
+            Optional<DhPlaceCategories> queriedDhPlaceCategory = placeCategoryDao.findByDefaultName(dhPlaceCategories.getDefaultName());
+            if (queriedDhPlaceCategory.isPresent()) {
+                return new Response<DhPlaceCategories>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS), new ArrayList<>(), 0);
             }
         } catch (IllegalArgumentException e) {
             LOGGER.info("validatePlaceCategory->catch:" + e.getMessage());
-            return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG, language), new ArrayList<>(), 0);
+            return new Response<DhPlaceCategories>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
         }
 
-        return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED, language), Collections.singletonList(dhPlaceCategories));
+        return new Response<>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED), Collections.singletonList(dhPlaceCategories));
     }
 }

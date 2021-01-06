@@ -176,6 +176,12 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_MAINCATEGORYID_MISSING ="MAINCATEGORYID_MISSING" ;
     public static final String RESPONSEMESSAGE_SUBCATEGORYID_MISSING ="SUBCATEGORYID_MISSING" ;
     public static final String STATUS_PENDING_NEW_SUBCATEGORY = "Pending(New Subcategory)";
+    public static final String KEY_PAGE = "page";
+    public static final String KEY_SIZE = "size";
+    public static final String KEY_LAT = "lat";
+    public static final String KEY_LNG = "lng";
+    public static final String RESPONSEMESSAGE_MISSING_QUERY_PARAMS = "MISSING_QUERY_PARAMS";
+    public static final String KEY_USER_ID = "userId";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static final String FILETYPE_PNG = "png";

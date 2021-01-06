@@ -27,6 +27,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INCORRECT
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_LUNCH_HOURS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MAINCATEGORYID_MISSING;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_ALREADY_USED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_MOBILE_IS_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED;
@@ -147,6 +148,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY, "स्थान श्रेणी का प्रकार खाली नहीं होना चाहिए !");
             responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_DEFAULTNAME, "डिफ़ॉल्ट नाम खाली नहीं होना चाहिए !");
             responseMsgsMap.put(RESPONSEMESSAGE_MAINCATEGORYID_MISSING, "ममुख्य श्रेणी आईडी खाली नहीं होनी चाहिए !");
+            responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "क्वेरी पैरामीटर गायब हैं !");
         }
     }
 

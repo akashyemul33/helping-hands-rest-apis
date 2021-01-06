@@ -1,12 +1,10 @@
 package com.ayprojects.helpinghands.api.user;
 
 import com.ayprojects.helpinghands.AppConstants;
-import com.ayprojects.helpinghands.api.classes.AddUserApi;
+import com.ayprojects.helpinghands.api.classes.add_strategy.StrategyAddUserApi;
 import com.ayprojects.helpinghands.dao.user.UserDao;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
-import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,16 +26,11 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class AddUserMethodTest {
+    @Autowired
+    StrategyAddUserApi strategyAddUserApi;
+
     @MockBean
     UserDao userDao;
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    private CommonService commonService;
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     @Test
     void userDaoShouldBeLoaded() {
@@ -46,13 +38,8 @@ public class AddUserMethodTest {
     }
 
     @Test
-    void userDetailsServiceShouldBeLoaded() {
-        assertNotNull(userDetailsService);
-    }
-
-    @Test
-    void ifValidateAddUserReturnsNullThenFail() {
-        //TODO
+    void strategyAddUserApiShouldBeLoaded() {
+        assertNotNull(strategyAddUserApi);
     }
 
     @Test
@@ -64,7 +51,8 @@ public class AddUserMethodTest {
         when(userDao.findByMobileNumber(mobile)).thenReturn(java.util.Optional.of(dhUser));
 
         Response<DhUser> expectedResponse = new Response<DhUser>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_MOBILE_ALREADY_USED), new ArrayList<>());
-        Response<DhUser> actualResponse = new AddUserApi(userDetailsService, commonService).add(null, mongoTemplate, dhUser);
+        Response<DhUser> actualResponse = strategyAddUserApi.add(null, dhUser);
+        ;
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertTrue(expectedResponse.getMessage().equalsIgnoreCase(actualResponse.getMessage()));
@@ -83,7 +71,8 @@ public class AddUserMethodTest {
         dhUser.setLastName("asdfdf");
 
         Response<DhUser> expectedResponse = new Response<>(true, 201, dhUser.getFirstName() + " Sir/Madam", ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_USER_REGISTERED), Collections.singletonList(dhUser));
-        Response<DhUser> actualResponse = new AddUserApi(userDetailsService, commonService).add(null, mongoTemplate, dhUser);
+        Response<DhUser> actualResponse = strategyAddUserApi.add(null, dhUser);
+        ;
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertTrue(expectedResponse.getMessage().equalsIgnoreCase(actualResponse.getMessage()));
