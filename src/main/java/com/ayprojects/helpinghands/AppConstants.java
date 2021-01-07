@@ -69,7 +69,7 @@ public class AppConstants {
     public static final String LONGITUDE = "lng";
     public static final String FULL_ADDRESS = "fullAddress";
     public static final String PLACE_CONTACT = "placeContact";
-    public static final String MOBILE = "mobileNumber";
+    public static final String KEY_MOBILE = "mobileNumber";
     public static final String EMAIL = "emailId";
     public static final String PLACE_OPENING_TIME = "placeOpeningTime";
     public static final String PLACE_CLOSING_TIME ="placeClosingTime";
@@ -152,15 +152,15 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_EMPTY_EMAIL = "EMPTY_EMAIL";
     public static final String RESPONSEMESSAGE_MOBILE_ALREADY_USED = "MOBILE_ALREADY_USED";
     public static final String RESPONSEMESSAGE_EMAIL_ALREADY_USED = "EMAIL_ALREADY_USED";
-    public static final String FCM_TOKEN = "fcmToken";
+    public static final String KEY_FCM_TOKEN = "fcmToken";
     public static final String LOGIN_TIME = "logInTime";
     public static final String TRIED_TO_LOGIN_TIME = "triedToLoginTime";
     public static final String LAST_LOGIN_TIME = "lastLogInTime";
-    public static final String LAST_LOGOUT_TIME = "lastLogOutTime";
+    public static final String KEY_LAST_LOGOUT_TIME = "lastLogOutTime";
     public static final String STATUS_NOTREGISTERED = "NotRegistered";
     public static final String STATUS_REGISTERED = "Registered";
     public static final String UTC = "UTC";
-    public static final String COUNTRY_CODE = "countryCode";
+    public static final String KEY_COUNTRY_CODE = "countryCode";
     public static final String KEY_SCHEMA_VERSION = "schemaVersion";
     public static final String COLLECTION_DHUSER = "DhUser";
     public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
@@ -182,6 +182,14 @@ public class AppConstants {
     public static final String KEY_LNG = "lng";
     public static final String RESPONSEMESSAGE_MISSING_QUERY_PARAMS = "MISSING_QUERY_PARAMS";
     public static final String KEY_USER_ID = "userId";
+    public static final String KEY_TYPE_OF_PLACECATEGORY = "typeOfPlaceCategory"    ;
+    public static final String KEY_PLACE_ID = "placeId";
+    public static final String KEY_SUB_PLACECATEGORY_ID = "subPlaceCategoryId";
+    public static final String KEY_CONTENT_ID = "contentId";
+    public static final String KEY_CONTENT_TYPE = "contentType";
+    public static final String KEY_AUTHENTICATION = "authentication";
+    public static final String KEY_NEW_FCM_TOKEN = "newFcmToken";
+
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static final String FILETYPE_PNG = "png";

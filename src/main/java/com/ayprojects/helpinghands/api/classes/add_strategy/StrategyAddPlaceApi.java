@@ -270,7 +270,7 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
         if (dhPlace.getPlaceContact() == null) missingFieldsList.add(AppConstants.CONTACT_DETAILS);
         else {
             if (Utility.isFieldEmpty(dhPlace.getPlaceContact().getMobile())) {
-                missingFieldsList.add(AppConstants.MOBILE);
+                missingFieldsList.add(AppConstants.KEY_MOBILE);
             }
         }
         if (Utility.isFieldEmpty(dhPlace.getOwnerName()))

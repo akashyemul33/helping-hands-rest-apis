@@ -1,5 +1,8 @@
 package com.ayprojects.helpinghands.controllers;
 
+import com.ayprojects.helpinghands.AppConstants;
+import com.ayprojects.helpinghands.api.ApiOperations;
+import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.Response;
@@ -21,31 +24,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 import io.swagger.annotations.Api;
 
-@Api(value = "Products API's",description = "CRUD for products")
+@Api(value = "Products API's", description = "CRUD for products")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/products")
 public class ProductController {
 
     @Autowired
-    ProductsService productsService;
-    @PostMapping(value="/addProduct")
+    ApiOperations<DhProduct> apiOperations;
+
+    @PostMapping(value = "/addProduct")
     public ResponseEntity<Response<DhProduct>> addProduct(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhProduct dhProduct, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(productsService.addProduct(authentication,httpHeaders,dhProduct,version), HttpStatus.CREATED);
+        return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhProduct, StrategyName.AddProductStrategy, version), HttpStatus.CREATED);
     }
 
-    @PostMapping(value="/addProducts")
+    /*@PostMapping(value="/addProducts")
     public ResponseEntity<Response<DhProduct>> addProduct(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody List<DhProduct> dhProducts, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(productsService.addProducts(authentication,httpHeaders,dhProducts,version), HttpStatus.CREATED);
-    }
+    }*/
 
     @GetMapping(value = "/getProductsForSubCategory")
-    ResponseEntity<Response<DhProduct>> getProductsForSubCategory(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String subPlaceCategoryId, @PathVariable String version){
-        return new ResponseEntity<>(productsService.findProductsBySubCategoryId(authentication,httpHeaders,subPlaceCategoryId,version), HttpStatus.OK);
+    ResponseEntity<Response<DhProduct>> getProductsForSubCategory(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String subPlaceCategoryId, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_SUB_PLACECATEGORY_ID, subPlaceCategoryId);
+        return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetProductStrategy, params, version), HttpStatus.OK);
     }
 
 }

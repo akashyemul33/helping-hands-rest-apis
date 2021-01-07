@@ -1,5 +1,8 @@
 package com.ayprojects.helpinghands.controllers;
 
+import com.ayprojects.helpinghands.AppConstants;
+import com.ayprojects.helpinghands.api.ApiOperations;
+import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhProduct;
@@ -22,44 +25,54 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 import io.swagger.annotations.Api;
 
-@Api(value = "Place API's",description = "CRUD for places")
+@Api(value = "Place API's", description = "CRUD for places")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/places")
 public class PlaceController {
 
     @Autowired
-    PlaceService placeService;
+    ApiOperations<DhPlace> apiOperations;
 
-    @PostMapping(value="/addPlace")
-    public ResponseEntity<Response<DhPlace>> addPlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @PathVariable String version) throws ServerSideException{
-            return new ResponseEntity<>(placeService.addPlace(authentication,httpHeaders,dhPlace,version), HttpStatus.CREATED);
+    @PostMapping(value = "/addPlace")
+    public ResponseEntity<Response<DhPlace>> addPlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @PathVariable String version) throws ServerSideException {
+        return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhPlace, StrategyName.AddPlaceStrategy, version), HttpStatus.CREATED);
     }
 
-    @PutMapping(value="/deletePlace")
-    public ResponseEntity<Response<DhPlace>> deletePlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String placeId,@PathVariable String version) throws ServerSideException {
+    @PutMapping(value = "/deletePlace")
+    public ResponseEntity<Response<DhPlace>> deletePlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String placeId, @PathVariable String version) throws ServerSideException {
         return null;
     }
 
-    @PostMapping(value="/updatePlace")
+    @PostMapping(value = "/updatePlace")
     public ResponseEntity<Response<DhPlace>> updatePlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @PathVariable String version) throws ServerSideException {
         return null;
     }
 
     @GetMapping(value = "/getPlaces")
-    ResponseEntity<Response<DhProduct>> getPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String searchValue, @PathVariable String version){
-    return null;
+    ResponseEntity<Response<DhProduct>> getPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String searchValue, @PathVariable String version) {
+        return null;
     }
 
     @GetMapping(value = "/getPaginatedPlaces")
-    ResponseEntity<Response<DhPlace>> getPaginatedPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam(defaultValue = "0") int page,@RequestParam (defaultValue = "7") int size,@RequestParam double lat,@RequestParam double lng, @PathVariable String version){
-        return new ResponseEntity<>(placeService.getPaginatedPlaces(authentication,httpHeaders,page,size,version,lat,lng), HttpStatus.OK);
+    ResponseEntity<Response<DhPlace>> getPaginatedPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size, @RequestParam double lat, @RequestParam double lng, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PAGE, page);
+        params.put(AppConstants.KEY_SIZE, size);
+        params.put(AppConstants.KEY_LAT, lat);
+        params.put(AppConstants.KEY_LNG, lng);
+        return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetPlaceStrategy, params, version), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getBusinessPlacesOfUserWhileAddingPost")
-    ResponseEntity<Response<DhPlace>> getBusinessPlacesOfUserWhileAddingPost(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId){
-        return new ResponseEntity<>(placeService.getBusinessPlacesOfUserWhileAddingPost(authentication,httpHeaders,version,userId), HttpStatus.OK);
+    ResponseEntity<Response<DhPlace>> getBusinessPlacesOfUserWhileAddingPost(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId) throws ServerSideException {
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_USER_ID, userId);
+        return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetPlaceStrategy, params, version), HttpStatus.OK);
     }
 }

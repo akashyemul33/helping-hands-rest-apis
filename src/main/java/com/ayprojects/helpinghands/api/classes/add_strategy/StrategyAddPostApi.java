@@ -133,7 +133,7 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPosts> {
             missingFieldsList.add(AppConstants.CONTACT_DETAILS);
         else {
             if (Utility.isFieldEmpty(dhPosts.getContactDetails().getMobile())) {
-                missingFieldsList.add(AppConstants.MOBILE);
+                missingFieldsList.add(AppConstants.KEY_MOBILE);
             }
         }
 

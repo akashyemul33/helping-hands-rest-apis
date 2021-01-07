@@ -69,9 +69,9 @@ public class GetUserUpdateObjMethodTest {
         LOGGER.info("ifFcmTokenMatchesEmptyLastLogoutTimeThenItShouldBeUpdated->update." + updateObjStr);
         assertTrue(updateObjStr.contains(AppConstants.TRIED_TO_LOGIN_TIME));
         assertTrue(updateObjStr.contains(AppConstants.MODIFIED_DATE_TIME));
-        assertFalse(updateObjStr.contains(AppConstants.FCM_TOKEN));
+        assertFalse(updateObjStr.contains(AppConstants.KEY_FCM_TOKEN));
         assertFalse(updateObjStr.contains(AppConstants.LAST_LOGIN_TIME));
-        assertFalse(updateObjStr.contains(AppConstants.LAST_LOGOUT_TIME));
+        assertFalse(updateObjStr.contains(AppConstants.KEY_LAST_LOGOUT_TIME));
         assertFalse(updateObjStr.contains(AppConstants.LOGIN_TIME));
     }
 
@@ -85,9 +85,9 @@ public class GetUserUpdateObjMethodTest {
         LOGGER.info("ifFcmTokenMatchesEmptyLastLogoutTimeThenItShouldBeUpdated->update." + updateObjStr);
         assertTrue(updateObjStr.contains(AppConstants.TRIED_TO_LOGIN_TIME));
         assertTrue(updateObjStr.contains(AppConstants.MODIFIED_DATE_TIME));
-        assertTrue(updateObjStr.contains(AppConstants.FCM_TOKEN));
+        assertTrue(updateObjStr.contains(AppConstants.KEY_FCM_TOKEN));
         assertFalse(updateObjStr.contains(AppConstants.LAST_LOGIN_TIME));
-        assertFalse(updateObjStr.contains(AppConstants.LAST_LOGOUT_TIME));
+        assertFalse(updateObjStr.contains(AppConstants.KEY_LAST_LOGOUT_TIME));
         assertFalse(updateObjStr.contains(AppConstants.LOGIN_TIME));
     }
 
@@ -102,9 +102,9 @@ public class GetUserUpdateObjMethodTest {
         LOGGER.info("ifFcmTokenMatchesEmptyLastLogoutTimeThenItShouldBeUpdated->update." + updateObjStr);
         assertTrue(updateObjStr.contains(AppConstants.TRIED_TO_LOGIN_TIME));
         assertTrue(updateObjStr.contains(AppConstants.MODIFIED_DATE_TIME));
-        assertTrue(updateObjStr.contains(AppConstants.FCM_TOKEN));
+        assertTrue(updateObjStr.contains(AppConstants.KEY_FCM_TOKEN));
         assertTrue(updateObjStr.contains(AppConstants.LAST_LOGIN_TIME));
-        assertTrue(updateObjStr.contains(AppConstants.LAST_LOGOUT_TIME));
+        assertTrue(updateObjStr.contains(AppConstants.KEY_LAST_LOGOUT_TIME));
         assertTrue(updateObjStr.contains(AppConstants.LOGIN_TIME));
     }
 }

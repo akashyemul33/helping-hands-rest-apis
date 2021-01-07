@@ -93,14 +93,14 @@ public class CommonServiceImpl implements CommonService {
         Update userUpdate = new Update();
         if (!Utility.isFieldEmpty(lastLogoutTime) && calendarOperations.verifyTimeFollowsCorrectFormat(lastLogoutTime)) {
             userUpdate.set(AppConstants.LAST_LOGIN_TIME, dhUser.getLogInTime());
-            userUpdate.set(AppConstants.LAST_LOGOUT_TIME, lastLogoutTime);
+            userUpdate.set(AppConstants.KEY_LAST_LOGOUT_TIME, lastLogoutTime);
         }
         userUpdate.set(AppConstants.TRIED_TO_LOGIN_TIME, calendarOperations.currentDateTimeInUTC());
         userUpdate.set(AppConstants.LOGIN_TIME, calendarOperations.currentDateTimeInUTC());
 
         String existingFcmToken = dhUser.getFcmToken();
         if (!newFcmToken.equals(existingFcmToken)) {
-            userUpdate.set(AppConstants.FCM_TOKEN, newFcmToken);
+            userUpdate.set(AppConstants.KEY_FCM_TOKEN, newFcmToken);
         }
 
         userUpdate.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
@@ -111,8 +111,8 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public boolean insertIntoNewUserSupport(String fcmToken, String mobileNumber, String countryCode) {
         if (Utility.isFieldEmpty(fcmToken) || Utility.isFieldEmpty(mobileNumber)) return false;
-        Criteria criteria = Criteria.where(AppConstants.MOBILE).is(mobileNumber).
-                andOperator(Criteria.where(AppConstants.FCM_TOKEN).is(fcmToken));
+        Criteria criteria = Criteria.where(AppConstants.KEY_MOBILE).is(mobileNumber).
+                andOperator(Criteria.where(AppConstants.KEY_FCM_TOKEN).is(fcmToken));
         Query queryFindByMobileOrFcm = new Query(criteria);
         DhNewUserSupport dhNewUserSupport = mongoTemplate.findOne(queryFindByMobileOrFcm, DhNewUserSupport.class);
         if (dhNewUserSupport == null) {
@@ -122,9 +122,9 @@ public class CommonServiceImpl implements CommonService {
         } else {
             CalendarOperations calendarOperations = new CalendarOperations();
             Update update = new Update();
-            update.set(AppConstants.FCM_TOKEN, fcmToken);
-            update.set(AppConstants.MOBILE, mobileNumber);
-            update.set(AppConstants.COUNTRY_CODE, countryCode);
+            update.set(AppConstants.KEY_FCM_TOKEN, fcmToken);
+            update.set(AppConstants.KEY_MOBILE, mobileNumber);
+            update.set(AppConstants.KEY_COUNTRY_CODE, countryCode);
             update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
             mongoTemplate.upsert(queryFindByMobileOrFcm, update, DhNewUserSupport.class);
         }
@@ -140,8 +140,8 @@ public class CommonServiceImpl implements CommonService {
         update.set(AppConstants.USER_ID, dhUser.getUserId());
         update.set(AppConstants.STATUS, AppConstants.STATUS_REGISTERED);
         update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
-        Criteria criteria = Criteria.where(AppConstants.MOBILE).is(dhUser.getMobileNumber()).
-                orOperator(Criteria.where(AppConstants.FCM_TOKEN).is(dhUser.getFcmToken()));
+        Criteria criteria = Criteria.where(AppConstants.KEY_MOBILE).is(dhUser.getMobileNumber()).
+                orOperator(Criteria.where(AppConstants.KEY_FCM_TOKEN).is(dhUser.getFcmToken()));
         Query queryFindByMobileOrFcm = new Query(criteria);
         mongoTemplate.updateMulti(queryFindByMobileOrFcm, update, DhNewUserSupport.class);
         return true;

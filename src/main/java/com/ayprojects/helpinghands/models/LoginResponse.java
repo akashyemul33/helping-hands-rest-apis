@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class LoginResponse {
+public class LoginResponse extends AllCommonUsedAttributes {
     private DhUser dhUser;
     private DhAppConfig dhAppConfig;
 

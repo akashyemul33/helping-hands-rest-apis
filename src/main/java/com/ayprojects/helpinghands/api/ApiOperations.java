@@ -51,7 +51,7 @@ public class ApiOperations<T extends AllCommonUsedAttributes> {
     }
 
     @SuppressWarnings("unchecked")
-    public Response<T> get(Authentication authentication, HttpHeaders httpHeaders, String version, StrategyName strategyName, HashMap<String, Object> params) throws ServerSideException {
+    public Response<T> get(Authentication authentication, HttpHeaders httpHeaders,  StrategyName strategyName, HashMap<String, Object> params,String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
         StrategyGetBehaviour<T> strategyGetBehaviour = (StrategyGetBehaviour<T>) getStrategyFactory.findStrategy(strategyName);
         LOGGER.info("get=>strategyName=" + strategyGetBehaviour.getStrategyName());

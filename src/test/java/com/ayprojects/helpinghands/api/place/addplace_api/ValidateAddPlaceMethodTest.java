@@ -525,7 +525,7 @@ public class ValidateAddPlaceMethodTest {
         Response<DhPlace> actualResponse = strategyAddPlaceApi.validateAddPlace(null, dhPlace);
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
-        assertTrue(actualResponse.getMessage().contains(AppConstants.MOBILE));
+        assertTrue(actualResponse.getMessage().contains(AppConstants.KEY_MOBILE));
     }
 
     @Test

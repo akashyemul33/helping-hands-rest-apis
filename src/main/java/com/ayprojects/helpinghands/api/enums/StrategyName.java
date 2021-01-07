@@ -18,5 +18,6 @@ public enum StrategyName {
     GetViewsStrategy,
     GetPostStrategy,
     GetRatingStrategy,
-    GetAppConfigStrategy
+    GetAppConfigStrategy,
+     GetLoginResponseStrategy;
 }

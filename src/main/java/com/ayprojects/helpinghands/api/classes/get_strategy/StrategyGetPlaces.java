@@ -81,10 +81,10 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
                     double placeLng = d.getPlaceAddress().getLng();
                     d.setDistance("\t" + "(" + Utility.distance(lat, placeLat, lng, placeLng) + ")");
                 } else {
-                    d.setDistance(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNKNOWN, language));
+                    d.setDistance(ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_UNKNOWN));
                 }
             } else {
-                d.setDistance(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNKNOWN, language));
+                d.setDistance(ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_UNKNOWN));
             }
             //calculate open/close msg
             String[] openCloseMsg = Utility.calculatePlaceOpenCloseMsg(d.getPlaceAvailablityDetails(), language);
