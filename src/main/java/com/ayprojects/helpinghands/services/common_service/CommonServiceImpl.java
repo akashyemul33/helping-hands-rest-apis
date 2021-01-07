@@ -145,7 +145,6 @@ public class CommonServiceImpl implements CommonService {
         update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
         Criteria criteria = new Criteria().orOperator(Criteria.where(AppConstants.KEY_MOBILE).is(dhUser.getMobileNumber()),
                 Criteria.where(AppConstants.KEY_FCM_TOKEN).is(dhUser.getFcmToken()));
-
         Query queryFindByMobileOrFcm = new Query(criteria);
         mongoTemplate.updateMulti(queryFindByMobileOrFcm, update, DhNewUserSupport.class);
         return true;
