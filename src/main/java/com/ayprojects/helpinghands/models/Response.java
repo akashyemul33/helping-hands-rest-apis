@@ -1,5 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.List;
 
 public class Response<T> {
@@ -127,7 +129,9 @@ public Response(Boolean status, Integer statusCode, String heading,String messag
         this.data = data;
     }
 
+    @Transient
     private String logActionMsg;
+
 
     public String getLogActionMsg() {
         return logActionMsg;

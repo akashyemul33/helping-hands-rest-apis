@@ -86,7 +86,7 @@ public class CommonServiceImpl implements CommonService {
     }
 
     public Update getUpdateObjForUser(String newFcmToken, String lastLogoutTime, DhUser dhUser) {
-        if (Utility.isFieldEmpty(newFcmToken) || dhUser == null || Utility.isFieldEmpty(dhUser.getUserId()))
+        if (dhUser == null || Utility.isFieldEmpty(dhUser.getUserId()))
             throw new IllegalArgumentException("FcmToken,DhUser & userId inside DhUser must not be empty !");
 
         CalendarOperations calendarOperations = new CalendarOperations();
@@ -94,22 +94,25 @@ public class CommonServiceImpl implements CommonService {
         if (!Utility.isFieldEmpty(lastLogoutTime) && calendarOperations.verifyTimeFollowsCorrectFormat(lastLogoutTime)) {
             userUpdate.set(AppConstants.LAST_LOGIN_TIME, dhUser.getLogInTime());
             userUpdate.set(AppConstants.KEY_LAST_LOGOUT_TIME, lastLogoutTime);
-        }
-        userUpdate.set(AppConstants.TRIED_TO_LOGIN_TIME, calendarOperations.currentDateTimeInUTC());
-        userUpdate.set(AppConstants.LOGIN_TIME, calendarOperations.currentDateTimeInUTC());
-
-        String existingFcmToken = dhUser.getFcmToken();
-        if (!newFcmToken.equals(existingFcmToken)) {
-            userUpdate.set(AppConstants.KEY_FCM_TOKEN, newFcmToken);
+            userUpdate.set(AppConstants.LOGIN_TIME, calendarOperations.currentDateTimeInUTC());
+        } else {
+            userUpdate.set(AppConstants.TRIED_TO_LOGIN_TIME, calendarOperations.currentDateTimeInUTC());
         }
 
+        if (!Utility.isFieldEmpty(newFcmToken)) {
+            String existingFcmToken = dhUser.getFcmToken();
+            if (Utility.isFieldEmpty(existingFcmToken) || !existingFcmToken.equals(newFcmToken)) {
+                userUpdate.set(AppConstants.KEY_FCM_TOKEN, newFcmToken);
+            }
+        }
         userUpdate.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
         return userUpdate;
     }
 
 
     @Override
-    public boolean insertIntoNewUserSupport(String fcmToken, String mobileNumber, String countryCode) {
+    public boolean insertIntoNewUserSupport(String fcmToken, String mobileNumber, String
+            countryCode) {
         if (Utility.isFieldEmpty(fcmToken) || Utility.isFieldEmpty(mobileNumber)) return false;
         Criteria criteria = Criteria.where(AppConstants.KEY_MOBILE).is(mobileNumber).
                 andOperator(Criteria.where(AppConstants.KEY_FCM_TOKEN).is(fcmToken));
@@ -140,8 +143,9 @@ public class CommonServiceImpl implements CommonService {
         update.set(AppConstants.USER_ID, dhUser.getUserId());
         update.set(AppConstants.STATUS, AppConstants.STATUS_REGISTERED);
         update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
-        Criteria criteria = Criteria.where(AppConstants.KEY_MOBILE).is(dhUser.getMobileNumber()).
-                orOperator(Criteria.where(AppConstants.KEY_FCM_TOKEN).is(dhUser.getFcmToken()));
+        Criteria criteria = new Criteria().orOperator(Criteria.where(AppConstants.KEY_MOBILE).is(dhUser.getMobileNumber()),
+                Criteria.where(AppConstants.KEY_FCM_TOKEN).is(dhUser.getFcmToken()));
+
         Query queryFindByMobileOrFcm = new Query(criteria);
         mongoTemplate.updateMulti(queryFindByMobileOrFcm, update, DhNewUserSupport.class);
         return true;

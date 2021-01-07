@@ -27,12 +27,14 @@ public class VerifyTimeFollowsCorrectFormatMethodTest {
     void givenInvalidTimeThenFalse()
     {
         assertFalse(calendarOperations.verifyTimeFollowsCorrectFormat("12/21/2020 06:29:40"));
+        assertFalse(calendarOperations.verifyTimeFollowsCorrectFormat("202231-01-0712 11:3127:4511"));
+
     }
 
     @Test
     void givenValidTimeThenTrue()
     {
-        assertTrue(calendarOperations.verifyTimeFollowsCorrectFormat("2020-12-21 06:29:40"));
+        assertTrue(calendarOperations.verifyTimeFollowsCorrectFormat("2020-11-21 06:29:40"));
 
     }
 }

@@ -18,21 +18,26 @@ import com.ayprojects.helpinghands.util.tools.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
+@Component
 public class StrategyGetLoginResponse implements StrategyGetBehaviour<LoginResponse> {
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Autowired
-    CommonService commonService;
+    private CommonService commonService;
 
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private StrategyGetAppConfig strategyGetAppConfig;
 
     @Override
     public Response<LoginResponse> get(String language, HashMap<String, Object> params) throws ServerSideException {
@@ -68,7 +73,7 @@ public class StrategyGetLoginResponse implements StrategyGetBehaviour<LoginRespo
         try {
             UserDetailsDecorator userDetailsDecorator = userDetailsService.loadUserByUsername(authentication.getName());
             DhUser dhUser = userDetailsDecorator.getUser();
-            Response<DhAppConfig> appConfigResponse = new StrategyGetAppConfig().get(language, new HashMap<>());
+            Response<DhAppConfig> appConfigResponse = strategyGetAppConfig.get(language, new HashMap<>());
             if (dhUser != null && appConfigResponse != null && appConfigResponse.getStatus() && appConfigResponse.getData() != null) {
                 commonService.updateUserWithSessionAndOtherDetails(newFcmToken, lastLogoutTime, dhUser);
                 return new Response<>(true,

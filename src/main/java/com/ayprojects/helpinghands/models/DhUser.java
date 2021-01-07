@@ -1,8 +1,13 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 
+@Document
 public class DhUser extends AllCommonUsedAttributes {
+    @Indexed
     private String userId;
     private String firstName;
     private String lastName;
@@ -11,18 +16,10 @@ public class DhUser extends AllCommonUsedAttributes {
     private String logInTime;
     private String lastLogInTime;
     private String lastLogOutTime;
-
-    public String getTriedToLoginTime() {
-        return triedToLoginTime;
-    }
-
-    public void setTriedToLoginTime(String triedToLoginTime) {
-        this.triedToLoginTime = triedToLoginTime;
-    }
-
     private String triedToLoginTime;
     private String profileImg;
     //    private Address addressDetails;
+    @Indexed
     private String mobileNumber;
     private String emailId;
     private String[] roles;
@@ -34,24 +31,17 @@ public class DhUser extends AllCommonUsedAttributes {
     //decides whether user settings should be applied or not
     private boolean isUserSettingEnabled;
     private String languageSelected;
-
-    public String getFcmToken() {
-        return fcmToken;
-    }
-
-    public void setFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
-    }
-
     private String fcmToken;
 
     public DhUser() {
         super();
     }
+
     public DhUser(String uniqueUserID, String imgUrl) {
         this.userId = uniqueUserID;
         this.profileImg = imgUrl;
     }
+
     public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImg, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected, String lastName) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
@@ -73,6 +63,7 @@ public class DhUser extends AllCommonUsedAttributes {
         this.languageSelected = languageSelected;
         this.lastName = lastName;
     }
+
     public DhUser(String userId, String firstName, String password, String profileImg, String mobileNumber, String emailId, String[] roles, String languageSelected, String lastName) {
         this.userId = userId;
         this.firstName = firstName;
@@ -83,6 +74,22 @@ public class DhUser extends AllCommonUsedAttributes {
         this.roles = roles;
         this.languageSelected = languageSelected;
         this.lastName = lastName;
+    }
+
+    public String getTriedToLoginTime() {
+        return triedToLoginTime;
+    }
+
+    public void setTriedToLoginTime(String triedToLoginTime) {
+        this.triedToLoginTime = triedToLoginTime;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public String getLastLogInTime() {

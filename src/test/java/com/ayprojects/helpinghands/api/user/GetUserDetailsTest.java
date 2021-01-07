@@ -1,13 +1,15 @@
 package com.ayprojects.helpinghands.api.user;
 
 import com.ayprojects.helpinghands.AppConstants;
+import com.ayprojects.helpinghands.api.classes.add_strategy.StrategyAddLogApi;
+import com.ayprojects.helpinghands.api.classes.add_strategy.StrategyAddUserApi;
+import com.ayprojects.helpinghands.api.classes.get_strategy.StrategyGetLoginResponse;
 import com.ayprojects.helpinghands.dao.appconfig.AppConfigDao;
 import com.ayprojects.helpinghands.dao.user.UserDao;
 import com.ayprojects.helpinghands.models.DhAppConfig;
 import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.GetAuthenticationObj;
-import com.ayprojects.helpinghands.services.user.UserService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 
 import org.junit.jupiter.api.Test;
@@ -28,16 +30,10 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class GetUserDetailsTest {
     @Autowired
-    UserService userService;
+    StrategyGetLoginResponse strategyGetLoginResponse;
 
     @MockBean
     UserDao userDao;
-
-    @MockBean
-    AppConfigDao appConfigDao;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
 
     @Test
     void userDaoShouldBeLoaded() {
@@ -45,9 +41,15 @@ public class GetUserDetailsTest {
     }
 
     @Test
-    void contextShouldBeLoaded() {
-        assertNotNull(userService);
+    void strategyGetLoginResponseShouldBeLoaded(){
+        assertNotNull(strategyGetLoginResponse);
     }
+
+    @MockBean
+    AppConfigDao appConfigDao;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     @Test
     void appConfigDaoShouldBeLoaded() {
@@ -57,7 +59,7 @@ public class GetUserDetailsTest {
     @Test
     void givenEmptyAuthenticatioObjectThen402() {
         Response<LoginResponse> expectedResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_AUTHENTICATION_REQD), new ArrayList<>());
-        Response<LoginResponse> actualResponse = userService.getUserDetails(null, null,"", "",AppConstants.CURRENT_API_VERSION);
+        Response<LoginResponse> actualResponse = strategyGetLoginResponse.getUserDetails(null, null,"", "");
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertTrue(expectedResponse.getMessage().equalsIgnoreCase(actualResponse.getMessage()));
@@ -70,7 +72,7 @@ public class GetUserDetailsTest {
         dhAppConfig.setStatus(AppConstants.STATUS_PENDING);
         when(appConfigDao.getActiveAppConfig()).thenReturn(Optional.of(dhAppConfig));
 
-        Response<LoginResponse> actualResponse = userService.getUserDetails(null, authentication, "","",AppConstants.CURRENT_API_VERSION);
+        Response<LoginResponse> actualResponse = strategyGetLoginResponse.getUserDetails(authentication,null, "","");
         Response<LoginResponse> expectedResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>());
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
@@ -85,7 +87,7 @@ public class GetUserDetailsTest {
         dhAppConfig.setStatus(AppConstants.STATUS_ACTIVE);
         when(appConfigDao.getActiveAppConfig()).thenReturn(Optional.of(dhAppConfig));
 
-        Response<LoginResponse> actualResponse = userService.getUserDetails(null, authentication, "","",AppConstants.CURRENT_API_VERSION);
+        Response<LoginResponse> actualResponse = strategyGetLoginResponse.getUserDetails( authentication,null, "","");
         Response<LoginResponse> expectedResponse = new Response<>(true,
                 200,
                 ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED)
@@ -104,7 +106,7 @@ public class GetUserDetailsTest {
         dhAppConfig.setStatus(AppConstants.STATUS_ACTIVE);
         when(appConfigDao.getActiveAppConfig()).thenReturn(Optional.of(dhAppConfig));
 
-        Response<LoginResponse> actualResponse = userService.getUserDetails(null, authentication, "","2020-12-21 06:29:40",AppConstants.CURRENT_API_VERSION);
+        Response<LoginResponse> actualResponse = strategyGetLoginResponse.getUserDetails(authentication,null, "","2020-12-21 06:29:40");
         Response<LoginResponse> expectedResponse = new Response<>(true,
                 200,
                 ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED)

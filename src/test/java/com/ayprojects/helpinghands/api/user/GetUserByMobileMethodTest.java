@@ -2,10 +2,10 @@ package com.ayprojects.helpinghands.api.user;
 
 
 import com.ayprojects.helpinghands.AppConstants;
+import com.ayprojects.helpinghands.api.classes.get_strategy.StrategyGetUser;
 import com.ayprojects.helpinghands.dao.user.UserDao;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.services.user.UserService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 
 import org.junit.jupiter.api.Test;
@@ -26,28 +26,34 @@ import static org.mockito.Mockito.when;
 public class GetUserByMobileMethodTest {
 
     @Autowired
-    UserService userService;
+    StrategyGetUser strategyGetUserApi;
 
     @MockBean
     UserDao userDao;
 
     @Test
-    void contextShouldBeLoaded() {
-        assertNotNull(userService);
+    void userDaoShouldBeLoaded() {
+        assertNotNull(userDao);
     }
+
+    @Test
+    void strategyAddUserApiShouldBeLoaded() {
+        assertNotNull(strategyGetUserApi);
+    }
+
 
     @Test
     void givenEmptyMobileThen402() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(AppConstants.LABEL_HEADER_APPLANGUAGE, AppConstants.LANG_MARATHI);
         Response<DhUser> expectedResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(AppConstants.LANG_MARATHI, AppConstants.RESPONSEMESSAGE_MOBILE_IS_EMPTY), new ArrayList<>());
-        Response<DhUser> actualResponse = userService.getUserByMobile(httpHeaders, "", "+91", "",AppConstants.CURRENT_API_VERSION);
+        Response<DhUser> actualResponse = strategyGetUserApi.getUserByMobile(AppConstants.LANG_MARATHI, "", "+91", "");
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertTrue(expectedResponse.getMessage().equalsIgnoreCase(actualResponse.getMessage()));
 
 
-        Response<DhUser> actualResponse2 = userService.getUserByMobile(httpHeaders, null, "+91", "",AppConstants.CURRENT_API_VERSION);
+        Response<DhUser> actualResponse2 = strategyGetUserApi.getUserByMobile(AppConstants.LANG_MARATHI, null, "+91", "");
         assertEquals(expectedResponse.getStatus(), actualResponse2.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse2.getStatusCode());
         assertTrue(expectedResponse.getMessage().equalsIgnoreCase(actualResponse2.getMessage()));
@@ -62,7 +68,7 @@ public class GetUserByMobileMethodTest {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(AppConstants.LABEL_HEADER_APPLANGUAGE, AppConstants.LANG_HINDI);
         Response<DhUser> expectedResponse = new Response<>(false, 403, ResponseMsgFactory.getResponseMsg(AppConstants.LANG_HINDI, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE), new ArrayList<>());
-        Response<DhUser> actualResponse = userService.getUserByMobile(httpHeaders, mobile, "+91", "",AppConstants.CURRENT_API_VERSION);
+        Response<DhUser> actualResponse = strategyGetUserApi.getUserByMobile(AppConstants.LANG_HINDI, mobile, "+91", "");
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertTrue(expectedResponse.getMessage().equalsIgnoreCase(actualResponse.getMessage()));
@@ -80,7 +86,7 @@ public class GetUserByMobileMethodTest {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(AppConstants.LABEL_HEADER_APPLANGUAGE, AppConstants.LANG_HINDI);
         Response<DhUser> expectedResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(AppConstants.LANG_HINDI, AppConstants.RESPONSEMESSAGE_NOT_ACTIVE_USER), new ArrayList<>());
-        Response<DhUser> actualResponse = userService.getUserByMobile(httpHeaders, mobile, "+91","adf2334", AppConstants.CURRENT_API_VERSION);
+        Response<DhUser> actualResponse = strategyGetUserApi.getUserByMobile(AppConstants.LANG_HINDI, mobile, "+91", "adf2334");
         LOGGER.info("givenValidMobileWithStatusOtherThanActiveThen402:" + actualResponse.getMessage());
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
@@ -98,7 +104,7 @@ public class GetUserByMobileMethodTest {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(AppConstants.LABEL_HEADER_APPLANGUAGE, AppConstants.LANG_HINDI);
         Response<DhUser> expectedResponse = new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(AppConstants.LANG_HINDI, AppConstants.RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE), new ArrayList<>());
-        Response<DhUser> actualResponse = userService.getUserByMobile(httpHeaders, mobile, "+91","adsfasfe2323", AppConstants.CURRENT_API_VERSION);
+        Response<DhUser> actualResponse = strategyGetUserApi.getUserByMobile(AppConstants.LANG_HINDI, mobile, "+91", "adsfasfe2323");
         LOGGER.info("givenValidMobileWithStatusActiveThen200:" + actualResponse.getMessage());
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
@@ -118,7 +124,7 @@ public class GetUserByMobileMethodTest {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(AppConstants.LABEL_HEADER_APPLANGUAGE, AppConstants.LANG_HINDI);
         Response<DhUser> expectedResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(AppConstants.LANG_HINDI, AppConstants.RESPONSEMESSAGE_NOT_ACTIVE_USER), new ArrayList<>());
-        Response<DhUser> actualResponse = userService.getUserByMobile(httpHeaders, mobile, "+91","asdfasf2342", AppConstants.CURRENT_API_VERSION);
+        Response<DhUser> actualResponse = strategyGetUserApi.getUserByMobile(AppConstants.LANG_HINDI, mobile, "+91", "asdfasf2342");
         LOGGER.info("givenValidMobileWithStatusNullThen402:" + actualResponse.getMessage());
         assertEquals(expectedResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());

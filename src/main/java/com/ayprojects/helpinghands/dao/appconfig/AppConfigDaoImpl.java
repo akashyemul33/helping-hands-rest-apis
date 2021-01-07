@@ -7,6 +7,7 @@ import com.ayprojects.helpinghands.repositories.AppConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,6 +23,9 @@ public class AppConfigDaoImpl implements AppConfigDao {
 
     @Override
     public Optional<DhAppConfig> getActiveAppConfig() {
-        return appConfigRepository.findByStatus(AppConstants.STATUS_ACTIVE);
+        List<DhAppConfig> appConfigResponse = appConfigRepository.findByStatus(AppConstants.STATUS_ACTIVE);
+        if (appConfigResponse != null && appConfigResponse.size() > 0)
+            return Optional.ofNullable(appConfigResponse.get(0));
+        else return Optional.empty();
     }
 }

@@ -47,7 +47,7 @@ public class TempController {
         return new ResponseEntity<>(apiOperations.add(null, httpHeaders, null, StrategyName.AddUserStrategy, version), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/getPaginatedPlaces")
+    /*@GetMapping(value = "/getPaginatedPlaces")
     ResponseEntity<Response<DhPlace>> getPaginatedPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size, @RequestParam double lat, @RequestParam double lng, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_PAGE, page);
@@ -63,5 +63,5 @@ public class TempController {
         params.put(AppConstants.KEY_USER_ID, userId);
         return new ResponseEntity<>(placeApiOperations.get(authentication, httpHeaders, version, StrategyName.GetPlaceStrategy, params), HttpStatus.OK);
     }
-
+*/
 }

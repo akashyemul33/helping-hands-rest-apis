@@ -23,16 +23,18 @@ public class GetUserUpdateObjMethodTest {
         commonServiceImpl = new CommonServiceImpl();
     }
 
-    @Test
-    void givenEmptyFcmTokenThenException() {
+    /*@Test
+    void givenEmptyFcmTokenThenNoException() {
+        DhUser dhUser = new DhUser();
+        dhUser.setUserId("adsf");
         assertThrows(IllegalArgumentException.class,
                 new Executable() {
                     @Override
                     public void execute() throws Throwable {
-                        commonServiceImpl.getUpdateObjForUser(null, null, null);
+                        commonServiceImpl.getUpdateObjForUser(null, null, dhUser);
                     }
                 });
-    }
+    }*/
 
     @Test
     void givenNonEmptyFcm_emptyDhUserThenException() {
@@ -69,8 +71,9 @@ public class GetUserUpdateObjMethodTest {
         LOGGER.info("ifFcmTokenMatchesEmptyLastLogoutTimeThenItShouldBeUpdated->update." + updateObjStr);
         assertTrue(updateObjStr.contains(AppConstants.TRIED_TO_LOGIN_TIME));
         assertTrue(updateObjStr.contains(AppConstants.MODIFIED_DATE_TIME));
-        assertFalse(updateObjStr.contains(AppConstants.KEY_FCM_TOKEN));
         assertFalse(updateObjStr.contains(AppConstants.LAST_LOGIN_TIME));
+        assertFalse(updateObjStr.contains(AppConstants.KEY_FCM_TOKEN));
+
         assertFalse(updateObjStr.contains(AppConstants.KEY_LAST_LOGOUT_TIME));
         assertFalse(updateObjStr.contains(AppConstants.LOGIN_TIME));
     }
@@ -100,7 +103,7 @@ public class GetUserUpdateObjMethodTest {
         Update update = commonServiceImpl.getUpdateObjForUser("abdcefg", "2020-12-21 06:29:40", dhUser);
         String updateObjStr = update.getUpdateObject().toJson();
         LOGGER.info("ifFcmTokenMatchesEmptyLastLogoutTimeThenItShouldBeUpdated->update." + updateObjStr);
-        assertTrue(updateObjStr.contains(AppConstants.TRIED_TO_LOGIN_TIME));
+        assertFalse(updateObjStr.contains(AppConstants.TRIED_TO_LOGIN_TIME));
         assertTrue(updateObjStr.contains(AppConstants.MODIFIED_DATE_TIME));
         assertTrue(updateObjStr.contains(AppConstants.KEY_FCM_TOKEN));
         assertTrue(updateObjStr.contains(AppConstants.LAST_LOGIN_TIME));

@@ -3,8 +3,9 @@ package com.ayprojects.helpinghands.util.tools;
 import com.ayprojects.helpinghands.AppConstants;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -12,11 +13,11 @@ public class CalendarOperations {
 
     public boolean verifyTimeFollowsCorrectFormat(String lastLogoutTime) {
         if (Utility.isFieldEmpty(lastLogoutTime)) return false;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(AppConstants.DATE_TIME_FORMAT);
         try {
-            simpleDateFormat.parse(lastLogoutTime);
+            dateTimeFormatter.parse(lastLogoutTime);
             return true;
-        } catch (ParseException e) {
+        } catch (DateTimeParseException e) {
             e.printStackTrace();
             return false;
         }

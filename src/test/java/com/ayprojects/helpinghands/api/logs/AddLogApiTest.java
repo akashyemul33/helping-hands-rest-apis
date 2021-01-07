@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.api.logs;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
+import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.dao.log.LogDao;
 import com.ayprojects.helpinghands.models.DhLog;
 
@@ -41,7 +42,7 @@ public class AddLogApiTest {
         assertThrows(NullPointerException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                apiOperations.add(null, null,null, AppConstants.CURRENT_API_VERSION);
+                apiOperations.add(null, null,null, StrategyName.AddLogStrategy, AppConstants.CURRENT_API_VERSION);
             }
         });
     }
