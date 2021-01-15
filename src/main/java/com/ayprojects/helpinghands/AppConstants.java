@@ -1,21 +1,19 @@
 package com.ayprojects.helpinghands;
 
-import java.util.Collection;
-
 public class AppConstants {
     public static final String DATE_FORMAT_HOUR_MIN = "HH:mm";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmss";
     //expiration value of 3 hours
-    public static final long JWT_TOKEN_EXPIRATION_VALUE = 1000*60*60*3;
+    public static final long JWT_TOKEN_EXPIRATION_VALUE = 1000 * 60 * 60 * 3;
     public static final String JWT_TOKEN_ISSUER = "HelpingHandsAdmin";
     public static final String JWT_TOKEN_AUDIENCE = "HelpingHandsMobileAndWebUsers";
     public static final String JWT_SECRET_KEY = "helping-hands-secret-key";
-    public static final String[] ROLE_USER = {"USER"} ;
+    public static final String[] ROLE_USER = {"USER"};
     public static final String STATUS_PENDING = "Pending";
     public static final String MSG_SOMETHING_WENT_WRONG = "Something went wrong !";
     public static final String QUERY_SUCCESSFUL = "Query successful";
-    public static final String RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID ="NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID" ;
+    public static final String RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID";
     public static final String BUSINESS_POST = "BusinessPost";
     public static final String PUBLIC_POST = "PublicPost";
     public static final String PLACE = "Place";
@@ -58,7 +56,7 @@ public class AppConstants {
     public static final int LIMIT_VIEWS_IN_POSTS = 10;
     public static final int LIMIT_VIEWS_IN_REQUIREMENTS = 10;
     public static final int LIMIT_POSTS_IN_PLACES = 3;
-    public static final String PUBLIC_REQUIREMENT ="PublicRequirement" ;
+    public static final String PUBLIC_REQUIREMENT = "PublicRequirement";
     public static final String ADDED_BY = "addedBy";
     public static final String PLACE_SUB_CATEGORY_ID = "placeSubCategoryId";
     public static final String PLACE_NAME = "placeName";
@@ -72,7 +70,7 @@ public class AppConstants {
     public static final String KEY_MOBILE = "mobileNumber";
     public static final String EMAIL = "emailId";
     public static final String PLACE_OPENING_TIME = "placeOpeningTime";
-    public static final String PLACE_CLOSING_TIME ="placeClosingTime";
+    public static final String PLACE_CLOSING_TIME = "placeClosingTime";
     public static final String LUNCH_START_TIME = "lunchStartTime";
     public static final String LUNCH_END_TIME = "lunchEndTime";
     public static final String EXCHANGE_START_TIME = "exchangeStartTime";
@@ -101,7 +99,7 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE = "USER_NOT_FOUND_WITH_MOBILE";
     public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID = "USER_NOT_FOUND_WITH_USERID";
     public static final String RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID = "PLACE_NOT_FOUND_WITH_PLACEID";
-    public static final String TYPE_OF_PLACECATEGORY ="typeOfPlaceCategory" ;
+    public static final String TYPE_OF_PLACECATEGORY = "typeOfPlaceCategory";
     public static final String LANG_ENGLISH = "en";
     public static final String LANG_MARATHI = "mr";
     public static final String LANG_HINDI = "hi";
@@ -113,7 +111,7 @@ public class AppConstants {
     public static final String TYPE_OF_PLACE_CATEGORY = "typeOfPlaceCategory";
     public static final String DEFAULT_NAME = "defaultName";
     public static final String TRANSLATIONS = "translations";
-    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY ="UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY" ;
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY = "UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY";
     public static final String PLACE_DESC = "placeDesc";
     public static final String PLACE_MOBILE = "placeContact.mobile";
     public static final String NUMBER_OF_PRODUCTS = "numberOfProducts";
@@ -124,12 +122,12 @@ public class AppConstants {
     public static final String USER_ID = "userId";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
-    public static final String RESPONSEMESSAGE_OPEN_24INTO7 = "OPEN_24INTO7" ;
-    public static final String RESPONSEMESSAGE_CLOSED_OPENS_AT = "CLOSED_OPENS_AT" ;
-    public static final String RESPONSEMESSAGE_LUNCH_HOURS = "LUNCH_HOURS" ;
-    public static final String RESPONSEMESSAGE_NO_LUNCH_HOURS = "NO_LUNCH_HOURS" ;
-    public static final String RESPONSEMESSAGE_OPEN_CLOSES_AT = "OPEN_CLOSES_AT" ;
-    public static final long HOUR_IN_MILLIS = 1 * 60*60*1000;
+    public static final String RESPONSEMESSAGE_OPEN_24INTO7 = "OPEN_24INTO7";
+    public static final String RESPONSEMESSAGE_CLOSED_OPENS_AT = "CLOSED_OPENS_AT";
+    public static final String RESPONSEMESSAGE_LUNCH_HOURS = "LUNCH_HOURS";
+    public static final String RESPONSEMESSAGE_NO_LUNCH_HOURS = "NO_LUNCH_HOURS";
+    public static final String RESPONSEMESSAGE_OPEN_CLOSES_AT = "OPEN_CLOSES_AT";
+    public static final long HOUR_IN_MILLIS = 1 * 60 * 60 * 1000;
     public static final String CLOSED = "Closed";
     public static final String OPEN = "Open";
     public static final String RESPONSEMESSAGE_UNKNOWN = "UNKNOWN";
@@ -171,10 +169,10 @@ public class AppConstants {
     public static final String COLLECTION_DH_RATING_COMMENT = "dhRatingAndComments";
     public static final String COLLECTION_DH_VIEWS = "dhViews";
     public static final String COLLECTION_DHLOG = "dhLog";
-    public static final String RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY ="EMPTY_TYPEOFMAINPLACECATEGORY" ;
-    public static final String RESPONSEMESSAGE_EMPTY_DEFAULTNAME ="EMPTY_DEFAULTNAME" ;
-    public static final String RESPONSEMESSAGE_MAINCATEGORYID_MISSING ="MAINCATEGORYID_MISSING" ;
-    public static final String RESPONSEMESSAGE_SUBCATEGORYID_MISSING ="SUBCATEGORYID_MISSING" ;
+    public static final String RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY = "EMPTY_TYPEOFMAINPLACECATEGORY";
+    public static final String RESPONSEMESSAGE_EMPTY_DEFAULTNAME = "EMPTY_DEFAULTNAME";
+    public static final String RESPONSEMESSAGE_MAINCATEGORYID_MISSING = "MAINCATEGORYID_MISSING";
+    public static final String RESPONSEMESSAGE_SUBCATEGORYID_MISSING = "SUBCATEGORYID_MISSING";
     public static final String STATUS_PENDING_NEW_SUBCATEGORY = "Pending(New Subcategory)";
     public static final String KEY_PAGE = "page";
     public static final String KEY_SIZE = "size";
@@ -182,32 +180,27 @@ public class AppConstants {
     public static final String KEY_LNG = "lng";
     public static final String RESPONSEMESSAGE_MISSING_QUERY_PARAMS = "MISSING_QUERY_PARAMS";
     public static final String KEY_USER_ID = "userId";
-    public static final String KEY_TYPE_OF_PLACECATEGORY = "typeOfPlaceCategory"    ;
+    public static final String KEY_TYPE_OF_PLACECATEGORY = "typeOfPlaceCategory";
     public static final String KEY_PLACE_ID = "placeId";
     public static final String KEY_SUB_PLACECATEGORY_ID = "subPlaceCategoryId";
     public static final String KEY_CONTENT_ID = "contentId";
     public static final String KEY_CONTENT_TYPE = "contentType";
     public static final String KEY_AUTHENTICATION = "authentication";
     public static final String KEY_NEW_FCM_TOKEN = "newFcmToken";
-
-    public static String ACCESS_KEY = "";
-    public static String SECRET_KEY = "";
-    public static final String FILETYPE_PNG = "png";
-    //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
-
-    public static String[] SUPPORTED_LANGUAGES = { "en", "hi","mr" };
-    public static String LABEL_HEADER_APPLANGUAGE ="App-Language";
-    public static String STATUS_ACTIVE = "Active";
-    public static String SCHEMA_VERSION = "1.0.0";
-
+    public static final String FILETYPE_WEBP = "webp";
     //actions
-    public static final String ACTION_NEW_USER_ADDED = "New user has been added." ;
-    public static final String ACTION_TRIED_LOGGING_WITH_INCORRECT_USERNAME = "Tried logging in with incorrect username !" ;
-    public static final String ACTION_TRIED_LOGGING_WITH_INCORRECT_PASSWORD = "Tried logging in with incorrect password !" ;
+    public static final String ACTION_NEW_USER_ADDED = "New user has been added.";
+    public static final String ACTION_TRIED_LOGGING_WITH_INCORRECT_USERNAME = "Tried logging in with incorrect username !";
+    //public static final String EXCEPTION_OCCURRED_WHILE_ADDING_CONFIGURATION = "Exception occurred while adding configuration .";
+    public static final String ACTION_TRIED_LOGGING_WITH_INCORRECT_PASSWORD = "Tried logging in with incorrect password !";
     public static final String ACTION_NEW_APPCONFIG_ADDED = "New app configuration added .";
     public static final String ACTION_NEW_PLACE_CATEGORY_ADDED = "New main place category has been added .";
-
-
+    public static String ACCESS_KEY = "";
+    public static String SECRET_KEY = "";
+    public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
+    public static String LABEL_HEADER_APPLANGUAGE = "App-Language";
+    public static String STATUS_ACTIVE = "Active";
+    public static String SCHEMA_VERSION = "1.0.0";
     public static String RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE = "USER_ALREADY_EXISTS_WITH_MOBILE";
     public static String RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_EMAIL = "USER_ALREADY_EXISTS_WITH_EMAIL";
     public static String RESPONSEMESSAGE_USER_CONTACT_IS_EMPTY = "USER_CONTACT_IS_EMPTY";
@@ -231,7 +224,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_NEW_PLACE_CATEGORY_ADDED = "NEW_PLACE_CATEGORY_ADDED";
     public static String RESPONSEMESSAGE_NO_PLACECATEGORIES = "NO_PLACECATEGORIES";
     public static String RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS = "CATEGORY_ALREADY_EXISTS";
-    public static String RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID= "NOT_FOUND_PLACECATEGORIY_WITH_ID";
+    public static String RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID = "NOT_FOUND_PLACECATEGORIY_WITH_ID";
     public static String RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED = "NEW_PLACESUBCATEGORY_ADDED";
     public static String RESPONSEMESSAGE_EMPTY_BODY_OR_PRODUCTNAMES = "EMPTY_BODY_OR_PRODUCTNAMES";
     public static String RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY = "PRODUCT_NAMES_EMPTY";
@@ -252,7 +245,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE = "INCORRECT_IMAGE_TYPE";
     public static String RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED = "NEW_RATING_COMMENT_ADDED";
 
-    public static String CONTACT_DETAILS ="contactDetails";
+    public static String CONTACT_DETAILS = "contactDetails";
     public static long TOTAL_ADD_PLACES_LIMIT = 100;
     public static long PER_DAY_ADD_PLACES_LIMIT = 10;
     public static long PER_DAY_ADD_POSTS_LIMIT = 200;
@@ -260,5 +253,5 @@ public class AppConstants {
     public static long PER_POST_IMAGES_LIMIT = 8;
     public static long PER_PLACE_PRODUCTS_LIMIT = 200;
 
-    public static String  MSG_DISTANCE_CALC_FAILED = "DISTANCE_CALC_FAILED";
+    public static String MSG_DISTANCE_CALC_FAILED = "DISTANCE_CALC_FAILED";
 }

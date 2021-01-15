@@ -106,8 +106,8 @@ public class AmazonClient {
     }
 
     public String getExtensionAfterValidation(String extension) {
-        String[] validImgFormats = new String[]{"[pP][nN][gG]", "[jJ][pP][eE][gG]", "[jJ][pP][gG]", "[sS][vV][gG]"};
-        if (Utility.isFieldEmpty(extension)) return AppConstants.FILETYPE_PNG;
+        String[] validImgFormats = new String[]{"[pP][nN][gG]", "[jJ][pP][eE][gG]", "[jJ][pP][gG]", "[sS][vV][gG]","[wW][eE][bB][pP]"};
+        if (Utility.isFieldEmpty(extension)) return AppConstants.FILETYPE_WEBP;
 
         for (String s : validImgFormats) {
             if (extension.matches(s)) {
@@ -138,7 +138,7 @@ public class AmazonClient {
         }
 
         File convertMultipartFile = convertMultipartFile(multipartFile);
-        String ext = getFileExtension(multipartFile.getOriginalFilename(), AppConstants.FILETYPE_PNG);
+        String ext = getFileExtension(multipartFile.getOriginalFilename(), AppConstants.FILETYPE_WEBP);
         String objKey = imgUploadKey + Calendar.getInstance().getTimeInMillis() + "." + ext;
         //upload file to s3 bucket
         uploadFileTos3bucket(amazonS3, bucketName, objKey, convertMultipartFile);

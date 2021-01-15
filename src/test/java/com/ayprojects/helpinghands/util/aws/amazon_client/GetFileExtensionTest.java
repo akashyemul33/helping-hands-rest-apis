@@ -3,7 +3,6 @@ package com.ayprojects.helpinghands.util.aws.amazon_client;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.util.aws.AmazonClient;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,11 +92,11 @@ public class GetFileExtensionTest {
     @Test
     void givenValidExtensionThenValue(){
         assertEquals("png",amazonClient.getFileExtension("abc.Png", null));
-        assertEquals("png",amazonClient.getFileExtension("", AppConstants.FILETYPE_PNG));
-        assertEquals("png",amazonClient.getFileExtension("ab", AppConstants.FILETYPE_PNG));
+        assertEquals("png",amazonClient.getFileExtension("", AppConstants.FILETYPE_WEBP));
+        assertEquals("png",amazonClient.getFileExtension("ab", AppConstants.FILETYPE_WEBP));
         assertEquals("jpeg",amazonClient.getFileExtension("ab.jpeg",null));
         assertEquals("jpeg",amazonClient.getFileExtension("ab.jpeg",null));
-        assertEquals("svg",amazonClient.getFileExtension("ab.svg",AppConstants.FILETYPE_PNG));
+        assertEquals("svg",amazonClient.getFileExtension("ab.svg",AppConstants.FILETYPE_WEBP));
     }
 
 }

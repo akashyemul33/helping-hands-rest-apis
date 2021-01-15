@@ -20,8 +20,8 @@ public class GetExtensionAfterValidationTest {
 
     @Test
     void givenEmptyExtensionThenPng() {
-        assertEquals(AppConstants.FILETYPE_PNG, amazonClient.getExtensionAfterValidation(""));
-        assertEquals(AppConstants.FILETYPE_PNG, amazonClient.getExtensionAfterValidation(null));
+        assertEquals(AppConstants.FILETYPE_WEBP, amazonClient.getExtensionAfterValidation(""));
+        assertEquals(AppConstants.FILETYPE_WEBP, amazonClient.getExtensionAfterValidation(null));
     }
 
     @Test

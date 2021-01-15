@@ -20,7 +20,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,7 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.UUID;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
