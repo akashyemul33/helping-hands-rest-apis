@@ -1,7 +1,5 @@
 package com.ayprojects.helpinghands.util.aws;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -9,7 +7,6 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.ayprojects.helpinghands.AppConstants;
-import com.ayprojects.helpinghands.Temp;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.apache.commons.io.FilenameUtils;
@@ -42,10 +39,9 @@ public class AmazonClient {
 
     @PostConstruct
     public void initializeAmazon() {
-        //TODO uncomment these lines, Do not use s3Client with access and secret key
-//        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(region).build(); //use this one
+        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(region).build(); //use this one
 
-        //TODO remove these lines unnecessary for production
+        /*//TODO remove these lines unnecessary for production
         try {
             Temp.getAwsKeys();
         } catch (IOException ioException) {
@@ -54,6 +50,8 @@ public class AmazonClient {
         }
         BasicAWSCredentials awsCredentials = new BasicAWSCredentials(AppConstants.ACCESS_KEY, AppConstants.SECRET_KEY);
         s3Client = AmazonS3ClientBuilder.standard().withRegion(region).withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
+
+         */
     }
 
     public PutObjectResult uploadFileTos3bucket(AmazonS3 amazonS3, String bucketName, String fileName, File file) {
@@ -106,7 +104,7 @@ public class AmazonClient {
     }
 
     public String getExtensionAfterValidation(String extension) {
-        String[] validImgFormats = new String[]{"[pP][nN][gG]", "[jJ][pP][eE][gG]", "[jJ][pP][gG]", "[sS][vV][gG]","[wW][eE][bB][pP]"};
+        String[] validImgFormats = new String[]{"[pP][nN][gG]", "[jJ][pP][eE][gG]", "[jJ][pP][gG]", "[sS][vV][gG]", "[wW][eE][bB][pP]"};
         if (Utility.isFieldEmpty(extension)) return AppConstants.FILETYPE_WEBP;
 
         for (String s : validImgFormats) {
@@ -118,10 +116,10 @@ public class AmazonClient {
     }
 
     public String uploadSingleImageToS3(String imgUploadKey, MultipartFile multipartFile) throws Exception {
-        return uploadSingleImageToS3(s3Client, bucketName, endpointUrl,multipartFile,imgUploadKey);
+        return uploadSingleImageToS3(s3Client, bucketName, endpointUrl, multipartFile, imgUploadKey);
     }
 
-    public String uploadSingleImageToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl,MultipartFile multipartFile, String imgUploadKey) throws Exception {
+    public String uploadSingleImageToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl, MultipartFile multipartFile, String imgUploadKey) throws Exception {
         if (amazonS3 == null)
             throw new NullPointerException("Got null AmazonS3 object as arguement !");
         if (Utility.isFieldEmpty(bucketName)) {
@@ -170,14 +168,14 @@ public class AmazonClient {
         }
         List<String> uploadedImageNames = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
-            String returnUrl = uploadSingleImageToS3(amazonS3, bucketName, endpointUrl, multipartFile,imgUploadKey);
+            String returnUrl = uploadSingleImageToS3(amazonS3, bucketName, endpointUrl, multipartFile, imgUploadKey);
             uploadedImageNames.add(returnUrl);
         }
         return uploadedImageNames;
     }
 
     public List<String> uploadImagesToS3(String imgUploadKey, MultipartFile[] multipartImages) throws Exception {
-        return uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadKey,multipartImages);
+        return uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadKey, multipartImages);
     }
 
     public AmazonS3 getS3Client() {
