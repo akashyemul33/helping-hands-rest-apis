@@ -7,6 +7,49 @@ import java.io.IOException;
 
 
 public class Temp {
+
+    public static void main(String[] args) throws IOException {
+        abc();
+    }
+    public static void abc() throws IOException {
+        File fileEng = new File("/home/ay/Desktop/english_categories_array");
+//        File fileMar = new File("/home/ay/Desktop/marathi-categories-array");
+        BufferedReader bfEng = new BufferedReader(new FileReader(fileEng));
+//        BufferedReader bfMr = new BufferedReader(new FileReader(fileMar));
+        String st;
+        StringBuilder allLines = new StringBuilder();
+        while ((st = bfEng.readLine()) != null) {
+            String[] splitStrEng = st.split(":")[0].split(",");
+            String[] splitStrMr = st.split(":")[1].split(",");
+            for(int i=0;i<splitStrEng.length;i++){
+                System.out.println(String.format("  {\n" +
+                        "      \"defaultName\": \"%s\",\n" +
+                        "      \"status\": \"%s\",\n" +
+                        "      \"placeSubCategoryImagePath\": \"\",\n" +
+                        "      \"translations\": [\n" +
+                        "        {\n" +
+                        "          \"lang\": \"en\",\n" +
+                        "          \"value\": \"%s\"\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"lang\": \"mr\",\n" +
+                        "          \"value\": \"%s\"\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"lang\": \"hi\",\n" +
+                        "          \"value\": \"%s\"\n" +
+                        "        }\n" +
+                        "      ]\n" +
+                        "    },",splitStrEng[i].trim(),"Active",splitStrEng[i].trim(),splitStrMr[i].trim(),splitStrMr[i].trim()));
+
+            }
+            allLines.append(st);
+            }
+        }
+
+
+
+
     public static void getAwsKeys() throws IOException {
         File file = new File("/home/ay/Desktop/user_akash_active_aws_keys.txt");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -17,12 +60,12 @@ public class Temp {
             allLines.append(st);
         }
 
-        String accessKey = allLines.substring(0,allLines.indexOf(":"));
-        String secretKey = allLines.substring(allLines.indexOf(":")+1);
+        String accessKey = allLines.substring(0, allLines.indexOf(":"));
+        String secretKey = allLines.substring(allLines.indexOf(":") + 1);
         System.out.println("AccessKey=" + accessKey);
         System.out.println("SecretKey=" + secretKey);
-        AppConstants.ACCESS_KEY=accessKey;
-        AppConstants.SECRET_KEY=secretKey;
+        AppConstants.ACCESS_KEY = accessKey;
+        AppConstants.SECRET_KEY = secretKey;
         System.out.println("AppConstants.AccessKey=" + AppConstants.ACCESS_KEY);
         System.out.println("AppConstants.SecretKey=" + AppConstants.SECRET_KEY);
     }

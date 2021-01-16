@@ -85,7 +85,7 @@ public class StrategyGetPlaceCategories implements StrategyGetBehaviour<DhPlaceC
                 }
             }
 
-            return new Response<DhPlaceCategories>(true, 200, dhPlaceCategoriesList.size() + " place categories found .", dhPlaceCategoriesList, dhPlaceCategoriesList.size());
+            return new Response<DhPlaceCategories>(true, 200, dhPlaceCategoriesList.size() + " place categories found .", new ArrayList<>(), dhPlaceCategoriesList.size());
         }
     }
 }

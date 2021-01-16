@@ -45,7 +45,11 @@ public class StrategyAddPlaceMainCategoryApi implements StrategyAddBehaviour<DhP
                     }
                     placeSubCategories.setAddedBy(dhPlaceCategories.getAddedBy());
                     placeSubCategories.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + "_" + counter + calendarOperations.getTimeAtFileEnd());
-                    placeSubCategories = (PlaceSubCategories) ApiOperations.setCommonAttrs(placeSubCategories, AppConstants.STATUS_PENDING);
+                    String status = placeSubCategories.getStatus();
+                    if(Utility.isFieldEmpty(status)){
+                        status = AppConstants.STATUS_PENDING;
+                    }
+                    placeSubCategories = (PlaceSubCategories) ApiOperations.setCommonAttrs(placeSubCategories, status);
                     counter++;
                 }
             }
