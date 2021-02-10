@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### CREDS ###
-!**/src/main/resources/application.*
+!**/src/main/resources/application-qa.properties
 
 ### IntelliJ IDEA ###
 .idea
