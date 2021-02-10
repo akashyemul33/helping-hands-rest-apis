@@ -11,6 +11,7 @@ public class Temp {
     public static void main(String[] args) throws IOException {
         abc();
     }
+
     public static void abc() throws IOException {
         File fileEng = new File("/home/ay/Desktop/english_categories_array");
 //        File fileMar = new File("/home/ay/Desktop/marathi-categories-array");
@@ -21,7 +22,7 @@ public class Temp {
         while ((st = bfEng.readLine()) != null) {
             String[] splitStrEng = st.split(":")[0].split(",");
             String[] splitStrMr = st.split(":")[1].split(",");
-            for(int i=0;i<splitStrEng.length;i++){
+            for (int i = 0; i < splitStrEng.length; i++) {
                 System.out.println(String.format("  {\n" +
                         "      \"defaultName\": \"%s\",\n" +
                         "      \"status\": \"%s\",\n" +
@@ -40,14 +41,12 @@ public class Temp {
                         "          \"value\": \"%s\"\n" +
                         "        }\n" +
                         "      ]\n" +
-                        "    },",splitStrEng[i].trim(),"Active",splitStrEng[i].trim(),splitStrMr[i].trim(),splitStrMr[i].trim()));
+                        "    },", splitStrEng[i].trim(), "Active", splitStrEng[i].trim(), splitStrMr[i].trim(), splitStrMr[i].trim()));
 
             }
             allLines.append(st);
-            }
         }
-
-
+    }
 
 
     public static void getAwsKeys() throws IOException {

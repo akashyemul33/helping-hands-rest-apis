@@ -62,8 +62,8 @@ public class UserServiceImpl implements UserService {
     public Response<DhUser> addUser(HttpHeaders httpHeaders, DhUser dhUserDetails, String version) {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
 
-        Response<DhUser> returnResponse = Validations.validateAddUser(language, dhUserDetails,mongoTemplate, null);
-        LOGGER.info("returnResponse=>"+returnResponse.getMessage());
+        Response<DhUser> returnResponse = Validations.validateAddUser(language, dhUserDetails, mongoTemplate, null);
+        LOGGER.info("returnResponse=>" + returnResponse.getMessage());
         if (returnResponse.getStatus()) {
             dhUserDetails.setPassword(bCryptPasswordEncoder.encode(dhUserDetails.getPassword()));
             dhUserDetails.setRoles(AppConstants.ROLE_USER);
