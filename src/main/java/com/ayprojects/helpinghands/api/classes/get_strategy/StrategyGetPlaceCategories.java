@@ -55,7 +55,7 @@ public class StrategyGetPlaceCategories implements StrategyGetBehaviour<DhPlaceC
         query.addCriteria(Criteria.where(AppConstants.TYPE_OF_PLACECATEGORY).regex(typeOfPlaceCategory, "i"));
         List<DhPlaceCategories> dhPlaceCategoriesList = mongoTemplate.find(query, DhPlaceCategories.class);
         if (dhPlaceCategoriesList.size() <= 0) {
-            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES), new ArrayList<>(), 0);
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES), new ArrayList<>(), 0);
         } else {
             //remove the sub categories with status other than active
             //and for active subcategories add maincategoryid and name.
@@ -85,7 +85,7 @@ public class StrategyGetPlaceCategories implements StrategyGetBehaviour<DhPlaceC
                 }
             }
 
-            return new Response<DhPlaceCategories>(true, 200, dhPlaceCategoriesList.size() + " place categories found .", new ArrayList<>(), dhPlaceCategoriesList.size());
+            return new Response<DhPlaceCategories>(true, 200, dhPlaceCategoriesList.size() + " place categories found .", dhPlaceCategoriesList, dhPlaceCategoriesList.size());
         }
     }
 }
