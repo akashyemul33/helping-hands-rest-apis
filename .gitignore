@@ -17,6 +17,9 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+### CREDS ###
+!**/src/main/resources/application.*
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
