@@ -12,18 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
-import io.swagger.annotations.Authorization;
-
-import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
 public class StrategyGetProducts implements StrategyGetBehaviour<DhProduct> {
@@ -39,6 +33,8 @@ public class StrategyGetProducts implements StrategyGetBehaviour<DhProduct> {
         Set<String> keySet = params.keySet();
         if (keySet.contains(AppConstants.KEY_SUB_PLACECATEGORY_ID)) {
             return getProductsBySubCategoryId(language, (String) params.get(AppConstants.KEY_SUB_PLACECATEGORY_ID));
+        } else if (keySet.contains(AppConstants.KEY_PRODUCT_SEARCH)) {
+            return searchProducts(language, (String) params.get(AppConstants.KEY_PRODUCT_SEARCH));
         } else {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS) + ": " + AppConstants.KEY_SUB_PLACECATEGORY_ID, new ArrayList<>());
         }
@@ -47,6 +43,19 @@ public class StrategyGetProducts implements StrategyGetBehaviour<DhProduct> {
     @Override
     public StrategyName getStrategyName() {
         return StrategyName.GetProductStrategy;
+    }
+
+    public Response<DhProduct> searchProducts(String language, String searchKey) {
+        if (Utility.isFieldEmpty(searchKey)) {
+            return new Response<DhProduct>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+        }
+        //TODO write proper criteria later
+        Query searchQuery = new Query(Criteria.where(AppConstants.STATUS).is(AppConstants.STATUS_ACTIVE));
+        List<DhProduct> dhProductList = mongoTemplate.find(searchQuery, DhProduct.class);
+        if (dhProductList.isEmpty()) {
+            return new Response<DhProduct>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY), new ArrayList<>(), 0);
+        }
+        return new Response<DhProduct>(true, 200, AppConstants.QUERY_SUCCESSFUL, dhProductList, dhProductList.size());
     }
 
     public Response<DhProduct> getProductsBySubCategoryId(String language, String subPlaceCategoryId) {
@@ -58,7 +67,7 @@ public class StrategyGetProducts implements StrategyGetBehaviour<DhProduct> {
 //        queryToFindProductsWithSubCategoryId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         List<DhProduct> dhProductList = mongoTemplate.find(queryToFindProductsWithSubCategoryId, DhProduct.class);
 
-        if (dhProductList.size() <= 0) {
+        if (dhProductList.isEmpty()) {
             return new Response<DhProduct>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID), new ArrayList<>(), 0);
         }
 

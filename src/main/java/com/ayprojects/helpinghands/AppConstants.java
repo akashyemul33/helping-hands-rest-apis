@@ -14,6 +14,7 @@ public class AppConstants {
     public static final String MSG_SOMETHING_WENT_WRONG = "Something went wrong !";
     public static final String QUERY_SUCCESSFUL = "Query successful";
     public static final String RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID = "NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID";
+    public static final String RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY = "NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY";
     public static final String BUSINESS_POST = "BusinessPost";
     public static final String PUBLIC_POST = "PublicPost";
     public static final String PLACE = "Place";
@@ -195,6 +196,7 @@ public class AppConstants {
     public static final String ACTION_TRIED_LOGGING_WITH_INCORRECT_PASSWORD = "Tried logging in with incorrect password !";
     public static final String ACTION_NEW_APPCONFIG_ADDED = "New app configuration added .";
     public static final String ACTION_NEW_PLACE_CATEGORY_ADDED = "New main place category has been added .";
+    public static final String KEY_PRODUCT_SEARCH = "productSearchKey";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

@@ -55,4 +55,11 @@ public class ProductController {
         return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetProductStrategy, params, version), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/searchProducts")
+    ResponseEntity<Response<DhProduct>> searchProducts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String searchKey, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PRODUCT_SEARCH, searchKey);
+        return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetProductStrategy, params, version), HttpStatus.OK);
+    }
+
 }

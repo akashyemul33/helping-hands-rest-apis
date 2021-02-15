@@ -39,6 +39,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_PRODU
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_ACTIVE_USER;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_LUNCH_HOURS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES;
@@ -149,6 +150,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_DEFAULTNAME, "डिफ़ॉल्ट नाम खाली नहीं होना चाहिए !");
             responseMsgsMap.put(RESPONSEMESSAGE_MAINCATEGORYID_MISSING, "ममुख्य श्रेणी आईडी खाली नहीं होनी चाहिए !");
             responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "क्वेरी पैरामीटर गायब हैं !");
+            responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "दिए गए खोज कीवर्ड के साथ मेल खाते कोई सक्रिय उत्पाद नहीं मिले !");
         }
     }
 

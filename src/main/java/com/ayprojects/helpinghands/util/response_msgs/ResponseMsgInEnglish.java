@@ -39,6 +39,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_PRODU
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_ACTIVE_USER;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_LUNCH_HOURS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES;
@@ -148,6 +149,7 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_DEFAULTNAME, "Default name should not be empty !");
             responseMsgsMap.put(RESPONSEMESSAGE_MAINCATEGORYID_MISSING, "Main category id must not be empty !");
             responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "Missing query parameters !");
+            responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "Not found any active products matching with given search keywords !");
         }
     }
 

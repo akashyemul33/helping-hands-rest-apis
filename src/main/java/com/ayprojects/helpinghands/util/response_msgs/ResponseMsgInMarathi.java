@@ -39,6 +39,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_PRODU
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_ACTIVE_USER;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_LUNCH_HOURS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES;
@@ -148,12 +149,12 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_EMPTY_DEFAULTNAME, "डीफॉल्ट नाव रिक्त नसावे !");
         responseMsgsMap.put(RESPONSEMESSAGE_MAINCATEGORYID_MISSING, "मुख्य श्रेणी आयडी रिक्त नसावा !");
         responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "क्वेरी पॅरामीटर्स गहाळ आहेत !");
+        responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "दिलेल्या शोध कीवर्डशी जुळणारी कोणतीही सक्रिय उत्पादने आढळली नाहीत !");
     }
 
     public Map<String, String> getResponseMsgsMap() {
         return responseMsgsMap;
     }
-
 
     @Override
     public String getResponseMsg(String key) {
