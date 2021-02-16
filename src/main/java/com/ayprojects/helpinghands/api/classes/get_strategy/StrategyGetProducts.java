@@ -47,15 +47,18 @@ public class StrategyGetProducts implements StrategyGetBehaviour<DhProduct> {
 
     public Response<DhProduct> searchProducts(String language, String searchKey) {
         if (Utility.isFieldEmpty(searchKey)) {
-            return new Response<DhProduct>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+            return new Response<DhProduct>(false, AppConstants.EMPTY_BODY_STATUS_CODE, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
         }
         //TODO write proper criteria later
-        Query searchQuery = new Query(Criteria.where(AppConstants.STATUS).is(AppConstants.STATUS_ACTIVE));
+        Query searchQuery = new Query(new Criteria().orOperator(Criteria.where(AppConstants.DEFAULT_NAME).regex(searchKey, "i"),
+                Criteria.where(AppConstants.TRANSLATIONS + ".value").regex(searchKey, "i")
+        ));
+        searchQuery.addCriteria(Criteria.where(AppConstants.STATUS).is(AppConstants.STATUS_ACTIVE));
         List<DhProduct> dhProductList = mongoTemplate.find(searchQuery, DhProduct.class);
         if (dhProductList.isEmpty()) {
-            return new Response<DhProduct>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY), new ArrayList<>(), 0);
+            return new Response<DhProduct>(false, AppConstants.EMPTY_RESPONSE_STATUS_CODE, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY), new ArrayList<>(), 0);
         }
-        return new Response<DhProduct>(true, 200, AppConstants.QUERY_SUCCESSFUL, dhProductList, dhProductList.size());
+        return new Response<DhProduct>(true, AppConstants.QUERY_SUCCESSFUL_STATUS_CODE, AppConstants.QUERY_SUCCESSFUL, dhProductList, dhProductList.size());
     }
 
     public Response<DhProduct> getProductsBySubCategoryId(String language, String subPlaceCategoryId) {

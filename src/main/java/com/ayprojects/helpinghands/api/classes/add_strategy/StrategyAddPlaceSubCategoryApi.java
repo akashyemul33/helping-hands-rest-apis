@@ -33,7 +33,6 @@ public class StrategyAddPlaceSubCategoryApi implements StrategyAddBehaviour<Plac
     @Autowired
     private MongoOperations mongoTemplate;
 
-
     @Override
     public Response<PlaceSubCategories> add(String language, PlaceSubCategories placeSubCategory) {
         Response<PlaceSubCategories> returnResponse = validateAddPlaceSubCategory(language, placeSubCategory);

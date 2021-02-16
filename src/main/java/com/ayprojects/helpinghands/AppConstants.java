@@ -197,6 +197,9 @@ public class AppConstants {
     public static final String ACTION_NEW_APPCONFIG_ADDED = "New app configuration added .";
     public static final String ACTION_NEW_PLACE_CATEGORY_ADDED = "New main place category has been added .";
     public static final String KEY_PRODUCT_SEARCH = "productSearchKey";
+    public static final Integer EMPTY_BODY_STATUS_CODE = 402;
+    public static final Integer EMPTY_RESPONSE_STATUS_CODE = 405;
+    public static final Integer QUERY_SUCCESSFUL_STATUS_CODE = 200;
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
