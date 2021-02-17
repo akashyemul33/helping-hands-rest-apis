@@ -11,15 +11,7 @@ public class ProductsWithPrices {
     private String productDesc;
     private String productId;
     private List<String> likeIds;
-
-    public List<String> getImages() {
-        return images;
-    }
-
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
-
+    private String unitQty;
     private List<String> images;
 
     public ProductsWithPrices(String productPrice, String selectedUnit, String userEnteredProductName, String color, String size, String productDesc, String productId, List<String> likeIds) {
@@ -56,6 +48,22 @@ public class ProductsWithPrices {
         this.color = enteredProductColor;
         this.size = enteredProductSize;
         this.productDesc = enteredProductDesc;
+    }
+
+    public String getUnitQty() {
+        return unitQty;
+    }
+
+    public void setUnitQty(String unitQty) {
+        this.unitQty = unitQty;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public List<String> getLikeIds() {

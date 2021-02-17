@@ -18,6 +18,16 @@ public class DhProduct extends AllCommonUsedAttributes {
     private String avgPrice;
     public String defaultName;
     public List<LangValueObj> translations;
+    private String unitQty;
+
+    public String getUnitQty() {
+        return unitQty;
+    }
+
+    public void setUnitQty(String unitQty) {
+        this.unitQty = unitQty;
+    }
+
     public DhProduct() {
 
     }
