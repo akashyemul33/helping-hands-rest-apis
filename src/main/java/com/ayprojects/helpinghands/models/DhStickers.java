@@ -5,6 +5,17 @@ import java.util.List;
 public class DhStickers extends AllCommonUsedAttributes {
     private String stickerSetId;
     private int stickerCount;
+    private String totalPackSize;
+    private String stickerPackName;
+    private List<Sticker> stickers;
+
+    public String getTotalPackSize() {
+        return totalPackSize;
+    }
+
+    public void setTotalPackSize(String totalPackSize) {
+        this.totalPackSize = totalPackSize;
+    }
 
     public int getStickerCount() {
         return stickerCount;
@@ -21,9 +32,6 @@ public class DhStickers extends AllCommonUsedAttributes {
     public void setStickerPackName(String stickerPackName) {
         this.stickerPackName = stickerPackName;
     }
-
-    private String stickerPackName;
-    private List<Sticker> stickers;
 
     public String getStickerSetId() {
         return stickerSetId;
