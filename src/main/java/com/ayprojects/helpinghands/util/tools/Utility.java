@@ -221,6 +221,7 @@ public class Utility {
         return obj;
     }
 
+
     public void addLog(String username, String actionMsg) {
         if (logService == null || Utility.isFieldEmpty(username) || Utility.isFieldEmpty(actionMsg)) {
             return;

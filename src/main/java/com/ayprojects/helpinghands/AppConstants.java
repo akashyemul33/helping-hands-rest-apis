@@ -165,6 +165,7 @@ public class AppConstants {
     public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
     public static final String COLLECTION_DH_PRODUCT = "dhProduct";
     public static final String COLLECTION_DH_PLACE = "dhPlace";
+    public static final String COLLECTION_DH_STICKERS = "dhStickers";
     public static final String COLLECTION_DH_POSTS = "dhPosts";
     public static final String COLLECTION_DH_REQUIREMENTS = "dhRequirements";
     public static final String COLLECTION_DH_RATING_COMMENT = "dhRatingAndComments";
@@ -249,6 +250,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_IMAGE_TYPE_MISSING = "IMAGE_TYPE_MISSING";
     public static String RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE = "INCORRECT_IMAGE_TYPE";
     public static String RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED = "NEW_RATING_COMMENT_ADDED";
+    public static String RESPONSEMESSAGE_NO_STICKERS_FOUND = "NO_STICKERS_FOUND";
 
     public static String CONTACT_DETAILS = "contactDetails";
     public static long TOTAL_ADD_PLACES_LIMIT = 100;

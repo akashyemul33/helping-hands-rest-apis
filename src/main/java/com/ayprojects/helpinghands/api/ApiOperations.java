@@ -16,6 +16,7 @@ import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.util.headers.IHeaders;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
+import com.mongodb.lang.Nullable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -51,7 +52,7 @@ public class ApiOperations<T extends AllCommonUsedAttributes> {
     }
 
     @SuppressWarnings("unchecked")
-    public Response<T> get(Authentication authentication, HttpHeaders httpHeaders,  StrategyName strategyName, HashMap<String, Object> params,String version) throws ServerSideException {
+    public Response<T> get(Authentication authentication, @Nullable HttpHeaders httpHeaders, StrategyName strategyName, HashMap<String, Object> params, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
         StrategyGetBehaviour<T> strategyGetBehaviour = (StrategyGetBehaviour<T>) getStrategyFactory.findStrategy(strategyName);
         LOGGER.info("get=>strategyName=" + strategyGetBehaviour.getStrategyName());

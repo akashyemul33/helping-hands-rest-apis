@@ -44,6 +44,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_FOUND
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_LUNCH_HOURS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_STICKERS_FOUND;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
@@ -150,6 +151,7 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_MAINCATEGORYID_MISSING, "मुख्य श्रेणी आयडी रिक्त नसावा !");
         responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "क्वेरी पॅरामीटर्स गहाळ आहेत !");
         responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "दिलेल्या शोध कीवर्डशी जुळणारी कोणतीही सक्रिय उत्पादने आढळली नाहीत !");
+        responseMsgsMap.put(RESPONSEMESSAGE_NO_STICKERS_FOUND, "कोणतेही स्टिकर्स आढळले नाहीत !");
     }
 
     public Map<String, String> getResponseMsgsMap() {

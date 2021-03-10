@@ -11,6 +11,7 @@ public enum StrategyName {
     AddLogStrategy,
      AddRatingStrategy,
      AddAppConfigStrategy,
+     AddStickerStrategy,
     GetUserStrategy,
     GetPlaceCategoriesStrategy,
     GetProductStrategy,
@@ -19,5 +20,6 @@ public enum StrategyName {
     GetPostStrategy,
     GetRatingStrategy,
     GetAppConfigStrategy,
-     GetLoginResponseStrategy;
+     GetLoginResponseStrategy,
+     GetStickersStrategy;
 }

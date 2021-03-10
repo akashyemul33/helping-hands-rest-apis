@@ -44,6 +44,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NOT_FOUND
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_LUNCH_HOURS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_STICKERS_FOUND;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
@@ -150,6 +151,7 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_MAINCATEGORYID_MISSING, "Main category id must not be empty !");
             responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "Missing query parameters !");
             responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "Not found any active products matching with given search keywords !");
+            responseMsgsMap.put(RESPONSEMESSAGE_NO_STICKERS_FOUND, "No stickers found !");
         }
     }
 

@@ -94,7 +94,6 @@ public class ImageServiceImpl implements ImageService {
         String uniquePostID = Utility.getUUID();
         String postImgUploadKey = GetImageFoldersAndPrefix.getPostImgUploadKey(uniquePostID, postType);
 
-
         try {
             List<String> postImageUrls = amazonClient.uploadImagesToS3(postImgUploadKey, postImages);
             DhPosts dhPosts = new DhPosts();

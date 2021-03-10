@@ -32,7 +32,6 @@ import io.swagger.annotations.Api;
 @RequestMapping("/api/v{version}/imageUpload")
 public class ImageController {
 
-
     @Autowired
     ImageService imageService;
 
