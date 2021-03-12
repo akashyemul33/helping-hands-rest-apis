@@ -8,6 +8,15 @@ public class DhStickers extends AllCommonUsedAttributes {
     private String totalPackSize;
     private String stickerPackName;
     private List<Sticker> stickers;
+    private String stickerPackImgPath;
+
+    public String getStickerPackImgPath() {
+        return stickerPackImgPath;
+    }
+
+    public void setStickerPackImgPath(String stickerPackImgPath) {
+        this.stickerPackImgPath = stickerPackImgPath;
+    }
 
     public String getTotalPackSize() {
         return totalPackSize;
