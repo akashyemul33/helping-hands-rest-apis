@@ -9,6 +9,15 @@ public class DhStickers extends AllCommonUsedAttributes {
     private String stickerPackName;
     private List<Sticker> stickers;
     private String stickerPackImgPath;
+    private boolean defaultStickers;
+
+    public boolean isDefaultStickers() {
+        return defaultStickers;
+    }
+
+    public void setDefaultStickers(boolean defaultStickers) {
+        this.defaultStickers = defaultStickers;
+    }
 
     public String getStickerPackImgPath() {
         return stickerPackImgPath;
