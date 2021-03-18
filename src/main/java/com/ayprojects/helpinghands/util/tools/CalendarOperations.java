@@ -11,11 +11,19 @@ import java.util.TimeZone;
 
 public class CalendarOperations {
 
-    public boolean verifyTimeFollowsCorrectFormat(String lastLogoutTime) {
-        if (Utility.isFieldEmpty(lastLogoutTime)) return false;
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(AppConstants.DATE_TIME_FORMAT);
+    public boolean verifyTimeFollowsCorrectFormat(String time) {
+        return verifyDateTimeFormat(time, AppConstants.DATE_FORMAT_HOUR_MIN);
+    }
+
+    public boolean verifyDateTimeFollowsCorrectFormat(String time) {
+        return verifyDateTimeFormat(time, AppConstants.DATE_TIME_FORMAT);
+    }
+
+    private boolean verifyDateTimeFormat(String time, String dateTimeFormat) {
+        if (Utility.isFieldEmpty(time)) return false;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateTimeFormat);
         try {
-            dateTimeFormatter.parse(lastLogoutTime);
+            dateTimeFormatter.parse(time);
             return true;
         } catch (DateTimeParseException e) {
             e.printStackTrace();

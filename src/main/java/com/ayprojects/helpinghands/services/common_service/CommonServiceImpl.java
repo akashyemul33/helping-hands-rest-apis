@@ -91,7 +91,7 @@ public class CommonServiceImpl implements CommonService {
 
         CalendarOperations calendarOperations = new CalendarOperations();
         Update userUpdate = new Update();
-        if (!Utility.isFieldEmpty(lastLogoutTime) && calendarOperations.verifyTimeFollowsCorrectFormat(lastLogoutTime)) {
+        if (!Utility.isFieldEmpty(lastLogoutTime) && calendarOperations.verifyDateTimeFollowsCorrectFormat(lastLogoutTime)) {
             userUpdate.set(AppConstants.LAST_LOGIN_TIME, dhUser.getLogInTime());
             userUpdate.set(AppConstants.KEY_LAST_LOGOUT_TIME, lastLogoutTime);
             userUpdate.set(AppConstants.LOGIN_TIME, calendarOperations.currentDateTimeInUTC());
