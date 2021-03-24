@@ -6,12 +6,13 @@ public enum StrategyName {
     AddPlaceSubCategoryStrategy,
     AddProductStrategy,
     AddPlaceStrategy,
+    AddPlaceMainPageStrategy,
     AddViewsStrategy,
     AddPostStrategy,
     AddLogStrategy,
-     AddRatingStrategy,
-     AddAppConfigStrategy,
-     AddStickerStrategy,
+    AddRatingStrategy,
+    AddAppConfigStrategy,
+    AddStickerStrategy,
     GetUserStrategy,
     GetPlaceCategoriesStrategy,
     GetProductStrategy,
@@ -20,6 +21,7 @@ public enum StrategyName {
     GetPostStrategy,
     GetRatingStrategy,
     GetAppConfigStrategy,
-     GetLoginResponseStrategy,
-     GetStickersStrategy;
+    GetLoginResponseStrategy,
+    GetPlaceMainPageStrategy,
+    GetStickersStrategy;
 }

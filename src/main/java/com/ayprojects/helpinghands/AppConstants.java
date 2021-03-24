@@ -21,6 +21,8 @@ public class AppConstants {
     public static final String POST = "Post";
     public static final String REQUIREMENT = "Requirement";
     public static final String PLACE_ID = "placeId";
+    public static final String PLACE_MAIN_PAGE_ID = "placeMainPageId";
+    public static final String PLACE_MAIN_GRID_TYPE = "gridType";
     public static final String NUMBER_OF_VIEWS = "numberOfViews";
     public static final String VIEW_IDS = "viewIds";
     public static final String TOP_VIEWS = "topViews";
@@ -165,6 +167,7 @@ public class AppConstants {
     public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
     public static final String COLLECTION_DH_PRODUCT = "dhProduct";
     public static final String COLLECTION_DH_PLACE = "dhPlace";
+    public static final String COLLECTION_PLACE_MAIN_PAGE = "PlaceMainPage";
     public static final String COLLECTION_DH_STICKERS = "dhStickers";
     public static final String COLLECTION_DH_POSTS = "dhPosts";
     public static final String COLLECTION_DH_REQUIREMENTS = "dhRequirements";

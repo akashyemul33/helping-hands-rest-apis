@@ -4,7 +4,6 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
@@ -20,8 +19,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -73,7 +70,7 @@ public class StrategyGetPosts implements StrategyGetBehaviour<DhPosts> {
         for (DhPosts d : dhPostsList) {
 
             if (!Utility.isFieldEmpty(d.getOfferStartTime()) && !Utility.isFieldEmpty(d.getOfferEndTime())) {
-                String offerMsg = ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_OFFER_MSG);
+                String offerMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OFFER_MSG);
                 offerMsg = String.format("%s %s - %s", offerMsg, d.getOfferStartTime(), d.getOfferEndTime());
                 d.setOfferMsg(offerMsg);
             }
@@ -104,7 +101,7 @@ public class StrategyGetPosts implements StrategyGetBehaviour<DhPosts> {
         List<String> missingFieldsList = new ArrayList<>();
         if (Utility.isFieldEmpty(placeId)) missingFieldsList.add("PlaceId");
         if (missingFieldsList.size() > 0) {
-            String resMsg = ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_EMPTY_BODY);
+            String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY);
             resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
             return new Response<>(false, 402, resMsg, new ArrayList<>(), 0);
         }

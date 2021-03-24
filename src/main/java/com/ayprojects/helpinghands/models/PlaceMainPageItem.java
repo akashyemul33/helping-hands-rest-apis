@@ -10,11 +10,83 @@ public class PlaceMainPageItem {
     private long numberOfRatings;
     private String distance;
     private String openCloseMsg;
-    private String category;
+    private String category_mr;
+    private String category_en;
+    private String category_hi;
+    private String category_gu;
+    private String category_te;
+    private String category_kn;
     private boolean homeDeliveryAvailable;
     private String placeDesc;
+    private String address;
     private double lat;
     private double lng;
+    private String addedTime;
+    private String since;
+
+    public String getCategory_mr() {
+        return category_mr;
+    }
+
+    public void setCategory_mr(String category_mr) {
+        this.category_mr = category_mr;
+    }
+
+    public String getCategory_en() {
+        return category_en;
+    }
+
+    public void setCategory_en(String category_en) {
+        this.category_en = category_en;
+    }
+
+    public String getCategory_hi() {
+        return category_hi;
+    }
+
+    public void setCategory_hi(String category_hi) {
+        this.category_hi = category_hi;
+    }
+
+    public String getCategory_gu() {
+        return category_gu;
+    }
+
+    public void setCategory_gu(String category_gu) {
+        this.category_gu = category_gu;
+    }
+
+    public String getCategory_te() {
+        return category_te;
+    }
+
+    public void setCategory_te(String category_te) {
+        this.category_te = category_te;
+    }
+
+    public String getCategory_kn() {
+        return category_kn;
+    }
+
+    public void setCategory_kn(String category_kn) {
+        this.category_kn = category_kn;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddedTime() {
+        return addedTime;
+    }
+
+    public void setAddedTime(String addedTime) {
+        this.addedTime = addedTime;
+    }
 
     public String getSince() {
         return since;
@@ -23,8 +95,6 @@ public class PlaceMainPageItem {
     public void setSince(String since) {
         this.since = since;
     }
-
-    private String since;
 
     public List<String> getImgList() {
         return imgList;
@@ -80,14 +150,6 @@ public class PlaceMainPageItem {
 
     public void setOpenCloseMsg(String openCloseMsg) {
         this.openCloseMsg = openCloseMsg;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public boolean isHomeDeliveryAvailable() {

@@ -2,7 +2,8 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-public class PlaceMainPage {
+public class PlaceMainPage extends AllCommonUsedAttributes {
+    private String placeMainPageId;
     private String heading;
     private String subHeading;
     private String subHeadingImg;
@@ -17,6 +18,14 @@ public class PlaceMainPage {
         this.bgParentColor = bgParentColor;
         this.gridType = gridType;
         this.itemList = itemList;
+    }
+
+    public String getPlaceMainPageId() {
+        return placeMainPageId;
+    }
+
+    public void setPlaceMainPageId(String placeMainPageId) {
+        this.placeMainPageId = placeMainPageId;
     }
 
     public String getHeading() {

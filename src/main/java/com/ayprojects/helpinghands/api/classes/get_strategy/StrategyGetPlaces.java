@@ -63,7 +63,6 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
         throw new ServerSideException("No matching get method found in " + getStrategyName());
     }
 
-
     @Override
     public StrategyName getStrategyName() {
         return StrategyName.GetPlaceStrategy;
