@@ -72,9 +72,9 @@ public class StrategyGetPlaceMainPages implements StrategyGetBehaviour<PlaceMain
         Page<PlaceMainPage> placeMainPages = PageableExecutionUtils.getPage(
                 placeMainPageList,
                 pageable,
-                () -> mongoTemplate.count(queryGetRC, PlaceMainPage.class));
+                () -> mongoTemplate.count(Query.of(queryGetRC).limit(-1).skip(-1), PlaceMainPage.class));
 
         LOGGER.info("getPaginatedPlaceMainPages->placeMainPages,total elements=" + placeMainPages.getTotalElements());
-        return new Response<PlaceMainPage>(true, 200, "Query successful", placeMainPageList.size(), placeMainPages.getNumber(), placeMainPages.getTotalPages(), placeMainPages.getTotalElements(), placeMainPageList);
+        return new Response<PlaceMainPage>(true, 200, "Query successful", placeMainPages.getNumberOfElements(), placeMainPages.getNumber(), placeMainPages.getTotalPages(), (long) placeMainPages.getTotalElements(), placeMainPageList);
     }
 }
