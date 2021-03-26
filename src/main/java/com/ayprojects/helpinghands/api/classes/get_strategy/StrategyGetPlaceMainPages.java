@@ -6,7 +6,6 @@ import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.PlaceMainPage;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.repositories.PlaceMainPageRepository;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,6 @@ public class StrategyGetPlaceMainPages implements StrategyGetBehaviour<PlaceMain
 
     @Autowired
     MongoTemplate mongoTemplate;
-
-    @Autowired
-    PlaceMainPageRepository placeMainPageRepository;
 
     @Override
     public Response<PlaceMainPage> get(String language, HashMap<String, Object> params) throws ServerSideException {
@@ -66,15 +62,15 @@ public class StrategyGetPlaceMainPages implements StrategyGetBehaviour<PlaceMain
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Query queryGetRC = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")).with(pageable);
-        List<PlaceMainPage> placeMainPageList = mongoTemplate.find(queryGetRC, PlaceMainPage.class, AppConstants.COLLECTION_PLACE_MAIN_PAGE);
+        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        List<PlaceMainPage> placeMainPageList = mongoTemplate.find(query.with(pageable), PlaceMainPage.class, AppConstants.COLLECTION_PLACE_MAIN_PAGE);
         LOGGER.info("placeMainPageList=" + placeMainPageList.size());
         Page<PlaceMainPage> placeMainPages = PageableExecutionUtils.getPage(
                 placeMainPageList,
                 pageable,
-                () -> mongoTemplate.count(Query.of(queryGetRC).limit(-1).skip(-1), PlaceMainPage.class));
+                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), PlaceMainPage.class, AppConstants.COLLECTION_PLACE_MAIN_PAGE));
 
         LOGGER.info("getPaginatedPlaceMainPages->placeMainPages,total elements=" + placeMainPages.getTotalElements());
-        return new Response<PlaceMainPage>(true, 200, "Query successful", placeMainPages.getNumberOfElements(), placeMainPages.getNumber(), placeMainPages.getTotalPages(), (long) placeMainPages.getTotalElements(), placeMainPageList);
+        return new Response<PlaceMainPage>(true, 200, "Query successful", placeMainPages.getNumberOfElements(), placeMainPages.getNumber(), placeMainPages.getTotalPages(), (long) placeMainPages.getTotalElements(), placeMainPages.getContent());
     }
 }
