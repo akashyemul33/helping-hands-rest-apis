@@ -63,6 +63,7 @@ public class StrategyAddPlaceMainPagesApi implements StrategyAddBehaviour<PlaceM
 
         List<String> missingFieldsList = new ArrayList<>();
 
+        //TODO Do not use UUID, use some incrementable value for better usage at app side
         if (Utility.isFieldEmpty(placeMainPage.getPlaceMainPageId()))
             missingFieldsList.add(AppConstants.PLACE_MAIN_PAGE_ID);
         if (placeMainPage.getGridType() == null)
