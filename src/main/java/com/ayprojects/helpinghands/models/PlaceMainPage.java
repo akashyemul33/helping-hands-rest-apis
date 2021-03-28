@@ -3,7 +3,7 @@ package com.ayprojects.helpinghands.models;
 import java.util.List;
 
 public class PlaceMainPage extends AllCommonUsedAttributes {
-    private String placeMainPageId;
+    private int placeMainPageId;
     private String heading;
     private String subHeading;
     private String subHeadingImg;
@@ -20,11 +20,11 @@ public class PlaceMainPage extends AllCommonUsedAttributes {
         this.itemList = itemList;
     }
 
-    public String getPlaceMainPageId() {
+    public int getPlaceMainPageId() {
         return placeMainPageId;
     }
 
-    public void setPlaceMainPageId(String placeMainPageId) {
+    public void setPlaceMainPageId(int placeMainPageId) {
         this.placeMainPageId = placeMainPageId;
     }
 

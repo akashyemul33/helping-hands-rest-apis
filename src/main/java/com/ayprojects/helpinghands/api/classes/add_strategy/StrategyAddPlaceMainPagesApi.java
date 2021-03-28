@@ -8,7 +8,6 @@ import com.ayprojects.helpinghands.models.PlaceMainPage;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
-import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -31,7 +30,7 @@ public class StrategyAddPlaceMainPagesApi implements StrategyAddBehaviour<PlaceM
 
     @Override
     public Response<PlaceMainPage> add(String language, PlaceMainPage placeMainPage) {
-        placeMainPage = setIdIfNotExists(placeMainPage);
+//        placeMainPage = setIdIfNotExists(placeMainPage);
 
         Response<PlaceMainPage> validationResponse = validateAddPlaceMainPage(language, placeMainPage);
         if (!validationResponse.getStatus())
@@ -49,12 +48,12 @@ public class StrategyAddPlaceMainPagesApi implements StrategyAddBehaviour<PlaceM
         return StrategyName.AddPlaceMainPageStrategy;
     }
 
-    public PlaceMainPage setIdIfNotExists(PlaceMainPage placeMainPage) {
-        if (placeMainPage != null && Utility.isFieldEmpty(placeMainPage.getPlaceMainPageId())) {
+/*    public PlaceMainPage setIdIfNotExists(PlaceMainPage placeMainPage) {
+        if (placeMainPage != null && placeMainPage.getPlaceMainPageId()==0) {
             placeMainPage.setPlaceMainPageId(Utility.getUUID());
         }
         return placeMainPage;
-    }
+    }*/
 
     public Response<PlaceMainPage> validateAddPlaceMainPage(String language, PlaceMainPage placeMainPage) {
         if (placeMainPage == null) {
@@ -64,7 +63,7 @@ public class StrategyAddPlaceMainPagesApi implements StrategyAddBehaviour<PlaceM
         List<String> missingFieldsList = new ArrayList<>();
 
         //TODO Do not use UUID, use some incrementable value for better usage at app side
-        if (Utility.isFieldEmpty(placeMainPage.getPlaceMainPageId()))
+        if (placeMainPage.getPlaceMainPageId() == 0)
             missingFieldsList.add(AppConstants.PLACE_MAIN_PAGE_ID);
         if (placeMainPage.getGridType() == null)
             missingFieldsList.add(AppConstants.PLACE_MAIN_GRID_TYPE);
