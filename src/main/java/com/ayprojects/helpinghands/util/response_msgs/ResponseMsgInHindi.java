@@ -111,8 +111,8 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_SOMETHING_WENT_WRONG, "कुछ गलत हुआ, कृपया कुछ समय बाद फिर से प्रयास करें !");
             responseMsgsMap.put(RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS, "उत्पाद पहले से मौजूद है !");
             responseMsgsMap.put(RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID, "दिए गए उप श्रेणी आईडी के लिए कोई सक्रिय उत्पाद नहीं मिला !");
-            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE, "नई जगह को सफलतापूर्वक जोड़ा गया है, आपके लोग इसे स्थानों के अनुभाग में देख सकते हैं .");
-            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, "नई जगह को सफलतापूर्वक जोड़ दिया गया है, जब हम इसे अनुमोदित कर देंगे तो आपके लोग इसे स्थानों के अनुभाग में देख सकते हैं।");
+            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE, "आपका जगह को सफलतापूर्वक जोड़ा गया है, आपके लोग इसे स्थानों के अनुभाग में देख सकते हैं .");
+            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, "आपका जगह को सफलतापूर्वक जोड़ दिया गया है, जब हम इसे अनुमोदित कर देंगे तो आपके लोग इसे स्थानों के अनुभाग में देख सकते हैं।");
             responseMsgsMap.put(RESPONSEMESSAGE_CONGRATULATIONS, "बधाई हो ");
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, "नई रेटिंग और टिप्पणी जोड़ी गई है !");
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_POST_ADDED, "नई पोस्ट सफलतापूर्वक जोड़ दी गई है !");

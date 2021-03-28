@@ -110,8 +110,8 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_SOMETHING_WENT_WRONG, "Something went wrong, please try again after some time !");
             responseMsgsMap.put(RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS, "Product already exists !");
             responseMsgsMap.put(RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID, "No active products found for given place sub category id!");
-            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE, "New place has been added successfully, your people can watch it in places section .");
-            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, "New place has been added successfully, your people can watch it in places section once we approve it .");
+            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE, "Your place has been added successfully, people can see it in places section .");
+            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, "Your place has been added successfully, people can see it in places section once we approve it .");
             responseMsgsMap.put(RESPONSEMESSAGE_CONGRATULATIONS, "Congratulations ");
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, "New rating and comment has been added !");
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_POST_ADDED, "New post has been added successfully !");
@@ -162,6 +162,6 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
 
     @Override
     public String getResponseMsg(String key) {
-        return getResponseMsgFromMap(key,responseMsgsMap);
+        return getResponseMsgFromMap(key, responseMsgsMap);
     }
 }

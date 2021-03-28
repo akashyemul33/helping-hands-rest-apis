@@ -110,8 +110,8 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_SOMETHING_WENT_WRONG, "काहीतरी चूक झाली, कृपया थोड्या वेळाने पुन्हा प्रयत्न करा !");
         responseMsgsMap.put(RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS, "उत्पादन आधीपासून विद्यमान आहे !");
         responseMsgsMap.put(RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID, "दिलेल्या ठिकाणी उप श्रेणी आयडीसाठी कोणतीही सक्रिय उत्पादने आढळली नाहीत !");
-        responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE, "नवीन ठिकाण यशस्वीरित्या जोडले गेले आहे, आपले लोक ते स्थान विभागात पाहू शकतात .");
-        responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, "नवीन ठिकाण यशस्वीरित्या जोडले गेले आहे, एकदा आम्ही ते मंजूर केले तेव्हा आपले लोक ते ठिकाणी विभागात पाहू शकतात.");
+        responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_ACTIVE, "आपले ठिकाण यशस्वीरित्या जोडले गेले आहे, आपले लोक ते स्थान विभागात पाहू शकतात .");
+        responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, "आपले ठिकाण यशस्वीरित्या जोडले गेले आहे, एकदा आम्ही ते मंजूर केले तेव्हा आपले लोक ते ठिकाणी विभागात पाहू शकतात.");
         responseMsgsMap.put(RESPONSEMESSAGE_CONGRATULATIONS, "अभिनंदन ");
         responseMsgsMap.put(RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, "नवीन रेटिंग आणि टिप्पणी जोडली गेली आहे !");
         responseMsgsMap.put(RESPONSEMESSAGE_NEW_POST_ADDED, "नवीन पोस्ट यशस्वीरित्या जोडली गेली आहे !");
