@@ -64,7 +64,6 @@ public class StrategyGetPlaceMainPages implements StrategyGetBehaviour<PlaceMain
         Pageable pageable = PageRequest.of(page, size);
 
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        query.with(Sort.by(Sort.Direction.ASC, AppConstants.PLACE_MAIN_PAGE_ID));
         List<PlaceMainPage> placeMainPageList = mongoTemplate.find(query.with(pageable), PlaceMainPage.class, AppConstants.COLLECTION_PLACE_MAIN_PAGE);
         LOGGER.info("placeMainPageList=" + placeMainPageList.size());
         Page<PlaceMainPage> placeMainPages = PageableExecutionUtils.getPage(
