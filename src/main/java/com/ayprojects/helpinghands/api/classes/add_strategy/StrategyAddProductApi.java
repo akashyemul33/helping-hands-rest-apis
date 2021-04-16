@@ -39,20 +39,43 @@ public class StrategyAddProductApi implements StrategyAddBehaviour<DhProduct> {
             }
 
             for (PlaceSubCategories placeSubCategory : queriedDhPlaceCategories.getPlaceSubCategories()) {
-                if (dhProduct.getSubPlaceCategoryId().equalsIgnoreCase(placeSubCategory.getPlaceSubCategoryId())) {
+                boolean subCategoryfound = false;
+                for (String subCategoryId : dhProduct.getSubPlaceCategoryIds()) {
+                    if (subCategoryId.equalsIgnoreCase(placeSubCategory.getPlaceSubCategoryId())) {
+                        /*dhProduct.setAddedBy(dhProduct.getAddedBy());
+                        dhProduct.setProductId(Utility.getUUID());
+                        if (Utility.isFieldEmpty(dhProduct.getUnitQty())) dhProduct.setUnitQty("1");
+                        if (Utility.isFieldEmpty(dhProduct.getDefaultUnit()))
+                            dhProduct.setDefaultUnit(AppConstants.DEFAULT_UNIT_IF_EMPTY);
+                        dhProduct.setCategoryName(queriedDhPlaceCategories.getDefaultName());
+                        dhProduct = (DhProduct) ApiOperations.setCommonAttrs(dhProduct, AppConstants.STATUS_PENDING);
+                        mongoTemplate.save(dhProduct, AppConstants.COLLECTION_DH_PRODUCT);
+                        String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NEW_PRODUCT_ADDED) + " ProductName:" + dhProduct.getDefaultName() + " -> " + placeSubCategory.getDefaultName();
+                        returnResponse.setLogActionMsg("Product [" + dhProduct.getDefaultName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "->" + placeSubCategory.getDefaultName() + "].");
+                        return new Response<DhProduct>(true, 201, resMsg, Collections.singletonList(dhProduct), 1);*/
+                        dhProduct.getSubCategoryNames().add(placeSubCategory.defaultName);
+                        subCategoryfound = true;
+                    }
+                }
+                if(subCategoryfound){
                     dhProduct.setAddedBy(dhProduct.getAddedBy());
                     dhProduct.setProductId(Utility.getUUID());
-                    dhProduct.setCategoryName(queriedDhPlaceCategories.getDefaultName() + "->" + placeSubCategory.getDefaultName());
+                    if (Utility.isFieldEmpty(dhProduct.getUnitQty())) dhProduct.setUnitQty("1");
+                    if (Utility.isFieldEmpty(dhProduct.getDefaultUnit()))
+                        dhProduct.setDefaultUnit(AppConstants.DEFAULT_UNIT_IF_EMPTY);
+                    dhProduct.setCategoryName(queriedDhPlaceCategories.getDefaultName());
                     dhProduct = (DhProduct) ApiOperations.setCommonAttrs(dhProduct, AppConstants.STATUS_PENDING);
                     mongoTemplate.save(dhProduct, AppConstants.COLLECTION_DH_PRODUCT);
                     String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NEW_PRODUCT_ADDED) + " ProductName:" + dhProduct.getDefaultName() + " -> " + placeSubCategory.getDefaultName();
                     returnResponse.setLogActionMsg("Product [" + dhProduct.getDefaultName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "->" + placeSubCategory.getDefaultName() + "].");
                     return new Response<DhProduct>(true, 201, resMsg, Collections.singletonList(dhProduct), 1);
                 }
-                String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID) + " PlaceSubCategoryId:" + dhProduct.getSubPlaceCategoryId();
-                return new Response<DhProduct>(false, 402, resMsg, new ArrayList<>(), 0);
+                else {
+                    String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID) + " PlaceSubCategoryId:" + dhProduct.getSubPlaceCategoryIds();
+                    return new Response<DhProduct>(false, 402, resMsg, new ArrayList<>(), 0);
+                }
             }
-            String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID) + " PlaceSubCategoryId:" + dhProduct.getSubPlaceCategoryId();
+            String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID) + " PlaceSubCategoryId:" + dhProduct.getSubPlaceCategoryIds();
             return new Response<DhProduct>(false, 402, resMsg, new ArrayList<>(), 0);
         }
         return returnResponse;
@@ -88,7 +111,7 @@ public class StrategyAddProductApi implements StrategyAddBehaviour<DhProduct> {
         if (Utility.isFieldEmpty(dhProduct.getMainPlaceCategoryId()))
             return new Response<DhProduct>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MAINCATEGORYID_MISSING), new ArrayList<>(), 0);
 
-        if (Utility.isFieldEmpty(dhProduct.getSubPlaceCategoryId())) {
+        if (dhProduct.getSubPlaceCategoryIds() == null || dhProduct.getSubPlaceCategoryIds().isEmpty()) {
             return new Response<DhProduct>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SUBCATEGORYID_MISSING), new ArrayList<>(), 0);
         }
 

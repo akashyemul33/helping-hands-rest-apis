@@ -70,17 +70,19 @@ public class ProductsServiceImpl implements ProductsService {
         }
 
         for (PlaceSubCategories placeSubCategory : queriedDhPlaceCategories.getPlaceSubCategories()) {
-            if (dhProduct.getSubPlaceCategoryId().equalsIgnoreCase(placeSubCategory.getPlaceSubCategoryId())) {
-                dhProduct.setAddedBy(dhProduct.getAddedBy());
-                dhProduct.setProductId(Utility.getUUID());
-                dhProduct.setCategoryName(queriedDhPlaceCategories.getDefaultName() + "->" + placeSubCategory.getDefaultName());
-                dhProduct = (DhProduct) utility.setCommonAttrs(dhProduct, AppConstants.STATUS_PENDING);
-                mongoTemplate.save(dhProduct, AppConstants.COLLECTION_DH_PRODUCT);
-                utility.addLog(authentication.getName(), "Product [" + dhProduct.getDefaultName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "->" + placeSubCategory.getDefaultName() + "].");
-                String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PRODUCT_ADDED, language) + " ProductName:" + dhProduct.getDefaultName() + " -> " + placeSubCategory.getDefaultName();
-                return new Response<DhProduct>(true, 201, resMsg, Collections.singletonList(dhProduct), 1);
+            for(String subCategoryId:dhProduct.getSubPlaceCategoryIds()) {
+                if (subCategoryId.equalsIgnoreCase(placeSubCategory.getPlaceSubCategoryId())) {
+                    dhProduct.setAddedBy(dhProduct.getAddedBy());
+                    dhProduct.setProductId(Utility.getUUID());
+                    dhProduct.setCategoryName(queriedDhPlaceCategories.getDefaultName() + "->" + placeSubCategory.getDefaultName());
+                    dhProduct = (DhProduct) utility.setCommonAttrs(dhProduct, AppConstants.STATUS_PENDING);
+                    mongoTemplate.save(dhProduct, AppConstants.COLLECTION_DH_PRODUCT);
+                    utility.addLog(authentication.getName(), "Product [" + dhProduct.getDefaultName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "->" + placeSubCategory.getDefaultName() + "].");
+                    String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PRODUCT_ADDED, language) + " ProductName:" + dhProduct.getDefaultName() + " -> " + placeSubCategory.getDefaultName();
+                    return new Response<DhProduct>(true, 201, resMsg, Collections.singletonList(dhProduct), 1);
+                }
             }
-            String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID, language) + " PlaceSubCategoryId:" + dhProduct.getSubPlaceCategoryId();
+            String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NOT_FOUND_PLACECATEGORIY_WITH_ID, language) + " PlaceSubCategoryId:" + dhProduct.getSubPlaceCategoryIds();
             return new Response<DhProduct>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 

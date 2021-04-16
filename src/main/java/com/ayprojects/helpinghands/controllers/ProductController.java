@@ -6,7 +6,6 @@ import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.services.products.ProductsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,10 +41,13 @@ public class ProductController {
         return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhProduct, StrategyName.AddProductStrategy, version), HttpStatus.CREATED);
     }
 
-    /*@PostMapping(value="/addProducts")
-    public ResponseEntity<Response<DhProduct>> addProduct(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody List<DhProduct> dhProducts, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(productsService.addProducts(authentication,httpHeaders,dhProducts,version), HttpStatus.CREATED);
-    }*/
+    @PostMapping(value = "/addProducts")
+    public ResponseEntity<Response<DhProduct>> addProducts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody List<DhProduct> dhProducts, @PathVariable String version) throws ServerSideException {
+        for (DhProduct dhProduct : dhProducts) {
+            apiOperations.add(authentication, httpHeaders, dhProduct, StrategyName.AddProductStrategy, version);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
     @GetMapping(value = "/getProductsForSubCategory")
     ResponseEntity<Response<DhProduct>> getProductsForSubCategory(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String subPlaceCategoryId, @PathVariable String version) throws ServerSideException {

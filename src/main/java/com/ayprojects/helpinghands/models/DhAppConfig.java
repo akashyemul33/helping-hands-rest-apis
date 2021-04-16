@@ -115,6 +115,33 @@ class Languages{
     private boolean english;
     private boolean marathi;
     private boolean hindi;
+    private boolean kannada;
+    private boolean gujrathi;
+    private boolean telugu;
+
+    public boolean isKannada() {
+        return kannada;
+    }
+
+    public void setKannada(boolean kannada) {
+        this.kannada = kannada;
+    }
+
+    public boolean isGujrathi() {
+        return gujrathi;
+    }
+
+    public void setGujrathi(boolean gujrathi) {
+        this.gujrathi = gujrathi;
+    }
+
+    public boolean isTelugu() {
+        return telugu;
+    }
+
+    public void setTelugu(boolean telugu) {
+        this.telugu = telugu;
+    }
 
     public boolean isEnglish() {
         return english;

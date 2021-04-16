@@ -31,6 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -159,7 +160,7 @@ public class PlaceServiceImpl implements PlaceService {
                         queriedDhProduct.setProductId(Utility.getUUID());
                         queriedDhProduct.setDefaultUnit(p.getSelectedUnit());
                         queriedDhProduct.setMainPlaceCategoryId(dhPlace.getPlaceMainCategoryId());
-                        queriedDhProduct.setSubPlaceCategoryId(dhPlace.getPlaceSubCategoryId());
+                        queriedDhProduct.setSubPlaceCategoryIds(Collections.singletonList(dhPlace.getPlaceSubCategoryId()));
                         queriedDhProduct.setCategoryName(dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName());
                         queriedDhProduct.setAddedBy(dhPlace.getAddedBy());
                         queriedDhProduct.setDefaultName(p.getUserEnteredProductName());

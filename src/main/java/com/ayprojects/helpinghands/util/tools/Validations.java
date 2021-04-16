@@ -240,7 +240,7 @@ public class Validations {
         if (Utility.isFieldEmpty(dhProduct.getMainPlaceCategoryId()))
             missingFieldsList.add(AppConstants.PLACE_MAIN_CATEGORY_ID);
 
-        if (Utility.isFieldEmpty(dhProduct.getSubPlaceCategoryId())) {
+        if (dhProduct.getSubPlaceCategoryIds()==null || dhProduct.getSubPlaceCategoryIds().isEmpty()) {
             missingFieldsList.add(AppConstants.PLACE_SUB_CATEGORY_ID);
         }
 

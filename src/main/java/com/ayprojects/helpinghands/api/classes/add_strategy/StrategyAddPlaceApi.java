@@ -28,6 +28,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -130,7 +131,7 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
         queriedDhProduct.setProductId(Utility.getUUID());
         queriedDhProduct.setDefaultUnit(productsWithPrices.getSelectedUnit());
         queriedDhProduct.setMainPlaceCategoryId(dhPlace.getPlaceMainCategoryId());
-        queriedDhProduct.setSubPlaceCategoryId(dhPlace.getPlaceSubCategoryId());
+        queriedDhProduct.setSubPlaceCategoryIds(Collections.singletonList(dhPlace.getPlaceSubCategoryId()));
         queriedDhProduct.setCategoryName(dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName());
         queriedDhProduct.setAddedBy(dhPlace.getAddedBy());
         queriedDhProduct.setDefaultName(productsWithPrices.getUserEnteredProductName());

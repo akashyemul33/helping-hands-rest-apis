@@ -204,6 +204,7 @@ public class AppConstants {
     public static final Integer EMPTY_BODY_STATUS_CODE = 402;
     public static final Integer EMPTY_RESPONSE_STATUS_CODE = 405;
     public static final Integer QUERY_SUCCESSFUL_STATUS_CODE = 200;
+    public static final String DEFAULT_UNIT_IF_EMPTY = "Piece";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
