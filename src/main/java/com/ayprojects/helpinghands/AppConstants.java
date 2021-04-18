@@ -42,7 +42,7 @@ public class AppConstants {
     public static final String PLACE_SUB_CATEGORIES = "placeSubCategories";
     public static final String POST_IDS = "postIds";
     public static final String POST_TYPE = "postType";
-    public static final String SUB_PLACE_CATEGORY_ID = "subPlaceCategoryId";
+    public static final String SUB_PLACE_CATEGORY_IDS = "subPlaceCategoryIds";
     public static final String BUSINESS_PLACE = "BusinessPlace";
     public static final String REGEX_BUSINESS_POST = "^[Bb]usiness[\\s]*[Pp]ost$";
     public static final String REGEX_BUSINESS_REQUIREMENT = "^[Bb]usiness[\\s]*[Rr]equirement$";

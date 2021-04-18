@@ -50,9 +50,11 @@ public class ProductController {
     }
 
     @GetMapping(value = "/getProductsForSubCategory")
-    ResponseEntity<Response<DhProduct>> getProductsForSubCategory(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String subPlaceCategoryId, @PathVariable String version) throws ServerSideException {
+    ResponseEntity<Response<DhProduct>> getProductsForSubCategory(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String subPlaceCategoryId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "25") int size, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_SUB_PLACECATEGORY_ID, subPlaceCategoryId);
+        params.put(AppConstants.KEY_PAGE, page);
+        params.put(AppConstants.KEY_SIZE, size);
         return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetProductStrategy, params, version), HttpStatus.OK);
     }
 

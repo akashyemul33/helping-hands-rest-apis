@@ -98,7 +98,7 @@ public class ProductsServiceImpl implements ProductsService {
         if (Utility.isFieldEmpty(subPlaceCategoryId)) {
             return new Response<DhProduct>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
         }
-        Query queryToFindProductsWithSubCategoryId = new Query(Criteria.where(AppConstants.SUB_PLACE_CATEGORY_ID).is(subPlaceCategoryId));
+        Query queryToFindProductsWithSubCategoryId = new Query(Criteria.where(AppConstants.SUB_PLACE_CATEGORY_IDS).is(subPlaceCategoryId));
 //        queryToFindProductsWithSubCategoryId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         List<DhProduct> dhProductList = mongoTemplate.find(queryToFindProductsWithSubCategoryId, DhProduct.class);
 

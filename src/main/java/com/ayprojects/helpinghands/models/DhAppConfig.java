@@ -2,8 +2,6 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-import javax.print.DocFlavor;
-
 public class DhAppConfig extends AllCommonUsedAttributes {
     private int appConfigId;
     private boolean languageSupport;
@@ -116,7 +114,7 @@ class Languages{
     private boolean marathi;
     private boolean hindi;
     private boolean kannada;
-    private boolean gujrathi;
+    private boolean gujrati;
     private boolean telugu;
 
     public boolean isKannada() {
@@ -127,12 +125,12 @@ class Languages{
         this.kannada = kannada;
     }
 
-    public boolean isGujrathi() {
-        return gujrathi;
+    public boolean isGujrati() {
+        return gujrati;
     }
 
-    public void setGujrathi(boolean gujrathi) {
-        this.gujrathi = gujrathi;
+    public void setGujrati(boolean gujrati) {
+        this.gujrati = gujrati;
     }
 
     public boolean isTelugu() {
