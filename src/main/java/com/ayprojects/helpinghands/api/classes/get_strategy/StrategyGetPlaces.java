@@ -110,7 +110,12 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
         Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
         query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         DhPlace dhPlace = mongoTemplate.findOne(query, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
-        return new Response<DhPlace>(true, 200, "Query successful", Collections.singletonList(dhPlace));
+        if (dhPlace == null) {
+            return new Response<DhPlace>(true, 402, "No active place found with given Place Id", new ArrayList<>());
+        } else {
+            return new Response<DhPlace>(true, 200, "Query successful", Collections.singletonList(dhPlace));
+        }
+
     }
 
     public Response<DhPlace> getBusinessPlacesOfUserWhileAddingPost(String language, String userId) {
