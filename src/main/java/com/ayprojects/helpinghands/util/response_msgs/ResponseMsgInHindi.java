@@ -49,6 +49,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_ID_IS_MISSING;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED;
@@ -153,6 +154,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "क्वेरी पैरामीटर गायब हैं !");
             responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "दिए गए खोज कीवर्ड के साथ मेल खाते कोई सक्रिय उत्पाद नहीं मिले !");
             responseMsgsMap.put(RESPONSEMESSAGE_NO_STICKERS_FOUND, "कोई स्टिकर नहीं मिला !");
+            responseMsgsMap.put(RESPONSEMESSAGE_PLACE_ID_IS_MISSING, "जगह आईडी गायब है !");
         }
     }
 

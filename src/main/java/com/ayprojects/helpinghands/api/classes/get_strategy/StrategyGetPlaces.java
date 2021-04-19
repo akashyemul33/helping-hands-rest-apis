@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -59,6 +60,8 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
 
         } else if (keySet.contains(AppConstants.KEY_USER_ID)) {
             return getBusinessPlacesOfUserWhileAddingPost(language, (String) params.get(AppConstants.KEY_USER_ID));
+        } else if (keySet.contains(AppConstants.PLACE_ID)) {
+            return getPlaceDetails((String) params.get(AppConstants.PLACE_ID), language);
         }
         throw new ServerSideException("No matching get method found in " + getStrategyName());
     }
@@ -80,10 +83,10 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
                     double placeLng = d.getPlaceAddress().getLng();
                     d.setDistance("\t" + "(" + Utility.distance(lat, placeLat, lng, placeLng) + ")");
                 } else {
-                    d.setDistance(ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_UNKNOWN));
+                    d.setDistance(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNKNOWN));
                 }
             } else {
-                d.setDistance(ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_UNKNOWN));
+                d.setDistance(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNKNOWN));
             }
             //calculate open/close msg
             String[] openCloseMsg = Utility.calculatePlaceOpenCloseMsg(d.getPlaceAvailablityDetails(), language);
@@ -98,6 +101,16 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
         }
         return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList.size(), dhPlacePages.getNumber(), dhPlacePages.getTotalPages(), dhPlacePages.getTotalElements(), dhPlaceList);
 
+    }
+
+    public Response<DhPlace> getPlaceDetails(String placeId, String language) {
+        if (Utility.isFieldEmpty(placeId)) {
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_ID_IS_MISSING), new ArrayList<>(), 0);
+        }
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
+        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        DhPlace dhPlace = mongoTemplate.findOne(query, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
+        return new Response<DhPlace>(true, 200, "Query successful", Collections.singletonList(dhPlace));
     }
 
     public Response<DhPlace> getBusinessPlacesOfUserWhileAddingPost(String language, String userId) {

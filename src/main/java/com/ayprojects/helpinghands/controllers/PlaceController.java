@@ -5,9 +5,7 @@ import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.services.place.PlaceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -54,8 +52,15 @@ public class PlaceController {
     }
 
     @GetMapping(value = "/getPlaces")
-    ResponseEntity<Response<DhProduct>> getPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String searchValue, @PathVariable String version) {
+    ResponseEntity<Response<DhPlace>> getPlaces(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String searchValue, @PathVariable String version) {
         return null;
+    }
+
+    @GetMapping(value = "/getPlaceDetails")
+    ResponseEntity<Response<DhPlace>> getPlaceDetails(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String placeId, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PLACE_ID, placeId);
+        return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetPlaceStrategy, params, version), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getPaginatedPlaces")

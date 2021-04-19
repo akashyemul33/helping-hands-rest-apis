@@ -49,6 +49,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_ID_IS_MISSING;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED;
@@ -152,6 +153,7 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_MISSING_QUERY_PARAMS, "क्वेरी पॅरामीटर्स गहाळ आहेत !");
         responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "दिलेल्या शोध कीवर्डशी जुळणारी कोणतीही सक्रिय उत्पादने आढळली नाहीत !");
         responseMsgsMap.put(RESPONSEMESSAGE_NO_STICKERS_FOUND, "कोणतेही स्टिकर्स आढळले नाहीत !");
+        responseMsgsMap.put(RESPONSEMESSAGE_PLACE_ID_IS_MISSING, "प्लेस आयडी गहाळ आहे !");
     }
 
     public Map<String, String> getResponseMsgsMap() {
