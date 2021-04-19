@@ -9,6 +9,7 @@ import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.util.aws.AmazonClient;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
@@ -18,14 +19,20 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
 public class StrategyAddProductApi implements StrategyAddBehaviour<DhProduct> {
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    AmazonClient amazonClient;
 
     @Override
     public Response<DhProduct> add(String language, DhProduct dhProduct) throws ServerSideException {
@@ -73,7 +80,16 @@ public class StrategyAddProductApi implements StrategyAddBehaviour<DhProduct> {
                 if (Utility.isFieldEmpty(dhProduct.getDefaultUnit()))
                     dhProduct.setDefaultUnit(AppConstants.DEFAULT_UNIT_IF_EMPTY);
                 dhProduct.setCategoryName(queriedDhPlaceCategories.getDefaultName());
-                dhProduct = (DhProduct) ApiOperations.setCommonAttrs(dhProduct, AppConstants.STATUS_PENDING);
+                if (!Utility.isFieldEmpty(dhProduct.getImgUrlLow())) {
+                    String productLowUrl = getUrlFromS3Uri(dhProduct.getImgUrlLow());
+                    dhProduct.setImgUrlLow(productLowUrl);
+                }
+                if (!Utility.isFieldEmpty(dhProduct.getImgUrlHigh())) {
+                    String productHighUrl = getUrlFromS3Uri(dhProduct.getImgUrlHigh());
+                    dhProduct.setImgUrlHigh(productHighUrl);
+                }
+                if (Utility.isFieldEmpty(dhProduct.getStatus()))
+                    dhProduct = (DhProduct) ApiOperations.setCommonAttrs(dhProduct, AppConstants.STATUS_PENDING);
                 mongoTemplate.save(dhProduct, AppConstants.COLLECTION_DH_PRODUCT);
                 String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NEW_PRODUCT_ADDED) + " ProductName:" + dhProduct.getDefaultName() + " -> " + dhProduct.getSubCategoryNames().get(0);
                 returnResponse.setLogActionMsg("Product [" + dhProduct.getDefaultName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "->" + dhProduct.getSubCategoryNames().get(0) + "].");
@@ -84,6 +100,14 @@ public class StrategyAddProductApi implements StrategyAddBehaviour<DhProduct> {
             }
         }
         return returnResponse;
+    }
+
+    private String getUrlFromS3Uri(String imgS3UriLow) {
+        String bucketName = imgS3UriLow.split("/")[2];
+        String key = imgS3UriLow.substring(6 + bucketName.length());
+        URL url = amazonClient.getS3Client().getUrl(bucketName, key);
+        LOGGER.info("getUrlFromS3Uri-> bucketName=" + bucketName + " key=" + key + " url=" + url);
+        return String.valueOf(url);
     }
 
     @Override
