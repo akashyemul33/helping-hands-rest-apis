@@ -90,6 +90,8 @@ public class StrategyAddProductApi implements StrategyAddBehaviour<DhProduct> {
                 }
                 if (Utility.isFieldEmpty(dhProduct.getStatus()))
                     dhProduct = (DhProduct) ApiOperations.setCommonAttrs(dhProduct, AppConstants.STATUS_PENDING);
+                else
+                    dhProduct = (DhProduct) ApiOperations.setCommonAttrs(dhProduct, dhProduct.getStatus());
                 mongoTemplate.save(dhProduct, AppConstants.COLLECTION_DH_PRODUCT);
                 String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NEW_PRODUCT_ADDED) + " ProductName:" + dhProduct.getDefaultName() + " -> " + dhProduct.getSubCategoryNames().get(0);
                 returnResponse.setLogActionMsg("Product [" + dhProduct.getDefaultName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "->" + dhProduct.getSubCategoryNames().get(0) + "].");

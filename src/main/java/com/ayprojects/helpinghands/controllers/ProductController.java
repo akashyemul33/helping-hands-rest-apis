@@ -5,7 +5,10 @@ import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhProduct;
+import com.ayprojects.helpinghands.models.DhProductForAddingProducts;
+import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,8 +47,35 @@ public class ProductController {
     }
 
     @PostMapping(value = "/addProducts")
-    public ResponseEntity<Response<DhProduct>> addProducts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody List<DhProduct> dhProducts, @PathVariable String version) throws ServerSideException {
-        for (DhProduct dhProduct : dhProducts) {
+    public ResponseEntity<Response<DhProductForAddingProducts>> addProducts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody List<DhProductForAddingProducts> dhProducts, @PathVariable String version) throws ServerSideException {
+        for (DhProductForAddingProducts d : dhProducts) {
+            DhProduct dhProduct = new DhProduct();
+            dhProduct.setImgUrlLow(d.getImgUrlLow());
+            dhProduct.setImgUrlHigh(d.getImgUrlHigh());
+            dhProduct.setDefaultName(d.getDefaultName());
+            List<LangValueObj> langValueObjList = new ArrayList<>();
+            if (!Utility.isFieldEmpty(d.getNameInMarathi())) {
+                langValueObjList.add(new LangValueObj("mr", d.getNameInMarathi()));
+            }
+            if (!Utility.isFieldEmpty(d.getNameInHindi())) {
+                langValueObjList.add(new LangValueObj("hi", d.getNameInHindi()));
+            }
+            if (!Utility.isFieldEmpty(d.getNameInTelugu())) {
+                langValueObjList.add(new LangValueObj("te", d.getNameInTelugu()));
+            }
+            if (!Utility.isFieldEmpty(d.getNameInKannada())) {
+                langValueObjList.add(new LangValueObj("kn", d.getNameInKannada()));
+            }
+            if (!Utility.isFieldEmpty(d.getNameInGujarati())) {
+                langValueObjList.add(new LangValueObj("gu", d.getNameInGujarati()));
+            }
+            dhProduct.setTranslations(langValueObjList);
+            dhProduct.setAvgPrice(d.getAvgPrice());
+            dhProduct.setMainPlaceCategoryId(d.getMainPlaceCategoryId());
+            dhProduct.setSubPlaceCategoryIds(Arrays.asList(d.getSubPlaceCategoryIds().split(",")));
+            dhProduct.setDefaultUnit(d.getDefaultUnit());
+            dhProduct.setUnitQty(d.getUnitQty());
+            dhProduct.setStatus(AppConstants.STATUS_ACTIVE);
             apiOperations.add(authentication, httpHeaders, dhProduct, StrategyName.AddProductStrategy, version);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
