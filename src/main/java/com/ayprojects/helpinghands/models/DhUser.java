@@ -17,7 +17,8 @@ public class DhUser extends AllCommonUsedAttributes {
     private String lastLogInTime;
     private String lastLogOutTime;
     private String triedToLoginTime;
-    private String profileImg;
+    private String profileImgLow;
+    private String profileImgHigh;
     //    private Address addressDetails;
     @Indexed
     private String mobileNumber;
@@ -32,17 +33,16 @@ public class DhUser extends AllCommonUsedAttributes {
     private boolean isUserSettingEnabled;
     private String languageSelected;
     private String fcmToken;
-
     public DhUser() {
         super();
     }
-
-    public DhUser(String uniqueUserID, String imgUrl) {
+    public DhUser(String uniqueUserID, String imgUrlLow,String imgUrlHigh) {
         this.userId = uniqueUserID;
-        this.profileImg = imgUrl;
+        this.profileImgLow = imgUrlLow;
+        this.profileImgHigh = imgUrlHigh;
     }
 
-    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImg, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected, String lastName) {
+    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImgLow, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected, String lastName) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
@@ -50,7 +50,7 @@ public class DhUser extends AllCommonUsedAttributes {
         this.userId = userId;
         this.firstName = firstName;
         this.password = password;
-        this.profileImg = profileImg;
+        this.profileImgLow = profileImgLow;
         this.mobileNumber = mobileNumber;
         this.emailId = emailId;
         this.roles = roles;
@@ -64,16 +64,24 @@ public class DhUser extends AllCommonUsedAttributes {
         this.lastName = lastName;
     }
 
-    public DhUser(String userId, String firstName, String password, String profileImg, String mobileNumber, String emailId, String[] roles, String languageSelected, String lastName) {
+    public DhUser(String userId, String firstName, String password, String profileImgLow, String mobileNumber, String emailId, String[] roles, String languageSelected, String lastName) {
         this.userId = userId;
         this.firstName = firstName;
         this.password = password;
-        this.profileImg = profileImg;
+        this.profileImgLow = profileImgLow;
         this.mobileNumber = mobileNumber;
         this.emailId = emailId;
         this.roles = roles;
         this.languageSelected = languageSelected;
         this.lastName = lastName;
+    }
+
+    public String getProfileImgHigh() {
+        return profileImgHigh;
+    }
+
+    public void setProfileImgHigh(String profileImgHigh) {
+        this.profileImgHigh = profileImgHigh;
     }
 
     public String getTriedToLoginTime() {
@@ -236,11 +244,11 @@ public class DhUser extends AllCommonUsedAttributes {
         this.password = password;
     }
 
-    public String getProfileImg() {
-        return profileImg;
+    public String getProfileImgLow() {
+        return profileImgLow;
     }
 
-    public void setProfileImg(String profileImg) {
-        this.profileImg = profileImg;
+    public void setProfileImgLow(String profileImgLow) {
+        this.profileImgLow = profileImgLow;
     }
 }

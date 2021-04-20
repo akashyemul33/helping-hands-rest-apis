@@ -93,7 +93,7 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPosts> {
     }
 
     private DhPosts setPostIdIfNotExists(DhPosts dhPosts) {
-        if (Utility.isFieldEmpty(dhPosts.getPlaceId()) || dhPosts.getPostImages() == null || dhPosts.getPostImages().size() <= 0) {
+        if (Utility.isFieldEmpty(dhPosts.getPlaceId()) || dhPosts.getPostImagesLow() == null || dhPosts.getPostImagesLow().size() <= 0) {
             dhPosts.setPostId(Utility.getUUID());
         }
         return dhPosts;

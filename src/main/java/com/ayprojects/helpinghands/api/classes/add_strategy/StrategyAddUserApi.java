@@ -13,9 +13,6 @@ import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -23,8 +20,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
-
-import javax.swing.text.html.Option;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -97,7 +92,7 @@ public class StrategyAddUserApi implements StrategyAddBehaviour<DhUser> {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_PASSWORD_IS_EMPTY), new ArrayList<>());
         }
 
-        if (Utility.isFieldEmpty(dhUserDetails.getProfileImg())) {
+        if (Utility.isFieldEmpty(dhUserDetails.getProfileImgLow())) {
             dhUserDetails.setUserId(Utility.getUUID());
         } else if (Utility.isFieldEmpty(dhUserDetails.getUserId())) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_ID_IS_MISSING), new ArrayList<>());

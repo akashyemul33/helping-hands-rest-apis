@@ -5,9 +5,6 @@ import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.rmi.CORBA.Util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,14 +18,14 @@ public class GetUserImgUploadKeyMethodTest {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                GetImageFoldersAndPrefix.getUserImgUploadKey(null);
+                GetImageFoldersAndPrefix.getUserImgUploadKeyLow(null,false);
             }
         });
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                GetImageFoldersAndPrefix.getUserImgUploadKey("");
+                GetImageFoldersAndPrefix.getUserImgUploadKeyLow("",false);
             }
         });    }
 
@@ -38,7 +35,7 @@ public class GetUserImgUploadKeyMethodTest {
         String userInitial = "USER_";
         String imagesBaseFolder = "app_images";
         String userImgRegex = String.format("%s/.*/%s/%s.*/", imagesBaseFolder,userDir,userInitial);
-        String imgUploadKey = GetImageFoldersAndPrefix.getUserImgUploadKey(Utility.getUUID());
+        String imgUploadKey = GetImageFoldersAndPrefix.getUserImgUploadKeyLow(Utility.getUUID(),false);
         LOGGER.info("imgUploadKey="+imgUploadKey);
         assertTrue(imgUploadKey.matches(userImgRegex));
     }

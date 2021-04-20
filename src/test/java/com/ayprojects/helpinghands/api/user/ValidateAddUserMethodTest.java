@@ -120,7 +120,7 @@ public class ValidateAddUserMethodTest {
         String mobile = "7987787878";
         DhUser dhUser = new DhUser();
         dhUser.setMobileNumber(mobile);
-        dhUser.setProfileImg("asdfjljoiwer");
+        dhUser.setProfileImgLow("asdfjljoiwer");
         dhUser.setPassword("adsfkljk");
         dhUser.setStatus(AppConstants.STATUS_ACTIVE);
 
@@ -154,7 +154,7 @@ public class ValidateAddUserMethodTest {
         String mobile = "7987787878";
         DhUser dhUser = new DhUser();
         dhUser.setMobileNumber(mobile);
-        dhUser.setProfileImg("adf");
+        dhUser.setProfileImgLow("adf");
         dhUser.setUserId("zfgdfgrt463sdg");
         dhUser.setPassword("adsfkljk");
         dhUser.setEmailId("adkf@gmail.com");

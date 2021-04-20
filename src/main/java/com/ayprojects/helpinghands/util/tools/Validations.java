@@ -278,7 +278,7 @@ public class Validations {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_PASSWORD_IS_EMPTY), new ArrayList<>());
         }
 
-        if (Utility.isFieldEmpty(dhUserDetails.getProfileImg())) {
+        if (Utility.isFieldEmpty(dhUserDetails.getProfileImgLow())) {
             dhUserDetails.setUserId(Utility.getUUID());
         } else if (Utility.isFieldEmpty(dhUserDetails.getUserId())) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_ID_IS_MISSING), new ArrayList<>());

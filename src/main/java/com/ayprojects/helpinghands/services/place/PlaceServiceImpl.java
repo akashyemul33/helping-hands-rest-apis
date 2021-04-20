@@ -67,7 +67,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
         LOGGER.info("PlaceServiceImpl->addPlace : isAddressGenerated=" + dhPlace.isAddressGenerated());
         //check if placeId && placeimages present
-        if (Utility.isFieldEmpty(dhPlace.getPlaceId()) || dhPlace.getPlaceImages() == null || dhPlace.getPlaceImages().size() <= 0) {
+        if (Utility.isFieldEmpty(dhPlace.getPlaceId()) || dhPlace.getImageUrlsLow() == null || dhPlace.getImageUrlsLow().size() <= 0) {
             dhPlace.setPlaceId(Utility.getUUID());
         }
 

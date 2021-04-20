@@ -5,7 +5,6 @@ import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
-import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.log.LogService;
@@ -37,17 +36,19 @@ public class ImageServiceImpl implements ImageService {
     AmazonClient amazonClient;
 
     @Override
-    public Response<DhUser> uploadUserImage(HttpHeaders httpHeaders, MultipartFile image, String version) throws ServerSideException {
+    public Response<DhUser> uploadUserImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        if (image == null || image.isEmpty()) {
+        if (imageLow == null || imageLow.isEmpty() || imageHigh.isEmpty()) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
 
         String uniqueUserID = Utility.getUUID();
-        String imgUploadKey = GetImageFoldersAndPrefix.getUserImgUploadKey(uniqueUserID);
+        String imgUploadKeyLow = GetImageFoldersAndPrefix.getUserImgUploadKeyLow(uniqueUserID, false);
+        String imgUploadKeyHigh = GetImageFoldersAndPrefix.getUserImgUploadKeyLow(uniqueUserID, true);
         try {
-            String finalKey = amazonClient.uploadSingleImageToS3(imgUploadKey, image);
-            DhUser dhUser = new DhUser(uniqueUserID, finalKey);
+            String finalKeyLow = amazonClient.uploadSingleImageToS3(imgUploadKeyLow, imageLow);
+            String finalKeyHigh = amazonClient.uploadSingleImageToS3(imgUploadKeyHigh, imageHigh);
+            DhUser dhUser = new DhUser(uniqueUserID, finalKeyLow, finalKeyHigh);
             logService.addLog(new DhLog(uniqueUserID, "User image has been added"));
             return new Response<DhUser>(true, 201, "Image saved successfully", Collections.singletonList(dhUser));
         } catch (Exception e) {
@@ -58,21 +59,24 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Response<DhPlace> uploadPlaceImages(HttpHeaders httpHeaders, Authentication authentication, String placeType, String addedBy, MultipartFile[] placeImages, String version) throws ServerSideException {
+    public Response<DhPlace> uploadPlaceImages(HttpHeaders httpHeaders, Authentication authentication, String placeType, String addedBy, MultipartFile[] placeImagesLow, MultipartFile[] placeImagesHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        if (placeImages == null || placeImages.length == 0 || Utility.isFieldEmpty(placeType) || Utility.isFieldEmpty(addedBy)) {
+        if (placeImagesLow == null || placeImagesLow.length == 0 || Utility.isFieldEmpty(placeType) || Utility.isFieldEmpty(addedBy)) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
 
         String uniquePlaceID = Utility.getUUID();
-        String placeImgUploadKey = GetImageFoldersAndPrefix.getPlaceImgUploadKey(uniquePlaceID, placeType);
+        String placeImgUploadKeyLow = GetImageFoldersAndPrefix.getPlaceImgUploadKey(uniquePlaceID, placeType, false);
+        String placeImgUploadKeyHigh = GetImageFoldersAndPrefix.getPlaceImgUploadKey(uniquePlaceID, placeType, true);
 
         try {
-            List<String> placeImageUrls = amazonClient.uploadImagesToS3(placeImgUploadKey, placeImages);
+            List<String> placeImageUrlsLow = amazonClient.uploadImagesToS3(placeImgUploadKeyLow, placeImagesLow);
+            List<String> placeImageUrlsHigh = amazonClient.uploadImagesToS3(placeImgUploadKeyHigh, placeImagesHigh);
             DhPlace dhPlace = new DhPlace();
             dhPlace.setPlaceId(uniquePlaceID);
             dhPlace.setAddedBy(addedBy);
-            dhPlace.setPlaceImages(placeImageUrls);
+            dhPlace.setImageUrlsLow(placeImageUrlsLow);
+            dhPlace.setImageUrlsHigh(placeImageUrlsHigh);
             dhPlace.setPlaceType(placeType);
             logService.addLog(new DhLog(addedBy, "Place images have been added"));
             String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED);
@@ -85,26 +89,28 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Response<DhPosts> uploadPostImages(HttpHeaders httpHeaders, Authentication authentication, String postType, String addedBy, MultipartFile[] postImages, String version) throws ServerSideException {
+    public Response<DhPosts> uploadPostImages(HttpHeaders httpHeaders, Authentication authentication, String postType, String addedBy, MultipartFile[] postImagesLow, MultipartFile[] postImagesHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        if (postImages == null || postImages.length == 0 || Utility.isFieldEmpty(postType) || Utility.isFieldEmpty(addedBy)) {
+        if (postImagesLow == null || postImagesLow.length == 0 || Utility.isFieldEmpty(postType) || Utility.isFieldEmpty(addedBy)) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
 
         String uniquePostID = Utility.getUUID();
-        String postImgUploadKey = GetImageFoldersAndPrefix.getPostImgUploadKey(uniquePostID, postType);
+        String postImgUploadKeyLow = GetImageFoldersAndPrefix.getPostImgUploadKey(uniquePostID, postType, false);
+        String postImgUploadKeyHigh = GetImageFoldersAndPrefix.getPostImgUploadKey(uniquePostID, postType, true);
 
         try {
-            List<String> postImageUrls = amazonClient.uploadImagesToS3(postImgUploadKey, postImages);
+            List<String> postImageUrlsLow = amazonClient.uploadImagesToS3(postImgUploadKeyLow, postImagesLow);
+            List<String> postImageUrlsHigh = amazonClient.uploadImagesToS3(postImgUploadKeyHigh, postImagesHigh);
             DhPosts dhPosts = new DhPosts();
             dhPosts.setPostId(uniquePostID);
             dhPosts.setAddedBy(addedBy);
-            dhPosts.setPostImages(postImageUrls);
+            dhPosts.setPostImagesLow(postImageUrlsLow);
+            dhPosts.setPostImagesHigh(postImageUrlsHigh);
             logService.addLog(new DhLog(addedBy, "Post images have been added"));
             String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED);
-            return new Response<>(true, 201,successMsg , Collections.singletonList(dhPosts), 1);
-        }
-        catch (Exception ioException) {
+            return new Response<>(true, 201, successMsg, Collections.singletonList(dhPosts), 1);
+        } catch (Exception ioException) {
             LOGGER.info("ImageServiceImpl->uploadPostImages : exception = " + ioException.getMessage());
             String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES);
             return new Response<>(false, 402, errorMsg, new ArrayList<>());

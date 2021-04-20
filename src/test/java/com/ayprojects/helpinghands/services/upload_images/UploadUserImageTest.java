@@ -2,7 +2,6 @@ package com.ayprojects.helpinghands.services.upload_images;
 
 
 import com.ayprojects.helpinghands.AppConstants;
-import com.ayprojects.helpinghands.api.classes.UploadImagesApi;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
@@ -10,7 +9,6 @@ import com.ayprojects.helpinghands.services.image.ImageServiceImpl;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 
 import org.apache.http.entity.ContentType;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

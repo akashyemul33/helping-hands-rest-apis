@@ -1,7 +1,5 @@
 package com.ayprojects.helpinghands.models;
 
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
-
 import org.springframework.data.annotation.Transient;
 
 import java.util.List;
@@ -39,7 +37,17 @@ public class DhPlace extends AllCommonUsedAttributes {
     private String placeDesc;
     private Contact placeContact;
     private boolean doorService;
-    private List<String> placeImages;
+    private List<String> imageUrlsLow;
+
+    public List<String> getImageUrlsHigh() {
+        return imageUrlsHigh;
+    }
+
+    public void setImageUrlsHigh(List<String> imageUrlsHigh) {
+        this.imageUrlsHigh = imageUrlsHigh;
+    }
+
+    private List<String> imageUrlsHigh;
     private PlaceAvailabilityDetails placeAvailablityDetails;
     private List<ProductsWithPrices> productDetails;
     private long numberOfRatings;
@@ -66,7 +74,7 @@ public class DhPlace extends AllCommonUsedAttributes {
 
     }
 
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> placeImages, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<DhPosts> topPosts, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> imageUrlsLow, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<DhPosts> topPosts, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
@@ -83,7 +91,7 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.placeDesc = placeDesc;
         this.placeContact = placeContact;
         this.doorService = doorService;
-        this.placeImages = placeImages;
+        this.imageUrlsLow = imageUrlsLow;
         this.placeAvailablityDetails = placeAvailablityDetails;
         this.productDetails = productDetails;
         this.numberOfRatings = numberOfRatings;
@@ -262,12 +270,12 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.doorService = doorService;
     }
 
-    public List<String> getPlaceImages() {
-        return placeImages;
+    public List<String> getImageUrlsLow() {
+        return imageUrlsLow;
     }
 
-    public void setPlaceImages(List<String> placeImages) {
-        this.placeImages = placeImages;
+    public void setImageUrlsLow(List<String> imageUrlsLow) {
+        this.imageUrlsLow = imageUrlsLow;
     }
 
     public PlaceAvailabilityDetails getPlaceAvailablityDetails() {

@@ -78,7 +78,7 @@ public class StrategyGetPosts implements StrategyGetBehaviour<DhPosts> {
             try {
                 DhUser dhUser = Utility.getUserDetailsFromId(d.getAddedBy(), mongoTemplate, true, false, true);
                 d.setUserName(dhUser.getFirstName());
-                d.setUserImage(dhUser.getProfileImg());
+                d.setUserImage(dhUser.getProfileImgLow());
             } catch (NullPointerException e) {
                 LOGGER.info("getPaginatedPosts->catch while fetching userdetails->message:" + e.getMessage());
             }

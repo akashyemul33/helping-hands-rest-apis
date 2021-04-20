@@ -60,7 +60,7 @@ public class PostsServiceImpl implements PostsService {
         }
 
         //check if postId present && postImages present
-        if (Utility.isFieldEmpty(dhPosts.getPlaceId()) || dhPosts.getPostImages() == null || dhPosts.getPostImages().size() <= 0) {
+        if (Utility.isFieldEmpty(dhPosts.getPlaceId()) || dhPosts.getPostImagesLow() == null || dhPosts.getPostImagesLow().size() <= 0) {
             dhPosts.setPostId(Utility.getUUID());
         }
 
@@ -155,7 +155,7 @@ public class PostsServiceImpl implements PostsService {
             try {
                 DhUser dhUser = Utility.getUserDetailsFromId(d.getAddedBy(), mongoTemplate, true, false, true);
                 d.setUserName(dhUser.getFirstName());
-                d.setUserImage(dhUser.getProfileImg());
+                d.setUserImage(dhUser.getProfileImgLow());
             } catch (NullPointerException e) {
                 LOGGER.info("getPaginatedPosts->catch while fetching userdetails->message:" + e.getMessage());
             }
