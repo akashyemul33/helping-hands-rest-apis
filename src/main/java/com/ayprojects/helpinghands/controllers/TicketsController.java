@@ -37,13 +37,19 @@ public class TicketsController {
 
     @PostMapping(value = "/addTicket")
     public ResponseEntity<Response<DhTicket>> addTicket(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhTicket dhTicket, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhTicket, StrategyName.AddProductStrategy, version), HttpStatus.CREATED);
+        Response<DhTicket> tempResponse = apiOperations.add(authentication, httpHeaders, dhTicket, StrategyName.AddTicketStrategy, version);
+        if (tempResponse.getStatus()) {
+            return new ResponseEntity<>(tempResponse, HttpStatus.CREATED);
+        } else return new ResponseEntity<>(tempResponse, HttpStatus.EXPECTATION_FAILED);
     }
 
     @GetMapping(value = "/getTicketsByUserId")
     ResponseEntity<Response<DhTicket>> getTicketsByUserId(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_USER_ID, userId);
-        return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetTicketStrategy, params, version), HttpStatus.OK);
+        Response<DhTicket> tempResponse = apiOperations.get(authentication, httpHeaders, StrategyName.GetTicketStrategy, params, version);
+        if (tempResponse.getStatus()) {
+            return new ResponseEntity<>(tempResponse, HttpStatus.OK);
+        } else return new ResponseEntity<>(tempResponse, HttpStatus.EXPECTATION_FAILED);
     }
 }
