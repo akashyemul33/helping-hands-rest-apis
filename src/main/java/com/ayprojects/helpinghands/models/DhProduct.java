@@ -1,35 +1,38 @@
 package com.ayprojects.helpinghands.models;
 
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Document
 public class DhProduct extends AllCommonUsedAttributes {
+    public String defaultName;
+    public List<LangValueObj> translations;
     private String productId;
-    private String productImageId;
-    private String productImagePath;
     private String defaultUnit;
     private String mainPlaceCategoryId;
-    private String subPlaceCategoryId;
+    private List<String> subPlaceCategoryIds;
     private String categoryName;
+    private List<String> subCategoryNames;
     private String addedBy;
     private String avgPrice;
+    private String unitQty;
+    private String imgUrlLow;
+    private String imgUrlHigh;
+
     public DhProduct() {
 
     }
-    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String productImageId, String productImagePath, String defaultUnit, String mainPlaceCategoryId, String subPlaceCategoryId, String categoryName, String addedBy, String defaultName, List<LangValueObj> translations, String avgPrice) {
+
+    public DhProduct(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String productId, String defaultUnit, String mainPlaceCategoryId, List<String> subPlaceCategoryIds, String categoryName, String addedBy, String defaultName, List<LangValueObj> translations, String avgPrice) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
         this.status = status;
         this.productId = productId;
-        this.productImageId = productImageId;
-        this.productImagePath = productImagePath;
         this.defaultUnit = defaultUnit;
         this.mainPlaceCategoryId = mainPlaceCategoryId;
-        this.subPlaceCategoryId = subPlaceCategoryId;
+        this.subPlaceCategoryIds = subPlaceCategoryIds;
         this.categoryName = categoryName;
         this.addedBy = addedBy;
         this.defaultName = defaultName;
@@ -41,6 +44,38 @@ public class DhProduct extends AllCommonUsedAttributes {
         this.defaultUnit = defaultUnit;
         this.defaultName = defaultName;
         this.avgPrice = avgPrice;
+    }
+
+    public List<String> getSubCategoryNames() {
+        return subCategoryNames;
+    }
+
+    public void setSubCategoryNames(List<String> subCategoryNames) {
+        this.subCategoryNames = subCategoryNames;
+    }
+
+    public String getImgUrlLow() {
+        return imgUrlLow;
+    }
+
+    public void setImgUrlLow(String imgUrlLow) {
+        this.imgUrlLow = imgUrlLow;
+    }
+
+    public String getImgUrlHigh() {
+        return imgUrlHigh;
+    }
+
+    public void setImgUrlHigh(String imgUrlHigh) {
+        this.imgUrlHigh = imgUrlHigh;
+    }
+
+    public String getUnitQty() {
+        return unitQty;
+    }
+
+    public void setUnitQty(String unitQty) {
+        this.unitQty = unitQty;
     }
 
     public String getDefaultName() {
@@ -67,12 +102,12 @@ public class DhProduct extends AllCommonUsedAttributes {
         this.addedBy = addedBy;
     }
 
-    public String getSubPlaceCategoryId() {
-        return subPlaceCategoryId;
+    public List<String> getSubPlaceCategoryIds() {
+        return subPlaceCategoryIds;
     }
 
-    public void setSubPlaceCategoryId(String subPlaceCategoryId) {
-        this.subPlaceCategoryId = subPlaceCategoryId;
+    public void setSubPlaceCategoryIds(List<String> subPlaceCategoryIds) {
+        this.subPlaceCategoryIds = subPlaceCategoryIds;
     }
 
     public String getProductId() {
@@ -81,22 +116,6 @@ public class DhProduct extends AllCommonUsedAttributes {
 
     public void setProductId(String productId) {
         this.productId = productId;
-    }
-
-    public String getProductImageId() {
-        return productImageId;
-    }
-
-    public void setProductImageId(String productImageId) {
-        this.productImageId = productImageId;
-    }
-
-    public String getProductImagePath() {
-        return productImagePath;
-    }
-
-    public void setProductImagePath(String productImagePath) {
-        this.productImagePath = productImagePath;
     }
 
     public String getDefaultUnit() {
@@ -130,5 +149,6 @@ public class DhProduct extends AllCommonUsedAttributes {
     public void setAvgPrice(String avgPrice) {
         this.avgPrice = avgPrice;
     }
+
 }
 

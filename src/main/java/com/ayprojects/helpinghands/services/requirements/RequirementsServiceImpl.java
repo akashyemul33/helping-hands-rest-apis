@@ -2,14 +2,11 @@ package com.ayprojects.helpinghands.services.requirements;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
-import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.repositories.PostsRepository;
 import com.ayprojects.helpinghands.repositories.RequirementsRepository;
-import com.ayprojects.helpinghands.tools.Utility;
-import com.ayprojects.helpinghands.tools.Validations;
-import com.google.gson.Gson;
+import com.ayprojects.helpinghands.util.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,17 +16,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import javax.rmi.CORBA.Util;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 

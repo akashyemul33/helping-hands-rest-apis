@@ -3,7 +3,6 @@ package com.ayprojects.helpinghands.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,8 +12,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -22,40 +19,22 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    /*@Autowired
-    JwtConfiguration jwtConfiguration;*/
-
-/*    @Bean
-    public JwtAccessTokenConverter tokenEnhancer() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(String.valueOf(jwtConfiguration.jwtSigningKey(jwtConfiguration.keyStore())));
-        converter.setVerifierKey(String.valueOf(jwtConfiguration.jwtValidationKey(jwtConfiguration.keyStore())));
-        return converter;
-    }
-
-    @Bean
-    public JwtTokenStore jwtTokenStore() {
-        return new JwtTokenStore(tokenEnhancer());
-    }*/
-
+    @Autowired
+    PasswordEncoder bCryptPasswordEncoder;
     @Autowired
     @Qualifier("tokenStore")
     private TokenStore tokenStore;
-
-    @Autowired
-    PasswordEncoder bCryptPasswordEncoder;
-
     @Value("${oauth.tokenTimeout}")
     private int expiration;
 
     @Value("${user.oauth.redirectUris}")
-    private String  redirectUri;
+    private String redirectUri;
 
     @Value("${user.oauth.clientId}")
-    private String  clientId;
+    private String clientId;
 
     @Value("${user.oauth.clientSecret}")
-    private String  clientSecret;
+    private String clientSecret;
 
 
     @Autowired
@@ -83,15 +62,15 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        LOGGER.info("clientId="+clientId);
-        LOGGER.info("clientSecreteId="+clientSecret);
-        LOGGER.info("expiration="+expiration);
+        LOGGER.info("clientId=" + clientId);
+        LOGGER.info("clientSecreteId=" + clientSecret);
+        LOGGER.info("expiration=" + expiration);
         clients.inMemory().withClient(clientId).authorizedGrantTypes("password", "refresh_token")
                 .authorities("USER").scopes("read", "write").accessTokenValiditySeconds(expiration)
                 .refreshTokenValiditySeconds(expiration)
                 .resourceIds(RestApiResourceServerConfiguration.RESOURCE_ID)
                 .secret(bCryptPasswordEncoder.encode(clientSecret));
-//              .redirectUris(redirectUri);
+//                .redirectUris(redirectUri);
     }
 
 }

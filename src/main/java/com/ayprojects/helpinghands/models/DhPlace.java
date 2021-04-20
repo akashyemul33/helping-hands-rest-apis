@@ -6,12 +6,29 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.List;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
-
 public class DhPlace extends AllCommonUsedAttributes {
     private String placeId;
     private String placeType;
     private Address placeAddress;
+    private String placeRegDate;
+
+    public String getPlaceRegDate() {
+        return placeRegDate;
+    }
+
+    public void setPlaceRegDate(String placeRegDate) {
+        this.placeRegDate = placeRegDate;
+    }
+
+    public int getAgeOfPlace() {
+        return ageOfPlace;
+    }
+
+    public void setAgeOfPlace(int ageOfPlace) {
+        this.ageOfPlace = ageOfPlace;
+    }
+
+    private int ageOfPlace;
     private boolean addressGenerated;
     private String placeMainCategoryId;
     private String addedBy;

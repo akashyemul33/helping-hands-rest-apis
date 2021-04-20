@@ -1,11 +1,12 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.List;
 
 public class NameAndTranslationsObj {
     public String defaultName;
     public List<LangValueObj> translations;
-
     public String getDefaultName() {
         return defaultName;
     }

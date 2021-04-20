@@ -14,7 +14,6 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     UserRepository userRepository;
 
-
     @Override
     public DhUser addUser(DhUser dhUserDetails) {
         return userRepository.save(dhUserDetails);
@@ -32,6 +31,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Optional<DhUser> findByMobileNumberAndStatus(String mobileNumber, String status) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<DhUser> findByMobileNumberAndCountryCode(String mobileNumber, String countryCode) {
+        return userRepository.findByMobileNumberAndCountryCode(mobileNumber,countryCode);
+    }
+
+    @Override
     public Optional<DhUser> findByEmailId(String emailId) {
         return userRepository.findByEmailId(emailId);
     }
@@ -40,4 +49,11 @@ public class UserDaoImpl implements UserDao {
     public Optional<DhUser> findByMobileNumberOrEmailId(String mobileNumber, String emailId) {
         return userRepository.findByMobileNumberOrEmailId(mobileNumber,emailId);
     }
+
+    @Override
+    public Optional<DhUser> findByUserId(String userId) {
+        return userRepository.findByUserId(userId);
+    }
+
+
 }

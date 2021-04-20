@@ -2,11 +2,20 @@ package com.ayprojects.helpinghands.controllers;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
-import com.ayprojects.helpinghands.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Utility;
+
 
 public class tmp {
     public static void main(String[] args) {
         System.out.println("tmp");
+//        checkOpenCloseTimings();
+          checkCountryCodeDetectionFromPhone();
+    }
+
+    private static void checkCountryCodeDetectionFromPhone() {
+    }
+
+    private static void checkOpenCloseTimings() {
         PlaceAvailabilityDetails p = new PlaceAvailabilityDetails();
         p.setProvide24into7(true);
         p.setPlaceOpeningTime("10:40");

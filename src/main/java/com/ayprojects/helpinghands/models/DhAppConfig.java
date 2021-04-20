@@ -1,5 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
+import java.util.List;
+
 public class DhAppConfig extends AllCommonUsedAttributes {
     private int appConfigId;
     private boolean languageSupport;
@@ -10,6 +12,19 @@ public class DhAppConfig extends AllCommonUsedAttributes {
     private Languages languages;
     private String addedBy;
     private Modules modules;
+    private List<LangValueObj> units;
+
+    public DhAppConfig() {
+
+    }
+
+    public List<LangValueObj> getUnits() {
+        return units;
+    }
+
+    public void setUnits(List<LangValueObj> units) {
+        this.units = units;
+    }
 
     public String getAddedBy() {
         return addedBy;
@@ -98,6 +113,33 @@ class Languages{
     private boolean english;
     private boolean marathi;
     private boolean hindi;
+    private boolean kannada;
+    private boolean gujrati;
+    private boolean telugu;
+
+    public boolean isKannada() {
+        return kannada;
+    }
+
+    public void setKannada(boolean kannada) {
+        this.kannada = kannada;
+    }
+
+    public boolean isGujrati() {
+        return gujrati;
+    }
+
+    public void setGujrati(boolean gujrati) {
+        this.gujrati = gujrati;
+    }
+
+    public boolean isTelugu() {
+        return telugu;
+    }
+
+    public void setTelugu(boolean telugu) {
+        this.telugu = telugu;
+    }
 
     public boolean isEnglish() {
         return english;

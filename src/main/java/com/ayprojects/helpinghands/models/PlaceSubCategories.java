@@ -10,6 +10,8 @@ public class PlaceSubCategories extends AllCommonUsedAttributes {
     private String addedBy;
     private String placeMainCategoryId;
     private String placeMainCategoryName;
+    public String defaultName;
+    public List<LangValueObj> translations;
 
     public PlaceSubCategories() {
 

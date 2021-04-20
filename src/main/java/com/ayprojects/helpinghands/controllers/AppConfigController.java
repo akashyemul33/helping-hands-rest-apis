@@ -1,13 +1,14 @@
 package com.ayprojects.helpinghands.controllers;
 
 
+import com.ayprojects.helpinghands.AppConstants;
+import com.ayprojects.helpinghands.api.ApiOperations;
+import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhAppConfig;
-import com.ayprojects.helpinghands.models.DhUser;
-import com.ayprojects.helpinghands.models.LoginResponse;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.appconfig.AppConfigService;
-import com.ayprojects.helpinghands.services.user.UserService;
+import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,9 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import io.swagger.annotations.Api;
 
@@ -33,16 +36,16 @@ import io.swagger.annotations.Api;
 public class AppConfigController {
 
     @Autowired
-    AppConfigService appConfigService;
+    ApiOperations<DhAppConfig> apiOperations;
 
     @PostMapping(value="/add")
     public ResponseEntity<Response<DhAppConfig>> addAppConfig(Authentication authentication,@RequestHeader HttpHeaders httpHeaders, @RequestBody DhAppConfig dhAppConfig, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(appConfigService.addAppConfig(authentication,httpHeaders,dhAppConfig,version), HttpStatus.CREATED);
+        return new ResponseEntity<>(apiOperations.add(authentication,httpHeaders,dhAppConfig,StrategyName.GetAppConfigStrategy,version), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getAppConfig")
     ResponseEntity<Response<DhAppConfig>> getAppConfig(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(appConfigService.getActiveAppConfig(httpHeaders,authentication,version), HttpStatus.OK);
+        return new ResponseEntity<>(apiOperations.get(authentication,httpHeaders,StrategyName.GetAppConfigStrategy,new HashMap<>(),version), HttpStatus.OK);
     }
 
 }

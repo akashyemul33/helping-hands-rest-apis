@@ -1,6 +1,8 @@
 package com.ayprojects.helpinghands.controllers;
 
 import com.ayprojects.helpinghands.AppConstants;
+import com.ayprojects.helpinghands.api.ApiOperations;
+import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.Response;
@@ -22,24 +24,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 import io.swagger.annotations.Api;
 
-@Api(value = "Rating and Comments API's",description = "CRUD for Ratings and Comments")
+@Api(value = "Rating and Comments API's", description = "CRUD for Ratings and Comments")
 @RestController
 @ResponseStatus
 @RequestMapping("/api/v{version}/ratingAndComments")
 public class RatingAndCommentsController {
 
     @Autowired
-    RatingCommentsService ratingCommentsService;
+    ApiOperations<DhRatingAndComments> apiOperations;
 
-    @PostMapping(value="/addRatingAndComments")
+    @PostMapping(value = "/addRatingAndComments")
     public ResponseEntity<Response<DhRatingAndComments>> addRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhRatingAndComments dhRatingComments, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(ratingCommentsService.addRatingAndComments(authentication,httpHeaders, dhRatingComments,version), HttpStatus.CREATED);
+        return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhRatingComments, StrategyName.AddRatingStrategy, version), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getPaginatedRatingsAndComments")
-    ResponseEntity<Response<DhRatingAndComments>> getPaginatedRatingsAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam (defaultValue = "7") int size, @RequestParam String contentId, @RequestParam String contentType, @PathVariable String version){
-        return new ResponseEntity<>(ratingCommentsService.getPaginatedRatingAndComments(authentication,httpHeaders,contentId,contentType, AppConstants.STATUS_ACTIVE,page,size,version), HttpStatus.OK);
+    ResponseEntity<Response<DhRatingAndComments>> getPaginatedRatingsAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size, @RequestParam String contentId, @RequestParam String contentType, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_CONTENT_ID, contentId);
+        params.put(AppConstants.KEY_CONTENT_TYPE, contentType);
+        params.put(AppConstants.STATUS, AppConstants.STATUS_ACTIVE);
+        params.put(AppConstants.KEY_PAGE, page);
+        params.put(AppConstants.KEY_SIZE, size);
+        return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetRatingStrategy, params, version), HttpStatus.OK);
     }
 }

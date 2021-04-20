@@ -1,6 +1,6 @@
 package com.ayprojects.helpinghands.models;
 
-public class AllCommonUsedAttributes extends NameAndTranslationsObj{
+public class AllCommonUsedAttributes {
     public String createdDateTime;
     public String modifiedDateTime;
     public String schemaVersion;

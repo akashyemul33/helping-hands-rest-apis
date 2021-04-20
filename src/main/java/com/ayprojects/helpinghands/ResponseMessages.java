@@ -1,9 +1,17 @@
 package com.ayprojects.helpinghands;
 
 public class ResponseMessages {
-    public String EN_USER_ALREADY_EXISTS = "User already exists!";
-    public String MR_USER_ALREADY_EXISTS = "वापरकर्ता आधीपासून विद्यमान आहे!";
-    public String HI_USER_ALREADY_EXISTS = "उपयोगकर्ता पहले से मौजूद है!";
+    public String EN_USER_ALREADY_EXISTS_WITH_MOBILE = "User already exists with given mobile number !";
+    public String MR_USER_ALREADY_EXISTS_WITH_MOBILE = "दिलेल्या मोबाइल नंबरसह वापरकर्ता आधीपासून विद्यमान आहे !";
+    public String HI_USER_ALREADY_EXISTS_WITH_MOBILE = "उपयोगकर्ता पहले से ही दिए गए मोबाइल नंबर के साथ मौजूद है !";
+
+    public String EN_USER_ALREADY_EXISTS_WITH_EMAIL = "User already exists with given email !";
+    public String MR_USER_ALREADY_EXISTS_WITH_EMAIL = "दिलेल्या ईमेलसह वापरकर्ता आधीपासून विद्यमान आहे !";
+    public String HI_USER_ALREADY_EXISTS_WITH_EMAIL = "उपयोगकर्ता पहले से ही दिए गए ईमेल के साथ मौजूद है !";
+
+    public String EN_NOT_ACTIVE_USER = "You're not an Active User, Please contact us for more details !";
+    public String MR_NOT_ACTIVE_USER = "आपण एक सक्रिय वापरकर्ता नाही, कृपया अधिक माहितीसाठी आमच्याशी संपर्क साधा !";
+    public String HI_NOT_ACTIVE_USER = "आप एक सक्रिय उपयोगकर्ता नहीं हैं, कृपया अधिक जानकारी के लिए हमसे संपर्क करें !";
 
     public String EN_USER_CONTACT_IS_EMPTY = "Contact details are missing! MobileNumber & Email are compulsory.";
     public String MR_USER_CONTACT_IS_EMPTY = "संपर्क तपशील गहाळ आहेत! मोबाइल नंबर आणि ईमेल अनिवार्य आहेत.";
@@ -220,6 +228,22 @@ public class ResponseMessages {
     public String EN_UNKNOWN = "Unknwon";
     public String MR_UNKNOWN = "अज्ञात";
     public String HI_UNKNOWN = "अनजान";
+
+    public String EN_USER_NOT_FOUND_WITH_USERID = "User not found !";
+    public String MR_USER_NOT_FOUND_WITH_USERID = "वापरकर्ता आढळला नाही !";
+    public String HI_USER_NOT_FOUND_WITH_USERID = "उपयोगकर्ता नहीं मिला !";
+
+    public String EN_INVALID_POSTTYPE = "Invalid Post Type !";
+    public String MR_INVALID_POSTTYPE = "अवैध पोस्ट प्रकार !";
+    public String HI_INVALID_POSTTYPE = "अमान्य पोस्ट प्रकार !";
+
+    public String EN_PLACE_NOT_FOUND_WITH_PLACEID = "Place not found !";
+    public String MR_PLACE_NOT_FOUND_WITH_PLACEID = "जागा सापडली नाही !";
+    public String HI_PLACE_NOT_FOUND_WITH_PLACEID = "जगह नहीं मिली !";
+
+    public String EN_OFFER_MSG = "Offer valid from ";
+    public String MR_OFFER_MSG = "ऑफर वैधता ";
+    public String HI_OFFER_MSG = "प्रस्ताव की वैधता ";
 
 
 }

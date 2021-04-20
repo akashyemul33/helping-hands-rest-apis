@@ -5,6 +5,10 @@ public class DhImages extends AllCommonUsedAttributes {
     private String image_path;
     private String image_type;
 
+    public DhImages() {
+
+    }
+
     public long getImage_id() {
         return image_id;
     }

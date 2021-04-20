@@ -11,10 +11,12 @@ import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PlaceRepository;
+import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.services.placecategories.PlaceCategoryService;
 import com.ayprojects.helpinghands.services.products.ProductsService;
-import com.ayprojects.helpinghands.tools.Utility;
-import com.ayprojects.helpinghands.tools.Validations;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
+import com.ayprojects.helpinghands.util.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -36,6 +39,8 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 @Service
 public class PlaceServiceImpl implements PlaceService {
 
+    @Autowired
+    CalendarOperations calendarOperations;
     @Autowired
     MongoTemplate mongoTemplate;
     @Value("${images.base_folder}")
@@ -48,6 +53,9 @@ public class PlaceServiceImpl implements PlaceService {
     PlaceCategoryService placeCategoryService;
     @Autowired
     ProductsService productsService;
+
+    @Autowired
+    CommonService commonService;
 
     @Override
     public Response<DhPlace> addPlace(Authentication authentication, HttpHeaders httpHeaders, DhPlace dhPlace, String version) throws ServerSideException {
@@ -71,8 +79,12 @@ public class PlaceServiceImpl implements PlaceService {
             return new Response<DhPlace>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 
+        if (!commonService.checkUserExistence(dhPlace.getAddedBy())) {
+            return new Response<DhPlace>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, language), new ArrayList<>(), 0);
+        }
+
         //Check for mainCategory existence
-        Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_CATEGORY_ID).is(dhPlace.getPlaceMainCategoryId()));
+        Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_MAIN_CATEGORY_ID).is(dhPlace.getPlaceMainCategoryId()));
         queryFindCategoryWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         DhPlaceCategories queriedDhPlaceCategories = mongoTemplate.findOne(queryFindCategoryWithId, DhPlaceCategories.class);
         if (queriedDhPlaceCategories == null) {
@@ -109,13 +121,13 @@ public class PlaceServiceImpl implements PlaceService {
                 PlaceSubCategories psc = new PlaceSubCategories();
                 psc.setDefaultName(dhPlace.getPlaceSubCategoryName());
                 psc.setAddedBy(dhPlace.getAddedBy());
-                psc.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
+                psc.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + calendarOperations.getTimeAtFileEnd());
                 psc = (PlaceSubCategories) utility.setCommonAttrs(psc, AppConstants.STATUS_PENDING);
                 List<PlaceSubCategories> pscList = queriedDhPlaceCategories.getPlaceSubCategories();
                 pscList.add(psc);
                 Update mainCategoryUpdate = new Update();
                 mainCategoryUpdate.push(AppConstants.PLACE_SUB_CATEGORIES, psc);
-                mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, Utility.currentDateTimeInUTC());
+                mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindCategoryWithId, mainCategoryUpdate, DhPlaceCategories.class);
                 utility.addLog(authentication.getName(), "New sub category while adding place [" + psc.getDefaultName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "].");
                 dhPlace.setPlaceSubCategoryId(psc.getPlaceSubCategoryId());
@@ -148,7 +160,7 @@ public class PlaceServiceImpl implements PlaceService {
                         queriedDhProduct.setProductId(Utility.getUUID());
                         queriedDhProduct.setDefaultUnit(p.getSelectedUnit());
                         queriedDhProduct.setMainPlaceCategoryId(dhPlace.getPlaceMainCategoryId());
-                        queriedDhProduct.setSubPlaceCategoryId(dhPlace.getPlaceSubCategoryId());
+                        queriedDhProduct.setSubPlaceCategoryIds(Collections.singletonList(dhPlace.getPlaceSubCategoryId()));
                         queriedDhProduct.setCategoryName(dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName());
                         queriedDhProduct.setAddedBy(dhPlace.getAddedBy());
                         queriedDhProduct.setDefaultName(p.getUserEnteredProductName());
@@ -204,32 +216,6 @@ public class PlaceServiceImpl implements PlaceService {
     public Response<DhPlace> getPaginatedPlaces(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version, double lat, double lng) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PlaceServiceImpl->getPaginatedPlaces : language=" + language);
-        /*PageRequest paging = PageRequest.of(page, size);
-        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        query.fields().include(AppConstants.PLACE_NAME);
-        query.fields().include(AppConstants.PLACE_SUB_CATEGORY_NAME);
-        query.fields().include(AppConstants.OWNER_NAME);
-        query.fields().include(AppConstants.PLACE_DESC);
-        query.fields().include(AppConstants.ADDED_BY);
-        query.fields().include(AppConstants.PLACE_CONTACT);
-        query.fields().include(AppConstants.DOOR_SERVICE);
-        query.fields().include(AppConstants.PLACE_ADDRESS);
-        query.fields().include(AppConstants.PLACE_AVAILABLITY_DETAILS);
-        query.fields().include(AppConstants.NUMBER_OF_PRODUCTS);
-        query.fields().include(AppConstants.NUMBER_OF_POSTS);
-        query.fields().include(AppConstants.NUMBER_OF_RATINGS);
-        query.fields().include(AppConstants.AVG_RATING);
-        query.fields().include(AppConstants.IA_ADDRESS_GENERATED);
-        query.fields().include(AppConstants.PLACE_IMAGES);
-        query.fields().include(AppConstants.CREATED_DATETIME);
-        query.fields().include(AppConstants.PLACE_ID);
-        query.fields().include(AppConstants.PLACE_TYPE);
-        query.with(paging);
-        List<DhPlace> dhPlaceList = mongoTemplate.find(query, DhPlace.class);
-        Page<DhPlace> dhPlacePages = PageableExecutionUtils.getPage(
-                dhPlaceList,
-                paging,
-                () -> mongoTemplate.count(query, DhPlace.class));*/
         LOGGER.info("PlaceServiceImpl->getPaginatedPlaces : lat=%s" + lat + " lng=%s" + lng);
         PageRequest paging = PageRequest.of(page, size);
         Page<DhPlace> dhPlacePages = placeRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
@@ -242,10 +228,10 @@ public class PlaceServiceImpl implements PlaceService {
                     double placeLng = d.getPlaceAddress().getLng();
                     d.setDistance("\t" + "(" + Utility.distance(lat, placeLat, lng, placeLng) + ")");
                 } else {
-                    d.setDistance(Utility.getResponseMessage(AppConstants.MSG_UNKNOWN, language));
+                    d.setDistance(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNKNOWN, language));
                 }
             } else {
-                d.setDistance(Utility.getResponseMessage(AppConstants.MSG_UNKNOWN, language));
+                d.setDistance(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_UNKNOWN, language));
             }
             //calculate open/close msg
             String[] openCloseMsg = Utility.calculatePlaceOpenCloseMsg(d.getPlaceAvailablityDetails(), language);
@@ -254,15 +240,33 @@ public class PlaceServiceImpl implements PlaceService {
             d.setPlaceOpen(isOpen);
             d.setOpenCloseMsg(openCloseMsg[0]);
 
-            //get user name from id
-            String userId = d.getAddedBy();
-            Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
-            query.fields().include(AppConstants.FIRST_NAME);
-            DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
-            if (dhUser != null) d.setUserName(dhUser.getFirstName());
+            DhUser dhUser = Utility.getUserDetailsFromId(d.getAddedBy(),mongoTemplate,true,false,false);
+            if(dhUser!=null)d.setUserName(dhUser.getFirstName());
 
         }
         return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList.size(), dhPlacePages.getNumber(), dhPlacePages.getTotalPages(), dhPlacePages.getTotalElements(), dhPlaceList);
     }
+
+    @Override
+    public Response<DhPlace> getBusinessPlacesOfUserWhileAddingPost(Authentication authentication, HttpHeaders httpHeaders, String version, String userId) {
+        String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        LOGGER.info("PlaceServiceImpl->getBusinessPlacesOfUser : language=" + language);
+
+        if (Utility.isFieldEmpty(userId)) {
+            return new Response<DhPlace>(false, 402, "Empty UserId", new ArrayList<>(), 0);
+        }
+
+        Query query = new Query(Criteria.where(AppConstants.ADDED_BY).is(userId));
+        query.addCriteria(Criteria.where(AppConstants.PLACE_TYPE).regex(AppConstants.BUSINESS_PLACE, "i"));
+        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        query.fields().include(AppConstants.PLACE_TYPE);
+        query.fields().include(AppConstants.PLACE_ID);
+        query.fields().include(AppConstants.PLACE_NAME);
+        query.fields().include(AppConstants.PLACE_ADDRESS);
+        query.fields().include(AppConstants.PLACE_CONTACT);
+        List<DhPlace> dhPlaceList = mongoTemplate.find(query, DhPlace.class);
+        return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList);
+    }
+
 }
 

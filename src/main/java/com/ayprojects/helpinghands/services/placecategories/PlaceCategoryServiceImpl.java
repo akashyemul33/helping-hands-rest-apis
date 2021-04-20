@@ -3,14 +3,13 @@ package com.ayprojects.helpinghands.services.placecategories;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
-import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
-import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.security.UserDetailsServiceImpl;
-import com.ayprojects.helpinghands.tools.Utility;
-import com.ayprojects.helpinghands.tools.Validations;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
+import com.ayprojects.helpinghands.util.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -21,22 +20,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.lang.invoke.ConstantCallSite;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
-import static com.ayprojects.helpinghands.HelpingHandsApplication.main;
 
 @Service
 public class PlaceCategoryServiceImpl implements PlaceCategoryService {
 
     @Autowired
     PlaceCategoryDao placeCategoryDao;
+
+    @Autowired
+    CalendarOperations calendarOperations;
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -69,7 +67,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         }
 
         dhPlaceCategories = (DhPlaceCategories) utility.setCommonAttrs(dhPlaceCategories, AppConstants.STATUS_PENDING);
-        dhPlaceCategories.setPlaceCategoryId(AppConstants.MAIN_PLACE_INITIAL_ID + Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
+        dhPlaceCategories.setPlaceCategoryId(AppConstants.MAIN_PLACE_INITIAL_ID + calendarOperations.getTimeAtFileEnd());
         if (dhPlaceCategories.getPlaceSubCategories() != null && dhPlaceCategories.getPlaceSubCategories().size() > 0) {
             int counter = 1;
             for (PlaceSubCategories placeSubCategories : dhPlaceCategories.getPlaceSubCategories()) {
@@ -77,7 +75,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
                     return new Response<DhPlaceCategories>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY, language), new ArrayList<>(), 0);
                 }
                 placeSubCategories.setAddedBy(dhPlaceCategories.getAddedBy());
-                placeSubCategories.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + "_" + counter + Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
+                placeSubCategories.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + "_" + counter + calendarOperations.getTimeAtFileEnd());
                 placeSubCategories = (PlaceSubCategories) utility.setCommonAttrs(placeSubCategories, AppConstants.STATUS_PENDING);
                 counter++;
             }
@@ -150,7 +148,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             return new Response<PlaceSubCategories>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 
-        Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_CATEGORY_ID).is(mainPlaceCategoryId));
+        Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_MAIN_CATEGORY_ID).is(mainPlaceCategoryId));
         queryFindCategoryWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         DhPlaceCategories queriedDhPlaceCategories = mongoTemplate.findOne(queryFindCategoryWithId, DhPlaceCategories.class);
         if (queriedDhPlaceCategories == null) {
@@ -168,12 +166,12 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
         }
 
         placeSubCategory.setAddedBy(placeSubCategory.getAddedBy());
-        placeSubCategory.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + Utility.currentDateTimeInUTC(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE));
+        placeSubCategory.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + calendarOperations.getTimeAtFileEnd());
         placeSubCategory = (PlaceSubCategories) utility.setCommonAttrs(placeSubCategory, AppConstants.STATUS_PENDING);
         placeSubCategoriesList.add(placeSubCategory);
         Update mainCategoryUpdate = new Update();
         mainCategoryUpdate.push(AppConstants.PLACE_SUB_CATEGORIES, placeSubCategory);
-        mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, Utility.currentDateTimeInUTC());
+        mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(queryFindCategoryWithId, mainCategoryUpdate, DhPlaceCategories.class);
         utility.addLog(authentication.getName(), "New sub category [" + placeSubCategory.getDefaultName() + "] has been added under [" + queriedDhPlaceCategories.getDefaultName() + "].");
         return new Response<PlaceSubCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED, language), Collections.singletonList(placeSubCategory), 1);

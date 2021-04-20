@@ -8,8 +8,9 @@ import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.RatingAndCommentsRepository;
-import com.ayprojects.helpinghands.tools.Utility;
-import com.ayprojects.helpinghands.tools.Validations;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
+import com.ayprojects.helpinghands.util.tools.Utility;
+import com.ayprojects.helpinghands.util.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.rmi.CORBA.Util;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -42,6 +42,9 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
 
     @Autowired
     Utility utility;
+
+    @Autowired
+     CalendarOperations calendarOperations;
 
     @Override
     public Response<DhRatingAndComments> addRatingAndComments(Authentication authentication, HttpHeaders httpHeaders, DhRatingAndComments dhRatingComments, String version) throws ServerSideException {
@@ -87,7 +90,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                     mongoTemplate.updateFirst(queryFindPlaceWithId,updatePopTopRating,DhPlace.class);
                 }
                 updatePlace.push(AppConstants.TOP_RATINGS, dhRatingComments);
-                updatePlace.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
+                updatePlace.set(AppConstants.MODIFIED_DATE_TIME,calendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPlaceWithId,updatePlace, DhPlace.class);
                 break;
             case AppConstants.POST:
@@ -112,7 +115,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                     mongoTemplate.updateFirst(queryFindPostWithId,updatePopTopRating,DhPosts.class);
                 }
                 updatePost.push(AppConstants.TOP_RATINGS, dhRatingComments);
-                updatePost.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
+                updatePost.set(AppConstants.MODIFIED_DATE_TIME,calendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPostWithId,updatePost, DhPosts.class);
                 break;
             case AppConstants.REQUIREMENT:
@@ -137,7 +140,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                     mongoTemplate.updateFirst(queryFindRequirementWithId,updatePopTopRating,DhRequirements.class);
                 }
                 updateRequirement.push(AppConstants.TOP_RATINGS, dhRatingComments);
-                updateRequirement.set(AppConstants.MODIFIED_DATE_TIME,Utility.currentDateTimeInUTC());
+                updateRequirement.set(AppConstants.MODIFIED_DATE_TIME,calendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindRequirementWithId,updateRequirement, DhRequirements.class);
                 break;
         }

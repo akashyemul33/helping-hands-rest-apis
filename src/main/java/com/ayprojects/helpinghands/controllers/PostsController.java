@@ -1,5 +1,8 @@
 package com.ayprojects.helpinghands.controllers;
 
+import com.ayprojects.helpinghands.AppConstants;
+import com.ayprojects.helpinghands.api.ApiOperations;
+import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+
 import io.swagger.annotations.Api;
 
 @Api(value = "Posts API's",description = "CRUD for posts")
@@ -37,11 +42,11 @@ import io.swagger.annotations.Api;
 public class PostsController {
 
     @Autowired
-    PostsService postsService;
+    ApiOperations<DhPosts> apiOperations;
 
     @PostMapping(value="/addPosts")
     public ResponseEntity<Response<DhPosts>> addPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPosts dhPosts,@PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(postsService.addPost(authentication,httpHeaders,dhPosts,version), HttpStatus.CREATED);
+        return new ResponseEntity<>(apiOperations.add(authentication,httpHeaders,dhPosts, StrategyName.AddPostStrategy,version), HttpStatus.CREATED);
     }
 
     @PutMapping(value="/deletePlace")
@@ -60,13 +65,20 @@ public class PostsController {
     }
 
     @GetMapping(value = "/getPaginatedPosts")
-    ResponseEntity<Response<DhPosts>> getPaginatedPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam(defaultValue = "0") int page,@RequestParam (defaultValue = "7") int size, @PathVariable String version){
-        return new ResponseEntity<>(postsService.getPaginatedPosts(authentication,httpHeaders,page,size,version), HttpStatus.OK);
+    ResponseEntity<Response<DhPosts>> getPaginatedPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam(defaultValue = "0") int page,@RequestParam (defaultValue = "7") int size, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PAGE,page);
+        params.put(AppConstants.KEY_SIZE,size);
+        return new ResponseEntity<>(apiOperations.get(authentication,httpHeaders,StrategyName.GetPostStrategy,params,version), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getPaginatedPostsByPlaceId")
-    ResponseEntity<Response<DhPosts>> getPaginatedPostsByPlaceId(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam(defaultValue = "0") int page,@RequestParam (defaultValue = "7") int size,@RequestParam String placeId, @PathVariable String version){
-        return new ResponseEntity<>(postsService.getPaginatedPostsByPlaceId(authentication,httpHeaders,page,size,placeId,version), HttpStatus.OK);
+    ResponseEntity<Response<DhPosts>> getPaginatedPostsByPlaceId(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam(defaultValue = "0") int page,@RequestParam (defaultValue = "7") int size,@RequestParam String placeId, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params=new HashMap<>();
+        params.put(AppConstants.KEY_PAGE,page);
+        params.put(AppConstants.KEY_SIZE,size);
+        params.put(AppConstants.KEY_PLACE_ID,placeId);
+        return new ResponseEntity<>(apiOperations.get(authentication,httpHeaders,StrategyName.GetPostStrategy,params,version), HttpStatus.OK);
     }
 
 }
