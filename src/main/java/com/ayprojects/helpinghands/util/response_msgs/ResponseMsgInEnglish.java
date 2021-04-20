@@ -45,6 +45,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_LUNCH_
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_STICKERS_FOUND;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_TICKETS_FOUND;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
@@ -57,6 +58,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_A
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TICKET_RAISED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TYPE_PLACECATEGORY_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY;
@@ -154,6 +156,8 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "Not found any active products matching with given search keywords !");
             responseMsgsMap.put(RESPONSEMESSAGE_NO_STICKERS_FOUND, "No stickers found !");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_ID_IS_MISSING, "Place id is missing !");
+            responseMsgsMap.put(RESPONSEMESSAGE_TICKET_RAISED, "Ticket raised successfully.");
+            responseMsgsMap.put(RESPONSEMESSAGE_NO_TICKETS_FOUND, "No tickets found !");
         }
     }
 

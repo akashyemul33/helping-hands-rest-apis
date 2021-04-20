@@ -45,6 +45,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_LUNCH_
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_STICKERS_FOUND;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_TICKETS_FOUND;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
@@ -57,6 +58,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_A
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TICKET_RAISED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TYPE_PLACECATEGORY_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY;
@@ -154,6 +156,9 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "दिलेल्या शोध कीवर्डशी जुळणारी कोणतीही सक्रिय उत्पादने आढळली नाहीत !");
         responseMsgsMap.put(RESPONSEMESSAGE_NO_STICKERS_FOUND, "कोणतेही स्टिकर्स आढळले नाहीत !");
         responseMsgsMap.put(RESPONSEMESSAGE_PLACE_ID_IS_MISSING, "प्लेस आयडी गहाळ आहे !");
+        responseMsgsMap.put(RESPONSEMESSAGE_TICKET_RAISED, "तिकीट यशस्वीरित्या जोडले.");
+        responseMsgsMap.put(RESPONSEMESSAGE_NO_TICKETS_FOUND, "तिकिटे सापडली नाहीत !");
+
     }
 
     public Map<String, String> getResponseMsgsMap() {

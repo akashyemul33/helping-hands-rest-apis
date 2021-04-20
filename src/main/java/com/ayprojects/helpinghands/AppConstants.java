@@ -123,6 +123,7 @@ public class AppConstants {
     public static final String CREATED_DATETIME = "createdDateTime";
     public static final String IA_ADDRESS_GENERATED = "isAddressGenerated";
     public static final String USER_ID = "userId";
+    public static final String ISSUE_RAISED_BY = "issueRaisedBy";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
     public static final String RESPONSEMESSAGE_OPEN_24INTO7 = "OPEN_24INTO7";
@@ -164,16 +165,17 @@ public class AppConstants {
     public static final String KEY_COUNTRY_CODE = "countryCode";
     public static final String KEY_SCHEMA_VERSION = "schemaVersion";
     public static final String COLLECTION_DHUSER = "DhUser";
-    public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
-    public static final String COLLECTION_DH_PRODUCT = "dhProduct";
-    public static final String COLLECTION_DH_PLACE = "dhPlace";
+    public static final String COLLECTION_DH_PLACE_CATEGORIES = "DhPlaceCategories";
+    public static final String COLLECTION_DH_PRODUCT = "DhProduct";
+    public static final String COLLECTION_DH_PLACE = "DhPlace";
     public static final String COLLECTION_PLACE_MAIN_PAGE = "PlaceMainPage";
-    public static final String COLLECTION_DH_STICKERS = "dhStickers";
-    public static final String COLLECTION_DH_POSTS = "dhPosts";
-    public static final String COLLECTION_DH_REQUIREMENTS = "dhRequirements";
-    public static final String COLLECTION_DH_RATING_COMMENT = "dhRatingAndComments";
-    public static final String COLLECTION_DH_VIEWS = "dhViews";
-    public static final String COLLECTION_DHLOG = "dhLog";
+    public static final String COLLECTION_DH_STICKERS = "DhStickers";
+    public static final String COLLECTION_DH_TICKET = "DhTicket";
+    public static final String COLLECTION_DH_POSTS = "DhPosts";
+    public static final String COLLECTION_DH_REQUIREMENTS = "DhRequirements";
+    public static final String COLLECTION_DH_RATING_COMMENT = "DhRatingAndComments";
+    public static final String COLLECTION_DH_VIEWS = "DhViews";
+    public static final String COLLECTION_DHLOG = "DhLog";
     public static final String RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY = "EMPTY_TYPEOFMAINPLACECATEGORY";
     public static final String RESPONSEMESSAGE_EMPTY_DEFAULTNAME = "EMPTY_DEFAULTNAME";
     public static final String RESPONSEMESSAGE_MAINCATEGORYID_MISSING = "MAINCATEGORYID_MISSING";
@@ -205,6 +207,7 @@ public class AppConstants {
     public static final Integer EMPTY_RESPONSE_STATUS_CODE = 405;
     public static final Integer QUERY_SUCCESSFUL_STATUS_CODE = 200;
     public static final String DEFAULT_UNIT_IF_EMPTY = "Piece";
+    public static final String RESPONSEMESSAGE_TICKET_RAISED = "TICKET_RAISED";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
@@ -256,6 +259,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE = "INCORRECT_IMAGE_TYPE";
     public static String RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED = "NEW_RATING_COMMENT_ADDED";
     public static String RESPONSEMESSAGE_NO_STICKERS_FOUND = "NO_STICKERS_FOUND";
+    public static String RESPONSEMESSAGE_NO_TICKETS_FOUND = "NO_TICKETS_FOUND";
 
     public static String CONTACT_DETAILS = "contactDetails";
     public static long TOTAL_ADD_PLACES_LIMIT = 100;

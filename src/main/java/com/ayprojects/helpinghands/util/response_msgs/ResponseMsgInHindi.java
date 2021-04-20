@@ -45,6 +45,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_LUNCH_
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PLACECATEGORIES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PRODUCTS_FOUND_FOR_SUBCATEGORYID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_STICKERS_FOUND;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_TICKETS_FOUND;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
@@ -57,6 +58,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_A
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TICKET_RAISED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TYPE_PLACECATEGORY_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY;
@@ -155,6 +157,8 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_NOT_FOUND_ANY_PRODUCTS_WITH_SEARCH_KEY, "दिए गए खोज कीवर्ड के साथ मेल खाते कोई सक्रिय उत्पाद नहीं मिले !");
             responseMsgsMap.put(RESPONSEMESSAGE_NO_STICKERS_FOUND, "कोई स्टिकर नहीं मिला !");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_ID_IS_MISSING, "जगह आईडी गायब है !");
+            responseMsgsMap.put(RESPONSEMESSAGE_TICKET_RAISED, "टिकट सफलतापूर्वक जोड़ा गया ।");
+            responseMsgsMap.put(RESPONSEMESSAGE_NO_TICKETS_FOUND, "कोई टिकट नहीं मिला !");
         }
     }
 
