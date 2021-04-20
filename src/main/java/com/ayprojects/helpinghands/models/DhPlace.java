@@ -18,15 +18,6 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.placeRegDate = placeRegDate;
     }
 
-    public int getAgeOfPlace() {
-        return ageOfPlace;
-    }
-
-    public void setAgeOfPlace(int ageOfPlace) {
-        this.ageOfPlace = ageOfPlace;
-    }
-
-    private int ageOfPlace;
     private boolean addressGenerated;
     private String placeMainCategoryId;
     private String addedBy;
