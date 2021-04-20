@@ -41,13 +41,15 @@ public class ApiOperations<T extends AllCommonUsedAttributes> {
 
     UploadBehaviour uploadBehaviour;
 
-    public static AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {
+    public static AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String defaultStatus) {
         if (obj == null) obj = new AllCommonUsedAttributes();
         obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         CalendarOperations calendarOperations = new CalendarOperations();
         obj.setCreatedDateTime(calendarOperations.currentDateTimeInUTC());
         obj.setModifiedDateTime(calendarOperations.currentDateTimeInUTC());
-        obj.setStatus(status);
+        if(Utility.isFieldEmpty(obj.getStatus())){
+            obj.setStatus(defaultStatus);
+        }
         return obj;
     }
 

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 
 import io.swagger.annotations.Api;
 
@@ -41,9 +42,17 @@ public class PlaceCategoryController {
         return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhPlaceCategories, StrategyName.AddPlaceMainCategoryStrategy, version), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/{mainPlaceCategoryId}/addPlaceSubCategory")
-    public ResponseEntity<Response<PlaceSubCategories>> addPlaceSubCategory(Authentication authentication, @RequestHeader HttpHeaders httpHeaders, @RequestBody PlaceSubCategories placeSubCategory, @PathVariable String mainPlaceCategoryId, @PathVariable String version) throws ServerSideException {
+    @PostMapping(value = "/addPlaceSubCategory")
+    public ResponseEntity<Response<PlaceSubCategories>> addPlaceSubCategory(Authentication authentication, @RequestHeader HttpHeaders httpHeaders, @RequestBody PlaceSubCategories placeSubCategory, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, placeSubCategory, StrategyName.AddPlaceSubCategoryStrategy, version), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/addPlaceSubCategories")
+    public ResponseEntity<Response<PlaceSubCategories>> addPlaceSubCategories(Authentication authentication, @RequestHeader HttpHeaders httpHeaders, @RequestBody List<PlaceSubCategories> placeSubCategories, @PathVariable String version) throws ServerSideException {
+        for (PlaceSubCategories p : placeSubCategories) {
+            apiOperations.add(authentication, httpHeaders, p, StrategyName.AddPlaceSubCategoryStrategy, version);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /*returns all the maincategories with given status

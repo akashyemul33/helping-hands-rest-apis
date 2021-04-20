@@ -51,7 +51,11 @@ public class StrategyAddPlaceSubCategoryApi implements StrategyAddBehaviour<Plac
             CalendarOperations calendarOperations = new CalendarOperations();
             placeSubCategory.setPlaceSubCategoryId(AppConstants.SUB_PLACE_INITIAL_ID + calendarOperations.getTimeAtFileEnd());
             placeSubCategory = (PlaceSubCategories) ApiOperations.setCommonAttrs(placeSubCategory, AppConstants.STATUS_PENDING);
-            mainPlaceCategory.getPlaceSubCategories().add(placeSubCategory);
+            if (mainPlaceCategory.getPlaceSubCategories() == null) {
+                mainPlaceCategory.setPlaceSubCategories(Collections.singletonList(placeSubCategory));
+            } else {
+                mainPlaceCategory.getPlaceSubCategories().add(placeSubCategory);
+            }
 
             updateMainCategory(placeSubCategory);
             returnResponse.setLogActionMsg("New sub category [" + placeSubCategory.getDefaultName() + "] has been added under [" + mainPlaceCategory.getDefaultName() + "].");

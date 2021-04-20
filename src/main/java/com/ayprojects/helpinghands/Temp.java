@@ -22,16 +22,17 @@ public class Temp {
         while ((st = bfEng.readLine()) != null) {
             String[] splitStrEng = st.split(":")[0].split(",");
             String[] splitStrMr = st.split(":")[1].split(",");
+            String[] splitStrTe = st.split(":")[2].split(",");
+            String[] splitStrKn = st.split(":")[3].split(",");
+            String[] splitStrGu = st.split(":")[4].split(",");
+            String placeMainCategoryId="M_PLS_CTGRY_20210420140153";
             for (int i = 0; i < splitStrEng.length; i++) {
                 System.out.println(String.format("  {\n" +
                         "      \"defaultName\": \"%s\",\n" +
                         "      \"status\": \"%s\",\n" +
+                        "      \"placeMainCategoryId\": \"%s\",\n" +
                         "      \"placeSubCategoryImagePath\": \"\",\n" +
                         "      \"translations\": [\n" +
-                        "        {\n" +
-                        "          \"lang\": \"en\",\n" +
-                        "          \"value\": \"%s\"\n" +
-                        "        },\n" +
                         "        {\n" +
                         "          \"lang\": \"mr\",\n" +
                         "          \"value\": \"%s\"\n" +
@@ -39,9 +40,21 @@ public class Temp {
                         "        {\n" +
                         "          \"lang\": \"hi\",\n" +
                         "          \"value\": \"%s\"\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"lang\": \"te\",\n" +
+                        "          \"value\": \"%s\"\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"lang\": \"kn\",\n" +
+                        "          \"value\": \"%s\"\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"lang\": \"gu\",\n" +
+                        "          \"value\": \"%s\"\n" +
                         "        }\n" +
                         "      ]\n" +
-                        "    },", splitStrEng[i].trim(), "Active", splitStrEng[i].trim(), splitStrMr[i].trim(), splitStrMr[i].trim()));
+                        "    },",splitStrEng[i].trim(), "Active",placeMainCategoryId, splitStrMr[i].trim(), splitStrMr[i].trim(), splitStrTe[i].trim(), splitStrKn[i].trim(), splitStrGu[i].trim()));
 
             }
             allLines.append(st);
