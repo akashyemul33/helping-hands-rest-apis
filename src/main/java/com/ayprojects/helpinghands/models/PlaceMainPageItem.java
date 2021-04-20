@@ -3,7 +3,8 @@ package com.ayprojects.helpinghands.models;
 import java.util.List;
 
 public class PlaceMainPageItem {
-    private List<String> imgList;
+    private List<String> imgUrlsLow;
+    private List<String> imgUrlsHigh;
     private String placeName;
     private String placeId;
     private double avgRating;
@@ -23,6 +24,14 @@ public class PlaceMainPageItem {
     private double lng;
     private String addedTime;
     private String since;
+
+    public List<String> getImgUrlsHigh() {
+        return imgUrlsHigh;
+    }
+
+    public void setImgUrlsHigh(List<String> imgUrlsHigh) {
+        this.imgUrlsHigh = imgUrlsHigh;
+    }
 
     public String getCategory_mr() {
         return category_mr;
@@ -96,12 +105,12 @@ public class PlaceMainPageItem {
         this.since = since;
     }
 
-    public List<String> getImgList() {
-        return imgList;
+    public List<String> getImgUrlsLow() {
+        return imgUrlsLow;
     }
 
-    public void setImgList(List<String> imgList) {
-        this.imgList = imgList;
+    public void setImgUrlsLow(List<String> imgUrlsLow) {
+        this.imgUrlsLow = imgUrlsLow;
     }
 
     public String getPlaceName() {
