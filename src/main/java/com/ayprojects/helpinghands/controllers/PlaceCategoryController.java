@@ -51,7 +51,7 @@ public class PlaceCategoryController {
     public ResponseEntity<Response<PlaceSubCategories>> addPlaceSubCategories(Authentication authentication, @RequestHeader HttpHeaders httpHeaders, @RequestBody List<PlaceSubCategories> placeSubCategories, @PathVariable String version) throws ServerSideException {
         for (PlaceSubCategories p : placeSubCategories) {
             try {
-                wait(5);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

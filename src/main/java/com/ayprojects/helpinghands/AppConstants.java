@@ -3,7 +3,7 @@ package com.ayprojects.helpinghands;
 public class AppConstants {
     public static final String DATE_FORMAT_HOUR_MIN = "HH:mm";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmss";
+    public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmssSSS";
     //expiration value of 3 hours
     public static final long JWT_TOKEN_EXPIRATION_VALUE = 1000 * 60 * 60 * 3;
     public static final String JWT_TOKEN_ISSUER = "HelpingHandsAdmin";
