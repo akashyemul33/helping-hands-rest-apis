@@ -50,6 +50,11 @@ public class PlaceCategoryController {
     @PostMapping(value = "/addPlaceSubCategories")
     public ResponseEntity<Response<PlaceSubCategories>> addPlaceSubCategories(Authentication authentication, @RequestHeader HttpHeaders httpHeaders, @RequestBody List<PlaceSubCategories> placeSubCategories, @PathVariable String version) throws ServerSideException {
         for (PlaceSubCategories p : placeSubCategories) {
+            try {
+                wait(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             apiOperations.add(authentication, httpHeaders, p, StrategyName.AddPlaceSubCategoryStrategy, version);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
