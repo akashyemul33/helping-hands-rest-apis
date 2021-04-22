@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.controllers;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
+import com.ayprojects.helpinghands.api.enums.TypeOfData;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.Response;
@@ -73,11 +74,11 @@ public class PlaceController {
         return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetPlaceStrategy, params, version), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getBusinessPlacesOfUserWhileAddingPost")
-    ResponseEntity<Response<DhPlace>> getBusinessPlacesOfUserWhileAddingPost(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId) throws ServerSideException {
-
+    @GetMapping(value = "/getPlaceWithUserId")
+    ResponseEntity<Response<DhPlace>> getPlaceWithUserId(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId, @RequestParam TypeOfData typeOfData) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.KEY_TYPE_OF_DATA, typeOfData);
         return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetPlaceStrategy, params, version), HttpStatus.OK);
     }
 }

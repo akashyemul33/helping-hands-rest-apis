@@ -187,6 +187,7 @@ public class AppConstants {
     public static final String KEY_LNG = "lng";
     public static final String RESPONSEMESSAGE_MISSING_QUERY_PARAMS = "MISSING_QUERY_PARAMS";
     public static final String KEY_USER_ID = "userId";
+    public static final String KEY_TYPE_OF_DATA = "typeOfData";
     public static final String KEY_TYPE_OF_PLACECATEGORY = "typeOfPlaceCategory";
     public static final String KEY_PLACE_ID = "placeId";
     public static final String KEY_SUB_PLACECATEGORY_ID = "subPlaceCategoryId";

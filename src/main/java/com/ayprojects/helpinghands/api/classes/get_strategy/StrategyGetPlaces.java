@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.api.classes.get_strategy;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
+import com.ayprojects.helpinghands.api.enums.TypeOfData;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhUser;
@@ -58,8 +59,8 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
                 throw new ServerSideException(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG));
             }
 
-        } else if (keySet.contains(AppConstants.KEY_USER_ID)) {
-            return getBusinessPlacesOfUserWhileAddingPost(language, (String) params.get(AppConstants.KEY_USER_ID));
+        } else if (keySet.contains(AppConstants.KEY_USER_ID) && keySet.contains(AppConstants.KEY_TYPE_OF_DATA)) {
+            return getPlaceWithUserId(language, (String) params.get(AppConstants.KEY_USER_ID), (TypeOfData) params.get(AppConstants.KEY_TYPE_OF_DATA));
         } else if (keySet.contains(AppConstants.PLACE_ID)) {
             return getPlaceDetails((String) params.get(AppConstants.PLACE_ID), language);
         }
@@ -118,7 +119,7 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
 
     }
 
-    public Response<DhPlace> getBusinessPlacesOfUserWhileAddingPost(String language, String userId) {
+    public Response<DhPlace> getPlaceWithUserId(String language, String userId, TypeOfData typeOfData) {
         if (Utility.isFieldEmpty(userId)) {
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_ID_IS_MISSING), new ArrayList<>(), 0);
         }
@@ -126,11 +127,20 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
         Query query = new Query(Criteria.where(AppConstants.ADDED_BY).is(userId));
         query.addCriteria(Criteria.where(AppConstants.PLACE_TYPE).regex(AppConstants.BUSINESS_PLACE, "i"));
         query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        query.fields().include(AppConstants.PLACE_TYPE);
-        query.fields().include(AppConstants.PLACE_ID);
-        query.fields().include(AppConstants.PLACE_NAME);
-        query.fields().include(AppConstants.PLACE_ADDRESS);
-        query.fields().include(AppConstants.PLACE_CONTACT);
+        switch (typeOfData) {
+            case PLACE_DATA:
+                break;
+            case POST_DATA:
+                query.fields().include(AppConstants.PLACE_TYPE);
+                query.fields().include(AppConstants.PLACE_ID);
+                query.fields().include(AppConstants.PLACE_NAME);
+                query.fields().include(AppConstants.PLACE_ADDRESS);
+                query.fields().include(AppConstants.PLACE_CONTACT);
+                break;
+            default:
+                return new Response<>(false, 402, "TypeOfData is required", new ArrayList<>(), 0);
+        }
+
         List<DhPlace> dhPlaceList = mongoTemplate.find(query, DhPlace.class);
         return new Response<DhPlace>(true, 200, "Query successful", dhPlaceList);
     }
