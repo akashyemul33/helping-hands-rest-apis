@@ -50,6 +50,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_DETAILS_UPDATED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_ID_IS_MISSING;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID;
@@ -158,6 +159,7 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_ID_IS_MISSING, "Place id is missing !");
             responseMsgsMap.put(RESPONSEMESSAGE_TICKET_RAISED, "Ticket raised successfully.");
             responseMsgsMap.put(RESPONSEMESSAGE_NO_TICKETS_FOUND, "No tickets found !");
+            responseMsgsMap.put(RESPONSEMESSAGE_PLACE_DETAILS_UPDATED, "Place details have been updated successfully.");
         }
     }
 

@@ -2,6 +2,7 @@ package com.ayprojects.helpinghands.controllers;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
+import com.ayprojects.helpinghands.api.enums.PlaceStepEnums;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.api.enums.TypeOfData;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
@@ -47,9 +48,14 @@ public class PlaceController {
         return null;
     }
 
-    @PostMapping(value = "/updatePlace")
-    public ResponseEntity<Response<DhPlace>> updatePlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @PathVariable String version) throws ServerSideException {
-        return null;
+    @PutMapping(value = "/updatePlace")
+    public ResponseEntity<Response<DhPlace>> updatePlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @RequestParam PlaceStepEnums placeStepEnum, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PLACE_STEP_ENUM, placeStepEnum);
+        Response<DhPlace> response = apiOperations.update(authentication, httpHeaders,params,dhPlace, StrategyName.UpdatePlaceStrategy, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
     }
 
     @GetMapping(value = "/getPlaces")

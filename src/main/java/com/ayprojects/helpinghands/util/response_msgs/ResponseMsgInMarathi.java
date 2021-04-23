@@ -50,6 +50,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_CATEGORY_NAMES_EMPTY;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_DETAILS_UPDATED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_ID_IS_MISSING;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID;
@@ -158,6 +159,7 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_PLACE_ID_IS_MISSING, "प्लेस आयडी गहाळ आहे !");
         responseMsgsMap.put(RESPONSEMESSAGE_TICKET_RAISED, "तिकीट यशस्वीरित्या जोडले.");
         responseMsgsMap.put(RESPONSEMESSAGE_NO_TICKETS_FOUND, "तिकिटे सापडली नाहीत !");
+        responseMsgsMap.put(RESPONSEMESSAGE_PLACE_DETAILS_UPDATED, "ठिकाण तपशील यशस्वीरित्या अद्यतनित केले गेले आहेत.");
 
     }
 

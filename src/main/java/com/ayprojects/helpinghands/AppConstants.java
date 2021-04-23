@@ -85,6 +85,7 @@ public class AppConstants {
     public static final String SUB_PLACE_INITIAL_ID = "S_PLS_CTGRY_";
     public static final String OWNER_DETAILS = "ownerDetails";
     public static final String OWNER_NAME = "ownerName";
+    public static final String PLACE_REG_DATE = "placeRegDate";
     public static final String OWNER_MOBILE_NUMBER = "ownerMobileNumber";
     public static final String OWNER_EMAIL_ID = "ownerEmailId";
     public static final String RESPONSEMESSAGE_PLACE_IMAGES_ADDED = "PLACE_IMAGES_ADDED";
@@ -209,6 +210,7 @@ public class AppConstants {
     public static final Integer QUERY_SUCCESSFUL_STATUS_CODE = 200;
     public static final String DEFAULT_UNIT_IF_EMPTY = "Piece";
     public static final String RESPONSEMESSAGE_TICKET_RAISED = "TICKET_RAISED";
+    public static final String KEY_PLACE_STEP_ENUM = "PlaceStepEnum";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
@@ -255,6 +257,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING = "NEW_PLACE_ADDED_WITH_PENDING";
     public static String RESPONSEMESSAGE_CONGRATULATIONS = "CONGRATULATIONS";
     public static String RESPONSEMESSAGE_NEW_POST_ADDED = "NEW_POST_ADDED";
+    public static String RESPONSEMESSAGE_PLACE_DETAILS_UPDATED = "PLACE_DETAILS_UPDATED";
     public static String RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED = "NEW_REQUIREMENT_ADDED";
     public static String RESPONSEMESSAGE_IMAGE_TYPE_MISSING = "IMAGE_TYPE_MISSING";
     public static String RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE = "INCORRECT_IMAGE_TYPE";

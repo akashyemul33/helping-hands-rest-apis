@@ -25,5 +25,6 @@ public enum StrategyName {
     GetLoginResponseStrategy,
     GetPlaceMainPageStrategy,
     GetTicketStrategy,
-    GetStickersStrategy;
+    GetStickersStrategy,
+    UpdatePlaceStrategy;
 }
