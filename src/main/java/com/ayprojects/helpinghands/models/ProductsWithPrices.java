@@ -2,7 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-public class ProductsWithPrices {
+public class ProductsWithPrices extends NameAndTranslationsObj {
     private String productPrice;
     private String selectedUnit;
     private String userEnteredProductName;
