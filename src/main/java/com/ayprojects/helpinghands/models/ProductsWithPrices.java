@@ -12,7 +12,8 @@ public class ProductsWithPrices extends NameAndTranslationsObj {
     private String productId;
     private List<String> likeIds;
     private String unitQty;
-    private List<String> images;
+    private List<String> imgUrlsLow;
+    private List<String> imgUrlsHigh;
 
     public ProductsWithPrices(String productPrice, String selectedUnit, String userEnteredProductName, String color, String size, String productDesc, String productId, List<String> likeIds) {
         this.productPrice = productPrice;
@@ -50,6 +51,14 @@ public class ProductsWithPrices extends NameAndTranslationsObj {
         this.productDesc = enteredProductDesc;
     }
 
+    public List<String> getImgUrlsHigh() {
+        return imgUrlsHigh;
+    }
+
+    public void setImgUrlsHigh(List<String> imgUrlsHigh) {
+        this.imgUrlsHigh = imgUrlsHigh;
+    }
+
     public String getUnitQty() {
         return unitQty;
     }
@@ -58,12 +67,12 @@ public class ProductsWithPrices extends NameAndTranslationsObj {
         this.unitQty = unitQty;
     }
 
-    public List<String> getImages() {
-        return images;
+    public List<String> getImgUrlsLow() {
+        return imgUrlsLow;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setImgUrlsLow(List<String> imgUrlsLow) {
+        this.imgUrlsLow = imgUrlsLow;
     }
 
     public List<String> getLikeIds() {
