@@ -56,6 +56,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_IMA
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG;
@@ -161,6 +162,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_TICKET_RAISED, "टिकट सफलतापूर्वक जोड़ा गया ।");
             responseMsgsMap.put(RESPONSEMESSAGE_NO_TICKETS_FOUND, "कोई टिकट नहीं मिला !");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_DETAILS_UPDATED, "स्थान का विवरण सफलतापूर्वक अपडेट किया गया है।");
+            responseMsgsMap.put(RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED, "Product details updated successfully .");
         }
     }
 

@@ -52,7 +52,7 @@ public class PlaceController {
     public ResponseEntity<Response<DhPlace>> updatePlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @RequestParam PlaceStepEnums placeStepEnum, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_PLACE_STEP_ENUM, placeStepEnum);
-        Response<DhPlace> response = apiOperations.update(authentication, httpHeaders,params,dhPlace, StrategyName.UpdatePlaceStrategy, version);
+        Response<DhPlace> response = apiOperations.update(authentication, httpHeaders, params, dhPlace, StrategyName.UpdatePlaceStrategy, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);

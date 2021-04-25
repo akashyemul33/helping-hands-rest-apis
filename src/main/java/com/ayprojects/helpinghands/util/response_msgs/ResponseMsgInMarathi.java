@@ -56,6 +56,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_IMA
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG;
@@ -160,7 +161,7 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_TICKET_RAISED, "तिकीट यशस्वीरित्या जोडले.");
         responseMsgsMap.put(RESPONSEMESSAGE_NO_TICKETS_FOUND, "तिकिटे सापडली नाहीत !");
         responseMsgsMap.put(RESPONSEMESSAGE_PLACE_DETAILS_UPDATED, "ठिकाण तपशील यशस्वीरित्या अद्यतनित केले गेले आहेत.");
-
+        responseMsgsMap.put(RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED, "Product details updated successfully .");
     }
 
     public Map<String, String> getResponseMsgsMap() {

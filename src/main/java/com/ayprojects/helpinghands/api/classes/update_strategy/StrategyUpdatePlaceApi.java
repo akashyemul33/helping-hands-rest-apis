@@ -1,11 +1,13 @@
-package com.ayprojects.helpinghands.api.classes;
+package com.ayprojects.helpinghands.api.classes.update_strategy;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyUpdateBehaviour;
+import com.ayprojects.helpinghands.api.classes.CommonMethods;
 import com.ayprojects.helpinghands.api.enums.PlaceStepEnums;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
+import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
@@ -41,9 +43,37 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
             PlaceStepEnums placeStepEnum = (PlaceStepEnums) params.get(AppConstants.KEY_PLACE_STEP_ENUM);
             if (placeStepEnum == PlaceStepEnums.PLACE_DETAILS)
                 return updateFirstStepDetails(language, obj);
+            if (placeStepEnum == PlaceStepEnums.PRODUCTS)
+                return updateProducts(language, obj);
         }
 
         return null;
+    }
+
+    private Response<DhPlace> updateProducts(String language, DhPlace dhPlace) {
+        Response<DhPlace> validationResponse = validateProducts(language, dhPlace);
+        if (!validationResponse.getStatus())
+            return validationResponse;
+        CalendarOperations calendarOperations = new CalendarOperations();
+        for (ProductsWithPrices productsWithPrices : dhPlace.getProductDetails()) {
+            if (Utility.isFieldEmpty(productsWithPrices.getProductId())) {
+                String existingProductId = CommonMethods.verifyProductIdAndReturnId(productsWithPrices, mongoTemplate);
+                if (Utility.isFieldEmpty(existingProductId)) {
+                    String newlyAddedProductId = CommonMethods.prepareDhProductAndStoreItInDb(language, productsWithPrices, dhPlace, mongoTemplate);
+                    productsWithPrices.setProductId(newlyAddedProductId);
+                } else {
+                    productsWithPrices.setProductId(existingProductId);
+                }
+            }
+        }
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+        Update update = new Update();
+        update.set(AppConstants.PRODUCT_DETAILS, dhPlace.getProductDetails());
+        update.set(AppConstants.NUMBER_OF_PRODUCTS, dhPlace.getProductDetails().size());
+        update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
+
+        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED), new ArrayList<>(), 1);
     }
 
     private Response<DhPlace> updateFirstStepDetails(String language, DhPlace dhPlace) {
@@ -61,6 +91,13 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
         return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_DETAILS_UPDATED), new ArrayList<>(), 1);
+    }
+
+    private Response<DhPlace> validateProducts(String language, DhPlace dhPlace) {
+        if (dhPlace == null) {
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        }
+        return new Response<DhPlace>(true, 201, "Validated", new ArrayList<>(), 0);
     }
 
     private Response<DhPlace> validateFirstStepDetails(String language, DhPlace dhPlace) {

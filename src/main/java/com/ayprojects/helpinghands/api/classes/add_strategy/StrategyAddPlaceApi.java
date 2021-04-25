@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.api.classes.add_strategy;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
+import com.ayprojects.helpinghands.api.classes.CommonMethods;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
 import com.ayprojects.helpinghands.models.DhLog;
@@ -22,13 +23,13 @@ import com.mongodb.lang.NonNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private MongoOperations mongoTemplate;
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private PlaceCategoryDao placeCategoryDao;
@@ -67,9 +68,9 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
 
         for (ProductsWithPrices productsWithPrices : dhPlace.getProductDetails()) {
             if (Utility.isFieldEmpty(productsWithPrices.getProductId())) {
-                String existingProductId = verifyProductIdAndReturnId(productsWithPrices);
+                String existingProductId = CommonMethods.verifyProductIdAndReturnId(productsWithPrices,mongoTemplate);
                 if (Utility.isFieldEmpty(existingProductId)) {
-                    String newlyAddedProductId = prepareDhProductAndStoreItInDb(language, productsWithPrices, dhPlace);
+                    String newlyAddedProductId = CommonMethods.prepareDhProductAndStoreItInDb(language, productsWithPrices, dhPlace,mongoTemplate);
                     productsWithPrices.setProductId(newlyAddedProductId);
                 } else {
                     productsWithPrices.setProductId(existingProductId);
@@ -124,38 +125,6 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
         dhPlace.setNumberOfProducts(dhPlace.getProductDetails().size());
         dhPlace = (DhPlace) ApiOperations.setCommonAttrs(dhPlace, placeStatus);
         return mongoTemplate.save(dhPlace, AppConstants.COLLECTION_DH_PLACE);
-    }
-
-    private String prepareDhProductAndStoreItInDb(String language, ProductsWithPrices productsWithPrices, DhPlace dhPlace) {
-        DhProduct queriedDhProduct = new DhProduct();
-        queriedDhProduct.setProductId(Utility.getUUID());
-        queriedDhProduct.setDefaultUnit(productsWithPrices.getSelectedUnit());
-        queriedDhProduct.setMainPlaceCategoryId(dhPlace.getPlaceMainCategoryId());
-        queriedDhProduct.setSubPlaceCategoryIds(Collections.singletonList(dhPlace.getPlaceSubCategoryId()));
-        queriedDhProduct.setCategoryName(dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName());
-        queriedDhProduct.setAddedBy(dhPlace.getAddedBy());
-        queriedDhProduct.setDefaultName(productsWithPrices.getUserEnteredProductName());
-        queriedDhProduct.setAvgPrice(productsWithPrices.getProductPrice());
-        queriedDhProduct = (DhProduct) ApiOperations.setCommonAttrs(queriedDhProduct, AppConstants.STATUS_ACTIVE);
-        mongoTemplate.save(queriedDhProduct, AppConstants.COLLECTION_DH_PRODUCT);
-        new StrategyAddLogApi().add(language, new DhLog(dhPlace.getAddedBy(), "Product [" + productsWithPrices.getUserEnteredProductName() + "] has been added under [" + dhPlace.getPlaceSubCategoryName() + "->" + dhPlace.getSubscribedUsers() + "]."));
-        return queriedDhProduct.getProductId();
-
-    }
-
-    private String verifyProductIdAndReturnId(ProductsWithPrices productsWithPrices) {
-        if (Utility.isFieldEmpty(productsWithPrices.getProductId())) {
-
-            Query queryToFindProduct = new Query(new Criteria().orOperator(Criteria.where(AppConstants.DEFAULT_NAME).regex(productsWithPrices.getUserEnteredProductName(), "i"),
-                    Criteria.where(AppConstants.TRANSLATIONS + ".value").regex(productsWithPrices.getUserEnteredProductName(), "i")
-            ));
-            DhProduct queriedDhProduct = mongoTemplate.findOne(queryToFindProduct, DhProduct.class);
-            if (queriedDhProduct != null) {
-                LOGGER.info("Found product with name " + productsWithPrices.getUserEnteredProductName() + " productId=" + productsWithPrices.getProductId());
-                return queriedDhProduct.getProductId();
-            }
-        }
-        return "";
     }
 
 

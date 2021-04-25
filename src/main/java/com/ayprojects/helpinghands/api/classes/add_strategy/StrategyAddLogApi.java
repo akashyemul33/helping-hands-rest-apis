@@ -10,6 +10,7 @@ import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class StrategyAddLogApi implements StrategyAddBehaviour<DhLog> {
         obj.setModifiedDateTime(calendarOperations.currentDateTimeInUTC());
         obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
         logDao.addLog(obj);
+
         return new Response<>(true, 201, "Log saved successfully", new ArrayList<>());
     }
 
