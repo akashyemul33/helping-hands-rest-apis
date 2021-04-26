@@ -25,24 +25,26 @@ public class DhUser extends AllCommonUsedAttributes {
     private String emailId;
     private String[] roles;
     private UserSettings userSettings;
-    private boolean isSponsored;
+    private boolean sponsored;
     private String sponsoredDate;
     private List<String> subscribedPlaces;
     private UserActivity userActivity;
     //decides whether user settings should be applied or not
-    private boolean isUserSettingEnabled;
+    private boolean userSettingEnabled;
     private String languageSelected;
     private String fcmToken;
+
     public DhUser() {
         super();
     }
-    public DhUser(String uniqueUserID, String imgUrlLow,String imgUrlHigh) {
+
+    public DhUser(String uniqueUserID, String imgUrlLow, String imgUrlHigh) {
         this.userId = uniqueUserID;
         this.profileImgLow = imgUrlLow;
         this.profileImgHigh = imgUrlHigh;
     }
 
-    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImgLow, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean isSponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected, String lastName) {
+    public DhUser(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String userId, String firstName, String password, String profileImgLow, String mobileNumber, String emailId, String[] roles, UserSettings userSettings, boolean sponsored, String sponsoredDate, List<String> subscribedPlaces, UserActivity userActivity, boolean isUserSettingEnabled, String languageSelected, String lastName) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
@@ -55,11 +57,11 @@ public class DhUser extends AllCommonUsedAttributes {
         this.emailId = emailId;
         this.roles = roles;
         this.userSettings = userSettings;
-        this.isSponsored = isSponsored;
+        this.sponsored = sponsored;
         this.sponsoredDate = sponsoredDate;
         this.subscribedPlaces = subscribedPlaces;
         this.userActivity = userActivity;
-        this.isUserSettingEnabled = isUserSettingEnabled;
+        this.userSettingEnabled = isUserSettingEnabled;
         this.languageSelected = languageSelected;
         this.lastName = lastName;
     }
@@ -156,20 +158,20 @@ public class DhUser extends AllCommonUsedAttributes {
         this.subscribedPlaces = subscribedPlaces;
     }
 
-    public boolean isUserSettingEnabled() {
-        return isUserSettingEnabled;
+    public boolean getUserSettingEnabled() {
+        return userSettingEnabled;
     }
 
     public void setUserSettingEnabled(boolean userSettingEnabled) {
-        isUserSettingEnabled = userSettingEnabled;
+        this.userSettingEnabled = userSettingEnabled;
     }
 
-    public boolean isSponsored() {
-        return isSponsored;
+    public boolean getSponsored() {
+        return sponsored;
     }
 
     public void setSponsored(boolean sponsored) {
-        isSponsored = sponsored;
+        this.sponsored = sponsored;
     }
 
     public String getSponsoredDate() {
