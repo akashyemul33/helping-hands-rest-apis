@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhUser;
+import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.image.ImageService;
 
@@ -41,14 +42,36 @@ public class ImageController {
 
     @PostMapping(value = "/uploadPlaceImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DhPlace>> uploadPlaceImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "placeType", required = true) String placeType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "placeImagesLow", required = true) MultipartFile[] placeImagesLow, @RequestPart(value = "placeImagesHigh", required = true) MultipartFile[] placeImagesHigh, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(imageService.uploadPlaceImages(httpHeaders, authentication, placeType, addedBy, placeImagesLow, placeImagesHigh, version), HttpStatus.CREATED);
+        Response<DhPlace> response = imageService.uploadPlaceImages(httpHeaders, authentication, placeType, addedBy, placeImagesLow, placeImagesHigh, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
     @PostMapping(value = "/uploadPostImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DhPosts>> uploadPostImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "postType", required = true) String postType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "postImagesLow", required = true) MultipartFile[] postImagesLow, @RequestPart(value = "postImagesHigh", required = true) MultipartFile[] postImagesHigh, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(imageService.uploadPostImages(httpHeaders, authentication, postType, addedBy, postImagesLow, postImagesHigh, version), HttpStatus.CREATED);
+        Response<DhPosts> response = imageService.uploadPostImages(httpHeaders, authentication, postType, addedBy, postImagesLow, postImagesHigh, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
+    @PostMapping(value = "/uploadProductImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<ProductsWithPrices>> uploadProductImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "uniqueProductId", required = true) String uniqueProductId,
+                                                                            @RequestParam(value = "placeType", required = true) String placeType,
+                                                                            @RequestParam(value = "placeId", required = true) String placeId,
+                                                                            @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "productImagesLow", required = true) MultipartFile[] productImagesLow, @RequestPart(value = "productImagesHigh", required = true) MultipartFile[] productImagesHigh, @PathVariable String version) throws ServerSideException {
+        Response<ProductsWithPrices> response = imageService.uploadProductImages(httpHeaders, authentication, uniqueProductId, placeType, placeId, addedBy, productImagesLow, productImagesHigh, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        }
+    }
     /*@PostMapping(value="/uploadRequirementImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DhRequirements>> uploadReqImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "reqType",required = true) String reqType, @RequestParam(value = "addedBy",required = true) String addedBy, @RequestPart(value="reqImages",required = true) MultipartFile[] reqImages, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(imageService.uploadRequirementImages(httpHeaders,authentication,reqType,addedBy,reqImages,version), HttpStatus.CREATED);

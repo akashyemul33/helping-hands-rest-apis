@@ -89,10 +89,12 @@ public class AppConstants {
     public static final String OWNER_MOBILE_NUMBER = "ownerMobileNumber";
     public static final String OWNER_EMAIL_ID = "ownerEmailId";
     public static final String RESPONSEMESSAGE_PLACE_IMAGES_ADDED = "PLACE_IMAGES_ADDED";
+    public static final String RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED = "PROUDCT_IMAGES_ADDED";
     public static final String RESPONSEMESSAGE_POST_IMAGES_ADDED = "POST_IMAGES_ADDED";
     public static final String RESPONSEMESSAGE_REQ_IMAGES_ADDED = "REQ_IMAGES_ADDED";
     public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES = "UNABLE_TO_ADD_PLACE_IMAGES";
     public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES = "UNABLE_TO_ADD_POST_IMAGES";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PRODUCT_IMAGES = "UNABLE_TO_ADD_PRODUCT_IMAGES";
     public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES = "UNABLE_TO_ADD_REQ_IMAGES";
     public static final String REQ_TITLE = "requirementTitle";
     public static final String REQ_DESC = "requirementDesc";

@@ -6,6 +6,7 @@ import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhUser;
+import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.util.aws.AmazonClient;
@@ -66,8 +67,8 @@ public class ImageServiceImpl implements ImageService {
         }
 
         String uniquePlaceID = Utility.getUUID();
-        String placeImgUploadKeyLow = GetImageFoldersAndPrefix.getPlaceImgUploadKey(uniquePlaceID, placeType, false);
-        String placeImgUploadKeyHigh = GetImageFoldersAndPrefix.getPlaceImgUploadKey(uniquePlaceID, placeType, true);
+        String placeImgUploadKeyLow = GetImageFoldersAndPrefix.getPlaceImgUploadKey(addedBy, uniquePlaceID, placeType, false);
+        String placeImgUploadKeyHigh = GetImageFoldersAndPrefix.getPlaceImgUploadKey(addedBy, uniquePlaceID, placeType, true);
 
         try {
             List<String> placeImageUrlsLow = amazonClient.uploadImagesToS3(placeImgUploadKeyLow, placeImagesLow);
@@ -96,8 +97,8 @@ public class ImageServiceImpl implements ImageService {
         }
 
         String uniquePostID = Utility.getUUID();
-        String postImgUploadKeyLow = GetImageFoldersAndPrefix.getPostImgUploadKey(uniquePostID, postType, false);
-        String postImgUploadKeyHigh = GetImageFoldersAndPrefix.getPostImgUploadKey(uniquePostID, postType, true);
+        String postImgUploadKeyLow = GetImageFoldersAndPrefix.getPostImgUploadKey(addedBy, uniquePostID, postType, false);
+        String postImgUploadKeyHigh = GetImageFoldersAndPrefix.getPostImgUploadKey(addedBy, uniquePostID, postType, true);
 
         try {
             List<String> postImageUrlsLow = amazonClient.uploadImagesToS3(postImgUploadKeyLow, postImagesLow);
@@ -113,6 +114,32 @@ public class ImageServiceImpl implements ImageService {
         } catch (Exception ioException) {
             LOGGER.info("ImageServiceImpl->uploadPostImages : exception = " + ioException.getMessage());
             String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES);
+            return new Response<>(false, 402, errorMsg, new ArrayList<>());
+        }
+    }
+
+    @Override
+    public Response<ProductsWithPrices> uploadProductImages(HttpHeaders httpHeaders, Authentication authentication, String uniqueProductId, String placeType, String placeId, String addedBy, MultipartFile[] productImagesLow, MultipartFile[] productImagesHigh, String version) throws ServerSideException {
+        String language = IHeaders.getLanguageFromHeader(httpHeaders);
+        if (productImagesLow == null || productImagesLow.length == 0 || Utility.isFieldEmpty(addedBy) || Utility.isFieldEmpty(placeType) || Utility.isFieldEmpty(placeId)) {
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        }
+
+        String postImgUploadKeyLow = GetImageFoldersAndPrefix.getProductImgUploadKey(uniqueProductId, placeType, placeId, uniqueProductId, false);
+        String postImgUploadKeyHigh = GetImageFoldersAndPrefix.getProductImgUploadKey(uniqueProductId, placeType, placeId, uniqueProductId, true);
+
+        try {
+            List<String> uploadedProductImgsListLow = amazonClient.uploadImagesToS3(postImgUploadKeyLow, productImagesLow);
+            List<String> uploadedProductImgsListHigh = amazonClient.uploadImagesToS3(postImgUploadKeyHigh, productImagesHigh);
+            ProductsWithPrices productsWithPrices = new ProductsWithPrices();
+            productsWithPrices.setImgUrlsLow(uploadedProductImgsListLow);
+            productsWithPrices.setImgUrlsHigh(uploadedProductImgsListHigh);
+            logService.addLog(new DhLog(addedBy, "Product images have been added for placeId=" + placeId + " productId=%s" + uniqueProductId));
+            String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED);
+            return new Response<>(true, 201, successMsg, Collections.singletonList(productsWithPrices), 1);
+        } catch (Exception ioException) {
+            LOGGER.info("ImageServiceImpl->uploadProductImages : exception = " + ioException.getMessage());
+            String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PRODUCT_IMAGES);
             return new Response<>(false, 402, errorMsg, new ArrayList<>());
         }
     }

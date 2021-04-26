@@ -58,6 +58,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_POST_IMAG
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TICKET_RAISED;
@@ -65,6 +66,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TYPE_PLAC
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PRODUCT_IMAGES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNKNOWN;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_USER_ADDRESS_IS_EMPTY;
@@ -162,6 +164,8 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_NO_TICKETS_FOUND, "तिकिटे सापडली नाहीत !");
         responseMsgsMap.put(RESPONSEMESSAGE_PLACE_DETAILS_UPDATED, "ठिकाण तपशील यशस्वीरित्या अद्यतनित केले गेले आहेत.");
         responseMsgsMap.put(RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED, "Product details updated successfully .");
+        responseMsgsMap.put(RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED, "Product images uploaded successfully .");
+        responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_PRODUCT_IMAGES, "Unable to upload Product images !");
     }
 
     public Map<String, String> getResponseMsgsMap() {

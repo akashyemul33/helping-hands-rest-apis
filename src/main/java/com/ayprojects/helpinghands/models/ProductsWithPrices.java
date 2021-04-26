@@ -6,8 +6,9 @@ public class ProductsWithPrices extends NameAndTranslationsObj {
     private String productPrice;
     private String selectedUnit;
     private String userEnteredProductName;
-    private String color;
-    private String size;
+    private List<String> colors;
+    private List<String> sizes;
+    private List<String> otherAttributes;
     private String productDesc;
     private String productId;
     private List<String> likeIds;
@@ -15,12 +16,12 @@ public class ProductsWithPrices extends NameAndTranslationsObj {
     private List<String> imgUrlsLow;
     private List<String> imgUrlsHigh;
 
-    public ProductsWithPrices(String productPrice, String selectedUnit, String userEnteredProductName, String color, String size, String productDesc, String productId, List<String> likeIds) {
+    public ProductsWithPrices(String productPrice, String selectedUnit, String userEnteredProductName, List<String> colors, List<String> sizes, String productDesc, String productId, List<String> likeIds) {
         this.productPrice = productPrice;
         this.selectedUnit = selectedUnit;
         this.userEnteredProductName = userEnteredProductName;
-        this.color = color;
-        this.size = size;
+        this.colors = colors;
+        this.sizes = sizes;
         this.productDesc = productDesc;
         this.productId = productId;
         this.likeIds = likeIds;
@@ -42,13 +43,21 @@ public class ProductsWithPrices extends NameAndTranslationsObj {
     public ProductsWithPrices() {
     }
 
-    public ProductsWithPrices(String enteredProductPrice, String enteredProductUnit, String enteredProductName, String enteredProductColor, String enteredProductSize, String enteredProductDesc) {
+    public ProductsWithPrices(String enteredProductPrice, String enteredProductUnit, String enteredProductName, List<String> enteredProductColors, List<String> enteredProductSizes, String enteredProductDesc) {
         this.productPrice = enteredProductPrice;
         this.selectedUnit = enteredProductUnit;
         this.userEnteredProductName = enteredProductName;
-        this.color = enteredProductColor;
-        this.size = enteredProductSize;
+        this.colors = enteredProductColors;
+        this.sizes = enteredProductSizes;
         this.productDesc = enteredProductDesc;
+    }
+
+    public List<String> getOtherAttributes() {
+        return otherAttributes;
+    }
+
+    public void setOtherAttributes(List<String> otherAttributes) {
+        this.otherAttributes = otherAttributes;
     }
 
     public List<String> getImgUrlsHigh() {
@@ -83,20 +92,21 @@ public class ProductsWithPrices extends NameAndTranslationsObj {
         this.likeIds = likeIds;
     }
 
-    public String getColor() {
-        return color;
+
+    public List<String> getColors() {
+        return colors;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColors(List<String> colors) {
+        this.colors = colors;
     }
 
-    public String getSize() {
-        return size;
+    public List<String> getSizes() {
+        return sizes;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setSizes(List<String> sizes) {
+        this.sizes = sizes;
     }
 
     public String getProductDesc() {

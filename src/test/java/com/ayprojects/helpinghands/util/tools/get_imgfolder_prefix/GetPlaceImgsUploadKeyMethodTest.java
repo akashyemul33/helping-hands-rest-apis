@@ -18,14 +18,14 @@ public class GetPlaceImgsUploadKeyMethodTest {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                GetImageFoldersAndPrefix.getPlaceImgUploadKey(null, null,false);
+                GetImageFoldersAndPrefix.getPlaceImgUploadKey(null,null, null,false);
             }
         });
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                GetImageFoldersAndPrefix.getPlaceImgUploadKey("", null,false);
+                GetImageFoldersAndPrefix.getPlaceImgUploadKey("","", null,false);
             }
         });
     }
@@ -35,14 +35,14 @@ public class GetPlaceImgsUploadKeyMethodTest {
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                GetImageFoldersAndPrefix.getPlaceImgUploadKey("abc34", "",false);
+                GetImageFoldersAndPrefix.getPlaceImgUploadKey("User_123","abc34", "",false);
             }
         });
 
         assertThrows(IllegalArgumentException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                GetImageFoldersAndPrefix.getPlaceImgUploadKey("abc34", null,false);
+                GetImageFoldersAndPrefix.getPlaceImgUploadKey("User_123","abc34", null,false);
             }
         });
     }
@@ -55,7 +55,7 @@ public class GetPlaceImgsUploadKeyMethodTest {
         String placeType = AppConstants.PUBLIC_PLACE;
         String placeInitial = "PLCS";
         String placeImgRegex = String.format("%s/.*/%s/%s/%s_%s_.*_", imagesBaseFolder, placeDir, placeType, imgType, placeInitial);
-        String imgUploadKey = GetImageFoldersAndPrefix.getPlaceImgUploadKey("abc123", "adsflkjsdf",false);
+        String imgUploadKey = GetImageFoldersAndPrefix.getPlaceImgUploadKey("User_123","abc123", "adsflkjsdf",false);
         LOGGER.info("placeImgUploadKey=" + imgUploadKey);
         assertTrue(imgUploadKey.matches(placeImgRegex));
     }
@@ -68,7 +68,7 @@ public class GetPlaceImgsUploadKeyMethodTest {
         String placeType = AppConstants.BUSINESS_PLACE;
         String placeInitial = "PLCS";
         String placeImgRegex = String.format("%s/.*/%s/%s/%s_%s_.*_", imagesBaseFolder, placeDir, placeType, imgType, placeInitial);
-        String imgUploadKey = GetImageFoldersAndPrefix.getPlaceImgUploadKey(Utility.getUUID(), AppConstants.BUSINESS_PLACE,false);
+        String imgUploadKey = GetImageFoldersAndPrefix.getPlaceImgUploadKey("User_123",Utility.getUUID(), AppConstants.BUSINESS_PLACE,false);
         LOGGER.info("placeImgUploadKey=" + imgUploadKey);
         assertTrue(imgUploadKey.matches(placeImgRegex));
 
@@ -82,7 +82,7 @@ public class GetPlaceImgsUploadKeyMethodTest {
         String placeType = AppConstants.PUBLIC_PLACE;
         String placeInitial = "PLCS";
         String placeImgRegex = String.format("%s/.*/%s/%s/%s_%s_.*_", imagesBaseFolder, placeDir, placeType, imgType, placeInitial);
-        String imgUploadKey = GetImageFoldersAndPrefix.getPlaceImgUploadKey(Utility.getUUID(), AppConstants.PUBLIC_PLACE,false);
+        String imgUploadKey = GetImageFoldersAndPrefix.getPlaceImgUploadKey("User_123",Utility.getUUID(), AppConstants.PUBLIC_PLACE,false);
         LOGGER.info("placeImgUploadKey=" + imgUploadKey);
         assertTrue(imgUploadKey.matches(placeImgRegex));
 
