@@ -273,6 +273,8 @@ public class AppConstants {
     public static long PER_PLACE_IMAGES_LIMIT = 8;
     public static long PER_POST_IMAGES_LIMIT = 8;
     public static long PER_PLACE_PRODUCTS_LIMIT = 200;
+    public static long PER_PRODUCT_DEFAULT_IMAGES_LIMIT = 4;
+    public static long PER_PRODUCT_MAX_IMAGES_LIMIT = 8;
 
     public static String MSG_DISTANCE_CALC_FAILED = "DISTANCE_CALC_FAILED";
 }

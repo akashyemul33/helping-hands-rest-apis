@@ -78,7 +78,7 @@ public class Utility {
     }
 
     public static UserSettings getGlobalUserSettings() {
-        return new UserSettings(AppConstants.TOTAL_ADD_PLACES_LIMIT, AppConstants.PER_DAY_ADD_PLACES_LIMIT, AppConstants.PER_DAY_ADD_POSTS_LIMIT, AppConstants.PER_PLACE_IMAGES_LIMIT, AppConstants.PER_POST_IMAGES_LIMIT, AppConstants.PER_PLACE_PRODUCTS_LIMIT, false, false, false, false);
+        return new UserSettings(AppConstants.TOTAL_ADD_PLACES_LIMIT, AppConstants.PER_DAY_ADD_PLACES_LIMIT, AppConstants.PER_DAY_ADD_POSTS_LIMIT, AppConstants.PER_PLACE_IMAGES_LIMIT, AppConstants.PER_POST_IMAGES_LIMIT, AppConstants.PER_PLACE_PRODUCTS_LIMIT, false, false, false, false, AppConstants.PER_PRODUCT_DEFAULT_IMAGES_LIMIT, true, true, AppConstants.PER_PRODUCT_MAX_IMAGES_LIMIT);
     }
 
     public static List<String> checkForEmptyStrings(Map<String, String> validationStrings) {
