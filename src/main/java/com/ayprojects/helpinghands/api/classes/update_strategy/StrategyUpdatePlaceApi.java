@@ -73,8 +73,10 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
         Query queryGetProducts = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+        update.set(AppConstants.PRODUCT_DETAILS, dhPlace.getProductDetails());
+        update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
         DhPlace updatedDhPlace = mongoTemplate.findOne(queryGetProducts, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
-        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED),Collections.singletonList(updatedDhPlace), 1);
+        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED), Collections.singletonList(updatedDhPlace), 1);
     }
 
     private Response<DhPlace> updateProducts(String language, DhPlace dhPlace) {
@@ -101,6 +103,9 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
         Query queryGetProducts = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+        queryGetProducts.fields().include(AppConstants.NUMBER_OF_PRODUCTS);
+        queryGetProducts.fields().include(AppConstants.PRODUCT_DETAILS);
+        queryGetProducts.fields().include(AppConstants.MODIFIED_DATE_TIME);
         DhPlace updatedDhPlace = mongoTemplate.findOne(queryGetProducts, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
         return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED), Collections.singletonList(updatedDhPlace), 1);
     }
