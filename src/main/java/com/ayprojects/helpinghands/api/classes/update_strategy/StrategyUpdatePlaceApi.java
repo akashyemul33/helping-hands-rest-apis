@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -70,7 +71,10 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         update.set("productDetails." + productPos, dhPlace.getProductDetails().get(0));
         update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
-        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED), new ArrayList<>(), 1);
+
+        Query queryGetProducts = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+        DhPlace updatedDhPlace = mongoTemplate.findOne(queryGetProducts, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
+        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED),Collections.singletonList(updatedDhPlace), 1);
     }
 
     private Response<DhPlace> updateProducts(String language, DhPlace dhPlace) {
@@ -96,7 +100,9 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
-        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED), new ArrayList<>(), 1);
+        Query queryGetProducts = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+        DhPlace updatedDhPlace = mongoTemplate.findOne(queryGetProducts, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
+        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED), Collections.singletonList(updatedDhPlace), 1);
     }
 
     private Response<DhPlace> updateFirstStepDetails(String language, DhPlace dhPlace) {
