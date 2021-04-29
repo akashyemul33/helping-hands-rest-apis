@@ -5,6 +5,7 @@ public enum  PlaceStepEnums {
     NATURE_OF_BUSINESS,
     PLACE_AVAILAIBILITY,
     PRODUCTS,
+    SINGLE_PRODUCT,
     PLACE_IMAGES,
 
 }

@@ -45,9 +45,32 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
                 return updateFirstStepDetails(language, obj);
             if (placeStepEnum == PlaceStepEnums.PRODUCTS)
                 return updateProducts(language, obj);
+            if (placeStepEnum == PlaceStepEnums.SINGLE_PRODUCT && keySet.contains(AppConstants.PRODUCT_POS)) {
+                int productPos = (int) params.get(AppConstants.PRODUCT_POS);
+                return updateSingleProduct(language, obj, productPos);
+            }
         }
 
         return null;
+    }
+
+    /***
+     * pass dhplace by setting product with prices object which need to be udpated at 0th position of dhplac.productdetails
+     * @param language
+     * @param dhPlace
+     * @return
+     */
+    private Response<DhPlace> updateSingleProduct(String language, DhPlace dhPlace, int productPos) {
+        if (dhPlace == null || dhPlace.getProductDetails() == null || dhPlace.getProductDetails().get(0) == null) {
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        }
+        CalendarOperations calendarOperations = new CalendarOperations();
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+        Update update = new Update();
+        update.set("productDetails." + productPos, dhPlace.getProductDetails().get(0));
+        update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
+        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED), new ArrayList<>(), 1);
     }
 
     private Response<DhPlace> updateProducts(String language, DhPlace dhPlace) {

@@ -111,6 +111,7 @@ public class AppConstants {
     public static final String LANG_HINDI = "hi";
     public static final String PLACE_SUB_CATEGORY_NAME = "placeSubCategoryName";
     public static final String PRODUCT_DETAILS = "productDetails";
+    public static final String PRODUCT_DETAILS_WITH_PRODUCT_ID = "productDetails.productId";
     public static final String KEY_PRODUCTNAME_ENG = "productnameInEnglish";
     public static final String KEY_PRODUCTNAME_MR = "productnameInMarathi";
     public static final String KEY_PRODUCTNAME_HI = "productnameInHindi";
@@ -213,6 +214,7 @@ public class AppConstants {
     public static final String DEFAULT_UNIT_IF_EMPTY = "Piece";
     public static final String RESPONSEMESSAGE_TICKET_RAISED = "TICKET_RAISED";
     public static final String KEY_PLACE_STEP_ENUM = "PlaceStepEnum";
+    public static final String PRODUCT_POS = "ProductPos";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
