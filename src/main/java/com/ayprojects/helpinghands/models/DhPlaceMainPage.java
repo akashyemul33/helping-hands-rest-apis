@@ -12,6 +12,9 @@ public class DhPlaceMainPage extends AllCommonUsedAttributes {
     private PlaceMainGridType gridType;
     private List<PlaceMainPageItem> itemList;
 
+    public DhPlaceMainPage() {
+    }
+
     public DhPlaceMainPage(int placeMainPageId, String placeMainPageUniqueId, String heading, PlaceMainGridType gridType, List<PlaceMainPageItem> itemList) {
         this.placeMainPageId = placeMainPageId;
         this.placeMainPageUniqueId = placeMainPageUniqueId;

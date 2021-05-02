@@ -10,9 +10,7 @@ import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.apache.http.entity.ContentType;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,13 +21,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
 public class UploadPlaceImagesTest {
 
-    @Autowired
+    /*@Autowired
     ImageServiceImpl imageService;
 
     @Test
@@ -100,5 +95,5 @@ public class UploadPlaceImagesTest {
         assertEquals(expectedUserResponse.getStatus(), actualResponse.getStatus());
         assertEquals(expectedUserResponse.getStatusCode(), actualResponse.getStatusCode());
         assertTrue(successMsg.equalsIgnoreCase(actualResponse.getMessage()));
-    }
+    }*/
 }

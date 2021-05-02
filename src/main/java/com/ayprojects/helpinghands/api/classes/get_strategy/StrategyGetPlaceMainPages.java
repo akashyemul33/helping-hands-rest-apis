@@ -46,6 +46,7 @@ public class StrategyGetPlaceMainPages implements StrategyGetBehaviour<DhPlaceMa
                 int size = (int) params.get(AppConstants.KEY_SIZE);
                 return getPaginatedPlaceMainPages(language, page, size);
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new ServerSideException(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG));
             }
         }
@@ -63,7 +64,7 @@ public class StrategyGetPlaceMainPages implements StrategyGetBehaviour<DhPlaceMa
         Pageable pageable = PageRequest.of(page, size);
 
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        List<DhPlaceMainPage> dhPlaceMainPageList = mongoTemplate.find(query.with(pageable), DhPlaceMainPage.class, AppConstants.COLLECTION_DH_PLACE_MAIN_PAGE);
+        List<DhPlaceMainPage> dhPlaceMainPageList = mongoTemplate.find(query.with(pageable), DhPlaceMainPage.class);
         LOGGER.info("placeMainPageList=" + dhPlaceMainPageList.size());
         Page<DhPlaceMainPage> placeMainPages = PageableExecutionUtils.getPage(
                 dhPlaceMainPageList,
