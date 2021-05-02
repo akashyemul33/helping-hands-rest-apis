@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
+import static com.ayprojects.helpinghands.HelpingHandsApplication.main;
 
 @Component
 public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
@@ -90,6 +91,7 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
         if (mainPageResult == null) {
             LOGGER.info("No items in main place pages, so inserting one");
             mainPageResult = new DhPlaceMainPage(AppConstants.PLACE_MAIN_PAGE_ID_NEWLY_ADDED, Utility.getUUID(), AppConstants.NEWLY_ADDED, PlaceMainGridType.SMALL_GRID_ONLY_NAME, Collections.singletonList(pageItem));
+            mainPageResult = (DhPlaceMainPage) Utility.setCommonAttrs(mainPageResult, AppConstants.STATUS_ACTIVE);
             mongoTemplate.save(mainPageResult, AppConstants.COLLECTION_DH_PLACE_MAIN_PAGE);
         } else {
             Update updatePlaceMainPages = new Update();

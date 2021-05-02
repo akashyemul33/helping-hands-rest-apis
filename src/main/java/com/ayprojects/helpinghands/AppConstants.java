@@ -172,7 +172,7 @@ public class AppConstants {
     public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
     public static final String COLLECTION_DH_PRODUCT = "dhProduct";
     public static final String COLLECTION_DH_PLACE = "dhPlace";
-    public static final String COLLECTION_DH_PLACE_MAIN_PAGE = "DhPlaceMainPage";
+    public static final String COLLECTION_DH_PLACE_MAIN_PAGE = "dhPlaceMainPage";
     public static final String COLLECTION_DH_STICKERS = "dhStickers";
     public static final String COLLECTION_DH_POSTS = "dhPosts";
     public static final String COLLECTION_DH_REQUIREMENTS = "dhRequirements";

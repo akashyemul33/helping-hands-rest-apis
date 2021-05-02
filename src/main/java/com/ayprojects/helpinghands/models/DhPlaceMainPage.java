@@ -3,10 +3,6 @@ package com.ayprojects.helpinghands.models;
 import java.util.List;
 
 public class DhPlaceMainPage extends AllCommonUsedAttributes {
-    public String createdDateTime;
-    public String modifiedDateTime;
-    public String schemaVersion;
-    public String status;
     private int placeMainPageId;
     private String placeMainPageUniqueId;
     private String heading;
@@ -32,45 +28,6 @@ public class DhPlaceMainPage extends AllCommonUsedAttributes {
         this.itemList = itemList;
     }
 
-    @Override
-    public String getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    @Override
-    public void setCreatedDateTime(String createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
-
-    @Override
-    public String getModifiedDateTime() {
-        return modifiedDateTime;
-    }
-
-    @Override
-    public void setModifiedDateTime(String modifiedDateTime) {
-        this.modifiedDateTime = modifiedDateTime;
-    }
-
-    @Override
-    public String getSchemaVersion() {
-        return schemaVersion;
-    }
-
-    @Override
-    public void setSchemaVersion(String schemaVersion) {
-        this.schemaVersion = schemaVersion;
-    }
-
-    @Override
-    public String getStatus() {
-        return status;
-    }
-
-    @Override
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public String getPlaceMainPageUniqueId() {
         return placeMainPageUniqueId;
