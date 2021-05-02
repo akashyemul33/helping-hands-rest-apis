@@ -43,9 +43,6 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
     @Autowired
     Utility utility;
 
-    @Autowired
-     CalendarOperations calendarOperations;
-
     @Override
     public Response<DhRatingAndComments> addRatingAndComments(Authentication authentication, HttpHeaders httpHeaders, DhRatingAndComments dhRatingComments, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
@@ -90,7 +87,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                     mongoTemplate.updateFirst(queryFindPlaceWithId,updatePopTopRating,DhPlace.class);
                 }
                 updatePlace.push(AppConstants.TOP_RATINGS, dhRatingComments);
-                updatePlace.set(AppConstants.MODIFIED_DATE_TIME,calendarOperations.currentDateTimeInUTC());
+                updatePlace.set(AppConstants.MODIFIED_DATE_TIME,CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPlaceWithId,updatePlace, DhPlace.class);
                 break;
             case AppConstants.POST:
@@ -115,7 +112,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                     mongoTemplate.updateFirst(queryFindPostWithId,updatePopTopRating,DhPosts.class);
                 }
                 updatePost.push(AppConstants.TOP_RATINGS, dhRatingComments);
-                updatePost.set(AppConstants.MODIFIED_DATE_TIME,calendarOperations.currentDateTimeInUTC());
+                updatePost.set(AppConstants.MODIFIED_DATE_TIME,CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPostWithId,updatePost, DhPosts.class);
                 break;
             case AppConstants.REQUIREMENT:
@@ -140,7 +137,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                     mongoTemplate.updateFirst(queryFindRequirementWithId,updatePopTopRating,DhRequirements.class);
                 }
                 updateRequirement.push(AppConstants.TOP_RATINGS, dhRatingComments);
-                updateRequirement.set(AppConstants.MODIFIED_DATE_TIME,calendarOperations.currentDateTimeInUTC());
+                updateRequirement.set(AppConstants.MODIFIED_DATE_TIME,CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindRequirementWithId,updateRequirement, DhRequirements.class);
                 break;
         }

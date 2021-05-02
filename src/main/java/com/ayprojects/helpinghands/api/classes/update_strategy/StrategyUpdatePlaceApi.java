@@ -28,6 +28,7 @@ import java.util.Set;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
+
 @Component
 public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> {
     @Autowired
@@ -65,16 +66,15 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         if (dhPlace == null || dhPlace.getProductDetails() == null || dhPlace.getProductDetails().get(0) == null) {
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
-        CalendarOperations calendarOperations = new CalendarOperations();
         Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
         Update update = new Update();
         update.set("productDetails." + productPos, dhPlace.getProductDetails().get(0));
-        update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
         Query queryGetProducts = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
         update.set(AppConstants.PRODUCT_DETAILS, dhPlace.getProductDetails());
-        update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         DhPlace updatedDhPlace = mongoTemplate.findOne(queryGetProducts, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
         return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED), Collections.singletonList(updatedDhPlace), 1);
     }
@@ -83,7 +83,6 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         Response<DhPlace> validationResponse = validateProducts(language, dhPlace);
         if (!validationResponse.getStatus())
             return validationResponse;
-        CalendarOperations calendarOperations = new CalendarOperations();
         for (ProductsWithPrices productsWithPrices : dhPlace.getProductDetails()) {
             if (Utility.isFieldEmpty(productsWithPrices.getProductId())) {
                 String existingProductId = CommonMethods.verifyProductIdAndReturnId(productsWithPrices, mongoTemplate);
@@ -99,7 +98,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         Update update = new Update();
         update.set(AppConstants.PRODUCT_DETAILS, dhPlace.getProductDetails());
         update.set(AppConstants.NUMBER_OF_PRODUCTS, dhPlace.getProductDetails().size());
-        update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
         Query queryGetProducts = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
@@ -114,14 +113,13 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         Response<DhPlace> validationResponse = validateFirstStepDetails(language, dhPlace);
         if (!validationResponse.getStatus())
             return validationResponse;
-        CalendarOperations calendarOperations = new CalendarOperations();
         Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
         Update update = new Update();
         update.set(AppConstants.PLACE_NAME, dhPlace.getPlaceName());
         update.set(AppConstants.OWNER_NAME, dhPlace.getOwnerName());
         update.set(AppConstants.PLACE_REG_DATE, dhPlace.getPlaceRegDate());
         update.set(AppConstants.PLACE_ADDRESS, dhPlace.getPlaceAddress());
-        update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
         return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_DETAILS_UPDATED), new ArrayList<>(), 1);

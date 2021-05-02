@@ -172,7 +172,7 @@ public class AppConstants {
     public static final String COLLECTION_DH_PLACE_CATEGORIES = "dhPlaceCategories";
     public static final String COLLECTION_DH_PRODUCT = "dhProduct";
     public static final String COLLECTION_DH_PLACE = "dhPlace";
-    public static final String COLLECTION_PLACE_MAIN_PAGE = "PlaceMainPage";
+    public static final String COLLECTION_DH_PLACE_MAIN_PAGE = "DhPlaceMainPage";
     public static final String COLLECTION_DH_STICKERS = "dhStickers";
     public static final String COLLECTION_DH_POSTS = "dhPosts";
     public static final String COLLECTION_DH_REQUIREMENTS = "dhRequirements";
@@ -215,6 +215,11 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_TICKET_RAISED = "TICKET_RAISED";
     public static final String KEY_PLACE_STEP_ENUM = "PlaceStepEnum";
     public static final String PRODUCT_POS = "ProductPos";
+    public static final String KEY_HEADING = "heading";
+    public static final String NEWLY_ADDED = "Newly Added";
+    public static final int MAX_COUNT_OF_NEWLY_ADDED_LIST = 20;
+    public static final String ITEM_LIST = "itemList";
+    public static final int PLACE_MAIN_PAGE_ID_NEWLY_ADDED = 5;
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

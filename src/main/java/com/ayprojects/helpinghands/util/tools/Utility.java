@@ -214,9 +214,8 @@ public class Utility {
     public static AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String status) {
         if (obj == null) obj = new AllCommonUsedAttributes();
         obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
-        CalendarOperations calendarOperations = new CalendarOperations();
-        obj.setCreatedDateTime(calendarOperations.currentDateTimeInUTC());
-        obj.setModifiedDateTime(calendarOperations.currentDateTimeInUTC());
+        obj.setCreatedDateTime(CalendarOperations.currentDateTimeInUTC());
+        obj.setModifiedDateTime(CalendarOperations.currentDateTimeInUTC());
         obj.setStatus(status);
         return obj;
     }

@@ -78,7 +78,7 @@ public class ViewServiceImpl implements ViewService {
                     mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopView, DhPlace.class);
                 }
                 updatePlace.push(AppConstants.TOP_VIEWS, dhViews);
-                updatePlace.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+                updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
                 break;
             case AppConstants.POST:

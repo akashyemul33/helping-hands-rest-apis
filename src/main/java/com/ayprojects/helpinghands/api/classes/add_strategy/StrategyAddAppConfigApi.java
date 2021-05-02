@@ -31,10 +31,9 @@ public class StrategyAddAppConfigApi implements StrategyAddBehaviour<DhAppConfig
         }
 
         try {
-            CalendarOperations calendarOperations = new CalendarOperations();
             appConfigDao.addAppConfig(dhAppConfig);
-            dhAppConfig.setCreatedDateTime(calendarOperations.currentDateTimeInUTC());
-            dhAppConfig.setModifiedDateTime(calendarOperations.currentDateTimeInUTC());
+            dhAppConfig.setCreatedDateTime(CalendarOperations.currentDateTimeInUTC());
+            dhAppConfig.setModifiedDateTime(CalendarOperations.currentDateTimeInUTC());
             dhAppConfig.setStatus(AppConstants.STATUS_PENDING);
             dhAppConfig.setSchemaVersion(AppConstants.SCHEMA_VERSION);
             appConfigDao.addAppConfig(dhAppConfig);

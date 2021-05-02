@@ -40,9 +40,8 @@ public class ApiOperations<T extends AllCommonUsedAttributes> {
     public static AllCommonUsedAttributes setCommonAttrs(AllCommonUsedAttributes obj, String defaultStatus) {
         if (obj == null) obj = new AllCommonUsedAttributes();
         obj.setSchemaVersion(AppConstants.SCHEMA_VERSION);
-        CalendarOperations calendarOperations = new CalendarOperations();
-        obj.setCreatedDateTime(calendarOperations.currentDateTimeInUTC());
-        obj.setModifiedDateTime(calendarOperations.currentDateTimeInUTC());
+        obj.setCreatedDateTime(CalendarOperations.currentDateTimeInUTC());
+        obj.setModifiedDateTime(CalendarOperations.currentDateTimeInUTC());
         if (Utility.isFieldEmpty(obj.getStatus())) {
             obj.setStatus(defaultStatus);
         }

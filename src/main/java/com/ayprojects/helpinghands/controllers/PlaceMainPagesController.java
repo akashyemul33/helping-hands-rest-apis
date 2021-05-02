@@ -4,7 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
-import com.ayprojects.helpinghands.models.PlaceMainPage;
+import com.ayprojects.helpinghands.models.DhPlaceMainPage;
 import com.ayprojects.helpinghands.models.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +33,15 @@ import io.swagger.annotations.Api;
 public class PlaceMainPagesController {
 
     @Autowired
-    ApiOperations<PlaceMainPage> apiOperations;
+    ApiOperations<DhPlaceMainPage> apiOperations;
 
     @PostMapping(value = "/addPlaceMainPage")
-    public ResponseEntity<Response<PlaceMainPage>> addPlaceMainPage(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody PlaceMainPage placeMainPage, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, placeMainPage, StrategyName.AddPlaceMainPageStrategy, version), HttpStatus.CREATED);
+    public ResponseEntity<Response<DhPlaceMainPage>> addPlaceMainPage(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlaceMainPage dhPlaceMainPage, @PathVariable String version) throws ServerSideException {
+        return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhPlaceMainPage, StrategyName.AddPlaceMainPageStrategy, version), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getPaginatedPlaceMainPages")
-    ResponseEntity<Response<PlaceMainPage>> getPaginatedPlaceMainPages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size, @PathVariable String version) throws ServerSideException {
+    ResponseEntity<Response<DhPlaceMainPage>> getPaginatedPlaceMainPages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_PAGE, page);
         params.put(AppConstants.KEY_SIZE, size);

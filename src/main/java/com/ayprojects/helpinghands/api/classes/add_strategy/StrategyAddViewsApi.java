@@ -13,7 +13,6 @@ import com.ayprojects.helpinghands.models.DhViews;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
-import com.ayprojects.helpinghands.util.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -42,7 +41,6 @@ public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
         if (!validationResponse.getStatus())
             return validationResponse;
 
-        CalendarOperations calendarOperations = new CalendarOperations();
         dhViews = (DhViews) ApiOperations.setCommonAttrs(dhViews, AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhViews, AppConstants.COLLECTION_DH_VIEWS);
         validationResponse.setLogActionMsg("New view for [" + dhViews.getContentType() + "] has been added by user [" + dhViews.getAddedBy() + "].");
@@ -65,7 +63,7 @@ public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
                     mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopView, DhPlace.class);
                 }
                 updatePlace.push(AppConstants.TOP_VIEWS, dhViews);
-                updatePlace.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+                updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
                 break;
             case AppConstants.POST:
@@ -83,7 +81,7 @@ public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
                     mongoTemplate.updateFirst(queryFindPostsWithId, updatePopTopRating, DhPlace.class);
                 }
                 updatePost.push(AppConstants.TOP_VIEWS, dhViews);
-                updatePost.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+                updatePost.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPostsWithId, updatePost, DhPosts.class);
                 break;
             case AppConstants.REQUIREMENT:
@@ -101,7 +99,7 @@ public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
                     mongoTemplate.updateFirst(queryFindRequirementWithId, updatePopTopRating, DhRequirements.class);
                 }
                 updateRequirement.push(AppConstants.TOP_VIEWS, dhViews);
-                updateRequirement.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+                updateRequirement.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindRequirementWithId, updateRequirement, DhRequirements.class);
                 break;
         }

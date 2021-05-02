@@ -31,7 +31,7 @@ public class CalendarOperations {
         }
     }
 
-    public String currentDateTimeInUTC() throws NullPointerException, IllegalArgumentException {
+    public static String currentDateTimeInUTC() throws NullPointerException, IllegalArgumentException {
         DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
         return dateFormat.format(new Date());

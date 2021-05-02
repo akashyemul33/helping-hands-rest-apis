@@ -46,8 +46,6 @@ public class PostsServiceImpl implements PostsService {
 
     @Autowired
     CommonService commonService;
-    @Autowired
-    CalendarOperations calendarOperations;
 
     @Override
     public Response<DhPosts> addPost(Authentication authentication, HttpHeaders httpHeaders, DhPosts dhPosts, String version) throws ServerSideException {
@@ -114,7 +112,7 @@ public class PostsServiceImpl implements PostsService {
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopPost, DhPlace.class);
             }
             updatePlace.push(AppConstants.TOP_POSTS, dhPosts);
-            updatePlace.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+            updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
         }
 

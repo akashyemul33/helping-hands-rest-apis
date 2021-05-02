@@ -44,7 +44,6 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPosts> {
         if (!validationResponse.getStatus())
             return validationResponse;
 
-        CalendarOperations calendarOperations = new CalendarOperations();
         //check for user existence
         if (!commonService.checkUserExistence(dhPosts.getAddedBy())) {
             return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, language), new ArrayList<>(), 0);
@@ -84,7 +83,7 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPosts> {
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopPost, DhPlace.class);
             }
             updatePlace.push(AppConstants.TOP_POSTS, dhPosts);
-            updatePlace.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+            updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
         }
 

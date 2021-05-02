@@ -9,9 +9,11 @@ import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
-import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
+import com.ayprojects.helpinghands.models.PlaceMainGridType;
+import com.ayprojects.helpinghands.models.DhPlaceMainPage;
+import com.ayprojects.helpinghands.models.PlaceMainPageItem;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
@@ -22,7 +24,6 @@ import com.ayprojects.helpinghands.util.tools.Utility;
 import com.mongodb.lang.NonNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -30,6 +31,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,9 +70,9 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
 
         for (ProductsWithPrices productsWithPrices : dhPlace.getProductDetails()) {
             if (Utility.isFieldEmpty(productsWithPrices.getProductId())) {
-                String existingProductId = CommonMethods.verifyProductIdAndReturnId(productsWithPrices,mongoTemplate);
+                String existingProductId = CommonMethods.verifyProductIdAndReturnId(productsWithPrices, mongoTemplate);
                 if (Utility.isFieldEmpty(existingProductId)) {
-                    String newlyAddedProductId = CommonMethods.prepareDhProductAndStoreItInDb(language, productsWithPrices, dhPlace,mongoTemplate);
+                    String newlyAddedProductId = CommonMethods.prepareDhProductAndStoreItInDb(language, productsWithPrices, dhPlace, mongoTemplate);
                     productsWithPrices.setProductId(newlyAddedProductId);
                 } else {
                     productsWithPrices.setProductId(existingProductId);
@@ -80,6 +82,30 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
 
         dhPlace = prepareDhPlaceAndStoreItInDb(dhPlace, placeStatus);
         validationResponse.setLogActionMsg("New [" + dhPlace.getPlaceType() + "] place with category [" + dhPlace.getPlaceCategoryName() + "->" + dhPlace.getPlaceSubCategoryName() + "] has been added in status " + placeStatus);
+
+        //add place to place main pages in newly added section
+        Query queryToFindNewlyAddedSection = new Query(Criteria.where(AppConstants.KEY_HEADING).regex(AppConstants.NEWLY_ADDED, "i"));
+        DhPlaceMainPage mainPageResult = mongoTemplate.findOne(queryToFindNewlyAddedSection, DhPlaceMainPage.class);
+        PlaceMainPageItem pageItem = new PlaceMainPageItem(dhPlace.getImageUrlsLow(), dhPlace.getImageUrlsHigh(), dhPlace.getPlaceName(), dhPlace.getPlaceId(), dhPlace.getPlaceSubCategoryName(), dhPlace.getCreatedDateTime(), dhPlace.getPlaceRegDate());
+        if (mainPageResult == null) {
+            LOGGER.info("No items in main place pages, so inserting one");
+            mainPageResult = new DhPlaceMainPage(AppConstants.PLACE_MAIN_PAGE_ID_NEWLY_ADDED, Utility.getUUID(), AppConstants.NEWLY_ADDED, PlaceMainGridType.SMALL_GRID_ONLY_NAME, Collections.singletonList(pageItem));
+            mongoTemplate.save(mainPageResult, AppConstants.COLLECTION_DH_PLACE_MAIN_PAGE);
+        } else {
+            Update updatePlaceMainPages = new Update();
+            List<PlaceMainPageItem> mainPageItems = mainPageResult.getItemList();
+            if (mainPageItems == null) mainPageItems = new ArrayList<>(1);
+            LOGGER.info("else items found for newly added list : size=" + mainPageItems.size());
+            if (mainPageItems.size() == AppConstants.MAX_COUNT_OF_NEWLY_ADDED_LIST) {
+                mainPageItems.remove(mainPageItems.size() - 1);
+            }
+            mainPageItems.add(0, pageItem);
+            updatePlaceMainPages.set(AppConstants.ITEM_LIST, mainPageItems);
+            updatePlaceMainPages.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+            mongoTemplate.updateFirst(queryToFindNewlyAddedSection, updatePlaceMainPages, DhPlaceMainPage.class);
+        }
+
+
         String responseMsg = getResponseMsgForStatus(language, placeStatus);
         int statusCode = AppConstants.STATUS_ACTIVE.equalsIgnoreCase(placeStatus) ? 201 : 202;
         String headingMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CONGRATULATIONS);

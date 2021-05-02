@@ -70,10 +70,9 @@ public class StrategyAddPlaceSubCategoryApi implements StrategyAddBehaviour<Plac
     }
 
     private void updateMainCategory(PlaceSubCategories placeSubCategory) {
-        CalendarOperations calendarOperations = new CalendarOperations();
         Update mainCategoryUpdate = new Update();
         mainCategoryUpdate.push(AppConstants.PLACE_SUB_CATEGORIES, placeSubCategory);
-        mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
+        mainCategoryUpdate.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         Query queryFindCategoryWithId = new Query(Criteria.where(AppConstants.PLACE_MAIN_CATEGORY_ID).is(placeSubCategory.getPlaceMainCategoryId()));
         mongoTemplate.updateFirst(queryFindCategoryWithId, mainCategoryUpdate, DhPlaceCategories.class);
     }
