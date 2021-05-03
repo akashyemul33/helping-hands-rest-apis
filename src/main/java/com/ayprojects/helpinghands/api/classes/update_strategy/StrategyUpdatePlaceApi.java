@@ -58,7 +58,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         return null;
     }
 
-    private Response<DhPlace> updateSecondStepDetails(String language, DhPlace obj) {
+    private Response<DhPlace> updateSecondStepDetails(String language, DhPlace dhPlace) {
         Response<DhPlace> validationResponse = validateSecondStepDetails(language, dhPlace);
         if (!validationResponse.getStatus())
             return validationResponse;
