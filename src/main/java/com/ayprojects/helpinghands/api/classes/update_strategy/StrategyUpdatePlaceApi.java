@@ -7,6 +7,7 @@ import com.ayprojects.helpinghands.api.enums.PlaceStepEnums;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
+import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
@@ -44,9 +45,11 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         if (keySet.contains(AppConstants.KEY_PLACE_STEP_ENUM)) {
             PlaceStepEnums placeStepEnum = (PlaceStepEnums) params.get(AppConstants.KEY_PLACE_STEP_ENUM);
             if (placeStepEnum == PlaceStepEnums.PLACE_DETAILS)
-                return updateFirstStepDetails(language, obj);
+                return updatePlaceDetails(language, obj);
             if (placeStepEnum == PlaceStepEnums.NATURE_OF_BUSINESS)
-                return updateSecondStepDetails(language, obj);
+                return updateNatureOfBusiness(language, obj);
+            if (placeStepEnum == PlaceStepEnums.PLACE_AVAILAIBILITY)
+                return updatePlaceAvailabilityDetails(language, obj);
             if (placeStepEnum == PlaceStepEnums.PRODUCTS)
                 return updateProducts(language, obj);
             if (placeStepEnum == PlaceStepEnums.SINGLE_PRODUCT && keySet.contains(AppConstants.PRODUCT_POS)) {
@@ -58,7 +61,20 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         return null;
     }
 
-    private Response<DhPlace> updateSecondStepDetails(String language, DhPlace dhPlace) {
+    private Response<DhPlace> updatePlaceAvailabilityDetails(String language, DhPlace dhPlace) {
+        Response<DhPlace> validationResponse = validatePlaceAvailabilityDetails(language, dhPlace);
+        if (!validationResponse.getStatus())
+            return validationResponse;
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+        Update update = new Update();
+        update.set(AppConstants.PLACE_AVAILABLITY_DETAILS, dhPlace.getPlaceAvailablityDetails());
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
+
+        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_AVAILABILITY_UPDATED), new ArrayList<>(), 1);
+    }
+
+    private Response<DhPlace> updateNatureOfBusiness(String language, DhPlace dhPlace) {
         Response<DhPlace> validationResponse = validateSecondStepDetails(language, dhPlace);
         if (!validationResponse.getStatus())
             return validationResponse;
@@ -70,7 +86,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
-        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_DETAILS_UPDATED), new ArrayList<>(), 1);
+        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NATURE_OF_BUSINESS_UPDATED), new ArrayList<>(), 1);
     }
 
     /***
@@ -126,7 +142,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED), Collections.singletonList(updatedDhPlace), 1);
     }
 
-    private Response<DhPlace> updateFirstStepDetails(String language, DhPlace dhPlace) {
+    private Response<DhPlace> updatePlaceDetails(String language, DhPlace dhPlace) {
         Response<DhPlace> validationResponse = validateFirstStepDetails(language, dhPlace);
         if (!validationResponse.getStatus())
             return validationResponse;
@@ -159,6 +175,59 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         if (dhPlace.getPlaceContact() == null) missingFieldsList.add(AppConstants.PLACE_CONTACT);
         else if (Utility.isFieldEmpty(dhPlace.getPlaceContact().getMobile()))
             missingFieldsList.add(AppConstants.PLACE_MOBILE);
+
+        if (!missingFieldsList.isEmpty()) {
+            String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY);
+            resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
+            LOGGER.info("missingfields=>" + resMsg);
+            return new Response<DhPlace>(false, 402, resMsg, new ArrayList<>(), 0);
+        } else {
+            Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+            query.fields().include(AppConstants.PLACE_ID);
+            DhPlace queriedDhPlace = mongoTemplate.findOne(query, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
+            if (queriedDhPlace == null) {
+                return new Response<DhPlace>(false, 402, "Place Id not found !", new ArrayList<>(), 0);
+            }
+        }
+        return new Response<DhPlace>(true, 201, "Validated", new ArrayList<>(), 0);
+
+    }
+
+    private Response<DhPlace> validatePlaceAvailabilityDetails(String language, DhPlace dhPlace) {
+        if (dhPlace == null) {
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        }
+        CalendarOperations calendarOperations = new CalendarOperations();
+        List<String> missingFieldsList = new ArrayList<>();
+        if (Utility.isFieldEmpty(dhPlace.getPlaceId()))
+            missingFieldsList.add(AppConstants.PLACE_ID);
+
+        if (dhPlace.getPlaceAvailablityDetails() == null)
+            missingFieldsList.add(AppConstants.PLACE_AVAILABLITY_DETAILS);
+        else {
+            PlaceAvailabilityDetails p = dhPlace.getPlaceAvailablityDetails();
+            if (!p.isProvide24into7()) {
+                if (Utility.isFieldEmpty(p.getPlaceOpeningTime()) || !calendarOperations.verifyTimeFollowsCorrectFormat(p.getPlaceOpeningTime()))
+                    missingFieldsList.add(AppConstants.PLACE_OPENING_TIME);
+                if (Utility.isFieldEmpty(p.getPlaceClosingTime()) || !calendarOperations.verifyTimeFollowsCorrectFormat(p.getPlaceClosingTime()))
+                    missingFieldsList.add(AppConstants.PLACE_CLOSING_TIME);
+                if (!p.getHaveNoLunchHours()) {
+                    if (Utility.isFieldEmpty(p.getLunchStartTime()) || !calendarOperations.verifyTimeFollowsCorrectFormat(p.getLunchStartTime()))
+                        missingFieldsList.add(AppConstants.LUNCH_START_TIME);
+                    if (Utility.isFieldEmpty(p.getLunchEndTime()) || !calendarOperations.verifyTimeFollowsCorrectFormat(p.getLunchEndTime()))
+                        missingFieldsList.add(AppConstants.LUNCH_END_TIME);
+                }
+            }
+
+            if (p.isHaveExchangeFacility()) {
+                if (!p.isAnyTimeExchange()) {
+                    if (Utility.isFieldEmpty(p.getExchangeStartTime()) || !calendarOperations.verifyTimeFollowsCorrectFormat(p.getExchangeStartTime()))
+                        missingFieldsList.add(AppConstants.EXCHANGE_START_TIME);
+                    if (Utility.isFieldEmpty(p.getExchangeEndTime()) || !calendarOperations.verifyTimeFollowsCorrectFormat(p.getExchangeEndTime()))
+                        missingFieldsList.add(AppConstants.EXCHANGE_END_TIME);
+                }
+            }
+        }
 
         if (!missingFieldsList.isEmpty()) {
             String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY);
