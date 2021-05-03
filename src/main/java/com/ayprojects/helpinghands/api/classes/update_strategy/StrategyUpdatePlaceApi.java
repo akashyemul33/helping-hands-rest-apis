@@ -45,6 +45,8 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
             PlaceStepEnums placeStepEnum = (PlaceStepEnums) params.get(AppConstants.KEY_PLACE_STEP_ENUM);
             if (placeStepEnum == PlaceStepEnums.PLACE_DETAILS)
                 return updateFirstStepDetails(language, obj);
+            if (placeStepEnum == PlaceStepEnums.NATURE_OF_BUSINESS)
+                return updateSecondStepDetails(language, obj);
             if (placeStepEnum == PlaceStepEnums.PRODUCTS)
                 return updateProducts(language, obj);
             if (placeStepEnum == PlaceStepEnums.SINGLE_PRODUCT && keySet.contains(AppConstants.PRODUCT_POS)) {
@@ -54,6 +56,21 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         }
 
         return null;
+    }
+
+    private Response<DhPlace> updateSecondStepDetails(String language, DhPlace obj) {
+        Response<DhPlace> validationResponse = validateSecondStepDetails(language, dhPlace);
+        if (!validationResponse.getStatus())
+            return validationResponse;
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+        Update update = new Update();
+        update.set(AppConstants.PLACE_DESC, dhPlace.getPlaceDesc());
+        update.set(AppConstants.PLACE_CONTACT, dhPlace.getPlaceContact());
+        update.set(AppConstants.DOOR_SERVICE, dhPlace.isDoorService());
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
+
+        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_DETAILS_UPDATED), new ArrayList<>(), 1);
     }
 
     /***
@@ -130,6 +147,34 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
         return new Response<DhPlace>(true, 201, "Validated", new ArrayList<>(), 0);
+    }
+
+    private Response<DhPlace> validateSecondStepDetails(String language, DhPlace dhPlace) {
+        if (dhPlace == null) {
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        }
+        List<String> missingFieldsList = new ArrayList<>();
+        if (Utility.isFieldEmpty(dhPlace.getPlaceId()))
+            missingFieldsList.add(AppConstants.PLACE_ID);
+        if (dhPlace.getPlaceContact() == null) missingFieldsList.add(AppConstants.PLACE_CONTACT);
+        else if (Utility.isFieldEmpty(dhPlace.getPlaceContact().getMobile()))
+            missingFieldsList.add(AppConstants.PLACE_MOBILE);
+
+        if (!missingFieldsList.isEmpty()) {
+            String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY);
+            resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
+            LOGGER.info("missingfields=>" + resMsg);
+            return new Response<DhPlace>(false, 402, resMsg, new ArrayList<>(), 0);
+        } else {
+            Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
+            query.fields().include(AppConstants.PLACE_ID);
+            DhPlace queriedDhPlace = mongoTemplate.findOne(query, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
+            if (queriedDhPlace == null) {
+                return new Response<DhPlace>(false, 402, "Place Id not found !", new ArrayList<>(), 0);
+            }
+        }
+        return new Response<DhPlace>(true, 201, "Validated", new ArrayList<>(), 0);
+
     }
 
     private Response<DhPlace> validateFirstStepDetails(String language, DhPlace dhPlace) {
