@@ -105,7 +105,7 @@ public class ImageServiceImpl implements ImageService {
         int posToInsert = existingImgUrlsHighList.size();
         LOGGER.info("singlePlaceImageOperations=posToInser=" + posToInsert);
         LOGGER.info("singlePlaceImageOperations=lowList= " + existingImgUrlsLowList + "... size=%s" + existingImgUrlsLowList.size());
-        LOGGER.info("singlePlaceImageOperations=highList=" + existingImgUrlsHighList.toString()+ "... size=%s" + existingImgUrlsHighList.size());
+        LOGGER.info("singlePlaceImageOperations=highList=" + existingImgUrlsHighList.toString() + "... size=%s" + existingImgUrlsHighList.size());
         switch (operationsEnum) {
             case DELETE_PLACE_IMAGE:
                 amazonClient.deleteFileFromS3BucketUsingUrl(existingImgUrlsHighList.get(editOrRemovePos));
@@ -135,6 +135,8 @@ public class ImageServiceImpl implements ImageService {
         }
 
         DhPlace dhPlace = new DhPlace();
+        dhPlace.setImageUrlsHigh(existingImgUrlsHighList);
+        dhPlace.setImageUrlsLow(existingImgUrlsLowList);
         Update updatePlace = new Update();
         updatePlace.set(AppConstants.IMAGE_URL_LOW, existingImgUrlsLowList);
         updatePlace.set(AppConstants.IMAGE_URL_HIGH, existingImgUrlsHighList);

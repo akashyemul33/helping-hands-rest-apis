@@ -55,6 +55,19 @@ public class ImageController {
         }
     }
 
+    @PostMapping(value = "/singlePlaceImagesDeleteOperations", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<DhPlace>> singlePlaceImageDeleteApi(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "existingImgUrlsLowList", required = true) String existingImgUrlsLowList, @RequestParam(value = "existingImgUrlsHighList", required = true) String existingImgUrlsHighList, @RequestParam(value = "editOrRemovePos", required = true) String editOrRemovePos, @RequestParam(value = "placeId", required = true) String placeId, @RequestParam(value = "placeType", required = true) String placeType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestParam(value = "operationsEnum", required = true) SinglePlaceImageOperationsEnum operationsEnum, @PathVariable String version) throws ServerSideException {
+
+        List<String> lowUrlList = new ArrayList<>(Arrays.asList(existingImgUrlsLowList.split(",")));
+        List<String> highUrlList = new ArrayList<>(Arrays.asList(existingImgUrlsHighList.split(",")));
+        Response<DhPlace> response = imageService.singlePlaceImageOperations(httpHeaders, authentication, lowUrlList, highUrlList, Integer.parseInt(editOrRemovePos), placeId, placeType, addedBy, null, null, operationsEnum, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
     @PostMapping(value = "/singlePlaceImagesOperations", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DhPlace>> singlePlaceImageApi(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "existingImgUrlsLowList", required = true) String existingImgUrlsLowList, @RequestParam(value = "existingImgUrlsHighList", required = true) String existingImgUrlsHighList, @RequestParam(value = "editOrRemovePos", required = true) String editOrRemovePos, @RequestParam(value = "placeId", required = true) String placeId, @RequestParam(value = "placeType", required = true) String placeType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "placeImagesLow", required = true) MultipartFile placeImageLow, @RequestPart(value = "placeImagesHigh", required = true) MultipartFile placeImageHigh, @RequestParam(value = "operationsEnum", required = true) SinglePlaceImageOperationsEnum operationsEnum, @PathVariable String version) throws ServerSideException {
 
