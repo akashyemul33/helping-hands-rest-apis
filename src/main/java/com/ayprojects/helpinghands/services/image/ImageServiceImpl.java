@@ -114,6 +114,8 @@ public class ImageServiceImpl implements ImageService {
                 existingImgUrlsLowList.remove(editOrRemovePos);
                 break;
             case UPDATE_PLACE_IMAGE:
+                amazonClient.deleteFileFromS3BucketUsingUrl(existingImgUrlsHighList.get(editOrRemovePos));
+                amazonClient.deleteFileFromS3BucketUsingUrl(existingImgUrlsLowList.get(editOrRemovePos));
                 existingImgUrlsHighList.remove(editOrRemovePos);
                 existingImgUrlsLowList.remove(editOrRemovePos);
                 posToInsert = editOrRemovePos;
@@ -125,6 +127,7 @@ public class ImageServiceImpl implements ImageService {
                     String highUrl = amazonClient.uploadSingleImageToS3(placeImgUploadKeyHigh, placeImagesHigh);
                     existingImgUrlsHighList.add(posToInsert, highUrl);
                     existingImgUrlsLowList.add(posToInsert, lowUrl);
+
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
                     LOGGER.info("ImageServiceImpl->singlePlaceImageOperations : exception = " + ioException.getMessage());
