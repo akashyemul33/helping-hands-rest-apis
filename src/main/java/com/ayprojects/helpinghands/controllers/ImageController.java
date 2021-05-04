@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.swagger.annotations.Api;
@@ -54,8 +56,11 @@ public class ImageController {
     }
 
     @PostMapping(value = "/singlePlaceImagesOperations", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<DhPlace>> singlePlaceImageApi(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "existingImgUrlsLowList", required = true) List<String> existingImgUrlsLowList, @RequestParam(value = "existingImgUrlsHighList", required = true) List<String> existingImgUrlsHighList, @RequestParam(value = "editOrRemovePos", required = true) int editOrRemovePos, @RequestParam(value = "placeId", required = true) String placeId, @RequestParam(value = "placeType", required = true) String placeType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "placeImageLow", required = true) MultipartFile placeImageLow, @RequestPart(value = "placeImageHigh", required = true) MultipartFile placeImageHigh, @RequestParam(value = "operationsEnum", required = true) SinglePlaceImageOperationsEnum operationsEnum, @PathVariable String version) throws ServerSideException {
-        Response<DhPlace> response = imageService.singlePlaceImageOperations(httpHeaders, authentication, existingImgUrlsLowList, existingImgUrlsHighList, editOrRemovePos,placeId, placeType, addedBy, placeImageLow, placeImageHigh, operationsEnum, version);
+    public ResponseEntity<Response<DhPlace>> singlePlaceImageApi(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "existingImgUrlsLowList", required = true) String existingImgUrlsLowList, @RequestParam(value = "existingImgUrlsHighList", required = true) String existingImgUrlsHighList, @RequestParam(value = "editOrRemovePos", required = true) String editOrRemovePos, @RequestParam(value = "placeId", required = true) String placeId, @RequestParam(value = "placeType", required = true) String placeType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "placeImagesLow", required = true) MultipartFile placeImageLow, @RequestPart(value = "placeImagesHigh", required = true) MultipartFile placeImageHigh, @RequestParam(value = "operationsEnum", required = true) SinglePlaceImageOperationsEnum operationsEnum, @PathVariable String version) throws ServerSideException {
+
+        List<String> lowUrlList = new ArrayList<>(Arrays.asList(existingImgUrlsLowList.split(",")));
+        List<String> highUrlList = new ArrayList<>(Arrays.asList(existingImgUrlsHighList.split(",")));
+        Response<DhPlace> response = imageService.singlePlaceImageOperations(httpHeaders, authentication, lowUrlList, highUrlList, Integer.parseInt(editOrRemovePos), placeId, placeType, addedBy, placeImageLow, placeImageHigh, operationsEnum, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {

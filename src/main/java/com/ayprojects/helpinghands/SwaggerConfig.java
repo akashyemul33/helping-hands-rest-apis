@@ -26,7 +26,6 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @EnableSwagger2
@@ -63,12 +62,12 @@ public class SwaggerConfig {
 
     private OAuth securitySchema() {
 
-        List<AuthorizationScope> authorizationScopeList = newArrayList();
+        List<AuthorizationScope> authorizationScopeList = new ArrayList();
         authorizationScopeList.add(new AuthorizationScope("read", "read all"));
         authorizationScopeList.add(new AuthorizationScope("trust", "trust all"));
         authorizationScopeList.add(new AuthorizationScope("write", "access all"));
 
-        List<GrantType> grantTypes = newArrayList();
+        List<GrantType> grantTypes = new ArrayList();
         GrantType creGrant = new ResourceOwnerPasswordCredentialsGrant(authLink);
 
         grantTypes.add(creGrant);

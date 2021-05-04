@@ -103,6 +103,9 @@ public class ImageServiceImpl implements ImageService {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
         int posToInsert = existingImgUrlsHighList.size();
+        LOGGER.info("singlePlaceImageOperations=posToInser=" + posToInsert);
+        LOGGER.info("singlePlaceImageOperations=lowList= " + existingImgUrlsLowList + "... size=%s" + existingImgUrlsLowList.size());
+        LOGGER.info("singlePlaceImageOperations=highList=" + existingImgUrlsHighList.toString()+ "... size=%s" + existingImgUrlsHighList.size());
         switch (operationsEnum) {
             case DELETE_PLACE_IMAGE:
                 amazonClient.deleteFileFromS3BucketUsingUrl(existingImgUrlsHighList.get(editOrRemovePos));
@@ -118,16 +121,12 @@ public class ImageServiceImpl implements ImageService {
                 String placeImgUploadKeyLow = GetImageFoldersAndPrefix.getPlaceImgUploadKey(addedBy, placeId, placeType, false);
                 String placeImgUploadKeyHigh = GetImageFoldersAndPrefix.getPlaceImgUploadKey(addedBy, placeId, placeType, true);
                 try {
-                    List<String> lowList = amazonClient.uploadImagesToS3(placeImgUploadKeyLow, new MultipartFile[]{placeImagesLow});
-                    List<String> highList = amazonClient.uploadImagesToS3(placeImgUploadKeyHigh, new MultipartFile[]{placeImagesHigh});
-                    if (lowList == null || highList == null || lowList.isEmpty() || highList.isEmpty()) {
-                        String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES);
-                        return new Response<>(false, 402, errorMsg, new ArrayList<>());
-                    }
-
-                    existingImgUrlsHighList.add(posToInsert, highList.get(0));
-                    existingImgUrlsLowList.add(posToInsert, lowList.get(0));
+                    String lowUrl = amazonClient.uploadSingleImageToS3(placeImgUploadKeyLow, placeImagesLow);
+                    String highUrl = amazonClient.uploadSingleImageToS3(placeImgUploadKeyHigh, placeImagesHigh);
+                    existingImgUrlsHighList.add(posToInsert, highUrl);
+                    existingImgUrlsLowList.add(posToInsert, lowUrl);
                 } catch (Exception ioException) {
+                    ioException.printStackTrace();
                     LOGGER.info("ImageServiceImpl->singlePlaceImageOperations : exception = " + ioException.getMessage());
                     String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES);
                     return new Response<>(false, 402, errorMsg, new ArrayList<>());
