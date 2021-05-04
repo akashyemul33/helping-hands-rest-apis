@@ -1,5 +1,6 @@
 package com.ayprojects.helpinghands.controllers;
 
+import com.ayprojects.helpinghands.api.enums.SinglePlaceImageOperationsEnum;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import io.swagger.annotations.Api;
 
 @Api(value = "Views API's", description = "CRUD for image uploads")
@@ -43,6 +46,16 @@ public class ImageController {
     @PostMapping(value = "/uploadPlaceImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DhPlace>> uploadPlaceImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "placeType", required = true) String placeType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "placeImagesLow", required = true) MultipartFile[] placeImagesLow, @RequestPart(value = "placeImagesHigh", required = true) MultipartFile[] placeImagesHigh, @PathVariable String version) throws ServerSideException {
         Response<DhPlace> response = imageService.uploadPlaceImages(httpHeaders, authentication, placeType, addedBy, placeImagesLow, placeImagesHigh, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PostMapping(value = "/singlePlaceImagesOperations", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<DhPlace>> singlePlaceImageApi(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "existingImgUrlsLowList", required = true) List<String> existingImgUrlsLowList, @RequestParam(value = "existingImgUrlsHighList", required = true) List<String> existingImgUrlsHighList, @RequestParam(value = "placeId", required = true) String placeId, @RequestParam(value = "placeType", required = true) String placeType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "placeImageLow", required = true) MultipartFile placeImageLow, @RequestPart(value = "placeImageHigh", required = true) MultipartFile placeImageHigh, @RequestParam(value = "operationsEnum", required = true) SinglePlaceImageOperationsEnum operationsEnum, @PathVariable String version) throws ServerSideException {
+        Response<DhPlace> response = imageService.singlePlaceImageOperations(httpHeaders, authentication, existingImgUrlsLowList, existingImgUrlsHighList, placeId, placeType, addedBy, placeImageLow, placeImageHigh, operationsEnum, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {
