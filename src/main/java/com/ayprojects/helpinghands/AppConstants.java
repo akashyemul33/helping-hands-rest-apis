@@ -89,6 +89,7 @@ public class AppConstants {
     public static final String OWNER_MOBILE_NUMBER = "ownerMobileNumber";
     public static final String OWNER_EMAIL_ID = "ownerEmailId";
     public static final String RESPONSEMESSAGE_PLACE_IMAGES_ADDED = "PLACE_IMAGES_ADDED";
+    public static final String RESPONSEMESSAGE_PLACE_IMAGES_UPDATED = "PLACE_IMAGES_UPDATED";
     public static final String RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED = "PROUDCT_IMAGES_ADDED";
     public static final String RESPONSEMESSAGE_POST_IMAGES_ADDED = "POST_IMAGES_ADDED";
     public static final String RESPONSEMESSAGE_REQ_IMAGES_ADDED = "REQ_IMAGES_ADDED";
@@ -220,6 +221,8 @@ public class AppConstants {
     public static final int MAX_COUNT_OF_NEWLY_ADDED_LIST = 20;
     public static final String ITEM_LIST = "itemList";
     public static final int PLACE_MAIN_PAGE_ID_NEWLY_ADDED = 5;
+    public static final String IMAGE_URL_LOW = "imageUrlsLow";
+    public static final String IMAGE_URL_HIGH = "imageUrlsHigh";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

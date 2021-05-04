@@ -1,6 +1,7 @@
 package com.ayprojects.helpinghands.services.image;
 
 import com.ayprojects.helpinghands.AppConstants;
+import com.ayprojects.helpinghands.api.enums.SinglePlaceImageOperationsEnum;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
@@ -12,10 +13,15 @@ import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.util.aws.AmazonClient;
 import com.ayprojects.helpinghands.util.headers.IHeaders;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.GetImageFoldersAndPrefix;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -32,9 +38,10 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     LogService logService;
-
     @Autowired
     AmazonClient amazonClient;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public Response<DhUser> uploadUserImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String version) throws ServerSideException {
@@ -87,6 +94,57 @@ public class ImageServiceImpl implements ImageService {
             String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES);
             return new Response<>(false, 402, errorMsg, new ArrayList<>());
         }
+    }
+
+    @Override
+    public Response<DhPlace> singlePlaceImageOperations(HttpHeaders httpHeaders, Authentication authentication, List<String> existingImgUrlsLowList, List<String> existingImgUrlsHighList, int editOrRemovePos, String placeId, String placeType, String addedBy, MultipartFile placeImagesLow, MultipartFile placeImagesHigh, SinglePlaceImageOperationsEnum operationsEnum, String version) throws ServerSideException {
+        String language = IHeaders.getLanguageFromHeader(httpHeaders);
+        if ((operationsEnum != SinglePlaceImageOperationsEnum.DELETE_PLACE_IMAGE && (placeImagesLow == null || placeImagesHigh == null)) || (Utility.isFieldEmpty(placeId) || Utility.isFieldEmpty(placeType) || Utility.isFieldEmpty(addedBy))) {
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        }
+        int posToInsert = existingImgUrlsHighList.size();
+        switch (operationsEnum) {
+            case DELETE_PLACE_IMAGE:
+                amazonClient.deleteFileFromS3BucketUsingUrl(existingImgUrlsHighList.get(editOrRemovePos));
+                amazonClient.deleteFileFromS3BucketUsingUrl(existingImgUrlsLowList.get(editOrRemovePos));
+                existingImgUrlsHighList.remove(editOrRemovePos);
+                existingImgUrlsLowList.remove(editOrRemovePos);
+                break;
+            case UPDATE_PLACE_IMAGE:
+                existingImgUrlsHighList.remove(editOrRemovePos);
+                existingImgUrlsLowList.remove(editOrRemovePos);
+                posToInsert = editOrRemovePos;
+            case INSERT_PLACE_IMAGE:
+                String placeImgUploadKeyLow = GetImageFoldersAndPrefix.getPlaceImgUploadKey(addedBy, placeId, placeType, false);
+                String placeImgUploadKeyHigh = GetImageFoldersAndPrefix.getPlaceImgUploadKey(addedBy, placeId, placeType, true);
+                try {
+                    List<String> lowList = amazonClient.uploadImagesToS3(placeImgUploadKeyLow, new MultipartFile[]{placeImagesLow});
+                    List<String> highList = amazonClient.uploadImagesToS3(placeImgUploadKeyHigh, new MultipartFile[]{placeImagesHigh});
+                    if (lowList == null || highList == null || lowList.isEmpty() || highList.isEmpty()) {
+                        String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES);
+                        return new Response<>(false, 402, errorMsg, new ArrayList<>());
+                    }
+
+                    existingImgUrlsHighList.add(posToInsert, highList.get(0));
+                    existingImgUrlsLowList.add(posToInsert, lowList.get(0));
+                } catch (Exception ioException) {
+                    LOGGER.info("ImageServiceImpl->singlePlaceImageOperations : exception = " + ioException.getMessage());
+                    String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES);
+                    return new Response<>(false, 402, errorMsg, new ArrayList<>());
+                }
+                break;
+        }
+
+        DhPlace dhPlace = new DhPlace();
+        Update updatePlace = new Update();
+        updatePlace.set(AppConstants.IMAGE_URL_LOW, existingImgUrlsLowList);
+        updatePlace.set(AppConstants.IMAGE_URL_HIGH, existingImgUrlsHighList);
+        updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
+        mongoTemplate.updateFirst(query, updatePlace, DhPlace.class);
+        logService.addLog(new DhLog(addedBy, "Place images have been updated of placeId:" + placeId));
+        String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_UPDATED);
+        return new Response<>(true, 201, successMsg, Collections.singletonList(dhPlace), 1);
     }
 
     @Override

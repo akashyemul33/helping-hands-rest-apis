@@ -55,6 +55,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_CAT
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_DETAILS_UPDATED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_ID_IS_MISSING;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_UPDATED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_POST_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_ALREADY_EXISTS;
@@ -170,6 +171,7 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_PRODUCT_IMAGES, "Unable to upload Product images !");
             responseMsgsMap.put(RESPONSEMESSAGE_NATURE_OF_BUSINESS_UPDATED, "Nature of business has been updated successfully.");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_AVAILABILITY_UPDATED, "Place availability details have been updated successfully.");
+            responseMsgsMap.put(RESPONSEMESSAGE_PLACE_IMAGES_UPDATED, "Place images updated successfully .");
         }
     }
 

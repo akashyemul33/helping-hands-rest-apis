@@ -2,6 +2,7 @@ package com.ayprojects.helpinghands.util.aws;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -9,7 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,17 +77,30 @@ public class AmazonClient {
         return convFile;
     }
 
+    public boolean deleteFileFromS3BucketUsingUrl(String url) {
+        return deleteFileFromS3BucketUsingUrl(s3Client, url);
+    }
+
+    private boolean deleteFileFromS3BucketUsingUrl(AmazonS3 amazonS3, String url) {
+        if (amazonS3 == null)
+            throw new NullPointerException("Got null AmazonS3 object as arguement !");
+        if (Utility.isFieldEmpty(url) || url.equals("/"))
+            throw new IllegalArgumentException("Invalid fileUrl !");
+        AmazonS3URI s3uri = new AmazonS3URI(url);
+        s3Client.deleteObject(s3uri.getBucket(), s3uri.getKey());
+        return true;
+    }
 
     public boolean deleteFileFromS3Bucket(AmazonS3 amazonS3, String bucketName, String key) {
         if (amazonS3 == null)
             throw new NullPointerException("Got null AmazonS3 object as arguement !");
         if (Utility.isFieldEmpty(key) || key.equals("/"))
-            throw new IllegalArgumentException("Invalid fileUrl!");
+            throw new IllegalArgumentException("Invalid key !");
         amazonS3.deleteObject(new DeleteObjectRequest(bucketName, key));
         return true;
     }
 
-    private boolean deleteFileFromS3Bucket(String fileUrl) {
+    public boolean deleteFileFromS3Bucket(String fileUrl) {
         return deleteFileFromS3Bucket(s3Client, bucketName, fileUrl);
     }
 
@@ -99,7 +113,7 @@ public class AmazonClient {
             } else {
                 extension = typeOfFile;
             }
-        } else extension = FilenameUtils.getExtension(fileName);
+        } else extension = FileUtils.getExtension(fileName);
         return getExtensionAfterValidation(extension);
     }
 
