@@ -14,6 +14,17 @@ public class DhAppConfig extends AllCommonUsedAttributes {
     private Modules modules;
     private List<LangValueObj> units;
 
+    public List<LangValueObj> getOfflineMessages() {
+        return offlineMessages;
+    }
+
+    public void setOfflineMessages(List<LangValueObj> offlineMessages) {
+        this.offlineMessages = offlineMessages;
+    }
+
+    private List<LangValueObj> offlineMessages;
+
+
     public DhAppConfig() {
 
     }

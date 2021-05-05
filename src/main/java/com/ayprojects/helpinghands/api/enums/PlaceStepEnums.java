@@ -7,5 +7,7 @@ public enum  PlaceStepEnums {
     PRODUCTS,
     SINGLE_PRODUCT,
     PLACE_IMAGES,
+    PRODUCT_PRICES_VISIBILITY,
+    CURRENT_AVAILABLE_STATUS
 
 }

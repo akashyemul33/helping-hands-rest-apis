@@ -9,15 +9,43 @@ public class DhPlace extends AllCommonUsedAttributes {
     private String placeType;
     private Address placeAddress;
     private String placeRegDate;
+    private String offlineMsg;
+    private boolean currentStatus;
+    private String productPricesVisible;
 
-    public String getPlaceRegDate() {
-        return placeRegDate;
+    public String getOfflineMsg() {
+        return offlineMsg;
     }
 
-    public void setPlaceRegDate(String placeRegDate) {
-        this.placeRegDate = placeRegDate;
+    public void setOfflineMsg(String offlineMsg) {
+        this.offlineMsg = offlineMsg;
     }
 
+    public boolean getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus(boolean currentStatus) {
+        this.currentStatus = currentStatus;
+    }
+
+    public String getProductPricesVisible() {
+        return productPricesVisible;
+    }
+
+    public void setProductPricesVisible(String productPricesVisible) {
+        this.productPricesVisible = productPricesVisible;
+    }
+
+    public List<String> getProductPricesVisibleUsers() {
+        return productPricesVisibleUsers;
+    }
+
+    public void setProductPricesVisibleUsers(List<String> productPricesVisibleUsers) {
+        this.productPricesVisibleUsers = productPricesVisibleUsers;
+    }
+
+    private List<String> productPricesVisibleUsers;
     private boolean addressGenerated;
     private String placeMainCategoryId;
     private String addedBy;
@@ -29,15 +57,6 @@ public class DhPlace extends AllCommonUsedAttributes {
     private Contact placeContact;
     private boolean doorService;
     private List<String> imageUrlsLow;
-
-    public List<String> getImageUrlsHigh() {
-        return imageUrlsHigh;
-    }
-
-    public void setImageUrlsHigh(List<String> imageUrlsHigh) {
-        this.imageUrlsHigh = imageUrlsHigh;
-    }
-
     private List<String> imageUrlsHigh;
     private PlaceAvailabilityDetails placeAvailablityDetails;
     private List<ProductsWithPrices> productDetails;
@@ -99,6 +118,22 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.subscribedUsers = subscribedUsers;
         this.addressGenerated = addressGenerated;
         this.numberOfProducts = numberOfProducts;
+    }
+
+    public String getPlaceRegDate() {
+        return placeRegDate;
+    }
+
+    public void setPlaceRegDate(String placeRegDate) {
+        this.placeRegDate = placeRegDate;
+    }
+
+    public List<String> getImageUrlsHigh() {
+        return imageUrlsHigh;
+    }
+
+    public void setImageUrlsHigh(List<String> imageUrlsHigh) {
+        this.imageUrlsHigh = imageUrlsHigh;
     }
 
     public boolean isPlaceOpen() {

@@ -223,6 +223,10 @@ public class AppConstants {
     public static final int PLACE_MAIN_PAGE_ID_NEWLY_ADDED = 5;
     public static final String IMAGE_URL_LOW = "imageUrlsLow";
     public static final String IMAGE_URL_HIGH = "imageUrlsHigh";
+    public static final String KEY_CURRENT_STATUS = "currentStatus";
+    public static final String KEY_OFFLINE_MSG = "offlineMsg";
+    public static final String KEY_PRODUCTPRICES_VISIBLE = "productPricesVisible";
+    public static final String KEY_PRODUCTPRICES_VISIBLE_USERS = "productPricesVisibleUsers";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
