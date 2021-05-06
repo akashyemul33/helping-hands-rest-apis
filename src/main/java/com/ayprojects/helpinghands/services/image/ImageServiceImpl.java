@@ -202,7 +202,6 @@ public class ImageServiceImpl implements ImageService {
                         existingProductHighList.remove(i);
                         existingProductLowList.remove(i);
                         LOGGER.info("deleting pos=" + deletePos + " and i=" + i);
-                        break;
                     }
                 }
             }
@@ -214,10 +213,9 @@ public class ImageServiceImpl implements ImageService {
                 List<String> uploadedProductImgsListHigh = amazonClient.uploadImagesToS3(postImgUploadKeyHigh, productImagesHigh);
                 productsWithPrices.setImgUrlsLow(uploadedProductImgsListLow);
                 productsWithPrices.setImgUrlsHigh(uploadedProductImgsListHigh);
-
-                productsWithPrices.getImgUrlsHigh().addAll(existingProductHighList);
-                productsWithPrices.getImgUrlsLow().addAll(existingProductLowList);
             }
+            productsWithPrices.getImgUrlsHigh().addAll(existingProductHighList);
+            productsWithPrices.getImgUrlsLow().addAll(existingProductLowList);
             logService.addLog(new DhLog(addedBy, "Product images have been added for placeId=" + placeId + " productId=%s" + uniqueProductId));
             String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED);
             return new Response<>(true, 201, successMsg, Collections.singletonList(productsWithPrices), 1);
