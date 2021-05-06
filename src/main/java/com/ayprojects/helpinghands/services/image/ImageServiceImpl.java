@@ -216,6 +216,10 @@ public class ImageServiceImpl implements ImageService {
                 productsWithPrices.setImgUrlsLow(uploadedProductImgsListLow);
                 productsWithPrices.setImgUrlsHigh(uploadedProductImgsListHigh);
             }
+            else{
+                productsWithPrices.setImgUrlsLow(new ArrayList<>());
+                productsWithPrices.setImgUrlsHigh(new ArrayList<>());
+            }
             productsWithPrices.getImgUrlsHigh().addAll(existingProductHighList);
             productsWithPrices.getImgUrlsLow().addAll(existingProductLowList);
             logService.addLog(new DhLog(addedBy, "Product images have been added for placeId=" + placeId + " productId=%s" + uniqueProductId));
