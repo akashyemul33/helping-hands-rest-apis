@@ -192,15 +192,17 @@ public class ImageServiceImpl implements ImageService {
         String postImgUploadKeyHigh = GetImageFoldersAndPrefix.getProductImgUploadKey(uniqueProductId, placeType, placeId, uniqueProductId, true);
 
         try {
-            for (int i = 0; i < existingProductHighList.size(); i++) {
-                LOGGER.info("deleting img high: pos=" + i);
+            List<String> tempExistingProductHighList = new ArrayList<>(existingProductHighList);
+            List<String> tempExistingProductLowList = new ArrayList<>(existingProductLowList);
+            for (int i = 0; i < tempExistingProductHighList.size(); i++) {
+                LOGGER.info("deleting img high: pos= " + i + " size=" + tempExistingProductHighList.size());
                 for (int j = 0; j < deletePosList.size(); j++) {
                     int deletePos = Integer.parseInt(deletePosList.get(j));
                     if (deletePos == i) {
-                        amazonClient.deleteFileFromS3BucketUsingUrl(existingProductHighList.get(i));
-                        amazonClient.deleteFileFromS3BucketUsingUrl(existingProductLowList.get(i));
-                        existingProductHighList.remove(i);
-                        existingProductLowList.remove(i);
+                        amazonClient.deleteFileFromS3BucketUsingUrl(tempExistingProductHighList.get(i));
+                        amazonClient.deleteFileFromS3BucketUsingUrl(tempExistingProductLowList.get(i));
+                        existingProductHighList.remove(tempExistingProductHighList.get(i));
+                        existingProductLowList.remove(tempExistingProductLowList.get(i));
                         LOGGER.info("deleting pos=" + deletePos + " and i=" + i);
                     }
                 }
@@ -220,6 +222,7 @@ public class ImageServiceImpl implements ImageService {
             String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED);
             return new Response<>(true, 201, successMsg, Collections.singletonList(productsWithPrices), 1);
         } catch (Exception ioException) {
+            ioException.printStackTrace();
             LOGGER.info("ImageServiceImpl->uploadProductImages : exception = " + ioException.getMessage());
             String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PRODUCT_IMAGES);
             return new Response<>(false, 402, errorMsg, new ArrayList<>());
