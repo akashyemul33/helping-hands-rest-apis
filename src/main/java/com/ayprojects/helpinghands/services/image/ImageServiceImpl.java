@@ -181,7 +181,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Response<ProductsWithPrices> uploadProductImages(HttpHeaders httpHeaders, Authentication authentication, String uniqueProductId, String placeType, String placeId, String addedBy, List<String> deleteProductHighList, List<String> deleteProductLowList, MultipartFile[] productImagesLow, MultipartFile[] productImagesHigh, String version) throws ServerSideException {
+    public Response<ProductsWithPrices> uploadProductImages(HttpHeaders httpHeaders, Authentication authentication, String uniqueProductId, String placeType, String placeId, String addedBy, List<String> existingProductLowList, List<String> existingProductHighList, List<String> deletePosList, MultipartFile[] productImagesLow, MultipartFile[] productImagesHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
         if (Utility.isFieldEmpty(addedBy) || Utility.isFieldEmpty(placeType) || Utility.isFieldEmpty(placeId)) {
             LOGGER.info("uploadProductImages->returning 402 missing body");
@@ -192,21 +192,31 @@ public class ImageServiceImpl implements ImageService {
         String postImgUploadKeyHigh = GetImageFoldersAndPrefix.getProductImgUploadKey(uniqueProductId, placeType, placeId, uniqueProductId, true);
 
         try {
-            for (String deleteImgHigh : deleteProductHighList) {
-                LOGGER.info("deleting img high: " + deleteImgHigh);
-                amazonClient.deleteFileFromS3BucketUsingUrl(deleteImgHigh);
-            }
-            for (String deleteImgLow : deleteProductLowList) {
-                LOGGER.info("deleting img low: " + deleteImgLow);
-                amazonClient.deleteFileFromS3BucketUsingUrl(deleteImgLow);
+            for (int i = 0; i < existingProductHighList.size(); i++) {
+                LOGGER.info("deleting img high: pos=" + i);
+                for (int j = 0; j < deletePosList.size(); j++) {
+                    int deletePos = Integer.parseInt(deletePosList.get(j));
+                    if (deletePos == i) {
+                        amazonClient.deleteFileFromS3BucketUsingUrl(existingProductHighList.get(i));
+                        amazonClient.deleteFileFromS3BucketUsingUrl(existingProductLowList.get(i));
+                        existingProductHighList.remove(i);
+                        existingProductLowList.remove(i);
+                        LOGGER.info("deleting pos=" + deletePos + " and i=" + i);
+                        break;
+                    }
+                }
             }
 
             ProductsWithPrices productsWithPrices = new ProductsWithPrices();
             if (productImagesHigh.length > 0) {
+                LOGGER.info("Uploading images " + productImagesHigh.length);
                 List<String> uploadedProductImgsListLow = amazonClient.uploadImagesToS3(postImgUploadKeyLow, productImagesLow);
                 List<String> uploadedProductImgsListHigh = amazonClient.uploadImagesToS3(postImgUploadKeyHigh, productImagesHigh);
                 productsWithPrices.setImgUrlsLow(uploadedProductImgsListLow);
                 productsWithPrices.setImgUrlsHigh(uploadedProductImgsListHigh);
+
+                productsWithPrices.getImgUrlsHigh().addAll(existingProductHighList);
+                productsWithPrices.getImgUrlsLow().addAll(existingProductLowList);
             }
             logService.addLog(new DhLog(addedBy, "Product images have been added for placeId=" + placeId + " productId=%s" + uniqueProductId));
             String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED);

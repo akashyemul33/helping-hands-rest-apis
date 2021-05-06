@@ -104,16 +104,20 @@ public class ImageController {
                                                                             @RequestParam(value = "placeType", required = true) String placeType,
                                                                             @RequestParam(value = "placeId", required = true) String placeId,
                                                                             @RequestParam(value = "addedBy", required = true) String addedBy,
-                                                                            @RequestParam(value = "deleteProductHighList", required = true) String deleteProductHighList,
-                                                                            @RequestParam(value = "deleteProductLowList", required = true) String deleteProductLowList,
+                                                                            @RequestParam(value = "existingProductLowList", required = true) String existingProductLowList,
+                                                                            @RequestParam(value = "existingProductHighList", required = true) String existingProductHighList,
+                                                                            @RequestParam(value = "deletePos", required = true) String deletePos,
                                                                             @RequestPart(value = "productImagesLow", required = true) MultipartFile[] productImagesLow, @RequestPart(value = "productImagesHigh", required = true) MultipartFile[] productImagesHigh, @PathVariable String version) throws ServerSideException {
         List<String> lowUrlList = new ArrayList<>();
         List<String> highUrlList = new ArrayList<>();
-        if (!Utility.isFieldEmpty(deleteProductHighList) && !Utility.isFieldEmpty(deleteProductLowList)) {
-            lowUrlList = new ArrayList<>(Arrays.asList(deleteProductLowList.split(",")));
-            highUrlList = new ArrayList<>(Arrays.asList(deleteProductHighList.split(",")));
+        List<String> deletePosList = new ArrayList<>();
+        if (!Utility.isFieldEmpty(existingProductHighList) && !Utility.isFieldEmpty(existingProductLowList)) {
+            lowUrlList = new ArrayList<>(Arrays.asList(existingProductLowList.split(",")));
+            highUrlList = new ArrayList<>(Arrays.asList(existingProductHighList.split(",")));
         }
-        Response<ProductsWithPrices> response = imageService.uploadProductImages(httpHeaders, authentication, uniqueProductId, placeType, placeId, addedBy, highUrlList, lowUrlList, productImagesLow, productImagesHigh, version);
+        if (!Utility.isFieldEmpty(deletePos))
+            deletePosList = new ArrayList<>(Arrays.asList(deletePos.split(",")));
+        Response<ProductsWithPrices> response = imageService.uploadProductImages(httpHeaders, authentication, uniqueProductId, placeType, placeId, addedBy, lowUrlList, highUrlList, deletePosList, productImagesLow, productImagesHigh, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {
