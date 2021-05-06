@@ -103,8 +103,17 @@ public class ImageController {
     public ResponseEntity<Response<ProductsWithPrices>> uploadProductImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "uniqueProductId", required = true) String uniqueProductId,
                                                                             @RequestParam(value = "placeType", required = true) String placeType,
                                                                             @RequestParam(value = "placeId", required = true) String placeId,
-                                                                            @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "productImagesLow", required = true) MultipartFile[] productImagesLow, @RequestPart(value = "productImagesHigh", required = true) MultipartFile[] productImagesHigh, @PathVariable String version) throws ServerSideException {
-        Response<ProductsWithPrices> response = imageService.uploadProductImages(httpHeaders, authentication, uniqueProductId, placeType, placeId, addedBy, productImagesLow, productImagesHigh, version);
+                                                                            @RequestParam(value = "addedBy", required = true) String addedBy,
+                                                                            @RequestParam(value = "deleteProductHighList", required = true) String deleteProductHighList,
+                                                                            @RequestParam(value = "deleteProductLowList", required = true) String deleteProductLowList,
+                                                                            @RequestPart(value = "productImagesLow", required = true) MultipartFile[] productImagesLow, @RequestPart(value = "productImagesHigh", required = true) MultipartFile[] productImagesHigh, @PathVariable String version) throws ServerSideException {
+        List<String> lowUrlList = new ArrayList<>();
+        List<String> highUrlList = new ArrayList<>();
+        if (!Utility.isFieldEmpty(deleteProductHighList) && !Utility.isFieldEmpty(deleteProductLowList)) {
+            lowUrlList = new ArrayList<>(Arrays.asList(deleteProductLowList.split(",")));
+            highUrlList = new ArrayList<>(Arrays.asList(deleteProductHighList.split(",")));
+        }
+        Response<ProductsWithPrices> response = imageService.uploadProductImages(httpHeaders, authentication, uniqueProductId, placeType, placeId, addedBy, highUrlList, lowUrlList, productImagesLow, productImagesHigh, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {

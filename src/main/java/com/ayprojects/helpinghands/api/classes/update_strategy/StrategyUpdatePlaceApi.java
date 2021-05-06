@@ -151,7 +151,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
     }
 
     private Response<DhPlace> updateProducts(String language, DhPlace dhPlace) {
-        Response<DhPlace> validationResponse = validateProducts(language, dhPlace);
+        Response<DhPlace> validationResponse = basicPlaceValidation(language, dhPlace);
         if (!validationResponse.getStatus())
             return validationResponse;
         for (ProductsWithPrices productsWithPrices : dhPlace.getProductDetails()) {
