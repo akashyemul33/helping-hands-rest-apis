@@ -6,7 +6,6 @@ import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.services.rating_comments.RatingCommentsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,11 +36,16 @@ public class RatingAndCommentsController {
     ApiOperations<DhRatingAndComments> apiOperations;
 
     @PostMapping(value = "/addRatingAndComments")
-    public ResponseEntity<Response<DhRatingAndComments>> addRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhRatingAndComments dhRatingComments, @RequestParam("userId") String userId,@RequestParam("ContentName") String contentName,@PathVariable String version) throws ServerSideException {
+    public ResponseEntity<Response<DhRatingAndComments>> addRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhRatingAndComments dhRatingComments, @RequestParam("userName") String userName, @RequestParam("contentUserId") String contentUserId, @RequestParam("contentName") String contentName, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
-        params.put(AppConstants.USER_ID, userId);
-        params.put(AppConstants.CONTENT_NAME, contentName);
-        return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhRatingComments, StrategyName.AddRatingStrategy,params, version), HttpStatus.CREATED);
+        params.put(AppConstants.KEY_CONTENT_USER_ID, contentUserId);
+        params.put(AppConstants.KEY_CONTENT_NAME, contentName);
+        params.put(AppConstants.KEY_USER_NAME, userName);
+        Response<DhRatingAndComments> response = apiOperations.add(authentication, httpHeaders, dhRatingComments, StrategyName.AddRatingStrategy, params, version);
+        if (response.getStatus()) return new ResponseEntity<>(response, HttpStatus.CREATED);
+        else
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+
     }
 
     @GetMapping(value = "/getPaginatedRatingsAndComments")

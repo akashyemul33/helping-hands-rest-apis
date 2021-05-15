@@ -84,7 +84,7 @@ public class Validations {
         if (Utility.isFieldEmpty(dhRatingComments.getAddedBy()))
             missingFieldsList.add(AppConstants.ADDED_BY);
         if (dhRatingComments.getRating() <= 0) missingFieldsList.add(AppConstants.RATING);
-        if (Utility.isFieldEmpty(dhRatingComments.getContentType()))
+        if (dhRatingComments.getContentType()==null)
             missingFieldsList.add(AppConstants.CONTENT_TYPE);
         if (Utility.isFieldEmpty(dhRatingComments.getContentId()))
             missingFieldsList.add(AppConstants.CONTENT_ID);

@@ -234,6 +234,7 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_RATING_ADDED_TITLE = "RATING_ADDED_TITLE";
     public static final String RESPONSEMESSAGE_RATING_ADDED_BODY = "RATING_ADDED_BODY";
     public static final String COLLECTION_NOTIFICATION = "Notifications";
+    public static final String KEY_NOTIFICATIONS = "notifications";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

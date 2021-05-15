@@ -69,7 +69,7 @@ public class ApiOperations<T extends AllCommonUsedAttributes> {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
         StrategyAddBehaviour<T> strategyAddBehaviour = (StrategyAddBehaviour<T>) addStrategyFactory.findStrategy(strategyName);
         LOGGER.info("add=>strategyName=" + strategyAddBehaviour.getStrategyName());
-        return strategyAddBehaviour.add(language, obj);
+        return strategyAddBehaviour.add(language, obj,params);
     }
 
     @SuppressWarnings("unchecked")
