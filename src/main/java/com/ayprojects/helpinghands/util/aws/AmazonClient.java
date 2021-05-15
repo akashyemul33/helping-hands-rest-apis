@@ -10,7 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -113,7 +113,7 @@ public class AmazonClient {
             } else {
                 extension = typeOfFile;
             }
-        } else extension = FileUtils.getExtension(fileName);
+        } else extension = FilenameUtils.getExtension(fileName);
         return getExtensionAfterValidation(extension);
     }
 

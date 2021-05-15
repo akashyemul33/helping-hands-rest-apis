@@ -1,5 +1,10 @@
 package com.ayprojects.helpinghands;
 
+import com.ayprojects.helpinghands.services.firebase.FirebaseSetup;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,7 +14,30 @@ import java.io.IOException;
 public class Temp {
 
     public static void main(String[] args) throws IOException {
-        abc();
+        sendMsgToRegToken();
+    }
+
+    public static void sendMsgToRegToken() {
+        try {
+            FirebaseSetup.initializeFirebase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String regToken = "c3J0Qo3_SoKv0Nnrt6gOG2:APA91bHTe05xykY6vJfEQR9iVILX7dSCJVw-mRPMPJb7AkhlzRZTDxq-fuVjDgsCFzcFGXttL5ujnAMuGuCaq0UEOkiP7El8Ov6PS_PEkbMpsmCZlqi5xCh4rMjXZaBgZoOQdLWMf2oB";
+        Message message = Message.builder()
+                .putData("title", "Some title")
+                .putData("body", "some body")
+                .setToken(regToken)
+                        .build();
+
+        String response = null;
+        try {
+            response = FirebaseMessaging.getInstance().send(message);
+        } catch (FirebaseMessagingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("sendMsgToRegToken->response=" + response);
+
     }
 
     public static void abc() throws IOException {
@@ -25,7 +53,7 @@ public class Temp {
             String[] splitStrTe = st.split(":")[2].split(",");
             String[] splitStrKn = st.split(":")[3].split(",");
             String[] splitStrGu = st.split(":")[4].split(",");
-            String placeMainCategoryId="M_PLS_CTGRY_20210420140153";
+            String placeMainCategoryId = "M_PLS_CTGRY_20210420140153";
             for (int i = 0; i < splitStrEng.length; i++) {
                 System.out.println(String.format("  {\n" +
                         "      \"defaultName\": \"%s\",\n" +
@@ -54,7 +82,7 @@ public class Temp {
                         "          \"value\": \"%s\"\n" +
                         "        }\n" +
                         "      ]\n" +
-                        "    },",splitStrEng[i].trim(), "Active",placeMainCategoryId, splitStrMr[i].trim(), splitStrMr[i].trim(), splitStrTe[i].trim(), splitStrKn[i].trim(), splitStrGu[i].trim()));
+                        "    },", splitStrEng[i].trim(), "Active", placeMainCategoryId, splitStrMr[i].trim(), splitStrMr[i].trim(), splitStrTe[i].trim(), splitStrKn[i].trim(), splitStrGu[i].trim()));
 
             }
             allLines.append(st);

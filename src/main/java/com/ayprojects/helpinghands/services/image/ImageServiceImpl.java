@@ -43,6 +43,7 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+
     @Override
     public Response<DhUser> uploadUserImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);

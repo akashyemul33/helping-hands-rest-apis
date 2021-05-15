@@ -20,16 +20,16 @@ dependencies {
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.924')
     implementation 'com.amazonaws:aws-java-sdk-s3'
 
-    implementation 'commons-io:commons-io:20030203.000550'
+    implementation 'commons-io:commons-io:2.6'
 
-    implementation 'org.springframework.security.oauth:spring-security-oauth2:2.5.1.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.4.5'
+    implementation 'org.springframework.security.oauth:spring-security-oauth2:2.3.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.3.4.RELEASE'
     //implementation 'org.springframework.security:spring-security-core:5.4.1'
     //implementation 'org.springframework.security:spring-security-web:5.3.1.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.4.5'
+    implementation 'org.springframework.boot:spring-boot-starter-security:1.2.0.RELEASE'
     implementation 'org.springframework.security:spring-security-test'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -37,10 +37,10 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    implementation 'com.auth0:java-jwt:3.15.0'
+    implementation 'com.auth0:java-jwt:3.11.0'
 
-    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
-    implementation 'io.springfox:springfox-swagger2:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'/* {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -48,6 +48,9 @@ dependencies {
     testImplementation(enforcedPlatform("org.junit:junit-bom:5.4.0")) // JUnit 5 BOM
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     testImplementation 'io.projectreactor:reactor-test'
+
+    implementation 'com.google.firebase:firebase-admin:7.3.0'
+
 }
 
 test {
