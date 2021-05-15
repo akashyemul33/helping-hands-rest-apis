@@ -6,6 +6,7 @@ import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
 import com.ayprojects.helpinghands.api.classes.CommonMethods;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
+import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,6 +114,11 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
         int statusCode = AppConstants.STATUS_ACTIVE.equalsIgnoreCase(placeStatus) ? 201 : 202;
         String headingMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CONGRATULATIONS);
         return new Response<>(true, statusCode, headingMsg, responseMsg, new ArrayList<>());
+    }
+
+    @Override
+    public Response<DhPlace> add(String language, DhPlace obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     @Override
@@ -206,11 +213,10 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
     }
 
     public Response<DhPlace> validateAddPlace(String language, DhPlace dhPlace) {
-        CalendarOperations calendarOperations = new CalendarOperations();
         if (dhPlace == null) {
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
         }
-
+        CalendarOperations calendarOperations = new CalendarOperations();
         List<String> missingFieldsList = new ArrayList<>();
         if (Utility.isFieldEmpty(dhPlace.getAddedBy()))
             missingFieldsList.add(AppConstants.ADDED_BY);

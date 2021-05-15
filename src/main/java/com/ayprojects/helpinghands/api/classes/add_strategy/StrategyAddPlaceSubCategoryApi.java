@@ -5,6 +5,7 @@ import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
+import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +64,11 @@ public class StrategyAddPlaceSubCategoryApi implements StrategyAddBehaviour<Plac
         }
         LOGGER.info("addPlaceSubCategory->" + returnResponse.getMessage());
         return new Response<PlaceSubCategories>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PLACESUBCATEGORY_ADDED, language), Collections.singletonList(placeSubCategory), 1);
+    }
+
+    @Override
+    public Response<PlaceSubCategories> add(String language, PlaceSubCategories obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     @Override

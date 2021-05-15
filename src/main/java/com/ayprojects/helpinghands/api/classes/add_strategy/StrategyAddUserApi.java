@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.dao.user.UserDao;
+import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.security.UserDetailsDecorator;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Optional;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -55,6 +57,11 @@ public class StrategyAddUserApi implements StrategyAddBehaviour<DhUser> {
         }
         LOGGER.info("addUser->" + returnResponse.getMessage());
         return returnResponse;
+    }
+
+    @Override
+    public Response<DhUser> add(String language, DhUser obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     @Override

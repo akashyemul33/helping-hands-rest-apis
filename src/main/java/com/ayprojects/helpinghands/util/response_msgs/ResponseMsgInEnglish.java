@@ -62,6 +62,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_A
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_RATING_ADDED_TITLE;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TICKET_RAISED;
@@ -172,6 +173,7 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_NATURE_OF_BUSINESS_UPDATED, "Nature of business has been updated successfully.");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_AVAILABILITY_UPDATED, "Place availability details have been updated successfully.");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_IMAGES_UPDATED, "Place images updated successfully .");
+            responseMsgsMap.put(RESPONSEMESSAGE_RATING_ADDED_TITLE, "New Rating For You !");
         }
     }
 

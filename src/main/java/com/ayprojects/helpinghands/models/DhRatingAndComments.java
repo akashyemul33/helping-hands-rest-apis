@@ -1,14 +1,27 @@
 package com.ayprojects.helpinghands.models;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.ayprojects.helpinghands.api.enums.ContentType;
 
 public class DhRatingAndComments extends AllCommonUsedAttributes {
     private String reviewCommentId;
     private double rating;
     private String comment;
     private String addedBy;
-    private String contentType;
+    private ContentType contentType;
     private String contentId;
+
+    public DhRatingAndComments(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String reviewCommentId, double rating, String comment, String addedBy, ContentType contentType, String contentId) {
+        this.schemaVersion = schemaVersion;
+        this.createdDateTime = createdDateTime;
+        this.modifiedDateTime = modifiedDateTime;
+        this.status = status;
+        this.reviewCommentId = reviewCommentId;
+        this.rating = rating;
+        this.comment = comment;
+        this.addedBy = addedBy;
+        this.contentType = contentType;
+        this.contentId = contentId;
+    }
 
     public double getRating() {
         return rating;
@@ -34,11 +47,11 @@ public class DhRatingAndComments extends AllCommonUsedAttributes {
         this.addedBy = addedBy;
     }
 
-    public String getContentType() {
+    public ContentType getContentType() {
         return contentType;
     }
 
-    public void setContentType(String contentType) {
+    public void setContentType(ContentType contentType) {
         this.contentType = contentType;
     }
 
@@ -55,19 +68,6 @@ public class DhRatingAndComments extends AllCommonUsedAttributes {
     }
 
     public void setContentId(String contentId) {
-        this.contentId = contentId;
-    }
-
-    public DhRatingAndComments(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String reviewCommentId, double rating, String comment, String addedBy, String contentType, String contentId) {
-        this.schemaVersion =schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime =modifiedDateTime;
-        this.status=status;
-        this.reviewCommentId = reviewCommentId;
-        this.rating = rating;
-        this.comment = comment;
-        this.addedBy = addedBy;
-        this.contentType = contentType;
         this.contentId = contentId;
     }
 }

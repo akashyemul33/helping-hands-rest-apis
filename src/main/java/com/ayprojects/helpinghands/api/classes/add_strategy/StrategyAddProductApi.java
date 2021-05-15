@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -102,6 +103,11 @@ public class StrategyAddProductApi implements StrategyAddBehaviour<DhProduct> {
             }
         }
         return returnResponse;
+    }
+
+    @Override
+    public Response<DhProduct> add(String language, DhProduct obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     private String getUrlFromS3Uri(String imgS3UriLow) {

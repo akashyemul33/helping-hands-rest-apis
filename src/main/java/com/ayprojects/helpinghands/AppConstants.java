@@ -227,6 +227,13 @@ public class AppConstants {
     public static final String KEY_OFFLINE_MSG = "offlineMsg";
     public static final String KEY_PRODUCTPRICES_VISIBLE = "productPricesVisible";
     public static final String KEY_PRODUCTPRICES_VISIBLE_USERS = "productPricesVisibleUsers";
+    public static final String CONTENT_NAME = "ContentName";
+    public static final String KEY_CONTENT_USER_ID = "ContentUserId";
+    public static final String KEY_CONTENT_NAME = "ContentName";
+    public static final String KEY_USER_NAME = "UserName";
+    public static final String RESPONSEMESSAGE_RATING_ADDED_TITLE = "RATING_ADDED_TITLE";
+    public static final String RESPONSEMESSAGE_RATING_ADDED_BODY = "RATING_ADDED_BODY";
+    public static final String COLLECTION_NOTIFICATION = "Notifications";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -104,6 +105,11 @@ public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
                 break;
         }
         return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, language), new ArrayList<>(), 1);
+    }
+
+    @Override
+    public Response<DhViews> add(String language, DhViews obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     @Override

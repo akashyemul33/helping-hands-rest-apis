@@ -65,6 +65,14 @@ public class ApiOperations<T extends AllCommonUsedAttributes> {
     }
 
     @SuppressWarnings("unchecked")
+    public Response<T> add(Authentication authentication, HttpHeaders httpHeaders, T obj, StrategyName strategyName,HashMap<String,Object> params, String version) throws ServerSideException {
+        String language = IHeaders.getLanguageFromHeader(httpHeaders);
+        StrategyAddBehaviour<T> strategyAddBehaviour = (StrategyAddBehaviour<T>) addStrategyFactory.findStrategy(strategyName);
+        LOGGER.info("add=>strategyName=" + strategyAddBehaviour.getStrategyName());
+        return strategyAddBehaviour.add(language, obj);
+    }
+
+    @SuppressWarnings("unchecked")
     public Response<T> update(Authentication authentication, HttpHeaders httpHeaders,HashMap<String, Object> params, T obj, StrategyName strategyName, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
         StrategyUpdateBehaviour<T> startegyUpdateBehaviour = (StrategyUpdateBehaviour<T>) updateStrategyFactory.findStrategy(strategyName);

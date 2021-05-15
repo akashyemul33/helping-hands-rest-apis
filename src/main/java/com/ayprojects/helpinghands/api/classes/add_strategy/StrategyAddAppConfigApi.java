@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -43,6 +44,11 @@ public class StrategyAddAppConfigApi implements StrategyAddBehaviour<DhAppConfig
         } catch (Exception e) {
             throw new ServerSideException(Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_ERROR_WHILE_ADDING_APP_CONFIG, language));
         }
+    }
+
+    @Override
+    public Response<DhAppConfig> add(String language, DhAppConfig obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     @Override

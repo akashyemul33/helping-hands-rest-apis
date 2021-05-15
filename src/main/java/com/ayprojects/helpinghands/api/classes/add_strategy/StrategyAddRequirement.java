@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -43,6 +44,11 @@ public class StrategyAddRequirement implements StrategyAddBehaviour<DhRequiremen
         returnResponse.setLogActionMsg("New [" + dhRequirements.getRequirementType() + "]  has been added.");
         return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED, language), new ArrayList<>(), 1);
 
+    }
+
+    @Override
+    public Response<DhRequirements> add(String language, DhRequirements obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     @Override

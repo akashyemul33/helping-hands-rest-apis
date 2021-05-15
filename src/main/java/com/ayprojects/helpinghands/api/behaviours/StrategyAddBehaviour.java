@@ -7,9 +7,12 @@ import com.ayprojects.helpinghands.models.Response;
 
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 public interface StrategyAddBehaviour<T extends AllCommonUsedAttributes> {
     Response<T> add(String language, T obj) throws ServerSideException;
+    Response<T> add(String language, T obj, HashMap<String, Object> params) throws ServerSideException;
 
     StrategyName getStrategyName();
 }

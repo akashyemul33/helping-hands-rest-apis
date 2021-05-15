@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Component
 public class StrategyAddStickersApi implements StrategyAddBehaviour<DhStickers> {
@@ -43,6 +44,11 @@ public class StrategyAddStickersApi implements StrategyAddBehaviour<DhStickers> 
             utility.addLog("NoName", "Added sticker pack : " + dhStickers.getStickerPackName());
         }
         return returnResponse;
+    }
+
+    @Override
+    public Response<DhStickers> add(String language, DhStickers obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     @Override

@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Component
 public class StrategyAddTicketsApi implements StrategyAddBehaviour<DhTicket> {
@@ -39,6 +40,11 @@ public class StrategyAddTicketsApi implements StrategyAddBehaviour<DhTicket> {
             utility.addLog(dhTicket.getIssueRaisedBy(), "Raised ticket of type : " + dhTicket.getIssueType());
         }
         return returnResponse;
+    }
+
+    @Override
+    public Response<DhTicket> add(String language, DhTicket obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
+import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlaceMainPage;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.AppConstants.COLLECTION_DH_PLACE_MAIN_PAGE;
@@ -42,6 +44,11 @@ public class StrategyAddPlaceMainPagesApi implements StrategyAddBehaviour<DhPlac
         mongoTemplate.save(dhPlaceMainPage, COLLECTION_DH_PLACE_MAIN_PAGE);
         validationResponse.setLogActionMsg("New [" + dhPlaceMainPage.getGridType().name() + "]  has been added in status " + dhPlaceMainPage.getStatus());
         return new Response<>(true, 201, "Place main page has been added.", new ArrayList<>());
+    }
+
+    @Override
+    public Response<DhPlaceMainPage> add(String language, DhPlaceMainPage obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     @Override

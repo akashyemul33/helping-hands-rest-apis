@@ -12,21 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.MongoAction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
-import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
 public class StrategyGetRatingAndComments implements StrategyGetBehaviour<DhRatingAndComments> {
@@ -83,7 +78,7 @@ public class StrategyGetRatingAndComments implements StrategyGetBehaviour<DhRati
         Page<DhRatingAndComments> ratingAndCommentsPage = PageableExecutionUtils.getPage(
                 dhRatingCommentsList,
                 pageable,
-                () -> mongoTemplate.count(queryGetRC, DhRatingAndComments.class));
-        return new Response<>(true, 200, "Query successful", dhRatingCommentsList.size(), ratingAndCommentsPage.getNumber(), ratingAndCommentsPage.getTotalPages(), ratingAndCommentsPage.getTotalElements(), dhRatingCommentsList);
+                () -> mongoTemplate.count(Query.of(queryGetRC).limit(-1).skip(-1), DhRatingAndComments.class));
+        return new Response<>(true, 200, "Query successful", ratingAndCommentsPage.getNumberOfElements(), ratingAndCommentsPage.getNumber(), ratingAndCommentsPage.getTotalPages(), ratingAndCommentsPage.getTotalElements(), ratingAndCommentsPage.getContent());
     }
 }

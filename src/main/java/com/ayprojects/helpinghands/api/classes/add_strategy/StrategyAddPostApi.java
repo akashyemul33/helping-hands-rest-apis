@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
+import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.Response;
@@ -20,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.ayprojects.helpinghands.AppConstants.BUSINESS_POST;
@@ -89,6 +91,11 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPosts> {
 
         return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_POST_ADDED, language), new ArrayList<>(), 1);
 
+    }
+
+    @Override
+    public Response<DhPosts> add(String language, DhPosts obj, HashMap<String, Object> params) throws ServerSideException {
+        return null;
     }
 
     private DhPosts setPostIdIfNotExists(DhPosts dhPosts) {

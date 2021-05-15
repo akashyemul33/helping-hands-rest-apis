@@ -38,8 +38,11 @@ public class RatingAndCommentsController {
     ApiOperations<DhRatingAndComments> apiOperations;
 
     @PostMapping(value = "/addRatingAndComments")
-    public ResponseEntity<Response<DhRatingAndComments>> addRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhRatingAndComments dhRatingComments, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhRatingComments, StrategyName.AddRatingStrategy, version), HttpStatus.CREATED);
+    public ResponseEntity<Response<DhRatingAndComments>> addRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhRatingAndComments dhRatingComments, @RequestParam("userId") String userId,@RequestParam("ContentName") String contentName,@PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.USER_ID, userId);
+        params.put(AppConstants.CONTENT_NAME, contentName);
+        return new ResponseEntity<>(apiOperations.add(authentication, httpHeaders, dhRatingComments, StrategyName.AddRatingStrategy,params, version), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getPaginatedRatingsAndComments")
