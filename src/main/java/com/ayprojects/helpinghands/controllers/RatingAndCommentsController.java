@@ -48,6 +48,16 @@ public class RatingAndCommentsController {
 
     }
 
+
+    @GetMapping(value = "/getTotalRatingAndComments")
+    ResponseEntity<Response<DhRatingAndComments>> getTotalRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String contentId, @RequestParam String contentType, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_CONTENT_ID, contentId);
+        params.put(AppConstants.KEY_CONTENT_TYPE, contentType);
+        params.put(AppConstants.RATING_API_TYPE, AppConstants.TOTAL_RATING);
+        return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetRatingStrategy, params, version), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/getPaginatedRatingsAndComments")
     ResponseEntity<Response<DhRatingAndComments>> getPaginatedRatingsAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size, @RequestParam String contentId, @RequestParam String contentType, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
