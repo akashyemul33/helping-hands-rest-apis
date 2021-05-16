@@ -17,7 +17,25 @@ public class DhRatingAndComments extends AllCommonUsedAttributes {
     private String userName;
     @Ignore
     @Transient
-    private float totalRating;
+    private String contentUserId;
+    @Ignore
+    @Transient
+    private String contentName;
+    @Ignore
+    @Transient
+    private int totalRating;
+
+    public float getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(float avgRating) {
+        this.avgRating = avgRating;
+    }
+
+    @Ignore
+    @Transient
+    private float avgRating;
     @Ignore
     @Transient
     private int numberOfFiveStars;
@@ -33,7 +51,6 @@ public class DhRatingAndComments extends AllCommonUsedAttributes {
     @Ignore
     @Transient
     private int numberOfOneStars;
-
     public DhRatingAndComments(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String reviewCommentId, double rating, String comment, String addedBy, ContentType contentType, String contentId) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
@@ -46,9 +63,24 @@ public class DhRatingAndComments extends AllCommonUsedAttributes {
         this.contentType = contentType;
         this.contentId = contentId;
     }
-
     public DhRatingAndComments() {
 
+    }
+
+    public String getContentUserId() {
+        return contentUserId;
+    }
+
+    public void setContentUserId(String contentUserId) {
+        this.contentUserId = contentUserId;
+    }
+
+    public String getContentName() {
+        return contentName;
+    }
+
+    public void setContentName(String contentName) {
+        this.contentName = contentName;
     }
 
     public double getRating() {
@@ -115,11 +147,11 @@ public class DhRatingAndComments extends AllCommonUsedAttributes {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public float getTotalRating() {
+    public int getTotalRating() {
         return totalRating;
     }
 
-    public void setTotalRating(float totalRating) {
+    public void setTotalRating(int totalRating) {
         this.totalRating = totalRating;
     }
 

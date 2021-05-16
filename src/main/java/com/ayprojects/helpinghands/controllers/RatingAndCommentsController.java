@@ -36,12 +36,8 @@ public class RatingAndCommentsController {
     ApiOperations<DhRatingAndComments> apiOperations;
 
     @PostMapping(value = "/addRatingAndComments")
-    public ResponseEntity<Response<DhRatingAndComments>> addRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhRatingAndComments dhRatingComments, @RequestParam("userName") String userName, @RequestParam("contentUserId") String contentUserId, @RequestParam("contentName") String contentName, @PathVariable String version) throws ServerSideException {
-        HashMap<String, Object> params = new HashMap<>();
-        params.put(AppConstants.KEY_CONTENT_USER_ID, contentUserId);
-        params.put(AppConstants.KEY_CONTENT_NAME, contentName);
-        params.put(AppConstants.KEY_USER_NAME, userName);
-        Response<DhRatingAndComments> response = apiOperations.add(authentication, httpHeaders, dhRatingComments, StrategyName.AddRatingStrategy, params, version);
+    public ResponseEntity<Response<DhRatingAndComments>> addRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhRatingAndComments dhRatingComments, @PathVariable String version) throws ServerSideException {
+        Response<DhRatingAndComments> response = apiOperations.add(authentication, httpHeaders, dhRatingComments, StrategyName.AddRatingStrategy, version);
         if (response.getStatus()) return new ResponseEntity<>(response, HttpStatus.CREATED);
         else
             return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);

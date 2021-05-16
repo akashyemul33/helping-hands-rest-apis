@@ -97,7 +97,8 @@ public class StrategyGetRatingAndComments implements StrategyGetBehaviour<DhRati
         }
         avgRating = avgRating / dhRatingCommentsList.size();
         DhRatingAndComments dhRatingAndComments = new DhRatingAndComments();
-        dhRatingAndComments.setTotalRating(avgRating);
+        dhRatingAndComments.setAvgRating(avgRating);
+        dhRatingAndComments.setTotalRating(dhRatingCommentsList.size());
         dhRatingAndComments.setNumberOfFiveStars(fiveStar);
         dhRatingAndComments.setNumberOfFourStars(fourStar);
         dhRatingAndComments.setNumberOfThreeStars(thirdStar);
@@ -115,15 +116,48 @@ public class StrategyGetRatingAndComments implements StrategyGetBehaviour<DhRati
 
         Pageable pageable = PageRequest.of(page, size);
         Criteria criteria = new Criteria();
-        criteria.and(AppConstants.CONTENT_ID).regex(contentId, "i");
-        criteria.and(AppConstants.CONTENT_TYPE).regex(contentType, "i");
+        criteria.and(AppConstants.CONTENT_ID).is(contentId);
+        criteria.and(AppConstants.CONTENT_TYPE).is(contentType);
         criteria.and(AppConstants.STATUS).regex(status, "i");
         Query queryGetRC = new Query(criteria).with(pageable);
         List<DhRatingAndComments> dhRatingCommentsList = mongoTemplate.find(queryGetRC, DhRatingAndComments.class);
+        if (dhRatingCommentsList.size()==0)
+            return new Response<DhRatingAndComments>(true, 200, "Query successful", 0, page, 0, (long) 0, new ArrayList<>());
+        if (page == 0) {
+            float avgRating = 0;
+            int fiveStar = 0;
+            int fourStar = 0;
+            int thirdStar = 0;
+            int twoStar = 0;
+            int oneStar = 0;
+            for (DhRatingAndComments dh : dhRatingCommentsList) {
+                avgRating += dh.getRating();
+                if (dh.getRating() > 4)
+                    fiveStar++;
+                else if (dh.getRating() > 3)
+                    fourStar++;
+                else if (dh.getRating() > 2)
+                    thirdStar++;
+                else if (dh.getRating() > 1)
+                    twoStar++;
+                else
+                    oneStar++;
+            }
+            avgRating = avgRating / dhRatingCommentsList.size();
+            DhRatingAndComments dhRatingAndComments = dhRatingCommentsList.get(0);
+            dhRatingAndComments.setAvgRating(avgRating);
+            dhRatingAndComments.setTotalRating(dhRatingCommentsList.size());
+            dhRatingAndComments.setNumberOfFiveStars(fiveStar);
+            dhRatingAndComments.setNumberOfFourStars(fourStar);
+            dhRatingAndComments.setNumberOfThreeStars(thirdStar);
+            dhRatingAndComments.setNumberOfTwoStars(twoStar);
+            dhRatingAndComments.setNumberOfOneStars(oneStar);
+        }
         Page<DhRatingAndComments> ratingAndCommentsPage = PageableExecutionUtils.getPage(
                 dhRatingCommentsList,
                 pageable,
                 () -> mongoTemplate.count(Query.of(queryGetRC).limit(-1).skip(-1), DhRatingAndComments.class));
         return new Response<>(true, 200, "Query successful", ratingAndCommentsPage.getNumberOfElements(), ratingAndCommentsPage.getNumber(), ratingAndCommentsPage.getTotalPages(), ratingAndCommentsPage.getTotalElements(), ratingAndCommentsPage.getContent());
+
     }
 }

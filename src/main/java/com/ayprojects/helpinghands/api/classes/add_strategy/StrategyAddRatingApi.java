@@ -31,7 +31,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -44,29 +43,22 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
 
     @Override
     public Response<DhRatingAndComments> add(String language, DhRatingAndComments obj) throws ServerSideException {
-        return null;
-    }
-
-    @Override
-    public Response<DhRatingAndComments> add(String language, DhRatingAndComments obj, HashMap<String, Object> params) throws ServerSideException {
-        if (params == null) {
-            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
-        }
-        Set<String> keySet = params.keySet();
-
-        String contentUserId = (String) params.get(AppConstants.KEY_CONTENT_USER_ID);
-        String contentName = (String) params.get(AppConstants.KEY_CONTENT_NAME);
-        String userName = (String) params.get(AppConstants.KEY_USER_NAME);
-        Response<DhRatingAndComments> validationResponse = validateAddRatingAndComments(language, obj, contentUserId);
+        Response<DhRatingAndComments> validationResponse = validateAddRatingAndComments(language, obj);
 
         if (!validationResponse.getStatus())
             return validationResponse;
         obj.setReviewCommentId(Utility.getUUID());
         obj = (DhRatingAndComments) Utility.setCommonAttrs(obj, AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(obj, AppConstants.COLLECTION_DH_RATING_COMMENT);
-        sendNotificationToContentOwner(language, obj.getContentType(), contentUserId, contentName, userName);
+        sendNotificationToContentOwner(language, obj.getContentType(), obj.getContentUserId(), obj.getContentName(), obj.getUserName());
         persistRatingIntoContentClass(obj);
         return validationResponse;
+    }
+
+    @Override
+    public Response<DhRatingAndComments> add(String language, DhRatingAndComments obj, HashMap<String, Object> params) throws ServerSideException {
+
+        return null;
     }
 
     private void persistRatingIntoContentClass(DhRatingAndComments dhRatingComments) {
@@ -191,7 +183,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
 
     }
 
-    private Response<DhRatingAndComments> validateAddRatingAndComments(String language, DhRatingAndComments obj, String contentUserId) {
+    private Response<DhRatingAndComments> validateAddRatingAndComments(String language, DhRatingAndComments obj) {
         if (obj == null) {
             return new Response<DhRatingAndComments>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
         }
@@ -200,7 +192,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
             missingFieldsList.add(AppConstants.ADDED_BY);
         if (Utility.isFieldEmpty(obj.getContentId()))
             missingFieldsList.add(AppConstants.CONTENT_ID);
-        if (Utility.isFieldEmpty(contentUserId))
+        if (Utility.isFieldEmpty(obj.getContentUserId()))
             missingFieldsList.add(AppConstants.KEY_CONTENT_USER_ID);
         if (obj.getContentType() == null)
             missingFieldsList.add(AppConstants.CONTENT_TYPE);
