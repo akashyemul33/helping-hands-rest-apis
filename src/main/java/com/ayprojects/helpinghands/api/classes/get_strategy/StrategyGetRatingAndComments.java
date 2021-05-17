@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -120,8 +122,9 @@ public class StrategyGetRatingAndComments implements StrategyGetBehaviour<DhRati
         criteria.and(AppConstants.CONTENT_TYPE).is(contentType);
         criteria.and(AppConstants.STATUS).regex(status, "i");
         Query queryGetRC = new Query(criteria).with(pageable);
+        queryGetRC.with(Sort.by(Sort.Direction.DESC, AppConstants.MODIFIED_DATE_TIME));
         List<DhRatingAndComments> dhRatingCommentsList = mongoTemplate.find(queryGetRC, DhRatingAndComments.class);
-        if (dhRatingCommentsList.size()==0)
+        if (dhRatingCommentsList.size() == 0)
             return new Response<DhRatingAndComments>(true, 200, "Query successful", 0, page, 0, (long) 0, new ArrayList<>());
         if (page == 0) {
             float avgRating = 0;
@@ -145,7 +148,7 @@ public class StrategyGetRatingAndComments implements StrategyGetBehaviour<DhRati
             }
             avgRating = avgRating / dhRatingCommentsList.size();
             DhRatingAndComments dhRatingAndComments = dhRatingCommentsList.get(0);
-            dhRatingAndComments.setAvgRating(avgRating);
+            dhRatingAndComments.setAvgRating(Float.parseFloat(new DecimalFormat("#.#").format(avgRating)));
             dhRatingAndComments.setTotalRating(dhRatingCommentsList.size());
             dhRatingAndComments.setNumberOfFiveStars(fiveStar);
             dhRatingAndComments.setNumberOfFourStars(fourStar);
