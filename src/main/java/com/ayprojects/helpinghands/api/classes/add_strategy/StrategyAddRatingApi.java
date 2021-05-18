@@ -72,16 +72,16 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
     public Response<DhRatingAndComments> add(String language, DhRatingAndComments obj, HashMap<String, Object> params) throws ServerSideException {
         if (params == null || obj == null || obj.getThreads() == null)
             return new Response<DhRatingAndComments>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
-        if (params.containsKey(AppConstants.REPLY_TO_RATING)) {
+        if (AppConstants.REPLY_TO_RATING.equals(params.get(AppConstants.RATING_API_TYPE))) {
             Threads threads = (Threads) Utility.setCommonAttrs(obj.getThreads().get(0), AppConstants.STATUS_ACTIVE);
             Update update = new Update();
             update.push(AppConstants.THREADS, threads);
             Query updateQuery = new Query(Criteria.where(AppConstants.REVIEW_COMMENT_ID).is(obj.getReviewCommentId()));
             mongoTemplate.updateFirst(updateQuery, update, DhRatingAndComments.class);
-            sendNotificationOnReply(language, obj.getAddedBy(), obj.getContentType(), obj.getContentName());
+            sendNotificationOnReply(language, obj.getAddedBy(), obj.getContentType(), threads.getName());
             return new Response<>(true, 201, "Update successful", new ArrayList<>());
         }
-        return null;
+        return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>());
     }
 
     private void persistRatingIntoContentClass(DhRatingAndComments dhRatingComments, boolean edit) {
