@@ -44,6 +44,16 @@ public class RatingAndCommentsController {
 
     }
 
+    @PostMapping(value = "/addReplyToRatingAndComment")
+    public ResponseEntity<Response<DhRatingAndComments>> addReplyToRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhRatingAndComments dhRatingComments, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.RATING_API_TYPE, AppConstants.REPLY_TO_RATING);
+        Response<DhRatingAndComments> response = apiOperations.add(authentication, httpHeaders, dhRatingComments, StrategyName.AddRatingStrategy, params, version);
+        if (response.getStatus()) return new ResponseEntity<>(response, HttpStatus.CREATED);
+        else
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+
 
     @GetMapping(value = "/getTotalRatingAndComments")
     ResponseEntity<Response<DhRatingAndComments>> getTotalRatingAndComments(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String contentId, @RequestParam String contentType, @PathVariable String version) throws ServerSideException {

@@ -232,13 +232,16 @@ public class AppConstants {
     public static final String KEY_CONTENT_NAME = "ContentName";
     public static final String KEY_USER_NAME = "UserName";
     public static final String RESPONSEMESSAGE_RATING_ADDED_TITLE = "RATING_ADDED_TITLE";
+    public static final String RESPONSEMESSAGE_RATING_REPLIED_TITLE = "RATING_REPLIED_TITLE";
     public static final String RESPONSEMESSAGE_RATING_ADDED_BODY = "RATING_ADDED_BODY";
     public static final String COLLECTION_NOTIFICATION = "Notifications";
     public static final String KEY_NOTIFICATIONS = "notifications";
     public static final String TOTAL_RATING = "TotalRating";
+    public static final String REPLY_TO_RATING = "ReplyToRating";
     public static final String RATING_API_TYPE = "RatingApiType";
     public static final String REVIEW_COMMENT_ID = "reviewCommentId";
     public static final String COMMENT = "comment";
+    public static final String THREADS = "threads";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

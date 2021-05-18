@@ -4,6 +4,8 @@ import com.ayprojects.helpinghands.api.enums.ContentType;
 
 import org.springframework.data.annotation.Transient;
 
+import java.util.List;
+
 import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class DhRatingAndComments extends AllCommonUsedAttributes {
@@ -47,6 +49,16 @@ public class DhRatingAndComments extends AllCommonUsedAttributes {
     @Ignore
     @Transient
     private int totalRating;
+
+    private List<Threads> threads;
+
+    public List<Threads> getThreads() {
+        return threads;
+    }
+
+    public void setThreads(List<Threads> threads) {
+        this.threads = threads;
+    }
 
     public float getAvgRating() {
         return avgRating;

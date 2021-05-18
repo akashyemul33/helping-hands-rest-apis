@@ -13,6 +13,7 @@ import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Notifications;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.models.Threads;
 import com.ayprojects.helpinghands.services.firebase.FirebaseSetup;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
@@ -69,7 +70,17 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
 
     @Override
     public Response<DhRatingAndComments> add(String language, DhRatingAndComments obj, HashMap<String, Object> params) throws ServerSideException {
-
+        if (params == null || obj == null || obj.getThreads() == null)
+            return new Response<DhRatingAndComments>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+        if (params.containsKey(AppConstants.REPLY_TO_RATING)) {
+            Threads threads = (Threads) Utility.setCommonAttrs(obj.getThreads().get(0), AppConstants.STATUS_ACTIVE);
+            Update update = new Update();
+            update.push(AppConstants.THREADS, threads);
+            Query updateQuery = new Query(Criteria.where(AppConstants.REVIEW_COMMENT_ID).is(obj.getReviewCommentId()));
+            mongoTemplate.updateFirst(updateQuery, update, DhRatingAndComments.class);
+            sendNotificationOnReply(language, obj.getAddedBy(), obj.getContentType(), obj.getContentName());
+            return new Response<>(true, 201, "Update successful", new ArrayList<>());
+        }
         return null;
     }
 
@@ -179,6 +190,41 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
         }
     }
 
+    private void sendNotificationOnReply(String lang, String contentUserId, ContentType contentType, String replyName) {
+        Query query = new Query(Criteria.where(AppConstants.USER_ID).is(contentUserId));
+        query.fields().include(AppConstants.KEY_FCM_TOKEN);
+        DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
+        if (dhUser != null) {
+            String fcmToken = dhUser.getFcmToken();
+            LOGGER.info("sendNotificationToContentOwner:fcmToken->" + fcmToken);
+            String body = replyName + " has replied to your comment.";
+            String title = ResponseMsgFactory.getResponseMsg(lang, AppConstants.RESPONSEMESSAGE_RATING_REPLIED_TITLE);
+            Message message = Message.builder()
+                    .putData("title", title)
+                    .putData("body", body)
+                    .setToken(fcmToken)
+                    .build();
+            try {
+                FirebaseMessaging.getInstance().send(message);
+                Update dhUserUpdate = new Update();
+                Notifications notifications = new Notifications();
+                notifications.setNotificationId(Utility.getUUID());
+                notifications.setTitle(title);
+                notifications.setBody(body);
+                notifications.setRedirectionUrl(" ");
+                notifications.setRedirectionContent(contentType.name());
+                notifications.setCreatedDateTime(CalendarOperations.currentDateTimeInUTC());
+                notifications.setStatus(AppConstants.STATUS_ACTIVE);
+                dhUserUpdate.push(AppConstants.KEY_NOTIFICATIONS, notifications);
+                dhUserUpdate.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+                mongoTemplate.updateFirst(query, dhUserUpdate, AppConstants.COLLECTION_DHUSER);
+            } catch (FirebaseMessagingException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     private void sendNotificationToContentOwner(String lang, ContentType contentType, String contentUserId, String contentName, String userName, boolean edit, double rating) {
         Query query = new Query(Criteria.where(AppConstants.USER_ID).is(contentUserId));
         query.fields().include(AppConstants.KEY_FCM_TOKEN);
@@ -215,7 +261,6 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                 e.printStackTrace();
             }
         }
-
     }
 
     private Response<DhRatingAndComments> validateAddRatingAndComments(String language, DhRatingAndComments obj) {
