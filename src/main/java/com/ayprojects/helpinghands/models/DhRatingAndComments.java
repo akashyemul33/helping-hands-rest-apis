@@ -15,6 +15,29 @@ public class DhRatingAndComments extends AllCommonUsedAttributes {
     private String contentId;
     private String profileImageUrl;
     private String userName;
+
+    public boolean getNotificationRequired() {
+        return notificationRequired;
+    }
+
+    public void setNotificationRequired(boolean notificationRequired) {
+        this.notificationRequired = notificationRequired;
+    }
+    @Ignore
+    @Transient
+    private double previousRating;//useful for edit rating to update things in original content
+
+    public double getPreviousRating() {
+        return previousRating;
+    }
+
+    public void setPreviousRating(double previousRating) {
+        this.previousRating = previousRating;
+    }
+
+    @Ignore
+    @Transient
+    private boolean notificationRequired;
     @Ignore
     @Transient
     private String contentUserId;

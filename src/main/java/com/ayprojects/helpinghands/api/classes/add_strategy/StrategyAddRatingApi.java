@@ -47,11 +47,23 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
 
         if (!validationResponse.getStatus())
             return validationResponse;
-        obj.setReviewCommentId(Utility.getUUID());
-        obj = (DhRatingAndComments) Utility.setCommonAttrs(obj, AppConstants.STATUS_ACTIVE);
-        mongoTemplate.save(obj, AppConstants.COLLECTION_DH_RATING_COMMENT);
-        sendNotificationToContentOwner(language, obj.getContentType(), obj.getContentUserId(), obj.getContentName(), obj.getUserName());
-        persistRatingIntoContentClass(obj);
+        boolean edit = false;
+        if (Utility.isFieldEmpty(obj.getReviewCommentId())) {
+            obj.setReviewCommentId(Utility.getUUID());
+            obj = (DhRatingAndComments) Utility.setCommonAttrs(obj, AppConstants.STATUS_ACTIVE);
+            mongoTemplate.save(obj, AppConstants.COLLECTION_DH_RATING_COMMENT);
+        } else {
+            edit = true;
+            Update update = new Update();
+            Query updateRatingQuery = new Query(Criteria.where(AppConstants.REVIEW_COMMENT_ID).is(obj.getReviewCommentId()));
+            update.set(AppConstants.RATING, obj.getRating());
+            update.set(AppConstants.COMMENT, obj.getComment());
+            update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+            mongoTemplate.updateFirst(updateRatingQuery, update, DhRatingAndComments.class);
+        }
+        if (obj.getNotificationRequired())
+            sendNotificationToContentOwner(language, obj.getContentType(), obj.getContentUserId(), obj.getContentName(), obj.getUserName(), edit, obj.getRating());
+        persistRatingIntoContentClass(obj, edit);
         return validationResponse;
     }
 
@@ -61,7 +73,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
         return null;
     }
 
-    private void persistRatingIntoContentClass(DhRatingAndComments dhRatingComments) {
+    private void persistRatingIntoContentClass(DhRatingAndComments dhRatingComments, boolean edit) {
         String contentIdToSearch = "";
         switch (dhRatingComments.getContentType()) {
             case CONTENT_PLACE:
@@ -73,21 +85,28 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                     return;
                 }
                 Update updatePlace = new Update();
-                updatePlace.set(AppConstants.NUMBER_OF_RATINGS, queriedDhPlace.getNumberOfRatings() + 1);
+
                 double avgPlaceRating = 0;
                 if (queriedDhPlace.getAvgRating() <= 0) {
                     avgPlaceRating = dhRatingComments.getRating();
                 } else {
-                    avgPlaceRating = (queriedDhPlace.getAvgRating() + dhRatingComments.getRating()) / 2;
+                    double totalRatingNumber = queriedDhPlace.getAvgRating() * queriedDhPlace.getNumberOfRatings();
+                    if (edit) {
+                        avgPlaceRating = ((totalRatingNumber - dhRatingComments.getPreviousRating()) + dhRatingComments.getRating()) / queriedDhPlace.getNumberOfRatings();
+                    } else
+                        avgPlaceRating = (totalRatingNumber + dhRatingComments.getRating()) / (queriedDhPlace.getNumberOfRatings() + 1);
+                }
+                if (!edit) {
+                    updatePlace.set(AppConstants.NUMBER_OF_RATINGS, queriedDhPlace.getNumberOfRatings() + 1);
+                    updatePlace.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
+                    if (queriedDhPlace.getTopRatings() != null && queriedDhPlace.getTopRatings().size() == AppConstants.LIMIT_RATINGS_IN_PLACES) {
+                        Update updatePopTopRating = new Update();
+                        updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.FIRST);
+                        mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopRating, DhPlace.class);
+                    }
+                    updatePlace.push(AppConstants.TOP_RATINGS, dhRatingComments);
                 }
                 updatePlace.set(AppConstants.AVG_RATING, avgPlaceRating);
-                updatePlace.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
-                if (queriedDhPlace.getTopRatings() != null && queriedDhPlace.getTopRatings().size() == AppConstants.LIMIT_RATINGS_IN_PLACES) {
-                    Update updatePopTopRating = new Update();
-                    updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.FIRST);
-                    mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopRating, DhPlace.class);
-                }
-                updatePlace.push(AppConstants.TOP_RATINGS, dhRatingComments);
                 updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
                 break;
@@ -105,16 +124,22 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                 if (queriedDhPost.getAvgRating() <= 0) {
                     avgPostsRating = dhRatingComments.getRating();
                 } else {
-                    avgPostsRating = (queriedDhPost.getAvgRating() + dhRatingComments.getRating()) / 2;
+                    double totalRatingNumber = queriedDhPost.getAvgRating() * queriedDhPost.getNumberOfRatings();
+                    if (edit) {
+                        avgPostsRating = ((totalRatingNumber - dhRatingComments.getPreviousRating()) + dhRatingComments.getRating()) / queriedDhPost.getNumberOfRatings();
+                    } else
+                        avgPostsRating = (totalRatingNumber + dhRatingComments.getRating()) / (queriedDhPost.getNumberOfRatings() + 1);
                 }
                 updatePost.set(AppConstants.AVG_RATING, avgPostsRating);
-                updatePost.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
-                if (queriedDhPost.getTopRatings() != null && queriedDhPost.getTopRatings().size() == AppConstants.LIMIT_RATINGS_IN_POSTS) {
-                    Update updatePopTopRating = new Update();
-                    updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
-                    mongoTemplate.updateFirst(queryFindPostWithId, updatePopTopRating, DhPosts.class);
+                if (!edit) {
+                    updatePost.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
+                    if (queriedDhPost.getTopRatings() != null && queriedDhPost.getTopRatings().size() == AppConstants.LIMIT_RATINGS_IN_POSTS) {
+                        Update updatePopTopRating = new Update();
+                        updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
+                        mongoTemplate.updateFirst(queryFindPostWithId, updatePopTopRating, DhPosts.class);
+                    }
+                    updatePost.push(AppConstants.TOP_RATINGS, dhRatingComments);
                 }
-                updatePost.push(AppConstants.TOP_RATINGS, dhRatingComments);
                 updatePost.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPostWithId, updatePost, DhPosts.class);
                 break;
@@ -132,30 +157,40 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                 if (queriedDhRequirement.getAvgRating() <= 0) {
                     avgRequirementRating = dhRatingComments.getRating();
                 } else {
-                    avgRequirementRating = (queriedDhRequirement.getAvgRating() + dhRatingComments.getRating()) / 2;
+                    double totalRatingNumber = queriedDhRequirement.getAvgRating() * queriedDhRequirement.getNumberOfRatings();
+                    if (edit) {
+                        avgRequirementRating = ((totalRatingNumber - dhRatingComments.getPreviousRating()) + dhRatingComments.getRating()) / queriedDhRequirement.getNumberOfRatings();
+                    } else
+                        avgRequirementRating = (totalRatingNumber + dhRatingComments.getRating()) / (queriedDhRequirement.getNumberOfRatings() + 1);
                 }
                 updateRequirement.set(AppConstants.AVG_RATING, avgRequirementRating);
-                updateRequirement.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
-                if (queriedDhRequirement.getTopRatings() != null && queriedDhRequirement.getTopRatings().size() == AppConstants.LIMIT_RATINGS_IN_REQUIREMENTS) {
-                    Update updatePopTopRating = new Update();
-                    updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
-                    mongoTemplate.updateFirst(queryFindRequirementWithId, updatePopTopRating, DhRequirements.class);
+                if (!edit) {
+                    updateRequirement.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
+                    if (queriedDhRequirement.getTopRatings() != null && queriedDhRequirement.getTopRatings().size() == AppConstants.LIMIT_RATINGS_IN_REQUIREMENTS) {
+                        Update updatePopTopRating = new Update();
+                        updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
+                        mongoTemplate.updateFirst(queryFindRequirementWithId, updatePopTopRating, DhRequirements.class);
+                    }
+                    updateRequirement.push(AppConstants.TOP_RATINGS, dhRatingComments);
                 }
-                updateRequirement.push(AppConstants.TOP_RATINGS, dhRatingComments);
                 updateRequirement.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindRequirementWithId, updateRequirement, DhRequirements.class);
                 break;
         }
     }
 
-    private void sendNotificationToContentOwner(String lang, ContentType contentType, String contentUserId, String contentName, String userName) {
+    private void sendNotificationToContentOwner(String lang, ContentType contentType, String contentUserId, String contentName, String userName, boolean edit, double rating) {
         Query query = new Query(Criteria.where(AppConstants.USER_ID).is(contentUserId));
         query.fields().include(AppConstants.KEY_FCM_TOKEN);
         DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
         if (dhUser != null) {
             String fcmToken = dhUser.getFcmToken();
             LOGGER.info("sendNotificationToContentOwner:fcmToken->" + fcmToken);
-            String body = userName + " has rated your " + contentType.name().split("_")[1].toLowerCase() + " " + contentName;
+            String body = "";
+            if (edit)
+                body = userName + " has changed rating of your " + contentType.name().split("_")[1].toLowerCase() + " " + contentName + " to " + rating;
+            else
+                body = userName + " has rated " + rating + " to your " + contentType.name().split("_")[1].toLowerCase() + " " + contentName;
             String title = ResponseMsgFactory.getResponseMsg(lang, AppConstants.RESPONSEMESSAGE_RATING_ADDED_TITLE);
             Message message = Message.builder()
                     .putData("title", title)

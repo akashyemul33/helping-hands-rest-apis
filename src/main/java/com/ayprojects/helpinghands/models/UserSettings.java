@@ -153,5 +153,15 @@ public class UserSettings {
     public void setPerPostImagesLimitEnabled(boolean perPostImagesLimitEnabled) {
         this.perPostImagesLimitEnabled = perPostImagesLimitEnabled;
     }
+    private boolean notificationsRequired;
+
+    public boolean getNotificationsRequired() {
+        return notificationsRequired;
+    }
+
+    public void setNotificationsRequired(boolean notificationsRequired) {
+        this.notificationsRequired = notificationsRequired;
+    }
+
 }
 

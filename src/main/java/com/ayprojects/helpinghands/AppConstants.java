@@ -237,6 +237,8 @@ public class AppConstants {
     public static final String KEY_NOTIFICATIONS = "notifications";
     public static final String TOTAL_RATING = "TotalRating";
     public static final String RATING_API_TYPE = "RatingApiType";
+    public static final String REVIEW_COMMENT_ID = "reviewCommentId";
+    public static final String COMMENT = "comment";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
