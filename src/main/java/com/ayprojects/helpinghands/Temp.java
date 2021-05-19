@@ -19,7 +19,8 @@ public class Temp {
 
     public static void sendMsgToRegToken() {
         try {
-            FirebaseSetup.initializeFirebase();
+            FirebaseSetup firebaseSetup = new FirebaseSetup();
+            firebaseSetup.initializeFirebase();
         } catch (IOException e) {
             e.printStackTrace();
         }
