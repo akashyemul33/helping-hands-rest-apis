@@ -9,5 +9,4 @@ public enum  PlaceStepEnums {
     PLACE_IMAGES,
     PRODUCT_PRICES_VISIBILITY,
     CURRENT_AVAILABLE_STATUS
-
 }
