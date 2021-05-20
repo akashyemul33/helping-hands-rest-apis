@@ -7,9 +7,7 @@ import com.ayprojects.helpinghands.util.tools.Utility;
 
 public class tmp {
     public static void main(String[] args) {
-        System.out.println("tmp");
-//        checkOpenCloseTimings();
-          checkCountryCodeDetectionFromPhone();
+        checkOpenCloseTimings();
     }
 
     private static void checkCountryCodeDetectionFromPhone() {
@@ -17,15 +15,14 @@ public class tmp {
 
     private static void checkOpenCloseTimings() {
         PlaceAvailabilityDetails p = new PlaceAvailabilityDetails();
-        p.setProvide24into7(true);
-        p.setPlaceOpeningTime("10:40");
-        p.setPlaceClosingTime("19:45");
-        p.setLunchStartTime("19:20");
-        p.setLunchEndTime("19:40");
+        p.setProvide24into7(false);
+        p.setPlaceOpeningTime("09:30");
+        p.setPlaceClosingTime("15:40");
+        p.setHaveNoLunchHours(false);
+        p.setLunchStartTime("12:40");
+        p.setLunchEndTime("13:06");
 
-        String msg[]=Utility.calculatePlaceOpenCloseMsg(p,"EN");
-        System.out.println("msg[0]="+msg[0]+" msg[1]="+msg[1]);
-        boolean isOpen = msg.length > 1 && (msg[1].equalsIgnoreCase(AppConstants.OPEN));
-        System.out.println("isOpen"+isOpen);
+//        String msg = Utility.calculatePlaceOpenCloseMsgWhenNot24into7(p, AppConstants.LANG_ENGLISH);
+//        System.out.println("/msg:" + msg);
     }
 }

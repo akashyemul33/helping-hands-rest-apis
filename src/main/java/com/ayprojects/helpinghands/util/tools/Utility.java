@@ -11,6 +11,8 @@ import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.UserSettings;
 import com.ayprojects.helpinghands.services.log.LogService;
+import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
+import com.mongodb.lang.NonNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -29,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -121,16 +124,16 @@ public class Utility {
         // calculate the result
         double result = c * r;
         if (result > 1) {
-            return " " + roundTwoDecimals(result) + " KM";
+            return " " + roundTwoDecimals(result) + " KM away";
         } else {
-            return "" + roundTwoDecimals(convertMetres(result)) + " m";
+            return "" + roundTwoDecimals(convertMetres(result)) + " m away";
         }
     }
 
     public static String[] calculatePlaceOpenCloseMsg(PlaceAvailabilityDetails p, String language) {
         if (p == null) return new String[]{""};
         if (p.isProvide24into7()) {
-            return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_OPEN_24INTO7, language), AppConstants.OPEN};
+            return new String[]{ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPEN_24INTO7), AppConstants.OPEN};
         }
         Calendar now = Calendar.getInstance();
         String currentHourMin = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
@@ -150,15 +153,15 @@ public class Utility {
 
             //if before opening time
             if (currentTime.before(openingTime) || currentTime.after(closingTime)) {
-                return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_CLOSED_OPENS_AT, language) + " " + p.getPlaceOpeningTime(), AppConstants.CLOSED};
+                return new String[]{ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CLOSED_OPENS_AT) + " " + p.getPlaceOpeningTime(), AppConstants.CLOSED};
             } else {
 
                 if ((currentTime.getTime() - closingTime.getTime()) <= AppConstants.HOUR_IN_MILLIS) {
-                    return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT, language) + " " + p.getPlaceClosingTime(), AppConstants.OPEN};
+                    return new String[]{ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT) + " " + p.getPlaceClosingTime(), AppConstants.OPEN};
                 } else if (p.getHaveNoLunchHours()) {
-                    return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NO_LUNCH_HOURS, language), AppConstants.OPEN};
+                    return new String[]{ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NO_LUNCH_HOURS), AppConstants.OPEN};
                 } else if (p.getHaveNoLunchHours() && currentTime.after(lunchStartTime) && currentTime.before(lunchEndTime)) {
-                    return new String[]{Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_LUNCH_HOURS, language), AppConstants.OPEN};
+                    return new String[]{ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_LUNCH_HOURS), AppConstants.OPEN};
                 }
             }
 
@@ -167,6 +170,67 @@ public class Utility {
         }
 
         return new String[]{""};
+    }
+
+    public static DhPlace calculatePlaceOpenCloseMsgWhenNot24into7(@NonNull DhPlace dhPlace, String language) {
+        PlaceAvailabilityDetails p = dhPlace.getPlaceAvailablityDetails();
+        Calendar now = Calendar.getInstance();
+        now.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
+        String currentHourMin = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+        LOGGER.info("calculatePlaceOpenCloseMsg->currentHourMin=" + currentHourMin);
+
+        SimpleDateFormat format = new SimpleDateFormat(AppConstants.DATE_FORMAT_HOUR_MIN);
+        format.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
+        try {
+            Date currentTime = format.parse(currentHourMin);
+            Date openingTime = format.parse(p.getPlaceOpeningTime());
+            Date closingTime = format.parse(p.getPlaceClosingTime());
+            Date lunchStartTime = null;
+            Date lunchEndTime = null;
+            if (!p.getHaveNoLunchHours()) {
+                lunchStartTime = format.parse(p.getLunchStartTime());
+                lunchEndTime = format.parse(p.getLunchEndTime());
+            }
+
+            if (currentTime.before(openingTime)) {
+                LOGGER.info("openingTime->" + openingTime.getTime() + " :" + openingTime);
+                LOGGER.info("closingTime->" + closingTime.getTime() + " :" + closingTime);
+                LOGGER.info("currentime->" + currentTime.getTime() + " :" + currentTime);
+                dhPlace.setPlaceOpen(false);
+                if ((openingTime.getTime() - currentTime.getTime()) <= AppConstants.HALF_HOUR_IN_MILLIS) {
+                    dhPlace.setOpenCloseMsg(String.format("%s %s %s", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CLOSED), AppConstants.MID_DOT_SYMBOL, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPENS_WITHIN_HALF_HOUR)));
+                } else {
+                    dhPlace.setOpenCloseMsg(String.format("%s %s %s", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CLOSED), AppConstants.MID_DOT_SYMBOL,
+                            String.format(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPENS_AT_TIME), CalendarOperations.convert24HoursFormatTo12Hours(p.getPlaceOpeningTime()))));
+                }
+                return dhPlace;
+            } else if (currentTime.after(closingTime)) {
+                dhPlace.setPlaceOpen(false);
+                if (currentTime.getTime() - closingTime.getTime() <= AppConstants.HALF_HOUR_IN_MILLIS) {
+                    dhPlace.setOpenCloseMsg(String.format("%s %s %s", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CLOSED), AppConstants.MID_DOT_SYMBOL, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_FEW_MINS_AGO)));
+                } else {
+                    dhPlace.setOpenCloseMsg(String.format("%s %s %s", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CLOSED), AppConstants.MID_DOT_SYMBOL,
+                            String.format(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPENS_AT_TIME), CalendarOperations.convert24HoursFormatTo12Hours(p.getPlaceOpeningTime()))));
+                }
+                return dhPlace;
+            } else {
+                dhPlace.setPlaceOpen(true);
+                if (closingTime.getTime() - currentTime.getTime() <= AppConstants.HALF_HOUR_IN_MILLIS) {
+                    dhPlace.setOpenCloseMsg(String.format("%s %s %s", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPEN), AppConstants.MID_DOT_SYMBOL,
+                            String.format(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CLOSES_AT_TIME), CalendarOperations.convert24HoursFormatTo12Hours(p.getPlaceClosingTime()))));
+                } else if (!p.getHaveNoLunchHours() && currentTime.getTime() >= lunchStartTime.getTime() && currentTime.getTime() <= lunchEndTime.getTime()) {
+                    dhPlace.setOpenCloseMsg(String.format("%s %s %s", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPEN), AppConstants.MID_DOT_SYMBOL,
+                            ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_LUNCH_HOURS)));
+                } else {
+                    dhPlace.setOpenCloseMsg(String.format("%s", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPEN)));
+                }
+                return dhPlace;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dhPlace;
     }
 
     public static double roundTwoDecimals(double d) {

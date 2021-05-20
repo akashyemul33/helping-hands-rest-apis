@@ -136,7 +136,13 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_LUNCH_HOURS = "LUNCH_HOURS";
     public static final String RESPONSEMESSAGE_NO_LUNCH_HOURS = "NO_LUNCH_HOURS";
     public static final String RESPONSEMESSAGE_OPEN_CLOSES_AT = "OPEN_CLOSES_AT";
-    public static final long HOUR_IN_MILLIS = 1 * 60 * 60 * 1000;
+    public static final String RESPONSEMESSAGE_OPENS_AT_TIME = "OPENS_AT_TIME";
+    public static final String RESPONSEMESSAGE_CLOSES_AT_TIME = "CLOSES_AT_TIME";
+    public static final String RESPONSEMESSAGE_CLOSED = "CLOSED";
+    public static final String RESPONSEMESSAGE_FEW_MINS_AGO = "FEW_MINS_AGO";
+    public static final String RESPONSEMESSAGE_OPENS_WITHIN_HALF_HOUR = "OPENS_WITHIN_HALF_HOUR";
+    public static final long HOUR_IN_MILLIS = 60 * 60 * 1000;
+    public static final long HALF_HOUR_IN_MILLIS = (60 * 60 * 1000)/2;
     public static final String CLOSED = "Closed";
     public static final String OPEN = "Open";
     public static final String RESPONSEMESSAGE_UNKNOWN = "UNKNOWN";
@@ -242,6 +248,8 @@ public class AppConstants {
     public static final String REVIEW_COMMENT_ID = "reviewCommentId";
     public static final String COMMENT = "comment";
     public static final String THREADS = "threads";
+    public static final String MID_DOT_SYMBOL = "\u00b7";
+    public static final String RESPONSEMESSAGE_OPEN = "OPEN";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

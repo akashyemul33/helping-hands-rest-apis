@@ -9,7 +9,9 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_APP_CONFI
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_AUTHENTICATION_REQD;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CATEGORY_ALREADY_EXISTS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CATEGORY_IDS_MISSING;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CLOSED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CLOSED_OPENS_AT;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CLOSES_AT_TIME;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_CONGRATULATIONS;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMAIL_ALREADY_USED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_BODY;
@@ -20,6 +22,7 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_MOB
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_ERROR_WHILE_ADDING_APP_CONFIG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_ERROR_WHILE_FETCHING_APP_CONFIG;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_FEW_MINS_AGO;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_IMAGE_TYPE_MISSING;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_INCORRECT_PASSWORD;
@@ -48,6 +51,9 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_PRODUC
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_STICKERS_FOUND;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_NO_TICKETS_FOUND;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OFFER_MSG;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPENS_AT_TIME;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPENS_WITHIN_HALF_HOUR;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_24INTO7;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_OPEN_CLOSES_AT;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PLACE_AVAILABILITY_UPDATED;
@@ -145,7 +151,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_ISSUES_WITH_SUBCATEGORY, "स्थान जोड़ने में असमर्थ, कृपया फिर से उपश्रेणी चुनें !");
             responseMsgsMap.put(RESPONSEMESSAGE_OPEN_24INTO7, "खुला);24 * 7 के लिए ");
             responseMsgsMap.put(RESPONSEMESSAGE_CLOSED_OPENS_AT, "बन्द);पर खुलता है ");
-            responseMsgsMap.put(RESPONSEMESSAGE_LUNCH_HOURS, "खुला);दोपहर के खाने पर");
+            responseMsgsMap.put(RESPONSEMESSAGE_LUNCH_HOURS, "दोपहर के खाने पर");
             responseMsgsMap.put(RESPONSEMESSAGE_NO_LUNCH_HOURS, "खुला);दोपहर का भोजन नहीं");
             responseMsgsMap.put(RESPONSEMESSAGE_OPEN_CLOSES_AT, "खुला);बंद किया जाएगा");
             responseMsgsMap.put(RESPONSEMESSAGE_UNKNOWN, "अनजान");
@@ -177,6 +183,12 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_IMAGES_UPDATED, "Place images updated successfully .");
             responseMsgsMap.put(RESPONSEMESSAGE_RATING_ADDED_TITLE, "New Rating For You !");
             responseMsgsMap.put(RESPONSEMESSAGE_RATING_REPLIED_TITLE, "Reply on your comment !");
+            responseMsgsMap.put(RESPONSEMESSAGE_CLOSED, "Closed");
+            responseMsgsMap.put(RESPONSEMESSAGE_OPENS_WITHIN_HALF_HOUR, "Opens within 30 mins");
+            responseMsgsMap.put(RESPONSEMESSAGE_OPENS_AT_TIME, "Opens at %s");
+            responseMsgsMap.put(RESPONSEMESSAGE_FEW_MINS_AGO, "Few mins ago");
+            responseMsgsMap.put(RESPONSEMESSAGE_OPEN, "Open");
+            responseMsgsMap.put(RESPONSEMESSAGE_CLOSES_AT_TIME, "Closes at %s");
         }
     }
 

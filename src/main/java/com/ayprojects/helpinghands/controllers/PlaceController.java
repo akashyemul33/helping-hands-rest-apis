@@ -7,7 +7,11 @@ import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.api.enums.TypeOfData;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
+import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.util.headers.IHeaders;
+import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
+import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,9 +29,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import io.swagger.annotations.Api;
+
+import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Api(value = "Place API's", description = "CRUD for places")
 @RestController
@@ -88,5 +97,57 @@ public class PlaceController {
         params.put(AppConstants.KEY_USER_ID, userId);
         params.put(AppConstants.KEY_TYPE_OF_DATA, typeOfData);
         return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetPlaceStrategy, params, version), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/getPlaceOverviewDetails")
+    public ResponseEntity<Response<DhPlace>> getPlaceOverviewDetails(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @RequestParam double lat, @RequestParam double lng, @PathVariable String version) throws ServerSideException {
+        String language = IHeaders.getLanguageFromHeader(httpHeaders);
+
+        if (dhPlace == null) {
+            return new ResponseEntity<>(new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0), HttpStatus.EXPECTATION_FAILED);
+        }
+        List<String> missingFieldsList = new ArrayList<>();
+        if (Utility.isFieldEmpty(dhPlace.getAddedBy()))
+            missingFieldsList.add(AppConstants.ADDED_BY);
+        if (Utility.isFieldEmpty(dhPlace.getPlaceId()))
+            missingFieldsList.add(AppConstants.PLACE_ID);
+        PlaceAvailabilityDetails p = dhPlace.getPlaceAvailablityDetails();
+        if (p == null)
+            missingFieldsList.add(AppConstants.PLACE_AVAILABLITY_DETAILS);
+        if (missingFieldsList.size() > 0) {
+            String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY);
+            resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
+            LOGGER.info("missingfields=>" + resMsg);
+            return new ResponseEntity<>(new Response<DhPlace>(false, 402, resMsg, new ArrayList<>(), 0), HttpStatus.EXPECTATION_FAILED);
+        }
+
+        boolean currentStatus = dhPlace.getCurrentStatus();
+        String openCloseMsg = "";
+        String distance = "";
+        if (!currentStatus && !Utility.isFieldEmpty(dhPlace.getOfflineMsg())) {
+            openCloseMsg = dhPlace.getOfflineMsg();
+        } else {
+            if (p.isProvide24into7()) {
+                if (!p.getHaveNoLunchHours()) {
+                    openCloseMsg = String.format("%s %s %s", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPEN), AppConstants.MID_DOT_SYMBOL, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_LUNCH_HOURS));
+                } else
+                    openCloseMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OPEN);
+                dhPlace.setPlaceOpen(true);
+                dhPlace.setOpenCloseMsg(openCloseMsg);
+            } else {
+                Utility.calculatePlaceOpenCloseMsgWhenNot24into7(dhPlace, language);
+            }
+        }
+
+        if (lat != 0 && lng != 0) {
+            if (dhPlace.getPlaceAddress() != null) {
+                double placeLat = dhPlace.getPlaceAddress().getLat();
+                double placeLng = dhPlace.getPlaceAddress().getLng();
+                distance = Utility.distance(lat, placeLat, lng, placeLng);
+                dhPlace.setDistance(distance);
+            }
+        }
+
+        return new ResponseEntity<>(new Response<DhPlace>(true, 200, "Query successful", Collections.singletonList(dhPlace)), HttpStatus.OK);
     }
 }

@@ -13,19 +13,17 @@ public class ResponseMsgFactory {
             lang = AppConstants.LANG_ENGLISH;
         }
 
-        AbstractResponseMessages abstractResponseMessages;
-        switch (lang) {
-            case AppConstants.LANG_MARATHI:
-                abstractResponseMessages = new ResponseMsgInMarathi();
-                break;
-            case AppConstants.LANG_HINDI:
-                abstractResponseMessages = new ResponseMsgInHindi();
-                break;
-            case AppConstants.LANG_ENGLISH:
-            default:
-                abstractResponseMessages = new ResponseMsgInEnglish();
-                break;
+        AbstractResponseMessages abstractResponseMessages = new ResponseMsgInEnglish();
+        if(AppConstants.LANG_ENGLISH.equalsIgnoreCase(lang)){
+            abstractResponseMessages = new ResponseMsgInEnglish();
         }
+        else if(AppConstants.LANG_MARATHI.equalsIgnoreCase(lang)){
+            abstractResponseMessages = new ResponseMsgInMarathi();
+        }
+        else if(AppConstants.LANG_HINDI.equalsIgnoreCase(lang)){
+            abstractResponseMessages = new ResponseMsgInHindi();
+        }
+
         return abstractResponseMessages.getResponseMsg(responseMsgKey);
     }
 }
