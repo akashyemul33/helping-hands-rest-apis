@@ -118,7 +118,7 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
         } else {
             Update updateVisits = new Update();
             updateVisits.push(AppConstants.VIEW_IDS, userId);
-            updateVisits.push(AppConstants.NUMBER_OF_VIEWS, dhPlace.getNumberOfViews() + 1);
+            updateVisits.set(AppConstants.NUMBER_OF_VIEWS, dhPlace.getNumberOfViews() + 1);
             updateVisits.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(query, updateVisits, DhPlace.class);
             return new Response<DhPlace>(true, 200, "Query successful", Collections.singletonList(dhPlace));
