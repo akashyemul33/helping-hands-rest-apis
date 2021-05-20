@@ -12,39 +12,6 @@ public class DhPlace extends AllCommonUsedAttributes {
     private String offlineMsg;
     private boolean currentStatus;
     private String productPricesVisible;
-
-    public String getOfflineMsg() {
-        return offlineMsg;
-    }
-
-    public void setOfflineMsg(String offlineMsg) {
-        this.offlineMsg = offlineMsg;
-    }
-
-    public boolean getCurrentStatus() {
-        return currentStatus;
-    }
-
-    public void setCurrentStatus(boolean currentStatus) {
-        this.currentStatus = currentStatus;
-    }
-
-    public String getProductPricesVisible() {
-        return productPricesVisible;
-    }
-
-    public void setProductPricesVisible(String productPricesVisible) {
-        this.productPricesVisible = productPricesVisible;
-    }
-
-    public List<String> getProductPricesVisibleUsers() {
-        return productPricesVisibleUsers;
-    }
-
-    public void setProductPricesVisibleUsers(List<String> productPricesVisibleUsers) {
-        this.productPricesVisibleUsers = productPricesVisibleUsers;
-    }
-
     private List<String> productPricesVisibleUsers;
     private boolean addressGenerated;
     private String placeMainCategoryId;
@@ -79,11 +46,9 @@ public class DhPlace extends AllCommonUsedAttributes {
     @Transient
     private boolean placeOpen;
     private String openCloseMsg;
-
     public DhPlace() {
 
     }
-
     public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> imageUrlsLow, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<DhPosts> topPosts, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
@@ -118,6 +83,38 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.subscribedUsers = subscribedUsers;
         this.addressGenerated = addressGenerated;
         this.numberOfProducts = numberOfProducts;
+    }
+
+    public String getOfflineMsg() {
+        return offlineMsg;
+    }
+
+    public void setOfflineMsg(String offlineMsg) {
+        this.offlineMsg = offlineMsg;
+    }
+
+    public boolean getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus(boolean currentStatus) {
+        this.currentStatus = currentStatus;
+    }
+
+    public String getProductPricesVisible() {
+        return productPricesVisible;
+    }
+
+    public void setProductPricesVisible(String productPricesVisible) {
+        this.productPricesVisible = productPricesVisible;
+    }
+
+    public List<String> getProductPricesVisibleUsers() {
+        return productPricesVisibleUsers;
+    }
+
+    public void setProductPricesVisibleUsers(List<String> productPricesVisibleUsers) {
+        this.productPricesVisibleUsers = productPricesVisibleUsers;
     }
 
     public String getPlaceRegDate() {
