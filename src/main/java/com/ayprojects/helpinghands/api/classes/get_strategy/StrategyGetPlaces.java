@@ -2,11 +2,13 @@ package com.ayprojects.helpinghands.api.classes.get_strategy;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
+import com.ayprojects.helpinghands.api.enums.ContentType;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.api.enums.TypeOfData;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhUser;
+import com.ayprojects.helpinghands.models.DhViews;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PlaceRepository;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
@@ -63,8 +65,8 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
 
         } else if (keySet.contains(AppConstants.KEY_USER_ID) && keySet.contains(AppConstants.KEY_TYPE_OF_DATA)) {
             return getPlaceWithUserId(language, (String) params.get(AppConstants.KEY_USER_ID), (TypeOfData) params.get(AppConstants.KEY_TYPE_OF_DATA));
-        } else if (keySet.contains(AppConstants.PLACE_ID) && keySet.contains(AppConstants.KEY_USER_ID)) {
-            return getPlaceDetails((String) params.get(AppConstants.KEY_USER_ID), (String) params.get(AppConstants.PLACE_ID), language);
+        } else if (keySet.contains(AppConstants.PLACE_ID) && keySet.contains(AppConstants.KEY_USER_ID) && keySet.contains(AppConstants.KEY_USER_NAME)) {
+            return getPlaceDetails((String) params.get(AppConstants.KEY_USER_NAME), (String) params.get(AppConstants.KEY_USER_ID), (String) params.get(AppConstants.PLACE_ID), language);
         }
         throw new ServerSideException("No matching get method found in " + getStrategyName());
     }
@@ -106,7 +108,7 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
 
     }
 
-    public Response<DhPlace> getPlaceDetails(String userId, String placeId, String language) {
+    public Response<DhPlace> getPlaceDetails(String userName, String userId, String placeId, String language) {
         if (Utility.isFieldEmpty(placeId)) {
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_ID_IS_MISSING), new ArrayList<>(), 0);
         }
@@ -116,8 +118,16 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
         if (dhPlace == null) {
             return new Response<DhPlace>(true, 402, "No active place found with given Place Id", new ArrayList<>());
         } else {
+
+            DhViews dhViews = new DhViews();
+            dhViews.setContentId(dhPlace.getPlaceId());
+            dhViews.setContentType(ContentType.CONTENT_PLACE);
+            dhViews.setUserId(userId);
+            dhViews.setUserName(userName);
+            dhViews.setViewId(Utility.getUUID());
+            dhViews = (DhViews) Utility.setCommonAttrs(dhViews, AppConstants.STATUS_ACTIVE);
+            mongoTemplate.save(dhViews, AppConstants.COLLECTION_DH_VIEWS);
             Update updateVisits = new Update();
-            updateVisits.push(AppConstants.VIEW_IDS, userId);
             updateVisits.set(AppConstants.NUMBER_OF_VIEWS, dhPlace.getNumberOfViews() + 1);
             updateVisits.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(query, updateVisits, DhPlace.class);

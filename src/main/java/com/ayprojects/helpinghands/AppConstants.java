@@ -236,7 +236,7 @@ public class AppConstants {
     public static final String CONTENT_NAME = "ContentName";
     public static final String KEY_CONTENT_USER_ID = "ContentUserId";
     public static final String KEY_CONTENT_NAME = "ContentName";
-    public static final String KEY_USER_NAME = "UserName";
+    public static final String KEY_USER_NAME = "userName";
     public static final String RESPONSEMESSAGE_RATING_ADDED_TITLE = "RATING_ADDED_TITLE";
     public static final String RESPONSEMESSAGE_RATING_REPLIED_TITLE = "RATING_REPLIED_TITLE";
     public static final String RESPONSEMESSAGE_RATING_ADDED_BODY = "RATING_ADDED_BODY";

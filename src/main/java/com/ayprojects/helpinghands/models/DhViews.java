@@ -1,9 +1,12 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhViews extends AllCommonUsedAttributes {
+import com.ayprojects.helpinghands.api.enums.ContentType;
+
+public class DhViews extends AllCommonUsedAttributes{
     private String viewId;
-    private String addedBy;
-    private String contentType;
+    private String userId;
+    private String userName;
+    private ContentType contentType;
     private String contentId;
 
     public String getViewId() {
@@ -14,19 +17,27 @@ public class DhViews extends AllCommonUsedAttributes {
         this.viewId = viewId;
     }
 
-    public String getAddedBy() {
-        return addedBy;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setAddedBy(String addedBy) {
-        this.addedBy = addedBy;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getContentType() {
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public ContentType getContentType() {
         return contentType;
     }
 
-    public void setContentType(String contentType) {
+    public void setContentType(ContentType contentType) {
         this.contentType = contentType;
     }
 
@@ -38,14 +49,5 @@ public class DhViews extends AllCommonUsedAttributes {
         this.contentId = contentId;
     }
 
-    public DhViews(String viewId, String addedBy, String contentType, String contentId) {
-        this.schemaVersion =schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime =modifiedDateTime;
-        this.status=status;
-        this.viewId = viewId;
-        this.addedBy = addedBy;
-        this.contentType = contentType;
-        this.contentId = contentId;
-    }
+
 }

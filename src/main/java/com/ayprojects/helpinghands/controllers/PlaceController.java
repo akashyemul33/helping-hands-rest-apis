@@ -74,10 +74,11 @@ public class PlaceController {
     }
 
     @GetMapping(value = "/getPlaceDetails")
-    ResponseEntity<Response<DhPlace>> getPlaceDetails(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String placeId, @RequestParam String userId, @PathVariable String version) throws ServerSideException {
+    ResponseEntity<Response<DhPlace>> getPlaceDetails(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String placeId, @RequestParam String userId, @RequestParam String userName, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_PLACE_ID, placeId);
         params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.KEY_USER_NAME, userName);
         return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetPlaceStrategy, params, version), HttpStatus.OK);
     }
 

@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 
 @Component
-public class StrategyGetViews implements StrategyGetBehaviour<DhViews> {
+public class StrategyGetViews
+        implements StrategyGetBehaviour<DhViews> {
     @Override
     public Response<DhViews> get(String language, HashMap<String, Object> params) {
         return null;

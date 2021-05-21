@@ -34,9 +34,7 @@ public class DhPlace extends AllCommonUsedAttributes {
     private double avgRating;
     private List<String> ratingIds;
     private List<String> postIds;
-    private List<String> viewIds;
     private List<DhRatingAndComments> topRatings;
-    private List<DhViews> topViews;
     private List<DhPosts> topPosts;
     private String ownerName;
     private List<String> subscribedUsers;//subscribed user id's
@@ -46,10 +44,12 @@ public class DhPlace extends AllCommonUsedAttributes {
     @Transient
     private boolean placeOpen;
     private String openCloseMsg;
+
     public DhPlace() {
 
     }
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> imageUrlsLow, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, List<DhPosts> topPosts, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
+
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> imageUrlsLow, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds,List<DhRatingAndComments> topRatings, List<DhPosts> topPosts, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
@@ -75,9 +75,7 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.avgRating = avgRating;
         this.ratingIds = ratingIds;
         this.postIds = postIds;
-        this.viewIds = viewIds;
         this.topRatings = topRatings;
-        this.topViews = topViews;
         this.topPosts = topPosts;
         this.ownerName = ownerName;
         this.subscribedUsers = subscribedUsers;
@@ -365,28 +363,12 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.postIds = postIds;
     }
 
-    public List<String> getViewIds() {
-        return viewIds;
-    }
-
-    public void setViewIds(List<String> viewIds) {
-        this.viewIds = viewIds;
-    }
-
     public List<DhRatingAndComments> getTopRatings() {
         return topRatings;
     }
 
     public void setTopRatings(List<DhRatingAndComments> topRatings) {
         this.topRatings = topRatings;
-    }
-
-    public List<DhViews> getTopViews() {
-        return topViews;
-    }
-
-    public void setTopViews(List<DhViews> topViews) {
-        this.topViews = topViews;
     }
 
     public List<DhPosts> getTopPosts() {

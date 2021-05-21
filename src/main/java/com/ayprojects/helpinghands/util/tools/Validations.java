@@ -33,14 +33,14 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 @Service
 public class Validations {
 
-    public static List<String> findMissingFieldsForViews(DhViews dhViews) {
+    /*public static List<String> findMissingFieldsForViews(DhViews dhViews) {
         List<String> missingFieldsList = new ArrayList<>();
         if (dhViews == null) return missingFieldsList;
         if (Utility.isFieldEmpty(dhViews.getAddedBy())) missingFieldsList.add("AddedBy");
         if (Utility.isFieldEmpty(dhViews.getContentType())) missingFieldsList.add("ContentType");
         if (Utility.isFieldEmpty(dhViews.getContentId())) missingFieldsList.add("ContentId");
         return missingFieldsList;
-    }
+    }*/
 
     public static List<String> findMissingFieldsForRequirements(DhRequirements dhRequirements) {
         List<String> missingFieldsList = new ArrayList<>();

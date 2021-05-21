@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.api.classes.add_strategy;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
+import com.ayprojects.helpinghands.api.enums.ContentType;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.dao.user.UserDao;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
@@ -28,7 +29,7 @@ import java.util.List;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
-public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
+public class StrategyAddViewsApi  implements StrategyAddBehaviour<DhViews> {
     @Autowired
     UserDao userDao;
 
@@ -37,19 +38,19 @@ public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
 
     @Override
     public Response<DhViews> add(String language, DhViews dhViews) throws ServerSideException {
-        dhViews.setViewId(Utility.getUUID());
+        /*dhViews.setViewId(Utility.getUUID());
         Response<DhViews> validationResponse = validateAddViews(language, dhViews);
         if (!validationResponse.getStatus())
             return validationResponse;
 
         dhViews = (DhViews) ApiOperations.setCommonAttrs(dhViews, AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhViews, AppConstants.COLLECTION_DH_VIEWS);
-        validationResponse.setLogActionMsg("New view for [" + dhViews.getContentType() + "] has been added by user [" + dhViews.getAddedBy() + "].");
+        validationResponse.setLogActionMsg("New view for [" + dhViews.getContentType() + "] has been added by user [" + dhViews.getUserId() + "].");
 
         //here content can be place,requirement & post
         String contentIdToSearch = "";
-        switch (dhViews.getContentType().toUpperCase()) {
-            case AppConstants.PLACE:
+        switch (dhViews.getContentType()) {
+            case ContentType.CONTENT_PLACE:
                 contentIdToSearch = AppConstants.PLACE_ID;
                 Query queryFindPlaceWithId = new Query(Criteria.where(contentIdToSearch).is(dhViews.getContentId()));
                 DhPlace queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId, DhPlace.class);
@@ -103,7 +104,7 @@ public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
                 updateRequirement.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindRequirementWithId, updateRequirement, DhRequirements.class);
                 break;
-        }
+        }*/
         return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, language), new ArrayList<>(), 1);
     }
 
@@ -121,8 +122,8 @@ public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
         if (dhViews == null)
             return new Response<DhViews>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language), new ArrayList<>(), 0);
 
-        List<String> missingFieldsList = new ArrayList<>();
-        if (Utility.isFieldEmpty(dhViews.getAddedBy()))
+        /*List<String> missingFieldsList = new ArrayList<>();
+        if (Utility.isFieldEmpty(dhViews.getUserId()))
             missingFieldsList.add(AppConstants.ADDED_BY);
         if (Utility.isFieldEmpty(dhViews.getContentType()))
             missingFieldsList.add(AppConstants.CONTENT_TYPE);
@@ -133,7 +134,7 @@ public class StrategyAddViewsApi implements StrategyAddBehaviour<DhViews> {
             String resMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language);
             resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
             return new Response<>(false, 402, resMsg, new ArrayList<>(), 0);
-        }
+        }*/
         return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, language), new ArrayList<>(), 1);
     }
 

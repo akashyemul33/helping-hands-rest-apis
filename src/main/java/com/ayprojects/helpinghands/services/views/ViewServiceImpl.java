@@ -2,14 +2,10 @@ package com.ayprojects.helpinghands.services.views;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
-import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhPosts;
-import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhViews;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
-import com.ayprojects.helpinghands.util.tools.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -43,7 +38,7 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public Response<DhViews> addViews(Authentication authentication, HttpHeaders httpHeaders, DhViews dhViews, String version) throws ServerSideException {
-        String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
+        /*String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("ViewServiceImpl->addViews : language=" + language+" contentId="+dhViews.getContentId()+" contentType="+dhViews.getContentType());
 
         if (dhViews == null) {
@@ -116,9 +111,10 @@ public class ViewServiceImpl implements ViewService {
                 updateRequirement.push(AppConstants.TOP_VIEWS, dhViews);
                 updateRequirement.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindRequirementWithId, updateRequirement, DhRequirements.class);
-                break;
-        }
-        return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, language), new ArrayList<>(), 1);
+                break;*/
+        return null;
+//        }
+//        return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, language), new ArrayList<>(), 1);
     }
 
     @Override
