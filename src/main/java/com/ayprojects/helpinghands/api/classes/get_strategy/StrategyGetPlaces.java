@@ -3,12 +3,14 @@ package com.ayprojects.helpinghands.api.classes.get_strategy;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
 import com.ayprojects.helpinghands.api.enums.ContentType;
+import com.ayprojects.helpinghands.api.enums.ProductPricesVisibilityEnum;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.api.enums.TypeOfData;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.DhViews;
+import com.ayprojects.helpinghands.models.ProductPricesVisibleUsers;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PlaceRepository;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
@@ -113,12 +115,24 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_ID_IS_MISSING), new ArrayList<>(), 0);
         }
         Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
-        query.fields().exclude(AppConstants.PRODUCT_PRICE_VISIBLE_USERS);
         query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         DhPlace dhPlace = mongoTemplate.findOne(query, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
         if (dhPlace == null) {
             return new Response<DhPlace>(true, 402, "No active place found with given Place Id", new ArrayList<>());
         } else {
+
+            if (ProductPricesVisibilityEnum.ONLY_REQUESTED.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
+                List<ProductPricesVisibleUsers> pList = dhPlace.getProductPricesVisibleUsers();
+                if (pList != null) {
+                    for (ProductPricesVisibleUsers p : pList) {
+                        if (userId.equals(p.getUserId())) {
+                            dhPlace.setHasAccessToProductPrices(true);
+                        }
+                    }
+                }
+            } else if (ProductPricesVisibilityEnum.PUBLIC.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
+                dhPlace.setHasAccessToProductPrices(true);
+            }
 
             DhViews dhViews = new DhViews();
             dhViews.setContentId(dhPlace.getPlaceId());

@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.List;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 public class DhPlace extends AllCommonUsedAttributes {
     private String placeId;
     private String placeType;
@@ -45,6 +47,17 @@ public class DhPlace extends AllCommonUsedAttributes {
     private boolean placeOpen;
     private String openCloseMsg;
 
+    public boolean getHasAccessToProductPrices() {
+        return hasAccessToProductPrices;
+    }
+
+    public void setHasAccessToProductPrices(boolean hasAccessToProductPrices) {
+        this.hasAccessToProductPrices = hasAccessToProductPrices;
+    }
+
+    @Transient
+    @Ignore
+    private boolean hasAccessToProductPrices;
     public DhPlace() {
 
     }
