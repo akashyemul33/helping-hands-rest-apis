@@ -70,9 +70,9 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
                 case REQUEST_TO_SHOW_PRODUCT_PRICES:
                     return requestToShowProductPrices(language, (String) params.get(AppConstants.KEY_PLACE_USER_ID), (String) params.get(AppConstants.KEY_PLACE_ID), (String) params.get(AppConstants.KEY_USER_ID), (String) params.get(AppConstants.KEY_USER_NAME));
                 case CONFIRM_SHOW_PRODUCT_PRICE_REQUEST:
-                    return updateShowProductPricesRequest(language, (String) params.get(AppConstants.KEY_PLACE_ID), (String) params.get(AppConstants.KEY_USER_ID), (int) params.get(AppConstants.SELECTED_POS), AppConstants.STATUS_ACTIVE);
+                    return updateShowProductPricesRequest(language, (String) params.get(AppConstants.KEY_PLACE_ID),(String) params.get(AppConstants.PLACE_NAME), (String) params.get(AppConstants.KEY_USER_ID), (String) params.get(AppConstants.KEY_REQUESTED_USER_ID), (int) params.get(AppConstants.SELECTED_POS), AppConstants.STATUS_APPROVED);
                 case REJECT_SHOW_PRODUCT_PRICE_REQUEST:
-                    return updateShowProductPricesRequest(language, (String) params.get(AppConstants.KEY_PLACE_ID), (String) params.get(AppConstants.KEY_USER_ID), (int) params.get(AppConstants.SELECTED_POS), AppConstants.STATUS_REJECTED);
+                    return updateShowProductPricesRequest(language, (String) params.get(AppConstants.KEY_PLACE_ID),(String) params.get(AppConstants.PLACE_NAME), (String) params.get(AppConstants.KEY_USER_ID), (String) params.get(AppConstants.KEY_REQUESTED_USER_ID), (int) params.get(AppConstants.SELECTED_POS), AppConstants.STATUS_REJECTED);
 
             }
         }
@@ -80,7 +80,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         return null;
     }
 
-    private Response<DhPlace> updateShowProductPricesRequest(String language, String placeId, String userId, int selectedPos, String status) {
+    private Response<DhPlace> updateShowProductPricesRequest(String language, String placeId,String placeName, String userId, String requestedUserId, int selectedPos, String status) {
         if (Utility.isFieldEmpty(placeId) || Utility.isFieldEmpty(userId))
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
 
@@ -90,6 +90,20 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         update.set(String.format("productPricesVisibleUsers.%d.status", selectedPos), status);
         update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
+        String title = "";
+        String body = "";
+        String redirectionContent = RedirectionContent.REDCONTENT_PLACEDETAILS;
+        String redirectionContentUrl = RedirectionContent.REDURL_PLACEDETAILS;
+        if (AppConstants.STATUS_REJECTED.equalsIgnoreCase(status)) {
+            title = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICES_REQ_REJECTED);
+            body = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_REJECTED);
+        } else if (AppConstants.STATUS_APPROVED.equalsIgnoreCase(status)) {
+            title = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICES_REQ_APPROVED);
+            body = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_APPROVED);
+        }
+        body = String.format(body,placeName);
+        Utility.sendNotification(requestedUserId, mongoTemplate, title, body, redirectionContent, redirectionContentUrl);
+
         return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UPDATED_SHOW_PRODUCT_PRICES_REQUEST), new ArrayList<>(), 1);
     }
 

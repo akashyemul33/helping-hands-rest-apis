@@ -61,6 +61,17 @@ public class DhPlace extends AllCommonUsedAttributes {
     @Transient
     @Ignore
     private boolean alreadyRequestForProductPrices;
+    @Transient
+    @Ignore
+    private boolean rejectedRequestForProductPrices;
+
+    public boolean isRejectedRequestForProductPrices() {
+        return rejectedRequestForProductPrices;
+    }
+
+    public void setRejectedRequestForProductPrices(boolean rejectedRequestForProductPrices) {
+        this.rejectedRequestForProductPrices = rejectedRequestForProductPrices;
+    }
 
     public boolean isAlreadyRequestForProductPrices() {
         return alreadyRequestForProductPrices;

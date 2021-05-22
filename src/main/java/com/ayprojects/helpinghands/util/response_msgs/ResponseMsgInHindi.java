@@ -103,7 +103,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_FEW_MINS_AGO, "Few mins ago");
             responseMsgsMap.put(RESPONSEMESSAGE_OPEN, "Open");
             responseMsgsMap.put(RESPONSEMESSAGE_CLOSES_AT_TIME, "Closes at %s");
-            responseMsgsMap.put(RESPONSEMESSAGE_REQUESTED_FOR_PRODUCT_PRICES, "Your request placed, You will be notified once owner approves your request");
+            responseMsgsMap.put(RESPONSEMESSAGE_REQUESTED_FOR_PRODUCT_PRICES, "You will be notified once owner approves your request");
             responseMsgsMap.put(RESPONSEMESSAGE_UPDATED_SHOW_PRODUCT_PRICES_REQUEST, "Updated show product prices request");
             responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_PLACE_SHOW_PRICES_REQUEST, "Unable to show product prices request !");
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICESREQUEST_PLACED, "New request for you !");
@@ -114,6 +114,10 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_PRODUCTPRICES_HIDDEN_NOW, "Now nobody can see your product prices.");
             responseMsgsMap.put(RESPONSEMESSAGE_PRODUCTPRICES_PUBLIC_NOW, "Now everyone can see your product prices.");
             responseMsgsMap.put(RESPONSEMESSAGE_PRODUCTPRICES_ONLY_REQUESTED, "Now your product prices are visible to requested people only .");
+            responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICES_REQ_REJECTED, "Update on your request !");
+            responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_REJECTED, "Your request for showing product prices to place %s has been rejected by owner !");
+            responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICES_REQ_APPROVED, "Update on your request !");
+            responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_APPROVED, "Your request for showing product prices to place %s has been approved by owner !");
         }
     }
 

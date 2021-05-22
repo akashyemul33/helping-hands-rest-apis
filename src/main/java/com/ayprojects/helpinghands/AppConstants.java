@@ -199,6 +199,7 @@ public class AppConstants {
     public static final String KEY_LNG = "lng";
     public static final String RESPONSEMESSAGE_MISSING_QUERY_PARAMS = "MISSING_QUERY_PARAMS";
     public static final String KEY_USER_ID = "userId";
+    public static final String KEY_REQUESTED_USER_ID = "requestedUserId";
     public static final String KEY_TYPE_OF_DATA = "typeOfData";
     public static final String KEY_TYPE_OF_PLACECATEGORY = "typeOfPlaceCategory";
     public static final String KEY_PLACE_ID = "placeId";
@@ -251,7 +252,7 @@ public class AppConstants {
     public static final String THREADS = "threads";
     public static final String MID_DOT_SYMBOL = "\u00b7";
     public static final String RESPONSEMESSAGE_OPEN = "OPEN";
-    public static final String PRODUCT_PRICE_VISIBLE_USERS = "productPricesVisibleUsers";
+
     public static final String SELECTED_POS = "selectedPos";
     public static final String RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICESREQUEST_PLACED = "NTFN_TITLE_SHOWPRICESREQUEST_PLACED";
     public static final String RESPONSEMESSAGE_NTFN_BODY_SHOWPRICESREQUEST_PLACED = "NTFN_BODY_SHOWPRICESREQUEST_PLACED";
@@ -261,11 +262,17 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_PRODUCTPRICES_HIDDEN_NOW = "PRODUCTPRICES_HIDDEN_NOW";
     public static final String RESPONSEMESSAGE_PRODUCTPRICES_PUBLIC_NOW = "PRODUCTPRICES_PUBLIC_NOW";
     public static final String RESPONSEMESSAGE_PRODUCTPRICES_ONLY_REQUESTED = "PRODUCTPRICES_ONLY_REQUESTED";
+    public static final String RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICES_REQ_REJECTED = "NTFN_TITLE_SHOWPRICES_REQ_REJECTED";
+    public static final String RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_REJECTED = "NTFN_BODY_SHOWPRICES_REQ_REJECTED";
+    public static final String RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICES_REQ_APPROVED = "NTFN_TITLE_SHOWPRICES_REQ_ACCEPTED";
+    public static final String RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_APPROVED = "NTFN_BODY_SHOWPRICES_REQ_ACCEPTED";
+    public static final String KEY_GET_PRODUCTPRICES_REQUEST = "productPricesRequest";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
     public static String LABEL_HEADER_APPLANGUAGE = "App-Language";
     public static String STATUS_ACTIVE = "Active";
+    public static String STATUS_APPROVED = "Approved";
     public static String SCHEMA_VERSION = "1.0.0";
     public static String RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE = "USER_ALREADY_EXISTS_WITH_MOBILE";
     public static String RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_EMAIL = "USER_ALREADY_EXISTS_WITH_EMAIL";

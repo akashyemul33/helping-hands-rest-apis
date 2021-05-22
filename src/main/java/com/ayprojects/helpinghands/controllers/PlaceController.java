@@ -72,11 +72,13 @@ public class PlaceController {
     }
 
     @PutMapping(value = "/updateShowProductPricesRequest")
-    public ResponseEntity<Response<DhPlace>> updateShowProductPricesRequest(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @RequestParam String placeId, @RequestParam int selectedPos, @RequestParam PlaceStepEnums placeStepEnums, @PathVariable String version) throws ServerSideException {
+    public ResponseEntity<Response<DhPlace>> updateShowProductPricesRequest(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @RequestParam String requestedUserId,@RequestParam String placeName, @RequestParam String placeId, @RequestParam int selectedPos, @RequestParam PlaceStepEnums placeStepEnums, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_PLACE_STEP_ENUM, placeStepEnums);
         params.put(AppConstants.KEY_PLACE_ID, placeId);
+        params.put(AppConstants.PLACE_NAME, placeName);
         params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.KEY_REQUESTED_USER_ID, requestedUserId);
         params.put(AppConstants.SELECTED_POS, selectedPos);
         Response<DhPlace> response = apiOperations.update(authentication, httpHeaders, params, null, StrategyName.UpdatePlaceStrategy, version);
         if (response.getStatus()) {
@@ -106,6 +108,16 @@ public class PlaceController {
         params.put(AppConstants.KEY_PLACE_ID, placeId);
         params.put(AppConstants.KEY_USER_ID, userId);
         params.put(AppConstants.KEY_USER_NAME, userName);
+        return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetPlaceStrategy, params, version), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getProductPricesRequests")
+    ResponseEntity<Response<DhPlace>> getProductPricesRequests(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String placeId, @RequestParam String userId, @RequestParam String userName, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PLACE_ID, placeId);
+        params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.KEY_USER_NAME, userName);
+        params.put(AppConstants.KEY_GET_PRODUCTPRICES_REQUEST, "Yes");
         return new ResponseEntity<>(apiOperations.get(authentication, httpHeaders, StrategyName.GetPlaceStrategy, params, version), HttpStatus.OK);
     }
 

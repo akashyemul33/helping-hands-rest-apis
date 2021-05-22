@@ -65,6 +65,8 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
                 throw new ServerSideException(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG));
             }
 
+        } else if (keySet.contains(AppConstants.PLACE_ID) && keySet.contains(AppConstants.KEY_GET_PRODUCTPRICES_REQUEST)) {
+            return getProductPricesRequests(language, (String) params.get(AppConstants.PLACE_ID));
         } else if (keySet.contains(AppConstants.KEY_USER_ID) && keySet.contains(AppConstants.KEY_TYPE_OF_DATA)) {
             return getPlaceWithUserId(language, (String) params.get(AppConstants.KEY_USER_ID), (TypeOfData) params.get(AppConstants.KEY_TYPE_OF_DATA));
         } else if (keySet.contains(AppConstants.PLACE_ID) && keySet.contains(AppConstants.KEY_USER_ID) && keySet.contains(AppConstants.KEY_USER_NAME)) {
@@ -126,9 +128,12 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
                 if (pList != null) {
                     for (ProductPricesVisibleUsers p : pList) {
                         if (userId.equals(p.getUserId())) {
-                            dhPlace.setAlreadyRequestForProductPrices(true);
-                            if (AppConstants.STATUS_ACTIVE.equalsIgnoreCase(p.getStatus()))
+                            if (AppConstants.STATUS_APPROVED.equalsIgnoreCase(p.getStatus()))
                                 dhPlace.setHasAccessToProductPrices(true);
+                            else if (AppConstants.STATUS_REJECTED.equalsIgnoreCase(p.getStatus()))
+                                dhPlace.setRejectedRequestForProductPrices(true);
+                            else if (AppConstants.STATUS_PENDING.equalsIgnoreCase(p.getStatus()))
+                                dhPlace.setAlreadyRequestForProductPrices(true);
                             break;
                         }
                     }
@@ -152,9 +157,45 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
             updateVisits.set(AppConstants.NUMBER_OF_VIEWS, dhPlace.getNumberOfViews() + 1);
             updateVisits.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(query, updateVisits, DhPlace.class);
+            /**
+             * pass product prices visible users and other few details as empty to avoid heavy data transmission
+             */
+            dhPlace.setTopRatings(new ArrayList<>());
+            dhPlace.setTopPosts(new ArrayList<>());
+            dhPlace.setProductPricesVisibleUsers(new ArrayList<>());
             return new Response<DhPlace>(true, 200, "Query successful", Collections.singletonList(dhPlace));
         }
 
+    }
+
+    public Response<DhPlace> getProductPricesRequests(String language, String placeId) {
+        if (Utility.isFieldEmpty(placeId)) {
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_ID_IS_MISSING), new ArrayList<>(), 0);
+        }
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
+
+        query.fields().include(AppConstants.KEY_PRODUCTPRICES_VISIBLE_USERS);
+        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        DhPlace dhPlace = mongoTemplate.findOne(query, DhPlace.class);
+        if (dhPlace == null)
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
+
+        List<ProductPricesVisibleUsers> productPricesVisibleUsers = dhPlace.getProductPricesVisibleUsers();
+        List<ProductPricesVisibleUsers> requestList;
+        if (productPricesVisibleUsers != null) {
+            requestList = new ArrayList<>(productPricesVisibleUsers.size());
+            for (int i = 0; i < productPricesVisibleUsers.size(); i++) {
+                ProductPricesVisibleUsers p = productPricesVisibleUsers.get(i);
+                p.setPos(i);
+                if (AppConstants.STATUS_PENDING.equalsIgnoreCase(p.getStatus())) {
+                    requestList.add(p);
+                }
+            }
+        } else {
+            requestList = new ArrayList<>();
+        }
+        dhPlace.setProductPricesVisibleUsers(requestList);
+        return new Response<DhPlace>(true, 200, "Query successful", Collections.singletonList(dhPlace));
     }
 
     public Response<DhPlace> getPlaceWithUserId(String language, String userId, TypeOfData typeOfData) {
@@ -165,6 +206,8 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
         Query query = new Query(Criteria.where(AppConstants.ADDED_BY).is(userId));
         query.addCriteria(Criteria.where(AppConstants.PLACE_TYPE).regex(AppConstants.BUSINESS_PLACE, "i"));
         query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        query.fields().exclude(AppConstants.TOP_POSTS);
+        query.fields().exclude(AppConstants.TOP_RATINGS);
         switch (typeOfData) {
             case PLACE_DATA:
                 break;
