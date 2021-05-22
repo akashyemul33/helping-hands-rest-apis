@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
 import com.ayprojects.helpinghands.api.classes.CommonMethods;
+import com.ayprojects.helpinghands.api.enums.ProductPricesVisibilityEnum;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.dao.placecategories.PlaceCategoryDao;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
@@ -158,6 +159,7 @@ public class StrategyAddPlaceApi implements StrategyAddBehaviour<DhPlace> {
 
     private DhPlace prepareDhPlaceAndStoreItInDb(DhPlace dhPlace, String placeStatus) {
         dhPlace.setNumberOfProducts(dhPlace.getProductDetails().size());
+        dhPlace.setProductPricesVisible(ProductPricesVisibilityEnum.PUBLIC.name());
         dhPlace = (DhPlace) ApiOperations.setCommonAttrs(dhPlace, placeStatus);
         return mongoTemplate.save(dhPlace, AppConstants.COLLECTION_DH_PLACE);
     }

@@ -58,12 +58,13 @@ public class PlaceController {
     }
 
     @PutMapping(value = "/requestShowProductPrices")
-    public ResponseEntity<Response<DhPlace>> requestShowProductPrices(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @RequestParam String userName, @RequestParam String placeId, @PathVariable String version) throws ServerSideException {
+    public ResponseEntity<Response<DhPlace>> requestShowProductPrices(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String placeUserId, @RequestParam String userId, @RequestParam String userName, @RequestParam String placeId, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_PLACE_STEP_ENUM, PlaceStepEnums.REQUEST_TO_SHOW_PRODUCT_PRICES);
         params.put(AppConstants.KEY_PLACE_ID, placeId);
         params.put(AppConstants.KEY_USER_ID, userId);
         params.put(AppConstants.KEY_USER_NAME, userName);
+        params.put(AppConstants.KEY_PLACE_USER_ID, placeUserId);
         Response<DhPlace> response = apiOperations.update(authentication, httpHeaders, params, null, StrategyName.UpdatePlaceStrategy, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.OK);

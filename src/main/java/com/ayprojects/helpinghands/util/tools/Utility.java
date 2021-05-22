@@ -8,16 +8,21 @@ import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.LangValueObj;
+import com.ayprojects.helpinghands.models.Notifications;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.UserSettings;
 import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
 import com.mongodb.lang.NonNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -284,6 +289,38 @@ public class Utility {
         obj.setModifiedDateTime(CalendarOperations.currentDateTimeInUTC());
         obj.setStatus(status);
         return obj;
+    }
+
+    public static void sendNotification(String userId, MongoTemplate mongoTemplate, String title, String body, String redirectionContent, String redirectionUrl) {
+        Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
+        query.fields().include(AppConstants.KEY_FCM_TOKEN);
+        DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
+        if (dhUser != null) {
+            String fcmToken = dhUser.getFcmToken();
+
+            Message message = Message.builder()
+                    .putData("title", title)
+                    .putData("body", body)
+                    .setToken(fcmToken)
+                    .build();
+            try {
+                FirebaseMessaging.getInstance().send(message);
+                Update dhUserUpdate = new Update();
+                Notifications notifications = new Notifications();
+                notifications.setNotificationId(Utility.getUUID());
+                notifications.setTitle(title);
+                notifications.setBody(body);
+                notifications.setRedirectionUrl(redirectionUrl);
+                notifications.setRedirectionContent(redirectionContent);
+                notifications.setCreatedDateTime(CalendarOperations.currentDateTimeInUTC());
+                notifications.setStatus(AppConstants.STATUS_ACTIVE);
+                dhUserUpdate.push(AppConstants.KEY_NOTIFICATIONS, notifications);
+                dhUserUpdate.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+                mongoTemplate.updateFirst(query, dhUserUpdate, AppConstants.COLLECTION_DHUSER);
+            } catch (FirebaseMessagingException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

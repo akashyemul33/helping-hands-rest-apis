@@ -58,6 +58,18 @@ public class DhPlace extends AllCommonUsedAttributes {
     @Transient
     @Ignore
     private boolean hasAccessToProductPrices;
+    @Transient
+    @Ignore
+    private boolean alreadyRequestForProductPrices;
+
+    public boolean isAlreadyRequestForProductPrices() {
+        return alreadyRequestForProductPrices;
+    }
+
+    public void setAlreadyRequestForProductPrices(boolean alreadyRequestForProductPrices) {
+        this.alreadyRequestForProductPrices = alreadyRequestForProductPrices;
+    }
+
     public DhPlace() {
 
     }

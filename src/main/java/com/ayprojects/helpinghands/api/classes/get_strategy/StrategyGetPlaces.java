@@ -126,13 +126,19 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
                 if (pList != null) {
                     for (ProductPricesVisibleUsers p : pList) {
                         if (userId.equals(p.getUserId())) {
-                            dhPlace.setHasAccessToProductPrices(true);
+                            dhPlace.setAlreadyRequestForProductPrices(true);
+                            if (AppConstants.STATUS_ACTIVE.equalsIgnoreCase(p.getStatus()))
+                                dhPlace.setHasAccessToProductPrices(true);
+                            break;
                         }
                     }
                 }
+            } else if (ProductPricesVisibilityEnum.HIDE.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
+                dhPlace.setHasAccessToProductPrices(false);
             } else if (ProductPricesVisibilityEnum.PUBLIC.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
                 dhPlace.setHasAccessToProductPrices(true);
             }
+
 
             DhViews dhViews = new DhViews();
             dhViews.setContentId(dhPlace.getPlaceId());

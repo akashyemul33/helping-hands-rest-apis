@@ -5,6 +5,7 @@ import com.ayprojects.helpinghands.api.behaviours.StrategyUpdateBehaviour;
 import com.ayprojects.helpinghands.api.classes.CommonMethods;
 import com.ayprojects.helpinghands.api.enums.PlaceStepEnums;
 import com.ayprojects.helpinghands.api.enums.ProductPricesVisibilityEnum;
+import com.ayprojects.helpinghands.api.enums.RedirectionContent;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
@@ -67,7 +68,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
                 case PRODUCT_PRICES_VISIBILITY:
                     return updateProductPricesVisibility(language, obj);
                 case REQUEST_TO_SHOW_PRODUCT_PRICES:
-                    return requestToShowProductPrices(language, (String) params.get(AppConstants.KEY_PLACE_ID), (String) params.get(AppConstants.KEY_USER_ID), (String) params.get(AppConstants.KEY_USER_NAME));
+                    return requestToShowProductPrices(language, (String) params.get(AppConstants.KEY_PLACE_USER_ID), (String) params.get(AppConstants.KEY_PLACE_ID), (String) params.get(AppConstants.KEY_USER_ID), (String) params.get(AppConstants.KEY_USER_NAME));
                 case CONFIRM_SHOW_PRODUCT_PRICE_REQUEST:
                     return updateShowProductPricesRequest(language, (String) params.get(AppConstants.KEY_PLACE_ID), (String) params.get(AppConstants.KEY_USER_ID), (int) params.get(AppConstants.SELECTED_POS), AppConstants.STATUS_ACTIVE);
                 case REJECT_SHOW_PRODUCT_PRICE_REQUEST:
@@ -92,7 +93,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UPDATED_SHOW_PRODUCT_PRICES_REQUEST), new ArrayList<>(), 1);
     }
 
-    private Response<DhPlace> requestToShowProductPrices(String language, String placeId, String userId, String userName) {
+    private Response<DhPlace> requestToShowProductPrices(String language, String placeUserId, String placeId, String userId, String userName) {
         if (Utility.isFieldEmpty(placeId) || Utility.isFieldEmpty(userId) || Utility.isFieldEmpty(userName))
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
 
@@ -103,10 +104,10 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         if (dhPlace != null && ProductPricesVisibilityEnum.ONLY_REQUESTED.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
             List<ProductPricesVisibleUsers> visibleUsers = dhPlace.getProductPricesVisibleUsers();
 
-            if(visibleUsers!=null) {
+            if (visibleUsers != null) {
                 for (ProductPricesVisibleUsers p : visibleUsers) {
                     if (p.getUserId().equals(userId)) {
-                        return new Response<>(true, 402, "Already requested !", new ArrayList<>(), 0);
+                        return new Response<>(true, 200, "Already requested !", new ArrayList<>(), 0);
                     }
                 }
             }
@@ -118,6 +119,12 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
             update.push(AppConstants.KEY_PRODUCTPRICES_VISIBLE_USERS, p);
             update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
+
+            String title = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICESREQUEST_PLACED);
+            String body = String.format(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_BODY_SHOWPRICESREQUEST_PLACED), userName);
+            String redirectionContent = RedirectionContent.REDCONTENT_EDITPLACE_TOPSECTION;
+            String redirectionUrl = RedirectionContent.REDURL_EDITPLACE_TOPSECTION;
+            Utility.sendNotification(placeUserId, mongoTemplate, title, body, redirectionContent, redirectionUrl);
             return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_REQUESTED_FOR_PRODUCT_PRICES), new ArrayList<>(), 1);
         }
 
@@ -134,7 +141,16 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
-        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_AVAILABILITY_UPDATED), new ArrayList<>(), 1);
+        String msg = "";
+        if (ProductPricesVisibilityEnum.PUBLIC.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
+            msg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCTPRICES_PUBLIC_NOW);
+        } else if (ProductPricesVisibilityEnum.HIDE.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
+            msg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCTPRICES_HIDDEN_NOW);
+        } else if (ProductPricesVisibilityEnum.ONLY_REQUESTED.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
+            msg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PRODUCTPRICES_ONLY_REQUESTED);
+        }
+
+        return new Response<>(true, 200, msg, new ArrayList<>(), 1);
     }
 
     private Response<DhPlace> updateCurrentStatus(String language, DhPlace dhPlace) {
@@ -147,8 +163,9 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         update.set(AppConstants.KEY_OFFLINE_MSG, dhPlace.getOfflineMsg());
         update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
-
-        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_AVAILABILITY_UPDATED), new ArrayList<>(), 1);
+        String currentStatus = ResponseMsgFactory.getResponseMsg(language, dhPlace.getCurrentStatus() ? AppConstants.RESPONSEMESSAGE_ONLINE : AppConstants.RESPONSEMESSAGE_OFFLINE);
+        String msg = String.format(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_CURRENT_STATUS_UPDATED), currentStatus);
+        return new Response<>(true, 200, msg, new ArrayList<>(), 1);
     }
 
     private Response<DhPlace> updatePlaceAvailabilityDetails(String language, DhPlace dhPlace) {
