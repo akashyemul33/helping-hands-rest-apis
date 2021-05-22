@@ -68,9 +68,9 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_A
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PRODUCT_NAMES_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED;
-import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_RATING_ADDED_BODY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_RATING_ADDED_TITLE;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_RATING_REPLIED_TITLE;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_REQUESTED_FOR_PRODUCT_PRICES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_REQ_IMAGES_ADDED;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_TICKET_RAISED;
@@ -80,7 +80,9 @@ import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PRODUCT_IMAGES;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNABLE_TO_PLACE_SHOW_PRICES_REQUEST;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UNKNOWN;
+import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_UPDATED_SHOW_PRODUCT_PRICES_REQUEST;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_USER_ADDRESS_IS_EMPTY;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_EMAIL;
 import static com.ayprojects.helpinghands.AppConstants.RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE;
@@ -189,6 +191,9 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_FEW_MINS_AGO, "Few mins ago");
         responseMsgsMap.put(RESPONSEMESSAGE_OPEN, "Open");
         responseMsgsMap.put(RESPONSEMESSAGE_CLOSES_AT_TIME, "Closes at %s");
+        responseMsgsMap.put(RESPONSEMESSAGE_REQUESTED_FOR_PRODUCT_PRICES, "Requested to show product prices ");
+        responseMsgsMap.put(RESPONSEMESSAGE_UPDATED_SHOW_PRODUCT_PRICES_REQUEST, "Updated show product prices request");
+        responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_PLACE_SHOW_PRICES_REQUEST, "Unable to place show product prices request !");
     }
 
     public Map<String, String> getResponseMsgsMap() {

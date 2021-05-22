@@ -172,6 +172,7 @@ public class AppConstants {
     public static final String KEY_LAST_LOGOUT_TIME = "lastLogOutTime";
     public static final String STATUS_NOTREGISTERED = "NotRegistered";
     public static final String STATUS_REGISTERED = "Registered";
+    public static final String STATUS_REJECTED = "Rejected";
     public static final String UTC = "UTC";
     public static final String KEY_COUNTRY_CODE = "countryCode";
     public static final String KEY_SCHEMA_VERSION = "schemaVersion";
@@ -250,6 +251,8 @@ public class AppConstants {
     public static final String THREADS = "threads";
     public static final String MID_DOT_SYMBOL = "\u00b7";
     public static final String RESPONSEMESSAGE_OPEN = "OPEN";
+    public static final String PRODUCT_PRICE_VISIBLE_USERS = "productPricesVisibleUsers";
+    public static final String SELECTED_POS = "selectedPos";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
@@ -288,6 +291,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_NO_CATEGORY_FOUND_WITH_ID = "CATEGORY_IDS_MISSING";
     public static String RESPONSEMESSAGE_NEW_PRODUCT_ADDED = "NEW_PRODUCT_ADDED";
     public static String RESPONSEMESSAGE_SOMETHING_WENT_WRONG = "SOMETHING_WENT_WRONG";
+    public static String RESPONSEMESSAGE_UNABLE_TO_PLACE_SHOW_PRICES_REQUEST = "UNABLE_TO_PLACE_SHOW_PRICES_REQUEST";
     public static String RESPONSEMESSAGE_AUTHENTICATION_REQD = "AUTHENTICATION_REQD";
     public static String RESPONSEMESSAGE_APP_CONFIG_NOT_FOUND = "APP_CONFIG_NOT_FOUND";
     public static String RESPONSEMESSAGE_APP_CONFIG_FOUND = "APP_CONFIG_FOUND";
@@ -298,6 +302,8 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_NEW_POST_ADDED = "NEW_POST_ADDED";
     public static String RESPONSEMESSAGE_PLACE_DETAILS_UPDATED = "PLACE_DETAILS_UPDATED";
     public static String RESPONSEMESSAGE_PLACE_AVAILABILITY_UPDATED = "PLACE_AVAILABILITY_UPDATED";
+    public static String RESPONSEMESSAGE_REQUESTED_FOR_PRODUCT_PRICES = "REQUESTED_FOR_PRODUCT_PRICES";
+    public static String RESPONSEMESSAGE_UPDATED_SHOW_PRODUCT_PRICES_REQUEST = "SHOW_PRODUCT_PRICES_REQUEST";
     public static String RESPONSEMESSAGE_NATURE_OF_BUSINESS_UPDATED = "NATURE_OF_BUSINESS_UPDATED";
     public static String RESPONSEMESSAGE_PRODUCT_DETAILS_UPDATED = "PRODUCT_DETAILS_UPDATED";
     public static String RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED = "NEW_REQUIREMENT_ADDED";

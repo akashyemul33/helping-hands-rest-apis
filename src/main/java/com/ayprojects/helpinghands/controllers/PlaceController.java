@@ -57,6 +57,32 @@ public class PlaceController {
         return null;
     }
 
+    @PutMapping(value = "/requestShowProductPrices")
+    public ResponseEntity<Response<DhPlace>> requestShowProductPrices(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @RequestParam String userName, @RequestParam String placeId, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PLACE_STEP_ENUM, PlaceStepEnums.REQUEST_TO_SHOW_PRODUCT_PRICES);
+        params.put(AppConstants.KEY_PLACE_ID, placeId);
+        params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.KEY_USER_NAME, userName);
+        Response<DhPlace> response = apiOperations.update(authentication, httpHeaders, params, null, StrategyName.UpdatePlaceStrategy, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @PutMapping(value = "/updateShowProductPricesRequest")
+    public ResponseEntity<Response<DhPlace>> updateShowProductPricesRequest(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @RequestParam String placeId, @RequestParam int selectedPos, @RequestParam PlaceStepEnums placeStepEnums, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PLACE_STEP_ENUM, placeStepEnums);
+        params.put(AppConstants.KEY_PLACE_ID, placeId);
+        params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.SELECTED_POS, selectedPos);
+        Response<DhPlace> response = apiOperations.update(authentication, httpHeaders, params, null, StrategyName.UpdatePlaceStrategy, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+
     @PutMapping(value = "/updatePlace")
     public ResponseEntity<Response<DhPlace>> updatePlace(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPlace dhPlace, @RequestParam PlaceStepEnums placeStepEnum, @RequestParam int productPos, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();

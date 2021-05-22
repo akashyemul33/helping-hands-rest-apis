@@ -113,6 +113,7 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_ID_IS_MISSING), new ArrayList<>(), 0);
         }
         Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
+        query.fields().exclude(AppConstants.PRODUCT_PRICE_VISIBLE_USERS);
         query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         DhPlace dhPlace = mongoTemplate.findOne(query, DhPlace.class, AppConstants.COLLECTION_DH_PLACE);
         if (dhPlace == null) {

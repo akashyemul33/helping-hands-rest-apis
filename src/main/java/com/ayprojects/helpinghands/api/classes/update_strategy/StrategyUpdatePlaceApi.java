@@ -9,6 +9,7 @@ import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
+import com.ayprojects.helpinghands.models.ProductPricesVisibleUsers;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
@@ -65,10 +66,62 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
                     return updateCurrentStatus(language, obj);
                 case PRODUCT_PRICES_VISIBILITY:
                     return updateProductPricesVisibility(language, obj);
+                case REQUEST_TO_SHOW_PRODUCT_PRICES:
+                    return requestToShowProductPrices(language, (String) params.get(AppConstants.KEY_PLACE_ID), (String) params.get(AppConstants.KEY_USER_ID), (String) params.get(AppConstants.KEY_USER_NAME));
+                case CONFIRM_SHOW_PRODUCT_PRICE_REQUEST:
+                    return updateShowProductPricesRequest(language, (String) params.get(AppConstants.KEY_PLACE_ID), (String) params.get(AppConstants.KEY_USER_ID), (int) params.get(AppConstants.SELECTED_POS), AppConstants.STATUS_ACTIVE);
+                case REJECT_SHOW_PRODUCT_PRICE_REQUEST:
+                    return updateShowProductPricesRequest(language, (String) params.get(AppConstants.KEY_PLACE_ID), (String) params.get(AppConstants.KEY_USER_ID), (int) params.get(AppConstants.SELECTED_POS), AppConstants.STATUS_REJECTED);
+
             }
         }
 
         return null;
+    }
+
+    private Response<DhPlace> updateShowProductPricesRequest(String language, String placeId, String userId, int selectedPos, String status) {
+        if (Utility.isFieldEmpty(placeId) || Utility.isFieldEmpty(userId))
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
+        Update update = new Update();
+
+        update.set(String.format("productPricesVisibleUsers.%d.status", selectedPos), status);
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
+        return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UPDATED_SHOW_PRODUCT_PRICES_REQUEST), new ArrayList<>(), 1);
+    }
+
+    private Response<DhPlace> requestToShowProductPrices(String language, String placeId, String userId, String userName) {
+        if (Utility.isFieldEmpty(placeId) || Utility.isFieldEmpty(userId) || Utility.isFieldEmpty(userName))
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+
+        Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
+        query.fields().include(AppConstants.KEY_PRODUCTPRICES_VISIBLE_USERS);
+        query.fields().include(AppConstants.KEY_PRODUCTPRICES_VISIBLE);
+        DhPlace dhPlace = mongoTemplate.findOne(query, DhPlace.class);
+        if (dhPlace != null && ProductPricesVisibilityEnum.ONLY_REQUESTED.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
+            List<ProductPricesVisibleUsers> visibleUsers = dhPlace.getProductPricesVisibleUsers();
+
+            if(visibleUsers!=null) {
+                for (ProductPricesVisibleUsers p : visibleUsers) {
+                    if (p.getUserId().equals(userId)) {
+                        return new Response<>(true, 402, "Already requested !", new ArrayList<>(), 0);
+                    }
+                }
+            }
+            Update update = new Update();
+            ProductPricesVisibleUsers p = new ProductPricesVisibleUsers();
+            p.setUserId(userId);
+            p.setUserName(userName);
+            p = (ProductPricesVisibleUsers) Utility.setCommonAttrs(p, AppConstants.STATUS_PENDING);
+            update.push(AppConstants.KEY_PRODUCTPRICES_VISIBLE_USERS, p);
+            update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+            mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
+            return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_REQUESTED_FOR_PRODUCT_PRICES), new ArrayList<>(), 1);
+        }
+
+        return new Response<>(true, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_PLACE_SHOW_PRICES_REQUEST), new ArrayList<>(), 0);
     }
 
     private Response<DhPlace> updateProductPricesVisibility(String language, DhPlace dhPlace) {
@@ -78,7 +131,6 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
         Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPlace.getPlaceId()));
         Update update = new Update();
         update.set(AppConstants.KEY_PRODUCTPRICES_VISIBLE, dhPlace.getProductPricesVisible());
-        update.set(AppConstants.KEY_PRODUCTPRICES_VISIBLE_USERS, dhPlace.getProductPricesVisibleUsers());
         update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(query, update, AppConstants.COLLECTION_DH_PLACE);
 
@@ -250,10 +302,10 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
             missingFieldsList.add(AppConstants.KEY_PRODUCTPRICES_VISIBLE);
         }
 
-        if (dhPlace.getProductPricesVisible().equalsIgnoreCase(ProductPricesVisibilityEnum.ONLY_FEW.name())) {
+        /*if (ProductPricesVisibilityEnum.ONLY_FEW.name().equalsIgnoreCase(dhPlace.getProductPricesVisible())) {
             if (dhPlace.getProductPricesVisibleUsers() == null || dhPlace.getProductPricesVisibleUsers().isEmpty())
                 missingFieldsList.add(AppConstants.KEY_PRODUCTPRICES_VISIBLE_USERS);
-        }
+        }*/
         if (!missingFieldsList.isEmpty()) {
             String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY);
             resMsg = resMsg + " , these fields are missing : " + missingFieldsList;

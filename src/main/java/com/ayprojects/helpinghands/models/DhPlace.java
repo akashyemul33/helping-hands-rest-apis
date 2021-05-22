@@ -12,7 +12,7 @@ public class DhPlace extends AllCommonUsedAttributes {
     private String offlineMsg;
     private boolean currentStatus;
     private String productPricesVisible;
-    private List<String> productPricesVisibleUsers;
+    private List<ProductPricesVisibleUsers> productPricesVisibleUsers;
     private boolean addressGenerated;
     private String placeMainCategoryId;
     private String addedBy;
@@ -107,11 +107,11 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.productPricesVisible = productPricesVisible;
     }
 
-    public List<String> getProductPricesVisibleUsers() {
+    public List<ProductPricesVisibleUsers> getProductPricesVisibleUsers() {
         return productPricesVisibleUsers;
     }
 
-    public void setProductPricesVisibleUsers(List<String> productPricesVisibleUsers) {
+    public void setProductPricesVisibleUsers(List<ProductPricesVisibleUsers> productPricesVisibleUsers) {
         this.productPricesVisibleUsers = productPricesVisibleUsers;
     }
 
