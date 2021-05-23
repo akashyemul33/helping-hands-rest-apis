@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.api.classes.add_strategy;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
 import com.ayprojects.helpinghands.api.enums.ContentType;
+import com.ayprojects.helpinghands.api.enums.RedirectionContent;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhLog;
@@ -11,7 +12,6 @@ import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhUser;
-import com.ayprojects.helpinghands.models.Notifications;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.models.Threads;
 import com.ayprojects.helpinghands.services.firebase.FirebaseSetup;
@@ -191,7 +191,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
     }
 
     private void sendNotificationOnReply(String lang, String contentUserId, ContentType contentType, String replyName) {
-        Query query = new Query(Criteria.where(AppConstants.USER_ID).is(contentUserId));
+        Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(contentUserId));
         query.fields().include(AppConstants.KEY_FCM_TOKEN);
         DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
         if (dhUser != null) {
@@ -206,18 +206,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                     .build();
             try {
                 FirebaseMessaging.getInstance().send(message);
-                Update dhUserUpdate = new Update();
-                Notifications notifications = new Notifications();
-                notifications.setNotificationId(Utility.getUUID());
-                notifications.setTitle(title);
-                notifications.setBody(body);
-                notifications.setRedirectionUrl(" ");
-                notifications.setRedirectionContent(contentType.name());
-                notifications.setCreatedDateTime(CalendarOperations.currentDateTimeInUTC());
-                notifications.setStatus(AppConstants.STATUS_ACTIVE);
-                dhUserUpdate.push(AppConstants.KEY_NOTIFICATIONS, notifications);
-                dhUserUpdate.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
-                mongoTemplate.updateFirst(query, dhUserUpdate, AppConstants.COLLECTION_DHUSER);
+                Utility.insertNotification(contentUserId, title, body, RedirectionContent.REDCONTENT_PLACEDETAILS, "", mongoTemplate);
             } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }
@@ -225,8 +214,9 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
 
     }
 
+    //Intentionally avoided using Utility.sendNotification method
     private void sendNotificationToContentOwner(String lang, ContentType contentType, String contentUserId, String contentName, String userName, boolean edit, double rating) {
-        Query query = new Query(Criteria.where(AppConstants.USER_ID).is(contentUserId));
+        Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(contentUserId));
         query.fields().include(AppConstants.KEY_FCM_TOKEN);
         DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
         if (dhUser != null) {
@@ -245,18 +235,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                     .build();
             try {
                 FirebaseMessaging.getInstance().send(message);
-                Update dhUserUpdate = new Update();
-                Notifications notifications = new Notifications();
-                notifications.setNotificationId(Utility.getUUID());
-                notifications.setTitle(title);
-                notifications.setBody(body);
-                notifications.setRedirectionUrl(" ");
-                notifications.setRedirectionContent(contentType.name());
-                notifications.setCreatedDateTime(CalendarOperations.currentDateTimeInUTC());
-                notifications.setStatus(AppConstants.STATUS_ACTIVE);
-                dhUserUpdate.push(AppConstants.KEY_NOTIFICATIONS, notifications);
-                dhUserUpdate.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
-                mongoTemplate.updateFirst(query, dhUserUpdate, AppConstants.COLLECTION_DHUSER);
+                Utility.insertNotification(contentUserId, title, body, RedirectionContent.REDCONTENT_EDITPLACE_TOPSECTION, "", mongoTemplate);
             } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }

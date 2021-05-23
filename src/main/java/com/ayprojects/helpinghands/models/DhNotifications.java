@@ -1,29 +1,22 @@
 package com.ayprojects.helpinghands.models;
 
-public class Notifications{
+public class DhNotifications extends AllCommonUsedAttributes{
     private String notificationId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    private String userId
+            ;
     private String title;
     private String body;
     private String redirectionContent;
     private String redirectionUrl;
-    private  String createdDateTime;
-    private String status;
-
-    public String getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    public void setCreatedDateTime(String createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public String getNotificationId() {
         return notificationId;

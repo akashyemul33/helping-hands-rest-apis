@@ -4,11 +4,11 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.ResponseMessages;
 import com.ayprojects.helpinghands.models.AllCommonUsedAttributes;
 import com.ayprojects.helpinghands.models.DhLog;
+import com.ayprojects.helpinghands.models.DhNotifications;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.LangValueObj;
-import com.ayprojects.helpinghands.models.Notifications;
 import com.ayprojects.helpinghands.models.PlaceAvailabilityDetails;
 import com.ayprojects.helpinghands.models.UserSettings;
 import com.ayprojects.helpinghands.services.log.LogService;
@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -263,7 +262,7 @@ public class Utility {
         if (mongoTemplate == null)
             throw new NullPointerException("Cannot fetch place details with null mongoTemplate object.");
 
-        Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
+        Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
         if (firstNameOfUser) query.fields().include(AppConstants.FIRST_NAME);
         if (lastNameOfUser) query.fields().include(AppConstants.LAST_NAME);
         if (userImage) query.fields().include(AppConstants.USER_PROFILE_IMG);
@@ -292,7 +291,7 @@ public class Utility {
     }
 
     public static void sendNotification(String userId, MongoTemplate mongoTemplate, String title, String body, String redirectionContent, String redirectionUrl) {
-        Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
+        Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
         query.fields().include(AppConstants.KEY_FCM_TOKEN);
         DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
         if (dhUser != null) {
@@ -300,29 +299,31 @@ public class Utility {
 
             Message message = Message.builder()
                     .putData("title", title)
+                    .putData("redirectionContent", redirectionContent)
+                    .putData("redirectionUrl", redirectionUrl)
                     .putData("body", body)
                     .setToken(fcmToken)
                     .build();
             try {
                 FirebaseMessaging.getInstance().send(message);
-                Update dhUserUpdate = new Update();
-                Notifications notifications = new Notifications();
-                notifications.setNotificationId(Utility.getUUID());
-                notifications.setTitle(title);
-                notifications.setBody(body);
-                notifications.setRedirectionUrl(redirectionUrl);
-                notifications.setRedirectionContent(redirectionContent);
-                notifications.setCreatedDateTime(CalendarOperations.currentDateTimeInUTC());
-                notifications.setStatus(AppConstants.STATUS_ACTIVE);
-                dhUserUpdate.push(AppConstants.KEY_NOTIFICATIONS, notifications);
-                dhUserUpdate.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
-                mongoTemplate.updateFirst(query, dhUserUpdate, AppConstants.COLLECTION_DHUSER);
+                Utility.insertNotification(userId, title, body, redirectionContent, redirectionUrl, mongoTemplate);
             } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    public static void insertNotification(String userId, String title, String body, String redirectionContent, String redirectionUrl, MongoTemplate mongoTemplate) {
+        DhNotifications dhNotifications = new DhNotifications();
+        dhNotifications.setNotificationId(Utility.getUUID());
+        dhNotifications.setUserId(userId);
+        dhNotifications.setTitle(title);
+        dhNotifications.setBody(body);
+        dhNotifications.setRedirectionUrl(redirectionUrl);
+        dhNotifications.setRedirectionContent(redirectionContent);
+        dhNotifications = (DhNotifications) Utility.setCommonAttrs(dhNotifications, AppConstants.STATUS_ACTIVE);
+        mongoTemplate.save(dhNotifications, AppConstants.COLLECTION_DH_NOTIFICATIONS);
+    }
 
     public void addLog(String username, String actionMsg) {
         if (logService == null || Utility.isFieldEmpty(username) || Utility.isFieldEmpty(actionMsg)) {

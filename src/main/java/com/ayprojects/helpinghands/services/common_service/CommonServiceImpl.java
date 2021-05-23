@@ -32,7 +32,7 @@ public class CommonServiceImpl implements CommonService {
             return false;
         }
 
-        Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
+        Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
         query.fields().include(AppConstants.OBJECT_ID);//include only _id which is indexed, as here we only need existence of user
         DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
         return dhUser != null;
@@ -44,7 +44,7 @@ public class CommonServiceImpl implements CommonService {
             return null;
         }
 
-        Query query = new Query(Criteria.where(AppConstants.USER_ID).is(userId));
+        Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
         return mongoTemplate.findOne(query, DhUser.class);
     }
 
@@ -75,7 +75,7 @@ public class CommonServiceImpl implements CommonService {
     public boolean updateUserWithSessionAndOtherDetails(String newFcmToken, String lastLogoutTime, DhUser dhUser) {
         try {
             Update userUpdate = getUpdateObjForUser(newFcmToken, lastLogoutTime, dhUser);
-            Query queryFindUserWithId = new Query(Criteria.where(AppConstants.USER_ID).is(dhUser.getUserId()));
+            Query queryFindUserWithId = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(dhUser.getUserId()));
             mongoTemplate.updateFirst(queryFindUserWithId, userUpdate, DhUser.class);
             utility.addLog(dhUser.getMobileNumber(), "Replaced fcm token & updated session details.");
             return true;
@@ -140,7 +140,7 @@ public class CommonServiceImpl implements CommonService {
         if (dhUser == null || Utility.isFieldEmpty(dhUser.getUserId())) return false;
         CalendarOperations calendarOperations = new CalendarOperations();
         Update update = new Update();
-        update.set(AppConstants.USER_ID, dhUser.getUserId());
+        update.set(AppConstants.KEY_USER_ID, dhUser.getUserId());
         update.set(AppConstants.STATUS, AppConstants.STATUS_REGISTERED);
         update.set(AppConstants.MODIFIED_DATE_TIME, calendarOperations.currentDateTimeInUTC());
         Criteria criteria = new Criteria().orOperator(Criteria.where(AppConstants.KEY_MOBILE).is(dhUser.getMobileNumber()),

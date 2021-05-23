@@ -33,15 +33,6 @@ public class DhUser extends AllCommonUsedAttributes {
     private boolean userSettingEnabled;
     private String languageSelected;
     private String fcmToken;
-    private List<Notifications> notifications;
-
-    public List<Notifications> getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(List<Notifications> notifications) {
-        this.notifications = notifications;
-    }
 
     public DhUser() {
         super();

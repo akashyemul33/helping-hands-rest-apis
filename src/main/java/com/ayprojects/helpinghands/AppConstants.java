@@ -127,7 +127,6 @@ public class AppConstants {
     public static final String PLACE_IMAGES = "placeImages";
     public static final String CREATED_DATETIME = "createdDateTime";
     public static final String IA_ADDRESS_GENERATED = "isAddressGenerated";
-    public static final String USER_ID = "userId";
     public static final String ISSUE_RAISED_BY = "issueRaisedBy";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
@@ -187,6 +186,7 @@ public class AppConstants {
     public static final String COLLECTION_DH_RATING_COMMENT = "dhRatingAndComments";
     public static final String COLLECTION_DH_TICKET = "dhTicket";
     public static final String COLLECTION_DH_VIEWS = "dhViews";
+    public static final String COLLECTION_DH_NOTIFICATIONS = "dhNotifications";
     public static final String COLLECTION_DHLOG = "dhLog";
     public static final String RESPONSEMESSAGE_EMPTY_TYPEOFMAINPLACECATEGORY = "EMPTY_TYPEOFMAINPLACECATEGORY";
     public static final String RESPONSEMESSAGE_EMPTY_DEFAULTNAME = "EMPTY_DEFAULTNAME";
