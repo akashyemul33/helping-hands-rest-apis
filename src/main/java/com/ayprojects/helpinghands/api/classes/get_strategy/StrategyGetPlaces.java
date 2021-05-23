@@ -173,14 +173,13 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_ID_IS_MISSING), new ArrayList<>(), 0);
         }
         Query query = new Query(Criteria.where(AppConstants.PLACE_ID).is(placeId));
-
         query.fields().include(AppConstants.KEY_PRODUCTPRICES_VISIBLE_USERS);
         query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         DhPlace dhPlace = mongoTemplate.findOne(query, DhPlace.class);
         if (dhPlace == null)
             return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
 
-        List<ProductPricesVisibleUsers> productPricesVisibleUsers = dhPlace.getProductPricesVisibleUsers();
+        /*List<ProductPricesVisibleUsers> productPricesVisibleUsers = dhPlace.getProductPricesVisibleUsers();
         List<ProductPricesVisibleUsers> requestList;
         if (productPricesVisibleUsers != null) {
             requestList = new ArrayList<>(productPricesVisibleUsers.size());
@@ -194,7 +193,7 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
         } else {
             requestList = new ArrayList<>();
         }
-        dhPlace.setProductPricesVisibleUsers(requestList);
+        dhPlace.setProductPricesVisibleUsers(requestList);*/
         return new Response<DhPlace>(true, 200, "Query successful", Collections.singletonList(dhPlace));
     }
 
