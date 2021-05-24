@@ -15,6 +15,7 @@ public class UserSettings {
     private long perProductMaxImagesLimit;
     private boolean perProductMaxImagesLimitEnabled;
     private long perPlaceProductsLimit;
+    private boolean notificationsRequired;
 
     public UserSettings(long totalPlacesLimit, long perDayAddPlacesLimit, long perDayAddPostsLimit, long perPlaceImagesLimit, long perPostImagesLimit, long perPlaceProductsLimit, boolean perDayAddPlacesLimitEnabled, boolean perDayAddPostsLimitEnabled, boolean perPlaceImagesLimitEnabled, boolean perPostImagesLimitEnabled, long perProductDefaultImagesLimit, boolean perProductDefaultImageLimitEnabled, boolean perProductMaxImagesLimitEnabled, long perProductMaxImagesLimit) {
         this.totalPlacesLimit = totalPlacesLimit;
@@ -32,46 +33,6 @@ public class UserSettings {
         this.perProductMaxImagesLimitEnabled = perProductMaxImagesLimitEnabled;
         this.perProductDefaultImagesLimit = perProductDefaultImagesLimit;
         this.perProductMaxImagesLimit = perProductMaxImagesLimit;
-    }
-
-    public boolean getPerProductDefaultImageLimitEnabled() {
-        return perProductDefaultImageLimitEnabled;
-    }
-
-    public void setPerProductDefaultImageLimitEnabled(boolean perProductDefaultImageLimitEnabled) {
-        this.perProductDefaultImageLimitEnabled = perProductDefaultImageLimitEnabled;
-    }
-
-    public long getPerProductDefaultImagesLimit() {
-        return perProductDefaultImagesLimit;
-    }
-
-    public void setPerProductDefaultImagesLimit(long perProductDefaultImagesLimit) {
-        this.perProductDefaultImagesLimit = perProductDefaultImagesLimit;
-    }
-
-    public long getPerProductMaxImagesLimit() {
-        return perProductMaxImagesLimit;
-    }
-
-    public void setPerProductMaxImagesLimit(long perProductMaxImagesLimit) {
-        this.perProductMaxImagesLimit = perProductMaxImagesLimit;
-    }
-
-    public void setPerProductMaxImagesLimit(boolean perProductMaxImagesLimit) {
-        perProductMaxImagesLimitEnabled = perProductMaxImagesLimit;
-    }
-
-    public boolean getPerProductMaxImagesLimitEnabled() {
-        return perProductMaxImagesLimitEnabled;
-    }
-
-    public void setPerProductMaxImagesLimitEnabled(boolean perProductMaxImagesLimitEnabled) {
-        this.perProductMaxImagesLimitEnabled = perProductMaxImagesLimitEnabled;
-    }
-
-    public void setPerProductMaxImagesLimitEnabled(long perProductMaxImagesLimitEnabled) {
-        this.perProductMaxImagesLimit = perProductMaxImagesLimitEnabled;
     }
 
     public long getTotalPlacesLimit() {
@@ -114,6 +75,70 @@ public class UserSettings {
         this.perPostImagesLimit = perPostImagesLimit;
     }
 
+    public boolean isPerDayAddPlacesLimitEnabled() {
+        return perDayAddPlacesLimitEnabled;
+    }
+
+    public void setPerDayAddPlacesLimitEnabled(boolean perDayAddPlacesLimitEnabled) {
+        this.perDayAddPlacesLimitEnabled = perDayAddPlacesLimitEnabled;
+    }
+
+    public boolean isPerDayAddPostsLimitEnabled() {
+        return perDayAddPostsLimitEnabled;
+    }
+
+    public void setPerDayAddPostsLimitEnabled(boolean perDayAddPostsLimitEnabled) {
+        this.perDayAddPostsLimitEnabled = perDayAddPostsLimitEnabled;
+    }
+
+    public boolean isPerPlaceImagesLimitEnabled() {
+        return perPlaceImagesLimitEnabled;
+    }
+
+    public void setPerPlaceImagesLimitEnabled(boolean perPlaceImagesLimitEnabled) {
+        this.perPlaceImagesLimitEnabled = perPlaceImagesLimitEnabled;
+    }
+
+    public boolean isPerPostImagesLimitEnabled() {
+        return perPostImagesLimitEnabled;
+    }
+
+    public void setPerPostImagesLimitEnabled(boolean perPostImagesLimitEnabled) {
+        this.perPostImagesLimitEnabled = perPostImagesLimitEnabled;
+    }
+
+    public boolean isPerProductDefaultImageLimitEnabled() {
+        return perProductDefaultImageLimitEnabled;
+    }
+
+    public void setPerProductDefaultImageLimitEnabled(boolean perProductDefaultImageLimitEnabled) {
+        this.perProductDefaultImageLimitEnabled = perProductDefaultImageLimitEnabled;
+    }
+
+    public long getPerProductDefaultImagesLimit() {
+        return perProductDefaultImagesLimit;
+    }
+
+    public void setPerProductDefaultImagesLimit(long perProductDefaultImagesLimit) {
+        this.perProductDefaultImagesLimit = perProductDefaultImagesLimit;
+    }
+
+    public long getPerProductMaxImagesLimit() {
+        return perProductMaxImagesLimit;
+    }
+
+    public void setPerProductMaxImagesLimit(long perProductMaxImagesLimit) {
+        this.perProductMaxImagesLimit = perProductMaxImagesLimit;
+    }
+
+    public boolean isPerProductMaxImagesLimitEnabled() {
+        return perProductMaxImagesLimitEnabled;
+    }
+
+    public void setPerProductMaxImagesLimitEnabled(boolean perProductMaxImagesLimitEnabled) {
+        this.perProductMaxImagesLimitEnabled = perProductMaxImagesLimitEnabled;
+    }
+
     public long getPerPlaceProductsLimit() {
         return perPlaceProductsLimit;
     }
@@ -122,46 +147,12 @@ public class UserSettings {
         this.perPlaceProductsLimit = perPlaceProductsLimit;
     }
 
-    public boolean getPerDayAddPlacesLimitEnabled() {
-        return perDayAddPlacesLimitEnabled;
-    }
-
-    public void setPerDayAddPlacesLimitEnabled(boolean perDayAddPlacesLimitEnabled) {
-        this.perDayAddPlacesLimitEnabled = perDayAddPlacesLimitEnabled;
-    }
-
-    public boolean getPerDayAddPostsLimitEnabled() {
-        return perDayAddPostsLimitEnabled;
-    }
-
-    public void setPerDayAddPostsLimitEnabled(boolean perDayAddPostsLimitEnabled) {
-        this.perDayAddPostsLimitEnabled = perDayAddPostsLimitEnabled;
-    }
-
-    public boolean getPerPlaceImagesLimitEnabled() {
-        return perPlaceImagesLimitEnabled;
-    }
-
-    public void setPerPlaceImagesLimitEnabled(boolean perPlaceImagesLimitEnabled) {
-        this.perPlaceImagesLimitEnabled = perPlaceImagesLimitEnabled;
-    }
-
-    public boolean getPerPostImagesLimitEnabled() {
-        return perPostImagesLimitEnabled;
-    }
-
-    public void setPerPostImagesLimitEnabled(boolean perPostImagesLimitEnabled) {
-        this.perPostImagesLimitEnabled = perPostImagesLimitEnabled;
-    }
-    private boolean notificationsRequired;
-
-    public boolean getNotificationsRequired() {
+    public boolean isNotificationsRequired() {
         return notificationsRequired;
     }
 
     public void setNotificationsRequired(boolean notificationsRequired) {
         this.notificationsRequired = notificationsRequired;
     }
-
 }
 
