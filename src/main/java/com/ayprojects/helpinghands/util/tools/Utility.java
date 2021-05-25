@@ -298,25 +298,28 @@ public class Utility {
         if (dhUser != null) {
             String fcmToken = dhUser.getFcmToken();
 
-            Message message = Message.builder()
-                    .putData("title", title)
-                    .putData("redirectionContent", redirectionContent)
-                    .putData("redirectionUrl", redirectionUrl)
-                    .putData("body", body)
-                    .setToken(fcmToken)
-                    .build();
             try {
+
+                String notificationId = Utility.getUUID();
+                Message message = Message.builder()
+                        .putData("NotificationId", title)
+                        .putData("title", title)
+                        .putData("redirectionContent", redirectionContent)
+                        .putData("redirectionUrl", redirectionUrl)
+                        .putData("body", body)
+                        .setToken(fcmToken)
+                        .build();
                 FirebaseMessaging.getInstance().send(message);
-                Utility.insertNotification(contentType, userId, title, body, redirectionContent, redirectionUrl, mongoTemplate);
+                Utility.insertNotification(contentType, notificationId, userId, title, body, redirectionContent, redirectionUrl, mongoTemplate);
             } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void insertNotification(ContentType contentType, String userId, String title, String body, String redirectionContent, String redirectionUrl, MongoTemplate mongoTemplate) {
+    public static void insertNotification(ContentType contentType, String notificationId, String userId, String title, String body, String redirectionContent, String redirectionUrl, MongoTemplate mongoTemplate) {
         DhNotifications dhNotifications = new DhNotifications();
-        dhNotifications.setNotificationId(Utility.getUUID());
+        dhNotifications.setNotificationId(notificationId);
         dhNotifications.setUserId(userId);
         dhNotifications.setContentType(contentType);
         dhNotifications.setTitle(title);

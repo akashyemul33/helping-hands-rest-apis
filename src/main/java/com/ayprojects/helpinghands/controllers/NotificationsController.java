@@ -34,11 +34,20 @@ public class NotificationsController {
     @Autowired
     ApiOperations<DhNotifications> apiOperations;
 
-    @GetMapping(value = "/getNotifications")
+    @GetMapping(value = "/getNotificationsWithContentType")
     ResponseEntity<Response<DhNotifications>> getNotifications(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @RequestParam ContentType contentType, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_USER_ID, userId);
         params.put(AppConstants.KEY_CONTENT_TYPE, contentType);
+        Response<DhNotifications> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetNotificationsStrategy, params, version);
+        if (response.getStatus()) return new ResponseEntity<>(response, HttpStatus.OK);
+        else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @GetMapping(value = "/getNotifications")
+    ResponseEntity<Response<DhNotifications>> getNotifications(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_USER_ID, userId);
         Response<DhNotifications> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetNotificationsStrategy, params, version);
         if (response.getStatus()) return new ResponseEntity<>(response, HttpStatus.OK);
         else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);

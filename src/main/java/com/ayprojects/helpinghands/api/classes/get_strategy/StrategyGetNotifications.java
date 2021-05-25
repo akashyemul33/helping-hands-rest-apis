@@ -7,6 +7,7 @@ import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhNotifications;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
+import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -31,10 +32,14 @@ public class StrategyGetNotifications implements StrategyGetBehaviour<DhNotifica
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
         }
         Set<String> keySet = params.keySet();
-        if (keySet.contains(AppConstants.KEY_USER_ID) && keySet.contains(AppConstants.KEY_CONTENT_TYPE)) {
+        if (keySet.contains(AppConstants.KEY_USER_ID)) {
             String userId = (String) params.get(AppConstants.KEY_USER_ID);
-            String contentType = (String) params.get(AppConstants.KEY_CONTENT_TYPE);
-            return getNotifications(language, contentType, userId, AppConstants.STATUS_ACTIVE);
+            if (keySet.contains(AppConstants.KEY_CONTENT_TYPE)) {
+                String contentType = (String) params.get(AppConstants.KEY_CONTENT_TYPE);
+                return getNotifications(language, contentType, userId, AppConstants.STATUS_ACTIVE);
+            } else {
+                return getNotifications(language, null, userId, AppConstants.STATUS_ACTIVE);
+            }
         } else
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
     }
@@ -42,7 +47,8 @@ public class StrategyGetNotifications implements StrategyGetBehaviour<DhNotifica
     private Response<DhNotifications> getNotifications(String language, String contentType, String userId, String status) {
         Criteria criteria = new Criteria();
         criteria.and(AppConstants.KEY_USER_ID).is(userId);
-        criteria.and(AppConstants.KEY_CONTENT_TYPE).is(contentType);
+        if (!Utility.isFieldEmpty(contentType))
+            criteria.and(AppConstants.KEY_CONTENT_TYPE).is(contentType);
         criteria.and(AppConstants.STATUS).regex(status, "i");
         Query queryGetNotifications = new Query(criteria);
         queryGetNotifications.with(Sort.by(Sort.Direction.DESC, AppConstants.MODIFIED_DATE_TIME));
@@ -55,3 +61,4 @@ public class StrategyGetNotifications implements StrategyGetBehaviour<DhNotifica
         return StrategyName.GetNotificationsStrategy;
     }
 }
+
