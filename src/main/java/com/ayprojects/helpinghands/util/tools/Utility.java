@@ -302,7 +302,7 @@ public class Utility {
 
                 String notificationId = Utility.getUUID();
                 Message message = Message.builder()
-                        .putData("NotificationId", title)
+                        .putData("NotificationId", notificationId)
                         .putData("title", title)
                         .putData("redirectionContent", redirectionContent)
                         .putData("redirectionUrl", redirectionUrl)
