@@ -307,6 +307,8 @@ public class Utility {
                         .putData("redirectionContent", redirectionContent)
                         .putData("redirectionUrl", redirectionUrl)
                         .putData("body", body)
+                        .putData("ContentType", contentType.name())
+                        .putData("ModifiedDateTime", CalendarOperations.currentDateTimeInUTC())
                         .setToken(fcmToken)
                         .build();
                 FirebaseMessaging.getInstance().send(message);

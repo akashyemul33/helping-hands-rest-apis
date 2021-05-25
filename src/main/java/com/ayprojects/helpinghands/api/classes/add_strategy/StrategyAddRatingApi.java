@@ -18,9 +18,6 @@ import com.ayprojects.helpinghands.services.firebase.FirebaseSetup;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -199,22 +196,11 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
             LOGGER.info("sendNotificationToContentOwner:fcmToken->" + fcmToken);
             String body = replyName + " has replied to your comment.";
             String title = ResponseMsgFactory.getResponseMsg(lang, AppConstants.RESPONSEMESSAGE_RATING_REPLIED_TITLE);
-            Message message = Message.builder()
-                    .putData("title", title)
-                    .putData("body", body)
-                    .setToken(fcmToken)
-                    .build();
-            try {
-                FirebaseMessaging.getInstance().send(message);
-                Utility.insertNotification(contentType,contentUserId, title, body, RedirectionContent.REDCONTENT_PLACEDETAILS, "", mongoTemplate);
-            } catch (FirebaseMessagingException e) {
-                e.printStackTrace();
-            }
+            Utility.sendNotification(contentType, contentUserId, mongoTemplate, title, body, RedirectionContent.REDCONTENT_PLACEDETAILS, RedirectionContent.REDURL_PLACEDETAILS);
         }
 
     }
 
-    //Intentionally avoided using Utility.sendNotification method
     private void sendNotificationToContentOwner(String lang, ContentType contentType, String contentUserId, String contentName, String userName, boolean edit, double rating) {
         Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(contentUserId));
         query.fields().include(AppConstants.KEY_FCM_TOKEN);
@@ -228,17 +214,8 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
             else
                 body = userName + " has rated " + rating + " to your " + contentType.name().split("_")[1].toLowerCase() + " " + contentName;
             String title = ResponseMsgFactory.getResponseMsg(lang, AppConstants.RESPONSEMESSAGE_RATING_ADDED_TITLE);
-            Message message = Message.builder()
-                    .putData("title", title)
-                    .putData("body", body)
-                    .setToken(fcmToken)
-                    .build();
-            try {
-                FirebaseMessaging.getInstance().send(message);
-                Utility.insertNotification(contentType,contentUserId, title, body, RedirectionContent.REDCONTENT_EDITPLACE_TOPSECTION, "", mongoTemplate);
-            } catch (FirebaseMessagingException e) {
-                e.printStackTrace();
-            }
+
+            Utility.sendNotification(contentType, contentUserId, mongoTemplate, title, body, RedirectionContent.REDCONTENT_EDITPLACE_RATING, RedirectionContent.REDURL_EDITPLACE_RATING);
         }
     }
 
