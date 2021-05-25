@@ -31,16 +31,18 @@ public class StrategyGetNotifications implements StrategyGetBehaviour<DhNotifica
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
         }
         Set<String> keySet = params.keySet();
-        if (keySet.contains(AppConstants.KEY_USER_ID)) {
+        if (keySet.contains(AppConstants.KEY_USER_ID) && keySet.contains(AppConstants.KEY_CONTENT_TYPE)) {
             String userId = (String) params.get(AppConstants.KEY_USER_ID);
-            return getNotifications(language, userId, AppConstants.STATUS_ACTIVE);
+            String contentType = (String) params.get(AppConstants.KEY_CONTENT_TYPE);
+            return getNotifications(language, contentType, userId, AppConstants.STATUS_ACTIVE);
         } else
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
     }
 
-    private Response<DhNotifications> getNotifications(String language, String userId, String status) {
+    private Response<DhNotifications> getNotifications(String language, String contentType, String userId, String status) {
         Criteria criteria = new Criteria();
         criteria.and(AppConstants.KEY_USER_ID).is(userId);
+        criteria.and(AppConstants.KEY_CONTENT_TYPE).is(contentType);
         criteria.and(AppConstants.STATUS).regex(status, "i");
         Query queryGetNotifications = new Query(criteria);
         queryGetNotifications.with(Sort.by(Sort.Direction.DESC, AppConstants.MODIFIED_DATE_TIME));

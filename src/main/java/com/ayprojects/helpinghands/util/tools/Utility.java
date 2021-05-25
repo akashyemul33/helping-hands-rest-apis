@@ -2,6 +2,7 @@ package com.ayprojects.helpinghands.util.tools;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.ResponseMessages;
+import com.ayprojects.helpinghands.api.enums.ContentType;
 import com.ayprojects.helpinghands.models.AllCommonUsedAttributes;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhNotifications;
@@ -290,7 +291,7 @@ public class Utility {
         return obj;
     }
 
-    public static void sendNotification(String userId, MongoTemplate mongoTemplate, String title, String body, String redirectionContent, String redirectionUrl) {
+    public static void sendNotification(ContentType contentType, String userId, MongoTemplate mongoTemplate, String title, String body, String redirectionContent, String redirectionUrl) {
         Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
         query.fields().include(AppConstants.KEY_FCM_TOKEN);
         DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
@@ -306,17 +307,18 @@ public class Utility {
                     .build();
             try {
                 FirebaseMessaging.getInstance().send(message);
-                Utility.insertNotification(userId, title, body, redirectionContent, redirectionUrl, mongoTemplate);
+                Utility.insertNotification(contentType, userId, title, body, redirectionContent, redirectionUrl, mongoTemplate);
             } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void insertNotification(String userId, String title, String body, String redirectionContent, String redirectionUrl, MongoTemplate mongoTemplate) {
+    public static void insertNotification(ContentType contentType, String userId, String title, String body, String redirectionContent, String redirectionUrl, MongoTemplate mongoTemplate) {
         DhNotifications dhNotifications = new DhNotifications();
         dhNotifications.setNotificationId(Utility.getUUID());
         dhNotifications.setUserId(userId);
+        dhNotifications.setContentType(contentType);
         dhNotifications.setTitle(title);
         dhNotifications.setBody(body);
         dhNotifications.setRedirectionUrl(redirectionUrl);

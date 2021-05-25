@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.api.classes.update_strategy;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyUpdateBehaviour;
 import com.ayprojects.helpinghands.api.classes.CommonMethods;
+import com.ayprojects.helpinghands.api.enums.ContentType;
 import com.ayprojects.helpinghands.api.enums.PlaceStepEnums;
 import com.ayprojects.helpinghands.api.enums.ProductPricesVisibilityEnum;
 import com.ayprojects.helpinghands.api.enums.RedirectionContent;
@@ -102,7 +103,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
             body = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_APPROVED);
         }
         body = String.format(body, placeName);
-        Utility.sendNotification(requestedUserId, mongoTemplate, title, body, redirectionContent, redirectionContentUrl);
+        Utility.sendNotification(ContentType.CONTENT_PLACE,requestedUserId, mongoTemplate, title, body, redirectionContent, redirectionContentUrl);
 
         return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UPDATED_SHOW_PRODUCT_PRICES_REQUEST), new ArrayList<>(), 1);
     }
@@ -138,7 +139,7 @@ public class StrategyUpdatePlaceApi implements StrategyUpdateBehaviour<DhPlace> 
             String body = String.format(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_BODY_SHOWPRICESREQUEST_PLACED), userName);
             String redirectionContent = RedirectionContent.REDCONTENT_EDITPLACE_TOPSECTION;
             String redirectionUrl = RedirectionContent.REDURL_EDITPLACE_TOPSECTION;
-            Utility.sendNotification(placeUserId, mongoTemplate, title, body, redirectionContent, redirectionUrl);
+            Utility.sendNotification(ContentType.CONTENT_PLACE,placeUserId, mongoTemplate, title, body, redirectionContent, redirectionUrl);
             return new Response<>(true, 200, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_REQUESTED_FOR_PRODUCT_PRICES), new ArrayList<>(), 1);
         }
 

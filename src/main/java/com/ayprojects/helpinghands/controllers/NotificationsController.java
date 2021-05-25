@@ -2,6 +2,7 @@ package com.ayprojects.helpinghands.controllers;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
+import com.ayprojects.helpinghands.api.enums.ContentType;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhNotifications;
@@ -34,12 +35,12 @@ public class NotificationsController {
     ApiOperations<DhNotifications> apiOperations;
 
     @GetMapping(value = "/getNotifications")
-    ResponseEntity<Response<DhNotifications>> getNotifications(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @PathVariable String version) throws ServerSideException {
+    ResponseEntity<Response<DhNotifications>> getNotifications(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam String userId, @RequestParam ContentType contentType, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.KEY_CONTENT_TYPE, contentType);
         Response<DhNotifications> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetNotificationsStrategy, params, version);
         if (response.getStatus()) return new ResponseEntity<>(response, HttpStatus.OK);
         else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
-
     }
 }

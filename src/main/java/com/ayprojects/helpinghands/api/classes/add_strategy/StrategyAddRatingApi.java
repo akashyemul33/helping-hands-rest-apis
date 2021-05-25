@@ -206,7 +206,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                     .build();
             try {
                 FirebaseMessaging.getInstance().send(message);
-                Utility.insertNotification(contentUserId, title, body, RedirectionContent.REDCONTENT_PLACEDETAILS, "", mongoTemplate);
+                Utility.insertNotification(contentType,contentUserId, title, body, RedirectionContent.REDCONTENT_PLACEDETAILS, "", mongoTemplate);
             } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }
@@ -235,7 +235,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                     .build();
             try {
                 FirebaseMessaging.getInstance().send(message);
-                Utility.insertNotification(contentUserId, title, body, RedirectionContent.REDCONTENT_EDITPLACE_TOPSECTION, "", mongoTemplate);
+                Utility.insertNotification(contentType,contentUserId, title, body, RedirectionContent.REDCONTENT_EDITPLACE_TOPSECTION, "", mongoTemplate);
             } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }

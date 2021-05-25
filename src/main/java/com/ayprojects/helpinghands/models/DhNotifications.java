@@ -1,7 +1,15 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhNotifications extends AllCommonUsedAttributes{
+import com.ayprojects.helpinghands.api.enums.ContentType;
+
+public class DhNotifications extends AllCommonUsedAttributes {
     private String notificationId;
+    private String userId;
+    private ContentType contentType;
+    private String title;
+    private String body;
+    private String redirectionContent;
+    private String redirectionUrl;
 
     public String getUserId() {
         return userId;
@@ -11,12 +19,13 @@ public class DhNotifications extends AllCommonUsedAttributes{
         this.userId = userId;
     }
 
-    private String userId
-            ;
-    private String title;
-    private String body;
-    private String redirectionContent;
-    private String redirectionUrl;
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
+    }
 
     public String getNotificationId() {
         return notificationId;
