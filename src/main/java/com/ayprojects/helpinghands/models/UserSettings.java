@@ -16,6 +16,10 @@ public class UserSettings {
     private boolean perProductMaxImagesLimitEnabled;
     private long perPlaceProductsLimit;
     private boolean notificationsRequired;
+    private boolean hhPerPostImgLimitEnabled;
+    private long hhPerPostImgLimit;
+    private boolean hhShowProfileOnHelp;
+    private boolean hhShowProfileOnAddPost;
 
     public UserSettings(long totalPlacesLimit, long perDayAddPlacesLimit, long perDayAddPostsLimit, long perPlaceImagesLimit, long perPostImagesLimit, long perPlaceProductsLimit, boolean perDayAddPlacesLimitEnabled, boolean perDayAddPostsLimitEnabled, boolean perPlaceImagesLimitEnabled, boolean perPostImagesLimitEnabled, long perProductDefaultImagesLimit, boolean perProductDefaultImageLimitEnabled, boolean perProductMaxImagesLimitEnabled, long perProductMaxImagesLimit) {
         this.totalPlacesLimit = totalPlacesLimit;
@@ -33,6 +37,38 @@ public class UserSettings {
         this.perProductMaxImagesLimitEnabled = perProductMaxImagesLimitEnabled;
         this.perProductDefaultImagesLimit = perProductDefaultImagesLimit;
         this.perProductMaxImagesLimit = perProductMaxImagesLimit;
+    }
+
+    public boolean isHhShowProfileOnAddPost() {
+        return hhShowProfileOnAddPost;
+    }
+
+    public void setHhShowProfileOnAddPost(boolean hhShowProfileOnAddPost) {
+        this.hhShowProfileOnAddPost = hhShowProfileOnAddPost;
+    }
+
+    public boolean isHhShowProfileOnHelp() {
+        return hhShowProfileOnHelp;
+    }
+
+    public void setHhShowProfileOnHelp(boolean hhShowProfileOnHelp) {
+        this.hhShowProfileOnHelp = hhShowProfileOnHelp;
+    }
+
+    public boolean isHhPerPostImgLimitEnabled() {
+        return hhPerPostImgLimitEnabled;
+    }
+
+    public void setHhPerPostImgLimitEnabled(boolean hhPerPostImgLimitEnabled) {
+        this.hhPerPostImgLimitEnabled = hhPerPostImgLimitEnabled;
+    }
+
+    public long getHhPerPostImgLimit() {
+        return hhPerPostImgLimit;
+    }
+
+    public void setHhPerPostImgLimit(long hhPerPostImgLimit) {
+        this.hhPerPostImgLimit = hhPerPostImgLimit;
     }
 
     public long getTotalPlacesLimit() {

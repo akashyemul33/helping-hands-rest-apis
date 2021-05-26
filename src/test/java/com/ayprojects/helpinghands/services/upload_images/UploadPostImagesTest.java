@@ -3,7 +3,7 @@ package com.ayprojects.helpinghands.services.upload_images;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
-import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhPromotions;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.image.ImageServiceImpl;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
@@ -34,7 +34,7 @@ public class UploadPostImagesTest {
 
     @Test
     void givenEmptyImagesThenErrorResponse() throws ServerSideException {
-        Response<DhPosts> expectedUserResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        Response<DhPromotions> expectedUserResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
 //        Response<DhPosts> actualResponse = imageService.uploadPostImages(null, null, AppConstants.BUSINESS_POST, null, null, AppConstants.CURRENT_API_VERSION);
 //        assertEquals(expectedUserResponse.getStatus(), actualResponse.getStatus());
 //        assertEquals(expectedUserResponse.getStatusCode(), actualResponse.getStatusCode());
@@ -47,7 +47,7 @@ public class UploadPostImagesTest {
 
     @Test
     void givenEmptyPostTypeThenErrorResponse() throws ServerSideException {
-        Response<DhPosts> expectedUserResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        Response<DhPromotions> expectedUserResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         MultipartFile emptyFile = new MockMultipartFile("abc", (byte[]) null);
 //        Response<DhPosts> actualResponse = imageService.uploadPostImages(null, null, null, null, new MultipartFile[]{emptyFile}, AppConstants.CURRENT_API_VERSION);
 //        assertEquals(expectedUserResponse.getStatus(), actualResponse.getStatus());
@@ -56,7 +56,7 @@ public class UploadPostImagesTest {
 
     @Test
     void givenEmptyUserIdThenErrorResponse() throws ServerSideException {
-        Response<DhPosts> expectedUserResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        Response<DhPromotions> expectedUserResponse = new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(null, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         MultipartFile emptyFile = new MockMultipartFile("abc", (byte[]) null);
 //        Response<DhPosts> actualResponse = imageService.uploadPostImages(null, null, AppConstants.BUSINESS_POST, null, new MultipartFile[]{emptyFile}, AppConstants.CURRENT_API_VERSION);
 //        assertEquals(expectedUserResponse.getStatus(), actualResponse.getStatus());
@@ -68,11 +68,11 @@ public class UploadPostImagesTest {
         InputStream inputStream = new FileInputStream("/home/ay/Desktop/sad.svg");
         MultipartFile multipartFile = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream);
         MultipartFile[] multipartFiles = new MultipartFile[]{multipartFile};
-        DhPosts dhPost = new DhPosts();
+        DhPromotions dhPost = new DhPromotions();
         dhPost.setAddedBy(Utility.getUUID());
-        dhPost.setPostType(AppConstants.BUSINESS_POST);
+        dhPost.setPromotionType(AppConstants.BUSINESS_PROMOTION);
         String successMsg = ResponseMsgFactory.getResponseMsg(AppConstants.LANG_MARATHI, AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED);
-        Response<DhPosts> expectedUserResponse = new Response<>(true, 201, successMsg, Collections.singletonList(dhPost), 1);
+        Response<DhPromotions> expectedUserResponse = new Response<>(true, 201, successMsg, Collections.singletonList(dhPost), 1);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(AppConstants.LABEL_HEADER_APPLANGUAGE, AppConstants.LANG_MARATHI);
 //        Response<DhPosts> actualResponse = imageService.uploadPostImages(httpHeaders, null, dhPost.getPostType(), dhPost.getAddedBy(), multipartFiles, AppConstants.CURRENT_API_VERSION);
@@ -89,11 +89,11 @@ public class UploadPostImagesTest {
         MultipartFile multipartFile2 = new MockMultipartFile("adf", "/home/ay/Desktop/sad_copy2.svg", String.valueOf(ContentType.IMAGE_SVG), inputStream2);
 
         MultipartFile[] multipartFiles = new MultipartFile[]{multipartFile1, multipartFile2};
-        DhPosts dhPost = new DhPosts();
+        DhPromotions dhPost = new DhPromotions();
         dhPost.setAddedBy(Utility.getUUID());
-        dhPost.setPostType(AppConstants.PUBLIC_POST);
+        dhPost.setPromotionType(AppConstants.PUBLIC_PROMOTION);
         String successMsg = ResponseMsgFactory.getResponseMsg(AppConstants.LANG_ENGLISH, AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED);
-        Response<DhPosts> expectedUserResponse = new Response<>(true, 201, successMsg, Collections.singletonList(dhPost), 1);
+        Response<DhPromotions> expectedUserResponse = new Response<>(true, 201, successMsg, Collections.singletonList(dhPost), 1);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(AppConstants.LABEL_HEADER_APPLANGUAGE, AppConstants.LANG_ENGLISH);
 //        Response<DhPosts> actualResponse = imageService.uploadPostImages(httpHeaders, null, dhPost.getPostType(), dhPost.getAddedBy(), multipartFiles, AppConstants.CURRENT_API_VERSION);

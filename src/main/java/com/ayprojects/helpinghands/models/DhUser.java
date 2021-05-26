@@ -19,6 +19,34 @@ public class DhUser extends AllCommonUsedAttributes {
     private String triedToLoginTime;
     private String profileImgLow;
     private String profileImgHigh;
+    private long numberOfHHPosts;
+    private long numberOfHHHelps;
+    private long avgHHRating;
+
+    public long getNumberOfHHPosts() {
+        return numberOfHHPosts;
+    }
+
+    public void setNumberOfHHPosts(long numberOfHHPosts) {
+        this.numberOfHHPosts = numberOfHHPosts;
+    }
+
+    public long getNumberOfHHHelps() {
+        return numberOfHHHelps;
+    }
+
+    public void setNumberOfHHHelps(long numberOfHHHelps) {
+        this.numberOfHHHelps = numberOfHHHelps;
+    }
+
+    public long getAvgHHRating() {
+        return avgHHRating;
+    }
+
+    public void setAvgHHRating(long avgHHRating) {
+        this.avgHHRating = avgHHRating;
+    }
+
     //    private Address addressDetails;
     @Indexed
     private String mobileNumber;

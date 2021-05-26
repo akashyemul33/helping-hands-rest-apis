@@ -44,15 +44,15 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, "Your place has been added successfully, people can see it in places section once we approve it .");
             responseMsgsMap.put(RESPONSEMESSAGE_CONGRATULATIONS, "Congratulations ");
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, "New rating and comment has been added !");
-            responseMsgsMap.put(RESPONSEMESSAGE_NEW_POST_ADDED, "New post has been added successfully !");
+            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PROMOTION_ADDED, "New post has been added successfully !");
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED, "New requirement has been added successfully !");
             responseMsgsMap.put(RESPONSEMESSAGE_IMAGE_TYPE_MISSING, "Image type is missing !");
             responseMsgsMap.put(RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, "Please check your Image type, no match found for image type!");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_IMAGES_ADDED, "Place images have been added successfully !");
-            responseMsgsMap.put(RESPONSEMESSAGE_POST_IMAGES_ADDED, "Post images have been added successfully  !");
+            responseMsgsMap.put(RESPONSEMESSAGE_PROMOTION_IMAGES_ADDED, "Post images have been added successfully  !");
             responseMsgsMap.put(RESPONSEMESSAGE_REQ_IMAGES_ADDED, "Requirement images have been added successfully  !");
             responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES, "Unable to add place images !");
-            responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES, "Unable to add post images !");
+            responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_PROMOTION_IMAGES, "Unable to add post images !");
             responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES, "Unable to add post images !");
             responseMsgsMap.put(RESPONSEMESSAGE_USER_ID_IS_MISSING, "User id is missing !");
             responseMsgsMap.put(RESPONSEMESSAGE_MOBILE_IS_EMPTY, "Mobile number should not be empty !");

@@ -1,32 +1,20 @@
 package com.ayprojects.helpinghands.api.classes.add_strategy;
 
 import com.ayprojects.helpinghands.AppConstants;
-import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
-import com.ayprojects.helpinghands.api.enums.ContentType;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.dao.user.UserDao;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
-import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhPosts;
-import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhViews;
 import com.ayprojects.helpinghands.models.Response;
-import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
 public class StrategyAddViewsApi  implements StrategyAddBehaviour<DhViews> {

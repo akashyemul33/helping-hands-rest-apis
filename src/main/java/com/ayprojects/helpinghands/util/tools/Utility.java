@@ -86,7 +86,11 @@ public class Utility {
     }
 
     public static UserSettings getGlobalUserSettings() {
-        UserSettings userSettings = new UserSettings(AppConstants.TOTAL_ADD_PLACES_LIMIT, AppConstants.PER_DAY_ADD_PLACES_LIMIT, AppConstants.PER_DAY_ADD_POSTS_LIMIT, AppConstants.PER_PLACE_IMAGES_LIMIT, AppConstants.PER_POST_IMAGES_LIMIT, AppConstants.PER_PLACE_PRODUCTS_LIMIT, false, false, false, false, AppConstants.PER_PRODUCT_DEFAULT_IMAGES_LIMIT, true, true, AppConstants.PER_PRODUCT_MAX_IMAGES_LIMIT);
+        UserSettings userSettings = new UserSettings(AppConstants.TOTAL_ADD_PLACES_LIMIT, AppConstants.PER_DAY_ADD_PLACES_LIMIT, AppConstants.PER_DAY_ADD_PROMOTIONS_LIMIT, AppConstants.PER_PLACE_IMAGES_LIMIT, AppConstants.PER_PROMOTION_IMAGES_LIMIT, AppConstants.PER_PLACE_PRODUCTS_LIMIT, false, false, false, false, AppConstants.PER_PRODUCT_DEFAULT_IMAGES_LIMIT, true, true, AppConstants.PER_PRODUCT_MAX_IMAGES_LIMIT);
+        userSettings.setHhShowProfileOnHelp(true);
+        userSettings.setHhShowProfileOnAddPost(true);
+        userSettings.setHhPerPostImgLimitEnabled(true);
+        userSettings.setHhPerPostImgLimit(AppConstants.HH_PER_POST_IMG_LIMIT);
         userSettings.setNotificationsRequired(true);
         return userSettings;
     }

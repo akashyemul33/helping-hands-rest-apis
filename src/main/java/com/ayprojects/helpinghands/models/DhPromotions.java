@@ -2,24 +2,24 @@ package com.ayprojects.helpinghands.models;
 
 import java.util.List;
 
-public class DhPosts extends AllCommonUsedAttributes {
-    private String postId;
-    private String postType;
+public class DhPromotions extends AllCommonUsedAttributes {
+    private String promotionId;
+    private String promotionType;
     private String placeId;
     private String addedBy;
-    private String postTitle;
-    private String postDesc;
-    private List<String> postImagesLow;
+    private String promotionTitle;
+    private String promotionDesc;
+    private List<String> promotionImagesLow;
 
-    public List<String> getPostImagesHigh() {
-        return postImagesHigh;
+    public List<String> getPromotionImagesHigh() {
+        return promotionImagesHigh;
     }
 
-    public void setPostImagesHigh(List<String> postImagesHigh) {
-        this.postImagesHigh = postImagesHigh;
+    public void setPromotionImagesHigh(List<String> promotionImagesHigh) {
+        this.promotionImagesHigh = promotionImagesHigh;
     }
 
-    private List<String> postImagesHigh;
+    private List<String> promotionImagesHigh;
     private Contact contactDetails;
     private String fullAddress;
     private String fullName;
@@ -89,24 +89,24 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.fullName = fullName;
     }
 
-    public DhPosts() {
+    public DhPromotions() {
 
     }
 
-    public String getPostId() {
-        return postId;
+    public String getPromotionId() {
+        return promotionId;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setPromotionId(String promotionId) {
+        this.promotionId = promotionId;
     }
 
-    public String getPostType() {
-        return postType;
+    public String getPromotionType() {
+        return promotionType;
     }
 
-    public void setPostType(String postType) {
-        this.postType = postType;
+    public void setPromotionType(String promotionType) {
+        this.promotionType = promotionType;
     }
 
     public String getPlaceId() {
@@ -125,28 +125,28 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.addedBy = addedBy;
     }
 
-    public String getPostTitle() {
-        return postTitle;
+    public String getPromotionTitle() {
+        return promotionTitle;
     }
 
-    public void setPostTitle(String postTitle) {
-        this.postTitle = postTitle;
+    public void setPromotionTitle(String promotionTitle) {
+        this.promotionTitle = promotionTitle;
     }
 
-    public String getPostDesc() {
-        return postDesc;
+    public String getPromotionDesc() {
+        return promotionDesc;
     }
 
-    public void setPostDesc(String postDesc) {
-        this.postDesc = postDesc;
+    public void setPromotionDesc(String promotionDesc) {
+        this.promotionDesc = promotionDesc;
     }
 
-    public List<String> getPostImagesLow() {
-        return postImagesLow;
+    public List<String> getPromotionImagesLow() {
+        return promotionImagesLow;
     }
 
-    public void setPostImagesLow(List<String> postImagesLow) {
-        this.postImagesLow = postImagesLow;
+    public void setPromotionImagesLow(List<String> promotionImagesLow) {
+        this.promotionImagesLow = promotionImagesLow;
     }
 
     public Contact getContactDetails() {
@@ -246,18 +246,18 @@ public class DhPosts extends AllCommonUsedAttributes {
         this.fullAddress = fullAddress;
     }
 
-    public DhPosts(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String postId, String postType, String placeId, String addedBy, String postTitle, String postDesc, List<String> postImagesLow, Contact contactDetails, String fullAddress, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, String fullName) {
+    public DhPromotions(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String promotionId, String promotionType, String placeId, String addedBy, String promotionTitle, String promotionDesc, List<String> promotionImagesLow, Contact contactDetails, String fullAddress, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, String fullName) {
         this.schemaVersion =schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime =modifiedDateTime;
         this.status=status;
-        this.postId = postId;
-        this.postType = postType;
+        this.promotionId = promotionId;
+        this.promotionType = promotionType;
         this.placeId = placeId;
         this.addedBy = addedBy;
-        this.postTitle = postTitle;
-        this.postDesc = postDesc;
-        this.postImagesLow = postImagesLow;
+        this.promotionTitle = promotionTitle;
+        this.promotionDesc = promotionDesc;
+        this.promotionImagesLow = promotionImagesLow;
         this.contactDetails = contactDetails;
         this.fullAddress = fullAddress;
         this.offerStartTime = offerStartTime;

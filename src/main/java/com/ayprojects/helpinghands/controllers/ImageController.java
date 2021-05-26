@@ -3,7 +3,7 @@ package com.ayprojects.helpinghands.controllers;
 import com.ayprojects.helpinghands.api.enums.SinglePlaceImageOperationsEnum;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhPromotions;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
@@ -90,8 +90,8 @@ public class ImageController {
     }
 
     @PostMapping(value = "/uploadPostImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<DhPosts>> uploadPostImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "postType", required = true) String postType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "postImagesLow", required = true) MultipartFile[] postImagesLow, @RequestPart(value = "postImagesHigh", required = true) MultipartFile[] postImagesHigh, @PathVariable String version) throws ServerSideException {
-        Response<DhPosts> response = imageService.uploadPostImages(httpHeaders, authentication, postType, addedBy, postImagesLow, postImagesHigh, version);
+    public ResponseEntity<Response<DhPromotions>> uploadPostImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "postType", required = true) String postType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "postImagesLow", required = true) MultipartFile[] postImagesLow, @RequestPart(value = "postImagesHigh", required = true) MultipartFile[] postImagesHigh, @PathVariable String version) throws ServerSideException {
+        Response<DhPromotions> response = imageService.uploadPostImages(httpHeaders, authentication, postType, addedBy, postImagesLow, postImagesHigh, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {

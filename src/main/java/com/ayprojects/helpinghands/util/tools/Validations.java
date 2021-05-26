@@ -3,12 +3,11 @@ package com.ayprojects.helpinghands.util.tools;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
-import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhPromotions;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhUser;
-import com.ayprojects.helpinghands.models.DhViews;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.security.UserDetailsDecorator;
@@ -160,43 +159,43 @@ public class Validations {
 
     }
 
-    public static List<String> findMissingFieldsForPosts(DhPosts dhPosts) {
+    public static List<String> findMissingFieldsForPosts(DhPromotions dhPromotions) {
         List<String> missingFieldsList = new ArrayList<>();
-        if (dhPosts == null) return missingFieldsList;
-        if (Utility.isFieldEmpty(dhPosts.getAddedBy()))
+        if (dhPromotions == null) return missingFieldsList;
+        if (Utility.isFieldEmpty(dhPromotions.getAddedBy()))
             missingFieldsList.add(AppConstants.ADDED_BY);
-        if (Utility.isFieldEmpty(dhPosts.getPostType()))
+        if (Utility.isFieldEmpty(dhPromotions.getPromotionType()))
             missingFieldsList.add(AppConstants.POST_TYPE);
-        if (Utility.isFieldEmpty(dhPosts.getPostId())) missingFieldsList.add(AppConstants.POST_ID);
+        if (Utility.isFieldEmpty(dhPromotions.getPromotionId())) missingFieldsList.add(AppConstants.POST_ID);
 
 
-        if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST)) {
-            if (Utility.isFieldEmpty(dhPosts.getPlaceId())) {
+        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_POST)) {
+            if (Utility.isFieldEmpty(dhPromotions.getPlaceId())) {
                 missingFieldsList.add(AppConstants.PLACE_ID);
             }
         }
 
-        if (Utility.isFieldEmpty(dhPosts.getFullAddress()))
+        if (Utility.isFieldEmpty(dhPromotions.getFullAddress()))
             missingFieldsList.add(AppConstants.FULL_ADDRESS);
 
-        if (dhPosts.getContactDetails() == null)
+        if (dhPromotions.getContactDetails() == null)
             missingFieldsList.add(AppConstants.CONTACT_DETAILS);
         else {
-            if (Utility.isFieldEmpty(dhPosts.getContactDetails().getMobile())) {
+            if (Utility.isFieldEmpty(dhPromotions.getContactDetails().getMobile())) {
                 missingFieldsList.add(AppConstants.KEY_MOBILE);
             }
         }
 
-        if (Utility.isFieldEmpty(dhPosts.getPostTitle()))
+        if (Utility.isFieldEmpty(dhPromotions.getPromotionTitle()))
             missingFieldsList.add(AppConstants.POST_TITLE);
 
-        if (Utility.isFieldEmpty(dhPosts.getPostDesc()))
-            missingFieldsList.add(AppConstants.POST_DESC);
+        if (Utility.isFieldEmpty(dhPromotions.getPromotionDesc()))
+            missingFieldsList.add(AppConstants.PROMOTION_DESC);
 
-        if (Utility.isFieldEmpty(dhPosts.getOfferStartTime()) && !Utility.isFieldEmpty(dhPosts.getOfferEndTime())) {
-            missingFieldsList.add(AppConstants.POST_OFFER_START_TIME);
-        } else if (Utility.isFieldEmpty(dhPosts.getOfferEndTime()) && !Utility.isFieldEmpty(dhPosts.getOfferStartTime())) {
-            missingFieldsList.add(AppConstants.POST_OFFER_END_TIME);
+        if (Utility.isFieldEmpty(dhPromotions.getOfferStartTime()) && !Utility.isFieldEmpty(dhPromotions.getOfferEndTime())) {
+            missingFieldsList.add(AppConstants.PROMOTION_OFFER_START_TIME);
+        } else if (Utility.isFieldEmpty(dhPromotions.getOfferEndTime()) && !Utility.isFieldEmpty(dhPromotions.getOfferStartTime())) {
+            missingFieldsList.add(AppConstants.PROMOTION_OFFER_END_TIME);
         }
 
         return missingFieldsList;

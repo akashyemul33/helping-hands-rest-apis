@@ -8,7 +8,7 @@ import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhPromotions;
 import com.ayprojects.helpinghands.models.DhRatingAndComments;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.DhUser;
@@ -121,7 +121,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
             case CONTENT_POST:
                 contentIdToSearch = AppConstants.POST_ID;
                 Query queryFindPostWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
-                DhPosts queriedDhPost = mongoTemplate.findOne(queryFindPostWithId, DhPosts.class);
+                DhPromotions queriedDhPost = mongoTemplate.findOne(queryFindPostWithId, DhPromotions.class);
                 if (queriedDhPost == null) {
                     mongoTemplate.save(new DhLog("Unable to add rating into posts collection, seems like no post found with given id:" + dhRatingComments.getReviewCommentId() + " rating id=" + dhRatingComments.getReviewCommentId()));
                     return;
@@ -144,12 +144,12 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                     if (queriedDhPost.getTopRatings() != null && queriedDhPost.getTopRatings().size() == AppConstants.LIMIT_RATINGS_IN_POSTS) {
                         Update updatePopTopRating = new Update();
                         updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
-                        mongoTemplate.updateFirst(queryFindPostWithId, updatePopTopRating, DhPosts.class);
+                        mongoTemplate.updateFirst(queryFindPostWithId, updatePopTopRating, DhPromotions.class);
                     }
                     updatePost.push(AppConstants.TOP_RATINGS, dhRatingComments);
                 }
                 updatePost.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
-                mongoTemplate.updateFirst(queryFindPostWithId, updatePost, DhPosts.class);
+                mongoTemplate.updateFirst(queryFindPostWithId, updatePost, DhPromotions.class);
                 break;
             case CONTENT_REQUIREMENT:
                 contentIdToSearch = AppConstants.REQUIREMENT_ID;

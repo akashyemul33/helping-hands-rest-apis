@@ -47,7 +47,7 @@ public class GetImageFoldersAndPrefix {
             throw new IllegalArgumentException("PostType must not be null !");
 
         String imgType = postType.matches(regexBusinessPost) ? businessImgInitial : publicImgInitial;
-        String newPostType = postType.matches(regexBusinessPost) ? AppConstants.BUSINESS_POST : AppConstants.PUBLIC_POST;
+        String newPostType = postType.matches(regexBusinessPost) ? AppConstants.BUSINESS_PROMOTION : AppConstants.PUBLIC_PROMOTION;
         String lowHighQualityFolder = isHigh ? "1" : "0";
         return String.format("%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, postDir, newPostType, uniquePostId, lowHighQualityFolder, imgType, postInitial, uniquePostId);
     }

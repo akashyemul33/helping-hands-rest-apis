@@ -4,7 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhPromotions;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PostsRepository;
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
-public class StrategyGetPosts implements StrategyGetBehaviour<DhPosts> {
+public class StrategyGetPosts implements StrategyGetBehaviour<DhPromotions> {
 
     @Autowired
     MongoTemplate mongoTemplate;
@@ -39,7 +39,7 @@ public class StrategyGetPosts implements StrategyGetBehaviour<DhPosts> {
     PostsRepository postsRepository;
 
     @Override
-    public Response<DhPosts> get(String language, HashMap<String, Object> params) {
+    public Response<DhPromotions> get(String language, HashMap<String, Object> params) {
         if (params == null) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
         }
@@ -63,11 +63,11 @@ public class StrategyGetPosts implements StrategyGetBehaviour<DhPosts> {
         return StrategyName.GetPostStrategy;
     }
 
-    public Response<DhPosts> getPaginatedPosts(String language, int page, int size) {
+    public Response<DhPromotions> getPaginatedPosts(String language, int page, int size) {
         PageRequest paging = PageRequest.of(page, size);
-        Page<DhPosts> dhPostPages = postsRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
-        List<DhPosts> dhPostsList = dhPostPages.getContent();
-        for (DhPosts d : dhPostsList) {
+        Page<DhPromotions> dhPostPages = postsRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
+        List<DhPromotions> dhPromotionsList = dhPostPages.getContent();
+        for (DhPromotions d : dhPromotionsList) {
 
             if (!Utility.isFieldEmpty(d.getOfferStartTime()) && !Utility.isFieldEmpty(d.getOfferEndTime())) {
                 String offerMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_OFFER_MSG);
@@ -92,10 +92,10 @@ public class StrategyGetPosts implements StrategyGetBehaviour<DhPosts> {
             }
         }
 
-        return new Response<DhPosts>(true, 200, "Query successful", dhPostsList.size(), dhPostPages.getNumber(), dhPostPages.getTotalPages(), dhPostPages.getTotalElements(), dhPostsList);
+        return new Response<DhPromotions>(true, 200, "Query successful", dhPromotionsList.size(), dhPostPages.getNumber(), dhPostPages.getTotalPages(), dhPostPages.getTotalElements(), dhPromotionsList);
     }
 
-    public Response<DhPosts> getPaginatedPostsByPlaceId(String language, int page, int size, String placeId) {
+    public Response<DhPromotions> getPaginatedPostsByPlaceId(String language, int page, int size, String placeId) {
         LOGGER.info("PostsServiceImpl->getPaginatedPostsByPlaceId : placeId=" + placeId + " page=" + page + " size=" + size);
 
         List<String> missingFieldsList = new ArrayList<>();
@@ -112,11 +112,11 @@ public class StrategyGetPosts implements StrategyGetBehaviour<DhPosts> {
         criteria.and(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i");
         criteria.and(AppConstants.PLACE_ID).is(placeId);
         Query queryGetPosts = new Query(criteria).with(pageable);
-        List<DhPosts> dhPostsList = mongoTemplate.find(queryGetPosts, DhPosts.class);
-        Page<DhPosts> dhPostsPage = PageableExecutionUtils.getPage(
-                dhPostsList,
+        List<DhPromotions> dhPromotionsList = mongoTemplate.find(queryGetPosts, DhPromotions.class);
+        Page<DhPromotions> dhPostsPage = PageableExecutionUtils.getPage(
+                dhPromotionsList,
                 pageable,
-                () -> mongoTemplate.count(queryGetPosts, DhPosts.class));
-        return new Response<>(true, 200, "Query successful", dhPostsList.size(), dhPostsPage.getNumber(), dhPostsPage.getTotalPages(), dhPostsPage.getTotalElements(), dhPostsList);
+                () -> mongoTemplate.count(queryGetPosts, DhPromotions.class));
+        return new Response<>(true, 200, "Query successful", dhPromotionsList.size(), dhPostsPage.getNumber(), dhPostsPage.getTotalPages(), dhPostsPage.getTotalElements(), dhPromotionsList);
     }
 }

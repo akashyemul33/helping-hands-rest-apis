@@ -161,7 +161,7 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
              * pass product prices visible users and other few details as empty to avoid heavy data transmission
              */
             dhPlace.setTopRatings(new ArrayList<>());
-            dhPlace.setTopPosts(new ArrayList<>());
+            dhPlace.setTopPromotions(new ArrayList<>());
             dhPlace.setProductPricesVisibleUsers(new ArrayList<>());
             return new Response<DhPlace>(true, 200, "Query successful", Collections.singletonList(dhPlace));
         }

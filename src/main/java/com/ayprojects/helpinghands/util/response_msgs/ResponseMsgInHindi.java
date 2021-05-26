@@ -47,15 +47,15 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, "आपका जगह को सफलतापूर्वक जोड़ दिया गया है, जब हम इसे अनुमोदित कर देंगे तो आपके लोग इसे स्थानों के अनुभाग में देख सकते हैं।");
             responseMsgsMap.put(RESPONSEMESSAGE_CONGRATULATIONS, "बधाई हो ");
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, "नई रेटिंग और टिप्पणी जोड़ी गई है !");
-            responseMsgsMap.put(RESPONSEMESSAGE_NEW_POST_ADDED, "नई पोस्ट सफलतापूर्वक जोड़ दी गई है !");
+            responseMsgsMap.put(RESPONSEMESSAGE_NEW_PROMOTION_ADDED, "नई पोस्ट सफलतापूर्वक जोड़ दी गई है !");
             responseMsgsMap.put(RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED, "नई आवश्यकता को सफलतापूर्वक जोड़ा गया है !");
             responseMsgsMap.put(RESPONSEMESSAGE_IMAGE_TYPE_MISSING, "छवि प्रकार गायब है !");
             responseMsgsMap.put(RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, "कृपया अपना छवि प्रकार जांचें, छवि प्रकार के लिए कोई मिलान नहीं मिला !");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_IMAGES_ADDED, "स्थान चित्र सफलतापूर्वक जोड़े गए हैं !");
-            responseMsgsMap.put(RESPONSEMESSAGE_POST_IMAGES_ADDED, "पोस्ट छवियों को सफलतापूर्वक जोड़ा गया है !");
+            responseMsgsMap.put(RESPONSEMESSAGE_PROMOTION_IMAGES_ADDED, "पोस्ट छवियों को सफलतापूर्वक जोड़ा गया है !");
             responseMsgsMap.put(RESPONSEMESSAGE_REQ_IMAGES_ADDED, "आवश्यकता छवियों को सफलतापूर्वक जोड़ा गया है !");
             responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES, "स्थान चित्र जोड़ने में असमर्थ !");
-            responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES, "पोस्ट छवियों को जोड़ने में असमर्थ !");
+            responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_PROMOTION_IMAGES, "पोस्ट छवियों को जोड़ने में असमर्थ !");
             responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES, "आवश्यकता छवियों को जोड़ने में असमर्थ !");
             responseMsgsMap.put(RESPONSEMESSAGE_USER_ID_IS_MISSING, "उपयोगकर्ता आईडी गायब है !");
             responseMsgsMap.put(RESPONSEMESSAGE_MOBILE_IS_EMPTY, "मोबाइल नंबर खाली नहीं होना चाहिए !");

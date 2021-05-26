@@ -1,6 +1,5 @@
 package com.ayprojects.helpinghands.repositories;
 
-import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhRequirements;
 
 import org.springframework.data.domain.Page;

@@ -5,7 +5,7 @@ import com.ayprojects.helpinghands.api.enums.SinglePlaceImageOperationsEnum;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhPromotions;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
@@ -153,7 +153,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Response<DhPosts> uploadPostImages(HttpHeaders httpHeaders, Authentication authentication, String postType, String addedBy, MultipartFile[] postImagesLow, MultipartFile[] postImagesHigh, String version) throws ServerSideException {
+    public Response<DhPromotions> uploadPostImages(HttpHeaders httpHeaders, Authentication authentication, String postType, String addedBy, MultipartFile[] postImagesLow, MultipartFile[] postImagesHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
         if (postImagesLow == null || postImagesLow.length == 0 || Utility.isFieldEmpty(postType) || Utility.isFieldEmpty(addedBy)) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
@@ -166,17 +166,17 @@ public class ImageServiceImpl implements ImageService {
         try {
             List<String> postImageUrlsLow = amazonClient.uploadImagesToS3(postImgUploadKeyLow, postImagesLow);
             List<String> postImageUrlsHigh = amazonClient.uploadImagesToS3(postImgUploadKeyHigh, postImagesHigh);
-            DhPosts dhPosts = new DhPosts();
-            dhPosts.setPostId(uniquePostID);
-            dhPosts.setAddedBy(addedBy);
-            dhPosts.setPostImagesLow(postImageUrlsLow);
-            dhPosts.setPostImagesHigh(postImageUrlsHigh);
+            DhPromotions dhPromotions = new DhPromotions();
+            dhPromotions.setPromotionId(uniquePostID);
+            dhPromotions.setAddedBy(addedBy);
+            dhPromotions.setPromotionImagesLow(postImageUrlsLow);
+            dhPromotions.setPromotionImagesHigh(postImageUrlsHigh);
             logService.addLog(new DhLog(addedBy, "Post images have been added"));
             String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED);
-            return new Response<>(true, 201, successMsg, Collections.singletonList(dhPosts), 1);
+            return new Response<>(true, 201, successMsg, Collections.singletonList(dhPromotions), 1);
         } catch (Exception ioException) {
             LOGGER.info("ImageServiceImpl->uploadPostImages : exception = " + ioException.getMessage());
-            String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES);
+            String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PROMOTION_IMAGES);
             return new Response<>(false, 402, errorMsg, new ArrayList<>());
         }
     }

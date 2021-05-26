@@ -1,19 +1,12 @@
 package com.ayprojects.helpinghands.services.requirements;
 
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
-import com.ayprojects.helpinghands.models.DhPosts;
 import com.ayprojects.helpinghands.models.DhRequirements;
 import com.ayprojects.helpinghands.models.Response;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface RequirementsService {

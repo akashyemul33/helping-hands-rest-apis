@@ -3,7 +3,7 @@ package com.ayprojects.helpinghands.services.posts;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhPlace;
-import com.ayprojects.helpinghands.models.DhPosts;
+import com.ayprojects.helpinghands.models.DhPromotions;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.repositories.PostsRepository;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.ayprojects.helpinghands.AppConstants.BUSINESS_POST;
+import static com.ayprojects.helpinghands.AppConstants.BUSINESS_PROMOTION;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Service
@@ -48,101 +48,101 @@ public class PostsServiceImpl implements PostsService {
     CommonService commonService;
 
     @Override
-    public Response<DhPosts> addPost(Authentication authentication, HttpHeaders httpHeaders, DhPosts dhPosts, String version) throws ServerSideException {
+    public Response<DhPromotions> addPost(Authentication authentication, HttpHeaders httpHeaders, DhPromotions dhPromotions, String version) throws ServerSideException {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PostsServiceImpl->addPost : language=" + language);
 
         String emptyBodyResMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_EMPTY_BODY, language);
-        if (dhPosts == null) {
-            return new Response<DhPosts>(false, 402, emptyBodyResMsg, new ArrayList<>(), 0);
+        if (dhPromotions == null) {
+            return new Response<DhPromotions>(false, 402, emptyBodyResMsg, new ArrayList<>(), 0);
         }
 
         //check if postId present && postImages present
-        if (Utility.isFieldEmpty(dhPosts.getPlaceId()) || dhPosts.getPostImagesLow() == null || dhPosts.getPostImagesLow().size() <= 0) {
-            dhPosts.setPostId(Utility.getUUID());
+        if (Utility.isFieldEmpty(dhPromotions.getPlaceId()) || dhPromotions.getPromotionImagesLow() == null || dhPromotions.getPromotionImagesLow().size() <= 0) {
+            dhPromotions.setPromotionId(Utility.getUUID());
         }
 
-        List<String> missingFieldsList = Validations.findMissingFieldsForPosts(dhPosts);
+        List<String> missingFieldsList = Validations.findMissingFieldsForPosts(dhPromotions);
         if (missingFieldsList.size() > 0) {
             emptyBodyResMsg = emptyBodyResMsg + " , these fields are missing : " + missingFieldsList;
-            return new Response<DhPosts>(false, 402, emptyBodyResMsg, new ArrayList<>(), 0);
+            return new Response<DhPromotions>(false, 402, emptyBodyResMsg, new ArrayList<>(), 0);
         } else {
-            if (!dhPosts.getPostType().equalsIgnoreCase(AppConstants.PUBLIC_POST) && !dhPosts.getPostType().equalsIgnoreCase(BUSINESS_POST)) {
-                return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE, language), new ArrayList<>(), 0);
+            if (!dhPromotions.getPromotionType().equalsIgnoreCase(AppConstants.PUBLIC_PROMOTION) && !dhPromotions.getPromotionType().equalsIgnoreCase(BUSINESS_PROMOTION)) {
+                return new Response<DhPromotions>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE, language), new ArrayList<>(), 0);
             }
         }
 
 
         //check for user existence
-        if (!commonService.checkUserExistence(dhPosts.getAddedBy())) {
-            return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, language), new ArrayList<>(), 0);
+        if (!commonService.checkUserExistence(dhPromotions.getAddedBy())) {
+            return new Response<DhPromotions>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, language), new ArrayList<>(), 0);
         }
 
         //check whether place exists with given placeId
         DhPlace queriedDhPlace = null;
         Query queryFindPlaceWithId = null;
         boolean isBusinessPost = false;
-        if (dhPosts.getPostType().matches(AppConstants.REGEX_BUSINESS_POST)) {
+        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_POST)) {
             isBusinessPost = true;
-            queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPosts.getPlaceId()));
+            queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPromotions.getPlaceId()));
             queryFindPlaceWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
             queryFindPlaceWithId.fields().include(AppConstants.TOP_POSTS);
             queryFindPlaceWithId.fields().include(AppConstants.NUMBER_OF_POSTS);
             queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId, DhPlace.class);
             if (queriedDhPlace == null) {
-                return new Response<DhPosts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID, language), new ArrayList<>(), 0);
+                return new Response<DhPromotions>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID, language), new ArrayList<>(), 0);
             }
         }
 
         //store posts
-        dhPosts = (DhPosts) utility.setCommonAttrs(dhPosts, AppConstants.STATUS_ACTIVE);
-        mongoTemplate.save(dhPosts, AppConstants.COLLECTION_DH_POSTS);
-        utility.addLog(authentication.getName(), "New [" + dhPosts.getPostType() + "] post has been added.");
+        dhPromotions = (DhPromotions) utility.setCommonAttrs(dhPromotions, AppConstants.STATUS_ACTIVE);
+        mongoTemplate.save(dhPromotions, AppConstants.COLLECTION_DH_PROMOTIONS);
+        utility.addLog(authentication.getName(), "New [" + dhPromotions.getPromotionType() + "] post has been added.");
 
         //update the place if post is businesspost
         if (isBusinessPost) {
             LOGGER.info("PostsServiceImpl->addPost : It's business post");
             Update updatePlace = new Update();
             LOGGER.info("PostsServiceImpl->addPost : postIds block is null, pushing post id into postIds array");
-            updatePlace.push(AppConstants.POST_IDS, dhPosts.getPostId());
-            updatePlace.set(AppConstants.NUMBER_OF_POSTS, queriedDhPlace.getNumberOfPosts() + 1);
-            if (queriedDhPlace.getTopPosts() != null && queriedDhPlace.getTopPosts().size() == AppConstants.LIMIT_POSTS_IN_PLACES) {
+            updatePlace.push(AppConstants.POST_IDS, dhPromotions.getPromotionId());
+            updatePlace.set(AppConstants.NUMBER_OF_POSTS, queriedDhPlace.getNumberOfPromotions() + 1);
+            if (queriedDhPlace.getTopPromotions() != null && queriedDhPlace.getTopPromotions().size() == AppConstants.LIMIT_POSTS_IN_PLACES) {
                 Update updatePopTopPost = new Update();
                 updatePopTopPost.pop(AppConstants.TOP_POSTS, Update.Position.FIRST);
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopPost, DhPlace.class);
             }
-            updatePlace.push(AppConstants.TOP_POSTS, dhPosts);
+            updatePlace.push(AppConstants.TOP_POSTS, dhPromotions);
             updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
         }
 
-        return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_POST_ADDED, language), new ArrayList<>(), 1);
+        return new Response<>(true, 201, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_NEW_PROMOTION_ADDED, language), new ArrayList<>(), 1);
     }
 
     @Override
-    public Response<DhPosts> deletePost(Authentication authentication, HttpHeaders httpHeaders, String postId, String version) throws ServerSideException {
+    public Response<DhPromotions> deletePost(Authentication authentication, HttpHeaders httpHeaders, String postId, String version) throws ServerSideException {
         return null;
     }
 
     @Override
-    public Response<DhPosts> updatePost(Authentication authentication, HttpHeaders httpHeaders, DhPosts dhPosts, String version) throws ServerSideException {
+    public Response<DhPromotions> updatePost(Authentication authentication, HttpHeaders httpHeaders, DhPromotions dhPromotions, String version) throws ServerSideException {
         return null;
     }
 
     @Override
-    public Response<DhPosts> getPosts(Authentication authentication, HttpHeaders httpHeaders, String searchValue, String version) {
+    public Response<DhPromotions> getPosts(Authentication authentication, HttpHeaders httpHeaders, String searchValue, String version) {
         return null;
     }
 
     @Override
-    public Response<DhPosts> getPaginatedPosts(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version) {
+    public Response<DhPromotions> getPaginatedPosts(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String version) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PostsServiceImpl->addPost : language=" + language);
 
         PageRequest paging = PageRequest.of(page, size);
-        Page<DhPosts> dhPostPages = postsRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
-        List<DhPosts> dhPostsList = dhPostPages.getContent();
-        for (DhPosts d : dhPostsList) {
+        Page<DhPromotions> dhPostPages = postsRepository.findAllByStatus(AppConstants.STATUS_ACTIVE, paging);
+        List<DhPromotions> dhPromotionsList = dhPostPages.getContent();
+        for (DhPromotions d : dhPromotionsList) {
 
             if (!Utility.isFieldEmpty(d.getOfferStartTime()) && !Utility.isFieldEmpty(d.getOfferEndTime())) {
                 String offerMsg = Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_OFFER_MSG, language);
@@ -167,11 +167,11 @@ public class PostsServiceImpl implements PostsService {
             }
         }
 
-        return new Response<DhPosts>(true, 200, "Query successful", dhPostsList.size(), dhPostPages.getNumber(), dhPostPages.getTotalPages(), dhPostPages.getTotalElements(), dhPostsList);
+        return new Response<DhPromotions>(true, 200, "Query successful", dhPromotionsList.size(), dhPostPages.getNumber(), dhPostPages.getTotalPages(), dhPostPages.getTotalElements(), dhPromotionsList);
     }
 
     @Override
-    public Response<DhPosts> getPaginatedPostsByPlaceId(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String placeId, String version) {
+    public Response<DhPromotions> getPaginatedPostsByPlaceId(Authentication authentication, HttpHeaders httpHeaders, int page, int size, String placeId, String version) {
         String language = Utility.getLanguageFromHeader(httpHeaders).toUpperCase();
         LOGGER.info("PostsServiceImpl->getPaginatedPostsByPlaceId : language=" + language);
         LOGGER.info("PostsServiceImpl->getPaginatedPostsByPlaceId : placeId=" + placeId + " page=" + page + " size=" + size);
@@ -190,11 +190,11 @@ public class PostsServiceImpl implements PostsService {
         criteria.and(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i");
         criteria.and(AppConstants.PLACE_ID).is(placeId);
         Query queryGetPosts = new Query(criteria).with(pageable);
-        List<DhPosts> dhPostsList = mongoTemplate.find(queryGetPosts, DhPosts.class);
-        Page<DhPosts> dhPostsPage = PageableExecutionUtils.getPage(
-                dhPostsList,
+        List<DhPromotions> dhPromotionsList = mongoTemplate.find(queryGetPosts, DhPromotions.class);
+        Page<DhPromotions> dhPostsPage = PageableExecutionUtils.getPage(
+                dhPromotionsList,
                 pageable,
-                () -> mongoTemplate.count(queryGetPosts, DhPosts.class));
-        return new Response<>(true, 200, "Query successful", dhPostsList.size(), dhPostsPage.getNumber(), dhPostsPage.getTotalPages(), dhPostsPage.getTotalElements(), dhPostsList);
+                () -> mongoTemplate.count(queryGetPosts, DhPromotions.class));
+        return new Response<>(true, 200, "Query successful", dhPromotionsList.size(), dhPostsPage.getNumber(), dhPostsPage.getTotalPages(), dhPostsPage.getTotalElements(), dhPromotionsList);
     }
 }

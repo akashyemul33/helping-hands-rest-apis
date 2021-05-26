@@ -44,15 +44,15 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_NEW_PLACE_ADDED_WITH_PENDING, "आपले ठिकाण यशस्वीरित्या जोडले गेले आहे, एकदा आम्ही ते मंजूर केले तेव्हा आपले लोक ते ठिकाणी विभागात पाहू शकतात.");
         responseMsgsMap.put(RESPONSEMESSAGE_CONGRATULATIONS, "अभिनंदन ");
         responseMsgsMap.put(RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED, "नवीन रेटिंग आणि टिप्पणी जोडली गेली आहे !");
-        responseMsgsMap.put(RESPONSEMESSAGE_NEW_POST_ADDED, "नवीन पोस्ट यशस्वीरित्या जोडली गेली आहे !");
+        responseMsgsMap.put(RESPONSEMESSAGE_NEW_PROMOTION_ADDED, "नवीन पोस्ट यशस्वीरित्या जोडली गेली आहे !");
         responseMsgsMap.put(RESPONSEMESSAGE_NEW_REQUIREMENT_ADDED, "नवीन आवश्यकता यशस्वीरित्या जोडली गेली आहे !");
         responseMsgsMap.put(RESPONSEMESSAGE_IMAGE_TYPE_MISSING, "प्रतिमेचा प्रकार गहाळ आहे !");
         responseMsgsMap.put(RESPONSEMESSAGE_INCORRECT_IMAGE_TYPE, "कृपया आपला प्रतिमा प्रकार तपासा, प्रतिमा प्रकारासाठी कोणतीही जुळणी आढळली नाही !");
         responseMsgsMap.put(RESPONSEMESSAGE_PLACE_IMAGES_ADDED, "ठिकाण प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !");
-        responseMsgsMap.put(RESPONSEMESSAGE_POST_IMAGES_ADDED, "पोस्ट प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !");
+        responseMsgsMap.put(RESPONSEMESSAGE_PROMOTION_IMAGES_ADDED, "पोस्ट प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !");
         responseMsgsMap.put(RESPONSEMESSAGE_REQ_IMAGES_ADDED, "आवश्यकता  प्रतिमा यशस्वीरित्या जोडल्या गेल्या आहेत !");
         responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES, "ठिकाण प्रतिमा जोडण्यात अक्षम !");
-        responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_POST_IMAGES, "पोस्ट प्रतिमा जोडण्यात अक्षम !");
+        responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_PROMOTION_IMAGES, "पोस्ट प्रतिमा जोडण्यात अक्षम !");
         responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES, "आवश्यकता प्रतिमा जोडण्यात अक्षम !");
         responseMsgsMap.put(RESPONSEMESSAGE_USER_ID_IS_MISSING, "वापरकर्ता आयडी गहाळ आहे !");
         responseMsgsMap.put(RESPONSEMESSAGE_MOBILE_IS_EMPTY, "मोबाइल नंबर रिक्त नसावा !");

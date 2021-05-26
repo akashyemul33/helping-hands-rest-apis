@@ -31,13 +31,13 @@ public class DhPlace extends AllCommonUsedAttributes {
     private List<ProductsWithPrices> productDetails;
     private long numberOfRatings;
     private long numberOfViews;
-    private long numberOfPosts;
+    private long numberOfPromotions;
     private long numberOfProducts;
     private double avgRating;
     private List<String> ratingIds;
-    private List<String> postIds;
+    private List<String> promotionIds;
     private List<DhRatingAndComments> topRatings;
-    private List<DhPosts> topPosts;
+    private List<DhPromotions> topPromotions;
     private String ownerName;
     private List<String> subscribedUsers;//subscribed user id's
     @Transient
@@ -85,7 +85,7 @@ public class DhPlace extends AllCommonUsedAttributes {
 
     }
 
-    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> imageUrlsLow, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPosts, double avgRating, List<String> ratingIds, List<String> postIds,List<DhRatingAndComments> topRatings, List<DhPosts> topPosts, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
+    public DhPlace(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String placeId, String placeType, Address placeAddress, String placeMainCategoryId, String addedBy, String placeSubCategoryId, String placeCategoryName, String placeName, String placeDesc, Contact placeContact, boolean doorService, List<String> imageUrlsLow, PlaceAvailabilityDetails placeAvailablityDetails, List<ProductsWithPrices> productDetails, long numberOfRatings, long numberOfViews, long numberOfPromotions, double avgRating, List<String> ratingIds, List<String> promotionIds, List<DhRatingAndComments> topRatings, List<DhPromotions> topPromotions, List<String> subscribedUsers, boolean addressGenerated, String placeSubCategoryName, String ownerName, long numberOfProducts) {
         this.schemaVersion = schemaVersion;
         this.createdDateTime = createdDateTime;
         this.modifiedDateTime = modifiedDateTime;
@@ -107,12 +107,12 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.productDetails = productDetails;
         this.numberOfRatings = numberOfRatings;
         this.numberOfViews = numberOfViews;
-        this.numberOfPosts = numberOfPosts;
+        this.numberOfPromotions = numberOfPromotions;
         this.avgRating = avgRating;
         this.ratingIds = ratingIds;
-        this.postIds = postIds;
+        this.promotionIds = promotionIds;
         this.topRatings = topRatings;
-        this.topPosts = topPosts;
+        this.topPromotions = topPromotions;
         this.ownerName = ownerName;
         this.subscribedUsers = subscribedUsers;
         this.addressGenerated = addressGenerated;
@@ -367,12 +367,12 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.numberOfViews = numberOfViews;
     }
 
-    public long getNumberOfPosts() {
-        return numberOfPosts;
+    public long getNumberOfPromotions() {
+        return numberOfPromotions;
     }
 
-    public void setNumberOfPosts(long numberOfPosts) {
-        this.numberOfPosts = numberOfPosts;
+    public void setNumberOfPromotions(long numberOfPromotions) {
+        this.numberOfPromotions = numberOfPromotions;
     }
 
     public double getAvgRating() {
@@ -391,12 +391,12 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.ratingIds = ratingIds;
     }
 
-    public List<String> getPostIds() {
-        return postIds;
+    public List<String> getPromotionIds() {
+        return promotionIds;
     }
 
-    public void setPostIds(List<String> postIds) {
-        this.postIds = postIds;
+    public void setPromotionIds(List<String> promotionIds) {
+        this.promotionIds = promotionIds;
     }
 
     public List<DhRatingAndComments> getTopRatings() {
@@ -407,12 +407,12 @@ public class DhPlace extends AllCommonUsedAttributes {
         this.topRatings = topRatings;
     }
 
-    public List<DhPosts> getTopPosts() {
-        return topPosts;
+    public List<DhPromotions> getTopPromotions() {
+        return topPromotions;
     }
 
-    public void setTopPosts(List<DhPosts> topPosts) {
-        this.topPosts = topPosts;
+    public void setTopPromotions(List<DhPromotions> topPromotions) {
+        this.topPromotions = topPromotions;
     }
 
 }
