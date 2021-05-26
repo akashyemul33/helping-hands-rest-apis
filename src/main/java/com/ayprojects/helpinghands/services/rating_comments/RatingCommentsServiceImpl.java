@@ -91,7 +91,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                 mongoTemplate.updateFirst(queryFindPlaceWithId,updatePlace, DhPlace.class);
                 break;
             case AppConstants.PROMOTION:
-                contentIdToSearch = AppConstants.POST_ID;
+                contentIdToSearch = AppConstants.PROMOTION_ID;
                 Query queryFindPostWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
                 DhPromotions queriedDhPost = mongoTemplate.findOne(queryFindPostWithId, DhPromotions.class);
                 if(queriedDhPost == null)throw new ServerSideException("Unable to add rating into posts collection, seems like no post found with given id");
@@ -106,7 +106,7 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                 }
                 updatePost.set(AppConstants.AVG_RATING,avgPostsRating);
                 updatePost.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
-                if(queriedDhPost.getTopRatings()!=null && queriedDhPost.getTopRatings().size()==AppConstants.LIMIT_RATINGS_IN_POSTS){
+                if(queriedDhPost.getTopRatings()!=null && queriedDhPost.getTopRatings().size()==AppConstants.LIMIT_RATINGS_IN_PROMOTIONS){
                     Update updatePopTopRating = new Update();
                     updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
                     mongoTemplate.updateFirst(queryFindPostWithId,updatePopTopRating, DhPromotions.class);

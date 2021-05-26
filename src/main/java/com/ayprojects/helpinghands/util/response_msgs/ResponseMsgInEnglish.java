@@ -67,7 +67,7 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_OPEN_CLOSES_AT, "Open);Closes at ");
             responseMsgsMap.put(RESPONSEMESSAGE_UNKNOWN, "Unknwon");
             responseMsgsMap.put(RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, "User not found !");
-            responseMsgsMap.put(RESPONSEMESSAGE_INVALID_POSTTYPE, "Invalid Post Type !");
+            responseMsgsMap.put(RESPONSEMESSAGE_INVALID_PROMOTIONTYPE, "Invalid Post Type !");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID, "Place not found !");
             responseMsgsMap.put(RESPONSEMESSAGE_OFFER_MSG, "Offer valid from ");
             responseMsgsMap.put(RESPONSEMESSAGE_AUTHENTICATION_REQD, "Authentication required !");
@@ -115,7 +115,9 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_REJECTED, "Your request for showing product prices to place %s has been rejected by owner !");
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICES_REQ_APPROVED, "Update on your request !");
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_APPROVED, "Your request for showing product prices to place %s has been approved by owner !");
-
+            responseMsgsMap.put(RESPONSEMESSAGE_HH_POST_IMAGES_ADDED, "Post images have been uploaded successfully .");
+            responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_HH_POST_IMAGES, "Unable to add post images !");
+            responseMsgsMap.put(RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX, "Number of images is greater than max image upload limit !");
 
         }
     }

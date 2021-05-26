@@ -55,12 +55,12 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPromotions> {
         DhPlace queriedDhPlace = null;
         Query queryFindPlaceWithId = null;
         boolean isBusinessPost = false;
-        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_POST)) {
+        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_PROMOTION)) {
             isBusinessPost = true;
             queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPromotions.getPlaceId()));
             queryFindPlaceWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-            queryFindPlaceWithId.fields().include(AppConstants.TOP_POSTS);
-            queryFindPlaceWithId.fields().include(AppConstants.NUMBER_OF_POSTS);
+            queryFindPlaceWithId.fields().include(AppConstants.TOP_PROMOTIONS);
+            queryFindPlaceWithId.fields().include(AppConstants.NUMBER_OF_PROMOTIONS);
             queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId, DhPlace.class);
             if (queriedDhPlace == null) {
                 return new Response<DhPromotions>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID, language), new ArrayList<>(), 0);
@@ -77,14 +77,14 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPromotions> {
             LOGGER.info("PostsServiceImpl->addPost : It's business post");
             Update updatePlace = new Update();
             LOGGER.info("PostsServiceImpl->addPost : postIds block is null, pushing post id into postIds array");
-            updatePlace.push(AppConstants.POST_IDS, dhPromotions.getPromotionId());
-            updatePlace.set(AppConstants.NUMBER_OF_POSTS, queriedDhPlace.getNumberOfPromotions() + 1);
-            if (queriedDhPlace.getTopPromotions() != null && queriedDhPlace.getTopPromotions().size() == AppConstants.LIMIT_POSTS_IN_PLACES) {
+            updatePlace.push(AppConstants.PROMOTION_IDS, dhPromotions.getPromotionId());
+            updatePlace.set(AppConstants.NUMBER_OF_PROMOTIONS, queriedDhPlace.getNumberOfPromotions() + 1);
+            if (queriedDhPlace.getTopPromotions() != null && queriedDhPlace.getTopPromotions().size() == AppConstants.LIMIT_PROMOTIONS_IN_PLACES) {
                 Update updatePopTopPost = new Update();
-                updatePopTopPost.pop(AppConstants.TOP_POSTS, Update.Position.FIRST);
+                updatePopTopPost.pop(AppConstants.TOP_PROMOTIONS, Update.Position.FIRST);
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopPost, DhPlace.class);
             }
-            updatePlace.push(AppConstants.TOP_POSTS, dhPromotions);
+            updatePlace.push(AppConstants.TOP_PROMOTIONS, dhPromotions);
             updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
         }
@@ -119,14 +119,14 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPromotions> {
         if (Utility.isFieldEmpty(dhPromotions.getAddedBy()))
             missingFieldsList.add(AppConstants.ADDED_BY);
         if (Utility.isFieldEmpty(dhPromotions.getPromotionType()))
-            missingFieldsList.add(AppConstants.POST_TYPE);
+            missingFieldsList.add(AppConstants.PROMOTION_TYPE);
         if (!dhPromotions.getPromotionType().equalsIgnoreCase(AppConstants.PUBLIC_PROMOTION) && !dhPromotions.getPromotionType().equalsIgnoreCase(BUSINESS_PROMOTION)) {
-            return new Response<DhPromotions>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE, language), new ArrayList<>(), 0);
+            return new Response<DhPromotions>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INVALID_PROMOTIONTYPE, language), new ArrayList<>(), 0);
         }
 
-        if (Utility.isFieldEmpty(dhPromotions.getPromotionId())) missingFieldsList.add(AppConstants.POST_ID);
+        if (Utility.isFieldEmpty(dhPromotions.getPromotionId())) missingFieldsList.add(AppConstants.PROMOTION_ID);
 
-        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_POST)) {
+        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_PROMOTION)) {
             if (Utility.isFieldEmpty(dhPromotions.getPlaceId())) {
                 missingFieldsList.add(AppConstants.PLACE_ID);
             }
@@ -144,7 +144,7 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPromotions> {
         }
 
         if (Utility.isFieldEmpty(dhPromotions.getPromotionTitle()))
-            missingFieldsList.add(AppConstants.POST_TITLE);
+            missingFieldsList.add(AppConstants.PROMOTION_TITLE);
 
         if (Utility.isFieldEmpty(dhPromotions.getPromotionDesc()))
             missingFieldsList.add(AppConstants.PROMOTION_DESC);

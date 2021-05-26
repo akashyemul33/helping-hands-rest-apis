@@ -2,6 +2,7 @@ package com.ayprojects.helpinghands.controllers;
 
 import com.ayprojects.helpinghands.api.enums.SinglePlaceImageOperationsEnum;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
+import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPromotions;
 import com.ayprojects.helpinghands.models.DhUser;
@@ -129,4 +130,13 @@ public class ImageController {
         return new ResponseEntity<>(imageService.uploadRequirementImages(httpHeaders,authentication,reqType,addedBy,reqImages,version), HttpStatus.CREATED);
     }*/
 
+    @PostMapping(value = "/uploadHhPostImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<DhHHPost>> uploadHhPostImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "postImagesLow", required = true) MultipartFile[] postImagesLow, @RequestPart(value = "postImagesHigh", required = true) MultipartFile[] postImagesHigh, @PathVariable String version) throws ServerSideException {
+        Response<DhHHPost> response = imageService.uploadHhPostImages(httpHeaders, authentication, addedBy, postImagesLow, postImagesHigh, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 }

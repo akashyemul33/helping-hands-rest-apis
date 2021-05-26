@@ -118,8 +118,8 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                 updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
                 break;
-            case CONTENT_POST:
-                contentIdToSearch = AppConstants.POST_ID;
+            case CONTENT_PROMOTION:
+                contentIdToSearch = AppConstants.PROMOTION_ID;
                 Query queryFindPostWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
                 DhPromotions queriedDhPost = mongoTemplate.findOne(queryFindPostWithId, DhPromotions.class);
                 if (queriedDhPost == null) {
@@ -141,7 +141,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                 updatePost.set(AppConstants.AVG_RATING, avgPostsRating);
                 if (!edit) {
                     updatePost.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
-                    if (queriedDhPost.getTopRatings() != null && queriedDhPost.getTopRatings().size() == AppConstants.LIMIT_RATINGS_IN_POSTS) {
+                    if (queriedDhPost.getTopRatings() != null && queriedDhPost.getTopRatings().size() == AppConstants.LIMIT_RATINGS_IN_PROMOTIONS) {
                         Update updatePopTopRating = new Update();
                         updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
                         mongoTemplate.updateFirst(queryFindPostWithId, updatePopTopRating, DhPromotions.class);

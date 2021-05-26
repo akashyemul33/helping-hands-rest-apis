@@ -70,7 +70,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_OPEN_CLOSES_AT, "खुला);बंद किया जाएगा");
             responseMsgsMap.put(RESPONSEMESSAGE_UNKNOWN, "अनजान");
             responseMsgsMap.put(RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, "उपयोगकर्ता नहीं मिला !");
-            responseMsgsMap.put(RESPONSEMESSAGE_INVALID_POSTTYPE, "अमान्य पोस्ट प्रकार !");
+            responseMsgsMap.put(RESPONSEMESSAGE_INVALID_PROMOTIONTYPE, "अमान्य पोस्ट प्रकार !");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID, "जगह नहीं मिली !");
             responseMsgsMap.put(RESPONSEMESSAGE_OFFER_MSG, "प्रस्ताव की वैधता ");
             responseMsgsMap.put(RESPONSEMESSAGE_AUTHENTICATION_REQD, "प्रमाणीकरण आवश्यक !");
@@ -118,6 +118,9 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_REJECTED, "Your request for showing product prices to place %s has been rejected by owner !");
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_SHOWPRICES_REQ_APPROVED, "Update on your request !");
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_APPROVED, "Your request for showing product prices to place %s has been approved by owner !");
+            responseMsgsMap.put(RESPONSEMESSAGE_HH_POST_IMAGES_ADDED, "Post images have been uploaded successfully .");
+            responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_HH_POST_IMAGES, "Unable to add post images !");
+            responseMsgsMap.put(RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX, "Number of images is greater than max image upload limit !");
         }
     }
 

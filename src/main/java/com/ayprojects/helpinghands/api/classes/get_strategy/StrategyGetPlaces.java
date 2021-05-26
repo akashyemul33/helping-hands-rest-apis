@@ -205,7 +205,7 @@ public class StrategyGetPlaces implements StrategyGetBehaviour<DhPlace> {
         Query query = new Query(Criteria.where(AppConstants.ADDED_BY).is(userId));
         query.addCriteria(Criteria.where(AppConstants.PLACE_TYPE).regex(AppConstants.BUSINESS_PLACE, "i"));
         query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        query.fields().exclude(AppConstants.TOP_POSTS);
+        query.fields().exclude(AppConstants.TOP_PROMOTIONS);
         query.fields().exclude(AppConstants.TOP_RATINGS);
         switch (typeOfData) {
             case PLACE_DATA:

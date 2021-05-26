@@ -165,11 +165,11 @@ public class Validations {
         if (Utility.isFieldEmpty(dhPromotions.getAddedBy()))
             missingFieldsList.add(AppConstants.ADDED_BY);
         if (Utility.isFieldEmpty(dhPromotions.getPromotionType()))
-            missingFieldsList.add(AppConstants.POST_TYPE);
-        if (Utility.isFieldEmpty(dhPromotions.getPromotionId())) missingFieldsList.add(AppConstants.POST_ID);
+            missingFieldsList.add(AppConstants.PROMOTION_TYPE);
+        if (Utility.isFieldEmpty(dhPromotions.getPromotionId())) missingFieldsList.add(AppConstants.PROMOTION_ID);
 
 
-        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_POST)) {
+        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_PROMOTION)) {
             if (Utility.isFieldEmpty(dhPromotions.getPlaceId())) {
                 missingFieldsList.add(AppConstants.PLACE_ID);
             }
@@ -187,7 +187,7 @@ public class Validations {
         }
 
         if (Utility.isFieldEmpty(dhPromotions.getPromotionTitle()))
-            missingFieldsList.add(AppConstants.POST_TITLE);
+            missingFieldsList.add(AppConstants.PROMOTION_TITLE);
 
         if (Utility.isFieldEmpty(dhPromotions.getPromotionDesc()))
             missingFieldsList.add(AppConstants.PROMOTION_DESC);

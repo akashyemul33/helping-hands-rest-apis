@@ -10,13 +10,22 @@ public class DhHHPost extends AllCommonUsedAttributes {
     private String postId;
     private Address address;
     private String categoryId;
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     private int numberOfPeople;
     private List<String> imgUrlLow;
     private List<String> imgUrlHigh;
     private List<String> helpedPeopleUserIds;
     private String message;
     private long postRatingCount;
-    private List<DhHHPostRating> postRatings;
     private List<String> likedUserIds;
     private String priorityId;
     private String priorityName;
@@ -147,14 +156,6 @@ public class DhHHPost extends AllCommonUsedAttributes {
 
     public void setPostRatingCount(long postRatingCount) {
         this.postRatingCount = postRatingCount;
-    }
-
-    public List<DhHHPostRating> getPostRatings() {
-        return postRatings;
-    }
-
-    public void setPostRatings(List<DhHHPostRating> postRatings) {
-        this.postRatings = postRatings;
     }
 
 }

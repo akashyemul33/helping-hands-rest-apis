@@ -107,8 +107,8 @@ public class StrategyGetPosts implements StrategyGetBehaviour<DhPromotions> {
         }
         Pageable pageable = PageRequest.of(page, size);
         Criteria criteria = new Criteria();
-        Pattern patternPostType = Pattern.compile(AppConstants.REGEX_BUSINESS_POST);
-        criteria.and(AppConstants.POST_TYPE).regex(patternPostType);
+        Pattern patternPostType = Pattern.compile(AppConstants.REGEX_BUSINESS_PROMOTION);
+        criteria.and(AppConstants.PROMOTION_TYPE).regex(patternPostType);
         criteria.and(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i");
         criteria.and(AppConstants.PLACE_ID).is(placeId);
         Query queryGetPosts = new Query(criteria).with(pageable);

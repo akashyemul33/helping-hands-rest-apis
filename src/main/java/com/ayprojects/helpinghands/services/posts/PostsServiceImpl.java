@@ -68,7 +68,7 @@ public class PostsServiceImpl implements PostsService {
             return new Response<DhPromotions>(false, 402, emptyBodyResMsg, new ArrayList<>(), 0);
         } else {
             if (!dhPromotions.getPromotionType().equalsIgnoreCase(AppConstants.PUBLIC_PROMOTION) && !dhPromotions.getPromotionType().equalsIgnoreCase(BUSINESS_PROMOTION)) {
-                return new Response<DhPromotions>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INVALID_POSTTYPE, language), new ArrayList<>(), 0);
+                return new Response<DhPromotions>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_INVALID_PROMOTIONTYPE, language), new ArrayList<>(), 0);
             }
         }
 
@@ -82,12 +82,12 @@ public class PostsServiceImpl implements PostsService {
         DhPlace queriedDhPlace = null;
         Query queryFindPlaceWithId = null;
         boolean isBusinessPost = false;
-        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_POST)) {
+        if (dhPromotions.getPromotionType().matches(AppConstants.REGEX_BUSINESS_PROMOTION)) {
             isBusinessPost = true;
             queryFindPlaceWithId = new Query(Criteria.where(AppConstants.PLACE_ID).is(dhPromotions.getPlaceId()));
             queryFindPlaceWithId.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-            queryFindPlaceWithId.fields().include(AppConstants.TOP_POSTS);
-            queryFindPlaceWithId.fields().include(AppConstants.NUMBER_OF_POSTS);
+            queryFindPlaceWithId.fields().include(AppConstants.TOP_PROMOTIONS);
+            queryFindPlaceWithId.fields().include(AppConstants.NUMBER_OF_PROMOTIONS);
             queriedDhPlace = mongoTemplate.findOne(queryFindPlaceWithId, DhPlace.class);
             if (queriedDhPlace == null) {
                 return new Response<DhPromotions>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID, language), new ArrayList<>(), 0);
@@ -104,14 +104,14 @@ public class PostsServiceImpl implements PostsService {
             LOGGER.info("PostsServiceImpl->addPost : It's business post");
             Update updatePlace = new Update();
             LOGGER.info("PostsServiceImpl->addPost : postIds block is null, pushing post id into postIds array");
-            updatePlace.push(AppConstants.POST_IDS, dhPromotions.getPromotionId());
-            updatePlace.set(AppConstants.NUMBER_OF_POSTS, queriedDhPlace.getNumberOfPromotions() + 1);
-            if (queriedDhPlace.getTopPromotions() != null && queriedDhPlace.getTopPromotions().size() == AppConstants.LIMIT_POSTS_IN_PLACES) {
+            updatePlace.push(AppConstants.PROMOTION_IDS, dhPromotions.getPromotionId());
+            updatePlace.set(AppConstants.NUMBER_OF_PROMOTIONS, queriedDhPlace.getNumberOfPromotions() + 1);
+            if (queriedDhPlace.getTopPromotions() != null && queriedDhPlace.getTopPromotions().size() == AppConstants.LIMIT_PROMOTIONS_IN_PLACES) {
                 Update updatePopTopPost = new Update();
-                updatePopTopPost.pop(AppConstants.TOP_POSTS, Update.Position.FIRST);
+                updatePopTopPost.pop(AppConstants.TOP_PROMOTIONS, Update.Position.FIRST);
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePopTopPost, DhPlace.class);
             }
-            updatePlace.push(AppConstants.TOP_POSTS, dhPromotions);
+            updatePlace.push(AppConstants.TOP_PROMOTIONS, dhPromotions);
             updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
         }
@@ -185,8 +185,8 @@ public class PostsServiceImpl implements PostsService {
         }
         Pageable pageable = PageRequest.of(page, size);
         Criteria criteria = new Criteria();
-        Pattern patternPostType = Pattern.compile(AppConstants.REGEX_BUSINESS_POST);
-        criteria.and(AppConstants.POST_TYPE).regex(patternPostType);
+        Pattern patternPostType = Pattern.compile(AppConstants.REGEX_BUSINESS_PROMOTION);
+        criteria.and(AppConstants.PROMOTION_TYPE).regex(patternPostType);
         criteria.and(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i");
         criteria.and(AppConstants.PLACE_ID).is(placeId);
         Query queryGetPosts = new Query(criteria).with(pageable);

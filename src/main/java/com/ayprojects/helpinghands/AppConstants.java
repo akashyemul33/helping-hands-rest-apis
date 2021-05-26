@@ -41,6 +41,7 @@ public class AppConstants {
     public static final String PLACE_MAIN_CATEGORY_ID = "placeCategoryId";
     public static final String PLACE_SUB_CATEGORIES = "placeSubCategories";
     public static final String PROMOTION_IDS = "promotionIds";
+    public static final String PROMOTION_ID = "promotionId";
     public static final String PROMOTION_TYPE = "promotionType";
     public static final String SUB_PLACE_CATEGORY_IDS = "subPlaceCategoryIds";
     public static final String BUSINESS_PLACE = "BusinessPlace";
@@ -53,12 +54,12 @@ public class AppConstants {
     public static final String PUBLIC_PLACE = "PublicPlace";
     public static final String REGEX_PUBLIC_promotion = "^[Pp]ublic[\\s]*[Pp]ost$";
     public static final int LIMIT_RATINGS_IN_PLACES = 5;
-    public static final int LIMIT_RATINGS_IN_promotionS = 5;
+    public static final int LIMIT_RATINGS_IN_PROMOTIONS = 5;
     public static final int LIMIT_RATINGS_IN_REQUIREMENTS = 5;
     public static final int LIMIT_VIEWS_IN_PLACES = 10;
     public static final int LIMIT_VIEWS_IN_promotionS = 10;
     public static final int LIMIT_VIEWS_IN_REQUIREMENTS = 10;
-    public static final int LIMIT_promotionS_IN_PLACES = 3;
+    public static final int LIMIT_PROMOTIONS_IN_PLACES = 3;
     public static final String PUBLIC_REQUIREMENT = "PublicRequirement";
     public static final String ADDED_BY = "addedBy";
     public static final String PLACE_SUB_CATEGORY_ID = "placeSubCategoryId";
@@ -89,11 +90,13 @@ public class AppConstants {
     public static final String OWNER_MOBILE_NUMBER = "ownerMobileNumber";
     public static final String OWNER_EMAIL_ID = "ownerEmailId";
     public static final String RESPONSEMESSAGE_PLACE_IMAGES_ADDED = "PLACE_IMAGES_ADDED";
+    public static final String RESPONSEMESSAGE_HH_POST_IMAGES_ADDED = "HH_POST_IMAGES_ADDED";
     public static final String RESPONSEMESSAGE_PLACE_IMAGES_UPDATED = "PLACE_IMAGES_UPDATED";
     public static final String RESPONSEMESSAGE_PROUDCT_IMAGES_ADDED = "PROUDCT_IMAGES_ADDED";
     public static final String RESPONSEMESSAGE_PROMOTION_IMAGES_ADDED = "Promotion_IMAGES_ADDED";
     public static final String RESPONSEMESSAGE_REQ_IMAGES_ADDED = "REQ_IMAGES_ADDED";
     public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PLACE_IMAGES = "UNABLE_TO_ADD_PLACE_IMAGES";
+    public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_HH_POST_IMAGES = "UNABLE_TO_ADD_HH_POST_IMAGES";
     public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PROMOTION_IMAGES = "UNABLE_TO_ADD_PROMOTION_IMAGES";
     public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_PRODUCT_IMAGES = "UNABLE_TO_ADD_PRODUCT_IMAGES";
     public static final String RESPONSEMESSAGE_UNABLE_TO_ADD_REQ_IMAGES = "UNABLE_TO_ADD_REQ_IMAGES";
@@ -268,6 +271,16 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_NTFN_BODY_SHOWPRICES_REQ_APPROVED = "NTFN_BODY_SHOWPRICES_REQ_ACCEPTED";
     public static final String KEY_GET_PRODUCTPRICES_REQUEST = "productPricesRequest";
     public static final long HH_PER_POST_IMG_LIMIT = 4;
+    public static final String KEY_HH_POST_STEP_ENUM = "HhPostUpdateEnums";
+    public static final String PROMOTION_TITLE = "PromotionTitle";
+    public static final String KEY_HH_POST_ID = "postId";
+    public static final String KEY_HH_CATEGORY_ID = "categoryId";
+    public static final String KEY_HH_CATEGORY_NAME = "categoryName";
+    public static final String KEY_HH_ADDRESS = "address";
+    public static final String COLLECTION_DH_HH_POST = "dhHHPost";
+    public static final String COLLECTION_DH_HH_CATEGORY = "dhHHCategory";
+    public static final String IMG_DIR_FOR_HIGH = "1";
+    public static final String IMG_DIR_FOR_LOW = "0";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
@@ -292,6 +305,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_ERROR_WHILE_FETCHING_APP_CONFIG = "ERROR_WHILE_FETCHING_APP_CONFIG";
     public static String RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED = "USER_AND_APPCONFIG_DETAILS_FETCHED";
     public static String RESPONSEMESSAGE_EMPTY_BODY = "EMPTY_BODY";
+    public static String RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX = "IMAGES_SIZE_GREATER_THAN_MAX";
     public static String RESPONSEMESSAGE_INVALID_PROMOTIONTYPE = "INVALID_PROMOTIONTYPE";
     public static String RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES = "EMPTY_BODY_OR_PLACECATEGORYNAMES";
     public static String RESPONSEMESSAGE_TYPE_PLACECATEGORY_EMPTY = "TYPE_PLACECATEGORY_EMPTY";
@@ -335,10 +349,12 @@ public class AppConstants {
     public static long PER_DAY_ADD_PLACES_LIMIT = 10;
     public static long PER_DAY_ADD_PROMOTIONS_LIMIT = 200;
     public static long PER_PLACE_IMAGES_LIMIT = 8;
+    public static long PER_PLACE_MAX_IMAGES_LIMIT = 20;
     public static long PER_PROMOTION_IMAGES_LIMIT = 8;
+    public static long PER_PROMOTION_MAX_IMAGES_LIMIT = 8;
     public static long PER_PLACE_PRODUCTS_LIMIT = 200;
     public static long PER_PRODUCT_DEFAULT_IMAGES_LIMIT = 4;
-    public static long PER_PRODUCT_MAX_IMAGES_LIMIT = 8;
+    public static long PER_PRODUCT_MAX_IMAGES_LIMIT = 16;
 
     public static String MSG_DISTANCE_CALC_FAILED = "DISTANCE_CALC_FAILED";
 }

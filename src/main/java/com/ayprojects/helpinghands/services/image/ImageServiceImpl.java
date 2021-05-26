@@ -3,12 +3,14 @@ package com.ayprojects.helpinghands.services.image;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.enums.SinglePlaceImageOperationsEnum;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
+import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPromotions;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.util.aws.AmazonClient;
 import com.ayprojects.helpinghands.util.headers.IHeaders;
@@ -41,15 +43,16 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     AmazonClient amazonClient;
     @Autowired
-    private MongoTemplate mongoTemplate;
+    CommonService commonService;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public Response<DhUser> uploadUserImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        if (imageLow == null || imageLow.isEmpty() || imageHigh.isEmpty()) {
+        if (imageLow == null || imageLow.isEmpty() || imageHigh == null || imageHigh.isEmpty())
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
-        }
 
         String uniqueUserID = Utility.getUUID();
         String imgUploadKeyLow = GetImageFoldersAndPrefix.getUserImgUploadKeyLow(uniqueUserID, false);
@@ -70,9 +73,15 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Response<DhPlace> uploadPlaceImages(HttpHeaders httpHeaders, Authentication authentication, String placeType, String addedBy, MultipartFile[] placeImagesLow, MultipartFile[] placeImagesHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        if (placeImagesLow == null || placeImagesLow.length == 0 || Utility.isFieldEmpty(placeType) || Utility.isFieldEmpty(addedBy)) {
+        if (placeImagesHigh == null || placeImagesHigh.length == 0 || Utility.isFieldEmpty(placeType) || Utility.isFieldEmpty(addedBy)) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
+        if (!commonService.checkUserExistence(addedBy)) {
+            return new Response<DhPlace>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+        }
+
+        if (placeImagesHigh.length > AppConstants.PER_PLACE_MAX_IMAGES_LIMIT)
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX), new ArrayList<>());
 
         String uniquePlaceID = Utility.getUUID();
         String placeImgUploadKeyLow = GetImageFoldersAndPrefix.getPlaceImgUploadKey(addedBy, uniquePlaceID, placeType, false);
@@ -155,9 +164,16 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Response<DhPromotions> uploadPostImages(HttpHeaders httpHeaders, Authentication authentication, String postType, String addedBy, MultipartFile[] postImagesLow, MultipartFile[] postImagesHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        if (postImagesLow == null || postImagesLow.length == 0 || Utility.isFieldEmpty(postType) || Utility.isFieldEmpty(addedBy)) {
+        if (postImagesHigh == null || postImagesHigh.length == 0 || Utility.isFieldEmpty(postType) || Utility.isFieldEmpty(addedBy)) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
+
+        if (!commonService.checkUserExistence(addedBy)) {
+            return new Response<DhPromotions>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+        }
+
+        if (postImagesHigh.length > AppConstants.PER_PROMOTION_MAX_IMAGES_LIMIT)
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX), new ArrayList<>());
 
         String uniquePostID = Utility.getUUID();
         String postImgUploadKeyLow = GetImageFoldersAndPrefix.getPostImgUploadKey(addedBy, uniquePostID, postType, false);
@@ -189,6 +205,13 @@ public class ImageServiceImpl implements ImageService {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
 
+        if (!commonService.checkUserExistence(addedBy)) {
+            return new Response<ProductsWithPrices>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+        }
+
+        if (productImagesHigh.length > AppConstants.PER_PRODUCT_MAX_IMAGES_LIMIT)
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX), new ArrayList<>());
+
         String postImgUploadKeyLow = GetImageFoldersAndPrefix.getProductImgUploadKey(uniqueProductId, placeType, placeId, uniqueProductId, false);
         String postImgUploadKeyHigh = GetImageFoldersAndPrefix.getProductImgUploadKey(uniqueProductId, placeType, placeId, uniqueProductId, true);
 
@@ -216,8 +239,7 @@ public class ImageServiceImpl implements ImageService {
                 List<String> uploadedProductImgsListHigh = amazonClient.uploadImagesToS3(postImgUploadKeyHigh, productImagesHigh);
                 productsWithPrices.setImgUrlsLow(uploadedProductImgsListLow);
                 productsWithPrices.setImgUrlsHigh(uploadedProductImgsListHigh);
-            }
-            else{
+            } else {
                 productsWithPrices.setImgUrlsLow(new ArrayList<>());
                 productsWithPrices.setImgUrlsHigh(new ArrayList<>());
             }
@@ -230,6 +252,44 @@ public class ImageServiceImpl implements ImageService {
             ioException.printStackTrace();
             LOGGER.info("ImageServiceImpl->uploadProductImages : exception = " + ioException.getMessage());
             String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PRODUCT_IMAGES);
+            return new Response<>(false, 402, errorMsg, new ArrayList<>());
+        }
+    }
+
+    @Override
+    public Response<DhHHPost> uploadHhPostImages(HttpHeaders httpHeaders, Authentication authentication, String addedBy, MultipartFile[] postImagesLow, MultipartFile[] postImagesHigh, String version) throws ServerSideException {
+        String language = IHeaders.getLanguageFromHeader(httpHeaders);
+        LOGGER.info("uploadHhPostImages->postImagesHigh==null:" + (postImagesHigh == null) + " addedBy:" + addedBy);
+        if (postImagesHigh == null || postImagesHigh.length == 0 || Utility.isFieldEmpty(addedBy))
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+
+        LOGGER.info("uploadHhPostImages->passed 1st validation");
+        if (!commonService.checkUserExistence(addedBy)) {
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+        }
+        LOGGER.info("uploadHhPostImages->passed 2nd validation");
+        if (postImagesHigh.length > AppConstants.HH_PER_POST_IMG_LIMIT)
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX), new ArrayList<>());
+
+        LOGGER.info("uploadHhPostImages->passed 3rd validation");
+        String uniquePostId = Utility.getUUID();
+        String postImgUploadKeyLow = GetImageFoldersAndPrefix.getHhPostImgUploadKey(addedBy, uniquePostId, false);
+        String postImgUploadKeyHigh = GetImageFoldersAndPrefix.getHhPostImgUploadKey(addedBy, uniquePostId, true);
+
+        try {
+            List<String> postImageUrlsLow = amazonClient.uploadImagesToS3(postImgUploadKeyLow, postImagesLow);
+            List<String> postImageUrlsHigh = amazonClient.uploadImagesToS3(postImgUploadKeyHigh, postImagesHigh);
+            DhHHPost dhHHPost = new DhHHPost();
+            dhHHPost.setPostId(uniquePostId);
+            dhHHPost.setUserId(addedBy);
+            dhHHPost.setImgUrlLow(postImageUrlsLow);
+            dhHHPost.setImgUrlHigh(postImageUrlsHigh);
+            logService.addLog(new DhLog(addedBy, "Helping Hands Post images have been added"));
+            String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_POST_IMAGES_ADDED);
+            return new Response<>(true, 201, successMsg, Collections.singletonList(dhHHPost), 1);
+        } catch (Exception ioException) {
+            LOGGER.info("ImageServiceImpl->uploadPlaceImages : exception = " + ioException.getMessage());
+            String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_HH_POST_IMAGES);
             return new Response<>(false, 402, errorMsg, new ArrayList<>());
         }
     }
