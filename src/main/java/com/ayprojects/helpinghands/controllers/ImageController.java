@@ -36,7 +36,7 @@ import io.swagger.annotations.Api;
 @Api(value = "Views API's", description = "CRUD for image uploads")
 @RestController
 @ResponseStatus
-@RequestMapping("/api/v{version}/imageUpload")
+    @RequestMapping("/api/v{version}/imageUpload")
 public class ImageController {
 
     @Autowired

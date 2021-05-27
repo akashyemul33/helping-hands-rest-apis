@@ -25,8 +25,8 @@ import io.swagger.annotations.Api;
 @Api(value = "Helping Hands ad category API's", description = "CRUD for HH add categories")
 @RestController
 @ResponseStatus
-@RequestMapping("/api/v{version}/hh-addcategory")
-public class HhAddCategoryController {
+@RequestMapping("/api/v{version}/hh-category")
+public class HhCategoryController {
 
     @Autowired
     ApiOperations<DhHHCategory> apiOperations;

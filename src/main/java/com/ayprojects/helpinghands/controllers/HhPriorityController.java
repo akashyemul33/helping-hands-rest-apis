@@ -25,8 +25,8 @@ import io.swagger.annotations.Api;
 @Api(value = "Helping Hands add priority API's", description = "CRUD for HH add priorities")
 @RestController
 @ResponseStatus
-@RequestMapping("/api/v{version}/hh-addpriority")
-public class HhAddPriorityController {
+@RequestMapping("/api/v{version}/hh-priority")
+public class HhPriorityController {
 
     @Autowired
     ApiOperations<DhHHPriorities> apiOperations;

@@ -31,8 +31,8 @@ import io.swagger.annotations.Api;
 @Api(value = "Helping Hands ad post API's", description = "CRUD for HH add post")
 @RestController
 @ResponseStatus
-@RequestMapping("/api/v{version}/hh-addpost")
-public class HhAddPostController {
+@RequestMapping("/api/v{version}/hh-post")
+public class HhPostController {
 
     @Autowired
     ApiOperations<DhHHPost> apiOperations;
