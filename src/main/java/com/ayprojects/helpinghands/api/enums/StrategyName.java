@@ -16,6 +16,7 @@ public enum StrategyName {
     AddTicketStrategy,
     AddHHPostStrategy,
     AddHHCategoryStrategy,
+    AddHHPriorityStrategy,
     GetUserStrategy,
     GetPlaceCategoriesStrategy,
     GetProductStrategy,
@@ -31,6 +32,7 @@ public enum StrategyName {
     GetStickersStrategy,
     GetHhPostsStrategy,
     GetHhCategoryStrategy,
+    GetHhPriorityStrategy,
     UpdatePlaceStrategy,
     UpdateHhPostStrategy
     ;

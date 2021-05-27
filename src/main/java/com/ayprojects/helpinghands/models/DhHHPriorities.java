@@ -1,8 +1,17 @@
 package com.ayprojects.helpinghands.models;
 
-public class DhHHPriorities extends AllCommonUsedAttributes{
+public class DhHHPriorities extends AllCommonUsedAttributes {
     private String priorityName;
     private String priorityId;
+    private String addedBy;
+
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
 
     public String getPriorityName() {
         return priorityName;

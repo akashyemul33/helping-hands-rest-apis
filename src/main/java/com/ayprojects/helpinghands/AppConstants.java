@@ -281,6 +281,10 @@ public class AppConstants {
     public static final String COLLECTION_DH_HH_CATEGORY = "dhHHCategory";
     public static final String IMG_DIR_FOR_HIGH = "1";
     public static final String IMG_DIR_FOR_LOW = "0";
+    public static final String KEY_HH_PRIORITY_ID = "priorityId";
+    public static final String KEY_HH_PRIORITY_NAME = "priorityName";
+    public static final String COLLECTION_DH_HH_PRIORITY = "dhHHPriorities";
+    public static final String RESPONSEMESSAGE_NO_RECORDS_FOUND = "NO_RECORDS_FOUND";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

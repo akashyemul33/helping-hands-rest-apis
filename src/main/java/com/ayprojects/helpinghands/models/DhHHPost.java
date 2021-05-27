@@ -1,6 +1,10 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.List;
+
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class DhHHPost extends AllCommonUsedAttributes {
     private String userId;
@@ -11,6 +15,18 @@ public class DhHHPost extends AllCommonUsedAttributes {
     private Address address;
     private String categoryId;
     private String categoryName;
+
+    @Transient
+    @Ignore
+    private String distance;
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
 
     public String getCategoryName() {
         return categoryName;
