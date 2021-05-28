@@ -25,9 +25,6 @@ public class StrategyGetHhPriorities implements StrategyGetBehaviour<DhHHPriorit
 
     @Override
     public Response<DhHHPriorities> get(String language, HashMap<String, Object> params) {
-        if (params == null) {
-            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
-        }
         return getAllPriorities(language);
     }
 
