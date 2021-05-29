@@ -9,11 +9,32 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 public class DhHHPost extends AllCommonUsedAttributes {
     private String userId;
     private String userName;
-    private String userProfile;
+    private String userProfileLow;
+
+    public String getUserProfileHigh() {
+        return userProfileHigh;
+    }
+
+    public void setUserProfileHigh(String userProfileHigh) {
+        this.userProfileHigh = userProfileHigh;
+    }
+
+    private String userProfileHigh;
     private String postId;
     private Address address;
     private String categoryId;
     private String categoryName;
+    @Transient
+    @Ignore
+    private int genuinePercentage;
+
+    public int getGenuinePercentage() {
+        return genuinePercentage;
+    }
+
+    public void setGenuinePercentage(int genuinePercentage) {
+        this.genuinePercentage = genuinePercentage;
+    }
     private long genuineRatingCount;
     private long notGenuineRatingCount;
     @Transient
@@ -28,6 +49,28 @@ public class DhHHPost extends AllCommonUsedAttributes {
     private List<String> likedUserIds;
     private String priorityId;
     private String priorityName;
+    @Transient
+    @Ignore
+    private long totalAdded;
+    @Transient
+    @Ignore
+    private long totalHelped;
+
+    public void setTotalHelped(long totalHelped) {
+        this.totalHelped = totalHelped;
+    }
+
+    public long getTotalAdded() {
+        return totalAdded;
+    }
+
+    public void setTotalAdded(long totalAdded) {
+        this.totalAdded = totalAdded;
+    }
+
+    public long getTotalHelped() {
+        return totalHelped;
+    }
 
     public long getGenuineRatingCount() {
         return genuineRatingCount;
@@ -77,12 +120,12 @@ public class DhHHPost extends AllCommonUsedAttributes {
         this.userName = userName;
     }
 
-    public String getUserProfile() {
-        return userProfile;
+    public String getUserProfileLow() {
+        return userProfileLow;
     }
 
-    public void setUserProfile(String userProfile) {
-        this.userProfile = userProfile;
+    public void setUserProfileLow(String userProfileLow) {
+        this.userProfileLow = userProfileLow;
     }
 
     public String getPriorityName() {

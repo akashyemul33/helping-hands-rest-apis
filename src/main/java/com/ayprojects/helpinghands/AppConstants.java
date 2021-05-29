@@ -1,6 +1,9 @@
 package com.ayprojects.helpinghands;
 
 public class AppConstants {
+    public static final  String KEY_NUMBER_OF_HH_POSTS = "numberOfHHPosts";
+    public static final  String KEY_NUMBER_OF_HH_HELPS = "numberOfHHHelps";
+    public static final  String KEY_AVG_HH_RATING = "avgHHRating";
     public static final String DATE_FORMAT_HOUR_MIN = "HH:mm";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmssSSS";
@@ -285,6 +288,8 @@ public class AppConstants {
     public static final String KEY_HH_PRIORITY_NAME = "priorityName";
     public static final String COLLECTION_DH_HH_PRIORITY = "dhHHPriorities";
     public static final String RESPONSEMESSAGE_NO_RECORDS_FOUND = "NO_RECORDS_FOUND";
+    public static final String KEY_USER_PFORILE_LOW = "profileImgLow";
+    public static final String KEY_USER_PFORILE_HIGH = "profileImgHigh";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

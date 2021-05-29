@@ -65,14 +65,16 @@ public class StrategyAddHhPostApi implements StrategyAddBehaviour<DhHHPost> {
         List<String> missingFieldsList = new ArrayList<>();
         if (Utility.isFieldEmpty(dhHHPost.getUserId()))
             missingFieldsList.add(AppConstants.KEY_USER_ID);
-        if (Utility.isFieldEmpty(dhHHPost.getUserName()))
-            missingFieldsList.add(AppConstants.KEY_USER_NAME);
         if (Utility.isFieldEmpty(dhHHPost.getPostId()))
             missingFieldsList.add(AppConstants.KEY_HH_POST_ID);
         if (Utility.isFieldEmpty(dhHHPost.getCategoryId()))
             missingFieldsList.add(AppConstants.KEY_HH_CATEGORY_ID);
+        if (Utility.isFieldEmpty(dhHHPost.getPriorityId()))
+            missingFieldsList.add(AppConstants.KEY_HH_PRIORITY_ID);
         if (Utility.isFieldEmpty(dhHHPost.getCategoryName()))
             missingFieldsList.add(AppConstants.KEY_HH_CATEGORY_NAME);
+        if (Utility.isFieldEmpty(dhHHPost.getPriorityName()))
+            missingFieldsList.add(AppConstants.KEY_HH_PRIORITY_NAME);
 
         if (dhHHPost.getAddress() == null) missingFieldsList.add(AppConstants.KEY_HH_ADDRESS);
         else {

@@ -5,6 +5,7 @@ import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhHHPost;
+import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.Utility;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -68,10 +70,25 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
 
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         List<DhHHPost> dhHHPosts = mongoTemplate.find(query.with(pageable), DhHHPost.class);
-        LOGGER.info("getPaginatedPosts=" + dhHHPosts.size());
 
-        if (lat != 0 && lng != 0) {
-            for (DhHHPost d : dhHHPosts) {
+        LOGGER.info("getPaginatedPosts=" + dhHHPosts.size());
+        for (DhHHPost d : dhHHPosts) {
+            Query queryFindUser = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(d.getUserId()));
+            queryFindUser.fields().include(AppConstants.FIRST_NAME);
+            queryFindUser.fields().include(AppConstants.LAST_NAME);
+            queryFindUser.fields().include(AppConstants.KEY_USER_PFORILE_LOW);
+            queryFindUser.fields().include(AppConstants.KEY_USER_PFORILE_HIGH);
+            queryFindUser.fields().include(AppConstants.KEY_AVG_HH_RATING);
+            queryFindUser.fields().include(AppConstants.KEY_NUMBER_OF_HH_HELPS);
+            queryFindUser.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
+            DhUser dhUser = mongoTemplate.findOne(queryFindUser, DhUser.class);
+            d.setUserName(String.format(Locale.US, "%s %s", dhUser.getFirstName(), dhUser.getLastName()));
+            d.setUserProfileLow(dhUser.getProfileImgLow());
+            d.setUserProfileHigh(dhUser.getProfileImgHigh());
+            d.setGenuineRatingCount(dhUser.getAvgHHRating());
+            d.setTotalAdded(dhUser.getNumberOfHHPosts());
+            d.setTotalHelped(dhUser.getNumberOfHHHelps());
+            if (lat != 0 && lng != 0) {
                 //calculate distance of place from given lat lng
                 if (d.getAddress() != null) {
                     double placeLat = d.getAddress().getLat();
