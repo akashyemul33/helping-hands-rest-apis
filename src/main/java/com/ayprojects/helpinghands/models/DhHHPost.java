@@ -10,15 +10,40 @@ public class DhHHPost extends AllCommonUsedAttributes {
     private String userId;
     private String userName;
     private String userProfile;
-    private double avgHHRating;
     private String postId;
     private Address address;
     private String categoryId;
     private String categoryName;
-
+    private long genuineRatingCount;
+    private long notGenuineRatingCount;
     @Transient
     @Ignore
     private String distance;
+    private int numberOfPeople;
+    private List<String> imgUrlLow;
+    private List<String> imgUrlHigh;
+    private List<String> helpedPeopleUserIds;
+    private String message;
+    private long postRatingCount;
+    private List<String> likedUserIds;
+    private String priorityId;
+    private String priorityName;
+
+    public long getGenuineRatingCount() {
+        return genuineRatingCount;
+    }
+
+    public void setGenuineRatingCount(long genuineRatingCount) {
+        this.genuineRatingCount = genuineRatingCount;
+    }
+
+    public long getNotGenuineRatingCount() {
+        return notGenuineRatingCount;
+    }
+
+    public void setNotGenuineRatingCount(long notGenuineRatingCount) {
+        this.notGenuineRatingCount = notGenuineRatingCount;
+    }
 
     public String getDistance() {
         return distance;
@@ -35,16 +60,6 @@ public class DhHHPost extends AllCommonUsedAttributes {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-
-    private int numberOfPeople;
-    private List<String> imgUrlLow;
-    private List<String> imgUrlHigh;
-    private List<String> helpedPeopleUserIds;
-    private String message;
-    private long postRatingCount;
-    private List<String> likedUserIds;
-    private String priorityId;
-    private String priorityName;
 
     public String getUserId() {
         return userId;
@@ -68,14 +83,6 @@ public class DhHHPost extends AllCommonUsedAttributes {
 
     public void setUserProfile(String userProfile) {
         this.userProfile = userProfile;
-    }
-
-    public double getAvgHHRating() {
-        return avgHHRating;
-    }
-
-    public void setAvgHHRating(double avgHHRating) {
-        this.avgHHRating = avgHHRating;
     }
 
     public String getPriorityName() {
