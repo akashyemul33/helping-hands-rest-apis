@@ -77,7 +77,7 @@ public class DhHHPost extends AllCommonUsedAttributes {
     private String categoryName;
     @Transient
     @Ignore
-    private int hhGenuinePercentage;
+    private float hhGenuinePercentage;
     private List<String> genuineRatingUserIds;
     private List<String> notGenuineRatingUserIds;
     @Transient
@@ -101,11 +101,11 @@ public class DhHHPost extends AllCommonUsedAttributes {
         this.helpedUsers = helpedUsers;
     }
 
-    public int getHhGenuinePercentage() {
+    public float getHhGenuinePercentage() {
         return hhGenuinePercentage;
     }
 
-    public void setHhGenuinePercentage(int hhGenuinePercentage) {
+    public void setHhGenuinePercentage(float hhGenuinePercentage) {
         this.hhGenuinePercentage = hhGenuinePercentage;
     }
 

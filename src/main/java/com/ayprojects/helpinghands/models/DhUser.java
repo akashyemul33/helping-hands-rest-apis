@@ -21,7 +21,7 @@ public class DhUser extends AllCommonUsedAttributes {
     private String profileImgHigh;
     private long numberOfHHPosts;
     private long numberOfHHHelps;
-    private int hhGenuinePercentage;
+    private float hhGenuinePercentage;
 
     public long getNumberOfHHPosts() {
         return numberOfHHPosts;
@@ -39,11 +39,11 @@ public class DhUser extends AllCommonUsedAttributes {
         this.numberOfHHHelps = numberOfHHHelps;
     }
 
-    public int getHhGenuinePercentage() {
+    public float getHhGenuinePercentage() {
         return hhGenuinePercentage;
     }
 
-    public void setHhGenuinePercentage(int hhGenuinePercentage) {
+    public void setHhGenuinePercentage(float hhGenuinePercentage) {
         this.hhGenuinePercentage = hhGenuinePercentage;
     }
 

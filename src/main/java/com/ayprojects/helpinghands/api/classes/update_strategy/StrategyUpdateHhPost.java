@@ -4,12 +4,10 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyUpdateBehaviour;
 import com.ayprojects.helpinghands.api.enums.ContentType;
 import com.ayprojects.helpinghands.api.enums.HhPostUpdateEnums;
-import com.ayprojects.helpinghands.api.enums.PlaceStepEnums;
 import com.ayprojects.helpinghands.api.enums.RedirectionContent;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhHHPost;
-import com.ayprojects.helpinghands.models.DhHelpedUsers;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
@@ -25,12 +23,10 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
-import javax.rmi.CORBA.Util;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
@@ -67,12 +63,21 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         if (!validationResponse.getStatus())
             return validationResponse;
 
+        //validating user against user ids intentionally, later in this code used this quried objects to update dhUser
+        Query findPostAddedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(dhHHPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
+        findPostAddedUserQuery.fields().include(AppConstants.KEY_GENUINE_PERCENTAGE);
+        findPostAddedUserQuery.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
+        DhUser queriedPostAddedDhUser = mongoTemplate.findOne(findPostAddedUserQuery, DhUser.class);
+        if (queriedPostAddedDhUser == null)
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+
         Query findHelpedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(helpedUserId).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
         findHelpedUserQuery.fields().include(AppConstants.KEY_NUMBER_OF_HH_HELPS);
         DhUser queriedHelpedDhUser = mongoTemplate.findOne(findHelpedUserQuery, DhUser.class);
         if (queriedHelpedDhUser == null)
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_HELPED_USERID), new ArrayList<>(), 0);
 
+        //update dhHhPost
         Query query = new Query();
         Criteria criteria = new Criteria();
         criteria.andOperator(Criteria.where(AppConstants.KEY_HH_POST_ID).is(dhHHPost.getPostId()));
@@ -90,11 +95,15 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         if (dhHHPost.getGenuineRatingUserIds() == null) {
             List<String> genuineUserIds = new ArrayList<>(1);
             genuineUserIds.add(helpedUserId);
+            dhHHPost.setGenuineRatingUserIds(genuineUserIds);
             update.set(AppConstants.KEY_GENUINE_RATING_USER_IDS, genuineUserIds);
         } else {
             update.push(AppConstants.KEY_GENUINE_RATING_USER_IDS, helpedUserId);
+            dhHHPost.getGenuineRatingUserIds().add(helpedUserId);
         }
-        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        String modifiedDateTime = CalendarOperations.currentDateTimeInUTC();
+        dhHHPost.setModifiedDateTime(modifiedDateTime);
+        update.set(AppConstants.MODIFIED_DATE_TIME, modifiedDateTime);
         String title = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_TITLE_HH_HELPED);
         String body;
         if (Utility.isFieldEmpty(helpedUsername))
@@ -104,12 +113,39 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         Utility.sendNotification(ContentType.CONTENT_HH_POST_HELP, dhHHPost.getUserId(), mongoTemplate, title, body, RedirectionContent.REDCONTENT_HH_HELPED, RedirectionContent.REDURL_HH_HELPED);
         mongoTemplate.updateFirst(query, update, DhHHPost.class);
 
+        //Update helped user details
         Update updateHelpedUser = new Update();
         updateHelpedUser.set(AppConstants.KEY_NUMBER_OF_HH_HELPS, queriedHelpedDhUser.getNumberOfHHHelps() + 1);
+        updateHelpedUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(findHelpedUserQuery, updateHelpedUser, DhUser.class);
-//TODO need to update users hhGenuinePercentage
 
-        eturn new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_MSG), ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_BODY), new ArrayList<>(), 0);
+
+        //Update post added user
+        Update updatePostAddedUser = new Update();
+        long previousGenuineRatingCount = dhHHPost.getGenuineRatingUserIds().size() - 1;
+        long previousNotGenuineRatingCount = dhHHPost.getNotGenuineRatingUserIds() == null ? 0 : dhHHPost.getNotGenuineRatingUserIds().size();
+        long genuineRatingCount = dhHHPost.getGenuineRatingUserIds().size();
+        float avgGenuinePercentage = queriedPostAddedDhUser.getHhGenuinePercentage();
+        long totalAddedPost = queriedPostAddedDhUser.getNumberOfHHPosts();
+        float finalAvgGenPerc = calculatePerPostGenuinePercentage(previousGenuineRatingCount, previousNotGenuineRatingCount, genuineRatingCount, previousNotGenuineRatingCount, avgGenuinePercentage, totalAddedPost);
+        updatePostAddedUser.set(AppConstants.KEY_GENUINE_PERCENTAGE, finalAvgGenPerc);
+        updatePostAddedUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        dhHHPost.setHhGenuinePercentage(finalAvgGenPerc);
+        mongoTemplate.updateFirst(findPostAddedUserQuery, updatePostAddedUser, DhUser.class);
+
+        return new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_MSG), ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_BODY), Collections.singletonList(dhHHPost), 0);
+    }
+
+    //working and tested,
+    private float calculatePerPostGenuinePercentage(long previousGenuineRatingCount, long previousNotGenuineRatingCount, long genuineRatingCount, long nonGenuineRatingCount, float avgGenuinePercentage, long totalAddedPost) {
+        long totalPreviousRatingCount = previousGenuineRatingCount + previousNotGenuineRatingCount;
+        float previousGenPerc = (previousGenuineRatingCount / totalPreviousRatingCount) * 100;
+
+        float previousAvgGenCount = (((totalPreviousRatingCount > 0 ? totalAddedPost : totalAddedPost - 1) * avgGenuinePercentage) - previousGenPerc);
+
+        float currentGenPerc = (genuineRatingCount / (genuineRatingCount + nonGenuineRatingCount)) * 100;
+
+        return (previousAvgGenCount + currentGenPerc) / totalAddedPost;
     }
 
     @Override
@@ -142,11 +178,6 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
                     return new Response<DhHHPost>(false, 402, "You've already marked this post as helped !", new ArrayList<>(), 0);
                 }
             }
-        }
-
-
-        if (!commonService.checkUserExistence(dhHHPost.getUserId())) {
-            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
         }
 
         return new Response<DhHHPost>(true, 201, "validated", new ArrayList<>(), 0);
