@@ -7,85 +7,122 @@ import java.util.List;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class DhHHPost extends AllCommonUsedAttributes {
+    @Transient
+    @Ignore
+    private long numberOfHHPosts;
+
+    public long getNumberOfHHPosts() {
+        return numberOfHHPosts;
+    }
+
+    public void setNumberOfHHPosts(long numberOfHHPosts) {
+        this.numberOfHHPosts = numberOfHHPosts;
+    }
+
+    public long getNumberOfHHHelps() {
+        return numberOfHHHelps;
+    }
+
+    public void setNumberOfHHHelps(long numberOfHHHelps) {
+        this.numberOfHHHelps = numberOfHHHelps;
+    }
+
+    @Transient
+    @Ignore
+    private long numberOfHHHelps;
+    @Transient
+    @Ignore
+    private String profileImgLow;
+    @Transient
+    @Ignore
+    private String profileImgHigh;
+
+    public String getProfileImgLow() {
+        return profileImgLow;
+    }
+
+    public void setProfileImgLow(String profileImgLow) {
+        this.profileImgLow = profileImgLow;
+    }
+
+    public String getProfileImgHigh() {
+        return profileImgHigh;
+    }
+
+    public void setProfileImgHigh(String profileImgHigh) {
+        this.profileImgHigh = profileImgHigh;
+    }
+
     private String userId;
+    @Transient
+    @Ignore
     private String userName;
-    private String userProfileLow;
+    @Transient
+    @Ignore
+    private List<DhHelpedUsers> helpedUsers;
 
-    public String getUserProfileHigh() {
-        return userProfileHigh;
+    private List<String> helpedUserIds;
+
+    public List<String> getHelpedUserIds() {
+        return helpedUserIds;
     }
 
-    public void setUserProfileHigh(String userProfileHigh) {
-        this.userProfileHigh = userProfileHigh;
+    public void setHelpedUserIds(List<String> helpedUserIds) {
+        this.helpedUserIds = helpedUserIds;
     }
 
-    private String userProfileHigh;
     private String postId;
     private Address address;
     private String categoryId;
     private String categoryName;
     @Transient
     @Ignore
-    private int genuinePercentage;
-
-    public int getGenuinePercentage() {
-        return genuinePercentage;
-    }
-
-    public void setGenuinePercentage(int genuinePercentage) {
-        this.genuinePercentage = genuinePercentage;
-    }
-    private long genuineRatingCount;
-    private long notGenuineRatingCount;
+    private int hhGenuinePercentage;
+    private List<String> genuineRatingUserIds;
+    private List<String> notGenuineRatingUserIds;
     @Transient
     @Ignore
     private String distance;
     private int numberOfPeople;
     private List<String> imgUrlLow;
     private List<String> imgUrlHigh;
-    private List<String> helpedPeopleUserIds;
     private String message;
     private long postRatingCount;
     private List<String> likedUserIds;
     private String priorityId;
     private String priorityName;
-    @Transient
-    @Ignore
-    private long totalAdded;
-    @Transient
-    @Ignore
-    private long totalHelped;
 
-    public void setTotalHelped(long totalHelped) {
-        this.totalHelped = totalHelped;
+
+    public List<DhHelpedUsers> getHelpedUsers() {
+        return helpedUsers;
     }
 
-    public long getTotalAdded() {
-        return totalAdded;
+    public void setHelpedUsers(List<DhHelpedUsers> helpedUsers) {
+        this.helpedUsers = helpedUsers;
     }
 
-    public void setTotalAdded(long totalAdded) {
-        this.totalAdded = totalAdded;
+    public int getHhGenuinePercentage() {
+        return hhGenuinePercentage;
     }
 
-    public long getTotalHelped() {
-        return totalHelped;
+    public void setHhGenuinePercentage(int hhGenuinePercentage) {
+        this.hhGenuinePercentage = hhGenuinePercentage;
     }
 
-    public long getGenuineRatingCount() {
-        return genuineRatingCount;
+    public List<String> getGenuineRatingUserIds() {
+        return genuineRatingUserIds;
     }
 
-    public void setGenuineRatingCount(long genuineRatingCount) {
-        this.genuineRatingCount = genuineRatingCount;
+    public void setGenuineRatingUserIds(List<String> genuineRatingUserIds) {
+        this.genuineRatingUserIds = genuineRatingUserIds;
     }
 
-    public long getNotGenuineRatingCount() {
-        return notGenuineRatingCount;
+    public List<String> getNotGenuineRatingUserIds() {
+        return notGenuineRatingUserIds;
     }
 
-    public void setNotGenuineRatingCount(long notGenuineRatingCount) {
-        this.notGenuineRatingCount = notGenuineRatingCount;
+    public void setNotGenuineRatingUserIds(List<String> notGenuineRatingUserIds) {
+        this.notGenuineRatingUserIds = notGenuineRatingUserIds;
     }
 
     public String getDistance() {
@@ -118,14 +155,6 @@ public class DhHHPost extends AllCommonUsedAttributes {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getUserProfileLow() {
-        return userProfileLow;
-    }
-
-    public void setUserProfileLow(String userProfileLow) {
-        this.userProfileLow = userProfileLow;
     }
 
     public String getPriorityName() {
@@ -198,14 +227,6 @@ public class DhHHPost extends AllCommonUsedAttributes {
 
     public void setImgUrlHigh(List<String> imgUrlHigh) {
         this.imgUrlHigh = imgUrlHigh;
-    }
-
-    public List<String> getHelpedPeopleUserIds() {
-        return helpedPeopleUserIds;
-    }
-
-    public void setHelpedPeopleUserIds(List<String> helpedPeopleUserIds) {
-        this.helpedPeopleUserIds = helpedPeopleUserIds;
     }
 
     public String getMessage() {

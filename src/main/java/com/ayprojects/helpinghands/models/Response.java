@@ -10,6 +10,16 @@ public class Response<T> {
     private Integer statusCode;
     private String message;
 
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    private String body;
+
     public String getHeading() {
         return heading;
     }
@@ -89,6 +99,14 @@ public Response(Boolean status, Integer statusCode, String heading,String messag
         this.setTotalCount(totalCount);
     }
 
+    public Response(Boolean status, Integer statusCode, String message,String body, List<T> data, Integer totalCount) {
+        this.setStatus(status);
+        this.setStatusCode(statusCode);
+        this.setMessage(message);
+        this.setData(data);
+        this.setTotalCount(totalCount);
+        this.setBody(body);
+    }
     public Integer getTotalCount() {
         return totalCount;
     }

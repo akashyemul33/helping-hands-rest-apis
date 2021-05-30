@@ -78,16 +78,18 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
             queryFindUser.fields().include(AppConstants.LAST_NAME);
             queryFindUser.fields().include(AppConstants.KEY_USER_PFORILE_LOW);
             queryFindUser.fields().include(AppConstants.KEY_USER_PFORILE_HIGH);
-            queryFindUser.fields().include(AppConstants.KEY_AVG_HH_RATING);
+            queryFindUser.fields().include(AppConstants.KEY_GENUINE_PERCENTAGE);
             queryFindUser.fields().include(AppConstants.KEY_NUMBER_OF_HH_HELPS);
             queryFindUser.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
             DhUser dhUser = mongoTemplate.findOne(queryFindUser, DhUser.class);
-            d.setUserName(String.format(Locale.US, "%s %s", dhUser.getFirstName(), dhUser.getLastName()));
-            d.setUserProfileLow(dhUser.getProfileImgLow());
-            d.setUserProfileHigh(dhUser.getProfileImgHigh());
-            d.setGenuineRatingCount(dhUser.getAvgHHRating());
-            d.setTotalAdded(dhUser.getNumberOfHHPosts());
-            d.setTotalHelped(dhUser.getNumberOfHHHelps());
+            if (dhUser != null) {
+                d.setUserName(String.format(Locale.US, "%s %s", dhUser.getFirstName(), dhUser.getLastName()));
+                d.setProfileImgLow(dhUser.getProfileImgLow());
+                d.setProfileImgHigh(dhUser.getProfileImgHigh());
+                d.setHhGenuinePercentage(dhUser.getHhGenuinePercentage());
+                d.setNumberOfHHHelps(dhUser.getNumberOfHHHelps());
+                d.setNumberOfHHPosts(dhUser.getNumberOfHHPosts());
+            }
             if (lat != 0 && lng != 0) {
                 //calculate distance of place from given lat lng
                 if (d.getAddress() != null) {

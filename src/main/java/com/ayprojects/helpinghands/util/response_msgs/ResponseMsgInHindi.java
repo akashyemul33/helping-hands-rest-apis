@@ -70,6 +70,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_OPEN_CLOSES_AT, "खुला);बंद किया जाएगा");
             responseMsgsMap.put(RESPONSEMESSAGE_UNKNOWN, "अनजान");
             responseMsgsMap.put(RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, "उपयोगकर्ता नहीं मिला !");
+            responseMsgsMap.put(RESPONSEMESSAGE_USER_NOT_FOUND_WITH_HELPED_USERID, "उपयोगकर्ता नहीं मिला !");
             responseMsgsMap.put(RESPONSEMESSAGE_INVALID_PROMOTIONTYPE, "अमान्य पोस्ट प्रकार !");
             responseMsgsMap.put(RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID, "जगह नहीं मिली !");
             responseMsgsMap.put(RESPONSEMESSAGE_OFFER_MSG, "प्रस्ताव की वैधता ");
@@ -122,6 +123,13 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_UNABLE_TO_ADD_HH_POST_IMAGES, "Unable to add post images !");
             responseMsgsMap.put(RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX, "Number of images is greater than max image upload limit !");
             responseMsgsMap.put(RESPONSEMESSAGE_NO_RECORDS_FOUND, "No Records Found !");
+            responseMsgsMap.put(RESPONSEMESSAGE_HH_ADD_POST_MSG, "Thank You ");
+            responseMsgsMap.put(RESPONSEMESSAGE_HH_ADD_POST_BODY, "Team Duniyaa, feeling proud being part of society where people like you are residing who are doing their part to help people.We will send this post to our 135 Lakh users around us who can help these people.");
+            responseMsgsMap.put(RESPONSEMESSAGE_HH_MARK_POST_HELPED_MSG, "Great Work");
+            responseMsgsMap.put(RESPONSEMESSAGE_HH_MARK_POST_HELPED_BODY, "Team Duniyaa, really appreciates your work towards society. Your nature of helping people in the society is remarkable.");
+            responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_HH_HELPED, "Update on your Helping Hands Post");
+            responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_HH_HELPED, "%s has helped the people by reacting to your post.");
+            responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_HH_HELPED_NONAME, "Anonymous person helped the people by reacting to your post.");
         }
     }
 

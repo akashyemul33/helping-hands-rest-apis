@@ -32,7 +32,7 @@ public class CommonServiceImpl implements CommonService {
             return false;
         }
 
-        Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
+        Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE,"i")));
         query.fields().include(AppConstants.OBJECT_ID);//include only _id which is indexed, as here we only need existence of user
         DhUser dhUser = mongoTemplate.findOne(query, DhUser.class);
         return dhUser != null;

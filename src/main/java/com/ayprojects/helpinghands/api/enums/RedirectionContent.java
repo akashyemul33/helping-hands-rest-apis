@@ -8,4 +8,7 @@ public class RedirectionContent {
 
     public static final String REDCONTENT_PLACEDETAILS="PLACEDETAILS";
     public static final String REDURL_PLACEDETAILS="";
+
+    public static final String REDCONTENT_HH_HELPED="HH_HELPED";
+    public static final String REDURL_HH_HELPED="";
 }

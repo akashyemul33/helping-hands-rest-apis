@@ -55,6 +55,18 @@ public class HhPostController {
         } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
     }
 
+    @PutMapping(value = "/markAsHelped")
+    public ResponseEntity<Response<DhHHPost>> markAsHelped(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost, @RequestParam String helpedUserId, @RequestParam String helpedUserName, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_HH_POST_STEP_ENUM, HhPostUpdateEnums.MARK_HELPED);
+        params.put(AppConstants.KEY_HELPED_USER_ID, helpedUserId);
+        params.put(AppConstants.KEY_HELPED_USER_NAME, helpedUserName);
+        Response<DhHHPost> response = apiOperations.update(authentication, httpHeaders, params, dhHHPost, StrategyName.UpdateHhPostStrategy, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+
     @GetMapping(value = "/getPaginatedPosts")
     ResponseEntity<Response<DhHHPost>> getPaginatedPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size, @RequestParam double lat, @RequestParam double lng, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();

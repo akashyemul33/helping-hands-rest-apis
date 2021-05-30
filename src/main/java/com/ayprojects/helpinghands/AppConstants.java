@@ -3,7 +3,7 @@ package com.ayprojects.helpinghands;
 public class AppConstants {
     public static final  String KEY_NUMBER_OF_HH_POSTS = "numberOfHHPosts";
     public static final  String KEY_NUMBER_OF_HH_HELPS = "numberOfHHHelps";
-    public static final  String KEY_AVG_HH_RATING = "avgHHRating";
+    public static final  String KEY_GENUINE_PERCENTAGE = "hhGenuinePercentage";
     public static final String DATE_FORMAT_HOUR_MIN = "HH:mm";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmssSSS";
@@ -111,6 +111,7 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_USER_FOUND_WITH_MOBILE = "USER_FOUND_WITH_MOBILE";
     public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_MOBILE = "USER_NOT_FOUND_WITH_MOBILE";
     public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID = "USER_NOT_FOUND_WITH_USERID";
+    public static final String RESPONSEMESSAGE_USER_NOT_FOUND_WITH_HELPED_USERID = "USER_NOT_FOUND_WITH_HELPED_USERID";
     public static final String RESPONSEMESSAGE_PLACE_NOT_FOUND_WITH_PLACEID = "PLACE_NOT_FOUND_WITH_PLACEID";
     public static final String TYPE_OF_PLACECATEGORY = "typeOfPlaceCategory";
     public static final String LANG_ENGLISH = "en";
@@ -290,6 +291,14 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_NO_RECORDS_FOUND = "NO_RECORDS_FOUND";
     public static final String KEY_USER_PFORILE_LOW = "profileImgLow";
     public static final String KEY_USER_PFORILE_HIGH = "profileImgHigh";
+    public static final String KEY_HELPED_USER_ID = "helpedUserId";
+    public static final String KEY_HELPED_USERS = "helpedUsers";
+    public static final String RESPONSEMESSAGE_NTFN_TITLE_HH_HELPED = "NTFN_TITLE_HH_HELPED";
+    public static final String RESPONSEMESSAGE_NTFN_BODY_HH_HELPED = "NTFN_BODY_HH_HELPED";
+    public static final String RESPONSEMESSAGE_NTFN_BODY_HH_HELPED_NONAME = "NTFN_BODY_HH_HELPED_NONAME";
+    public static final String KEY_HELPED_USER_NAME = "helpedUsername";
+    public static final String KEY_GENUINE_RATING_USER_IDS = "genuineRatingUserIds";
+    public static final String KEY_NOTGENUINE_RATING_USER_IDS = "genuineRatingUserIds";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
@@ -352,6 +361,10 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_NEW_RATING_COMMENT_ADDED = "NEW_RATING_COMMENT_ADDED";
     public static String RESPONSEMESSAGE_NO_STICKERS_FOUND = "NO_STICKERS_FOUND";
     public static String RESPONSEMESSAGE_NO_TICKETS_FOUND = "NO_TICKETS_FOUND";
+    public static final String RESPONSEMESSAGE_HH_ADD_POST_MSG = "HH_ADD_POST_MSG";
+    public static final String RESPONSEMESSAGE_HH_ADD_POST_BODY = "HH_ADD_POST_BODY";
+    public static final String RESPONSEMESSAGE_HH_MARK_POST_HELPED_MSG = "HH_MARK_POST_HELPED_MSG";
+    public static final String RESPONSEMESSAGE_HH_MARK_POST_HELPED_BODY = "HH_MARK_POST_HELPED_BODY";
 
     public static String CONTACT_DETAILS = "contactDetails";
     public static long TOTAL_ADD_PLACES_LIMIT = 100;
