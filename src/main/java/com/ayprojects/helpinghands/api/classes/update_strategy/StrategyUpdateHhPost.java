@@ -100,14 +100,11 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         if (dhHHPost.getGenuineRatingUserIds() == null) {
             List<String> genuineUserIds = new ArrayList<>(1);
             genuineUserIds.add(helpedUserId);
-            dhHHPost.setGenuineRatingUserIds(genuineUserIds);
             update.set(AppConstants.KEY_GENUINE_RATING_USER_IDS, genuineUserIds);
         } else {
             update.push(AppConstants.KEY_GENUINE_RATING_USER_IDS, helpedUserId);
-            dhHHPost.getGenuineRatingUserIds().add(helpedUserId);
         }
         String modifiedDateTime = CalendarOperations.currentDateTimeInUTC();
-        dhHHPost.setModifiedDateTime(modifiedDateTime);
         update.set(AppConstants.MODIFIED_DATE_TIME, modifiedDateTime);
         String title = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_TITLE_HH_HELPED);
         String body;
@@ -135,10 +132,9 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         float finalAvgGenPerc = calculatePerPostGenuinePercentage(previousGenuineRatingCount, previousNotGenuineRatingCount, genuineRatingCount, previousNotGenuineRatingCount, avgGenuinePercentage, totalAddedPost);
         updatePostAddedUser.set(AppConstants.KEY_GENUINE_PERCENTAGE, finalAvgGenPerc);
         updatePostAddedUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
-        dhHHPost.setHhGenuinePercentage(finalAvgGenPerc);
         mongoTemplate.updateFirst(findPostAddedUserQuery, updatePostAddedUser, DhUser.class);
 
-        return new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_MSG), ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_BODY), Collections.singletonList(dhHHPost), 0);
+        return new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_MSG), ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_BODY), new ArrayList<>(), 0);
     }
 
     //working and tested,
