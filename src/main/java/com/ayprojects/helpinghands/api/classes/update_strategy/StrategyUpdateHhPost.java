@@ -8,6 +8,7 @@ import com.ayprojects.helpinghands.api.enums.RedirectionContent;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhHHPost;
+import com.ayprojects.helpinghands.models.DhHhHelpedUsers;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
@@ -77,7 +78,11 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         if (queriedHelpedDhUser == null)
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_HELPED_USERID), new ArrayList<>(), 0);
 
-        //update dhHhPost
+        //insert into helped user item & update dhHhPost
+        DhHhHelpedUsers dhHhHelpedUsers = dhHHPost.getHelpedUsers().get(0);
+        dhHhHelpedUsers = (DhHhHelpedUsers) Utility.setCommonAttrs(dhHhHelpedUsers, AppConstants.STATUS_ACTIVE);
+        mongoTemplate.save(dhHhHelpedUsers, AppConstants.COLLECTION_DH_HH_HELPED_USERS);
+
         Query query = new Query();
         Criteria criteria = new Criteria();
         criteria.andOperator(Criteria.where(AppConstants.KEY_HH_POST_ID).is(dhHHPost.getPostId()));
@@ -164,6 +169,10 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             missingFieldsList.add(AppConstants.KEY_HELPED_USER_ID);
         if (Utility.isFieldEmpty(dhHHPost.getPostId()))
             missingFieldsList.add(AppConstants.KEY_HH_POST_ID);
+        if (dhHHPost.getHelpedUsers() == null || dhHHPost.getHelpedUsers().size() == 0)
+            missingFieldsList.add(AppConstants.KEY_HELPED_USERS);
+        else if (Utility.isFieldEmpty(dhHHPost.getHelpedUsers().get(0).getPostId()))
+            missingFieldsList.add("Post id in helped user item");
 
         if (missingFieldsList.size() > 0) {
             String resMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY);

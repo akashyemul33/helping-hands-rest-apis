@@ -6,7 +6,26 @@ import java.util.List;
 
 import jdk.nashorn.internal.ir.annotations.Ignore;
 
-public class DhHelpedUsers {
+public class DhHhHelpedUsers extends AllCommonUsedAttributes{
+    private String postId;
+    private String message;
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     private String userId;
     private String userName;
     @Transient

@@ -59,7 +59,7 @@ public class DhHHPost extends AllCommonUsedAttributes {
     private String userName;
     @Transient
     @Ignore
-    private List<DhHelpedUsers> helpedUsers;
+    private List<DhHhHelpedUsers> helpedUsers;
 
     private List<String> helpedUserIds;
 
@@ -93,11 +93,11 @@ public class DhHHPost extends AllCommonUsedAttributes {
     private String priorityName;
 
 
-    public List<DhHelpedUsers> getHelpedUsers() {
+    public List<DhHhHelpedUsers> getHelpedUsers() {
         return helpedUsers;
     }
 
-    public void setHelpedUsers(List<DhHelpedUsers> helpedUsers) {
+    public void setHelpedUsers(List<DhHhHelpedUsers> helpedUsers) {
         this.helpedUsers = helpedUsers;
     }
 

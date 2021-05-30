@@ -299,6 +299,7 @@ public class AppConstants {
     public static final String KEY_HELPED_USER_NAME = "helpedUsername";
     public static final String KEY_GENUINE_RATING_USER_IDS = "genuineRatingUserIds";
     public static final String KEY_NOTGENUINE_RATING_USER_IDS = "genuineRatingUserIds";
+    public static final String COLLECTION_DH_HH_HELPED_USERS = "dhHhHelpedUsers";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

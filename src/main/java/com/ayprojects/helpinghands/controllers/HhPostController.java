@@ -55,6 +55,17 @@ public class HhPostController {
         } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
     }
 
+    /**
+     * add helped user message and other things at 0th position of DhHhPost item
+     * @param httpHeaders
+     * @param authentication
+     * @param dhHHPost
+     * @param helpedUserId
+     * @param helpedUserName
+     * @param version
+     * @return
+     * @throws ServerSideException
+     */
     @PutMapping(value = "/markAsHelped")
     public ResponseEntity<Response<DhHHPost>> markAsHelped(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost, @RequestParam String helpedUserId, @RequestParam String helpedUserName, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
