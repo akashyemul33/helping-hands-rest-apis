@@ -11,6 +11,16 @@ public class DhHHPost extends AllCommonUsedAttributes {
     @Ignore
     private long numberOfHHPosts;
 
+    private float postGenuinePerc;
+
+    public float getPostGenuinePerc() {
+        return postGenuinePerc;
+    }
+
+    public void setPostGenuinePerc(float postGenuinePerc) {
+        this.postGenuinePerc = postGenuinePerc;
+    }
+
     public long getNumberOfHHPosts() {
         return numberOfHHPosts;
     }

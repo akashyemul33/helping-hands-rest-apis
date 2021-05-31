@@ -64,8 +64,6 @@ public class HhPostController {
      * @param httpHeaders
      * @param authentication
      * @param dhHHPost
-     * @param helpedUserId
-     * @param helpedUserName
      * @param version
      * @return
      * @throws ServerSideException

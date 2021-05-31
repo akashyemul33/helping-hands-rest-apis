@@ -30,6 +30,7 @@ public class AppConstants {
     public static final String VIEW_IDS = "viewIds";
     public static final String TOP_VIEWS = "topViews";
     public static final String MODIFIED_DATE_TIME = "modifiedDateTime";
+    public static final String HH_POST_GENUINE_PERC = "postGenuinePerc";
     public static final String promotion_ID = "promotionId";
     public static final String REQUIREMENT_ID = "requirementId";
     public static final String CONTENT_ID = "contentId";
