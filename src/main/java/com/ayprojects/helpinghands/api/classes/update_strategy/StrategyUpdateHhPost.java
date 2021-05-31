@@ -67,7 +67,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         return null;
     }
 
-    private Response<DhHHPost> markAsGenuineOrNotGenuine(String language, String hhPostId, boolean isGenuine, String genuineNonGenuineUserId) {
+    private Response<DhHHPost> markAsGenuineOrNotGenuine(String language,String hhPostId, boolean isGenuine, String genuineNonGenuineUserId) {
         if (Utility.isFieldEmpty(hhPostId) || Utility.isFieldEmpty(genuineNonGenuineUserId)) {
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
         }
@@ -84,6 +84,16 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
 
         //Update post added user
         if (queriedDhHhPost != null) {
+
+            //validating user against user ids intentionally, later in this code used this quried objects to update dhUser
+            Query findPostAddedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(queriedDhHhPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
+            findPostAddedUserQuery.fields().include(AppConstants.KEY_GENUINE_PERCENTAGE);
+            findPostAddedUserQuery.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
+            DhUser queriedPostAddedDhUser = mongoTemplate.findOne(findPostAddedUserQuery, DhUser.class);
+            if (queriedPostAddedDhUser == null)
+                return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+
+
 
             //dont change code location, intentionally place this code here 
             long previousGenuineRatingCount = queriedDhHhPost.getGenuineRatingUserIds() == null ? 0 : queriedDhHhPost.getGenuineRatingUserIds().size();
@@ -131,27 +141,23 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             if (isGenuine) {
                 if (needToPopFromNonGenuineList)
                     updateDhHhPost.set(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS, queriedDhHhPost.getNotGenuineRatingUserIds());
-                else
+
                     updateDhHhPost.push(AppConstants.KEY_GENUINE_RATING_USER_IDS, genuineNonGenuineUserId);
 
             } else {
                 if (needToPopFromGenuineList)
                     updateDhHhPost.set(AppConstants.KEY_GENUINE_RATING_USER_IDS, queriedDhHhPost.getNotGenuineRatingUserIds());
-                else
                     updateDhHhPost.push(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS, genuineNonGenuineUserId);
             }
             updateDhHhPost.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(querFindPostById, updateDhHhPost, DhHHPost.class);
 
-            Query findPostAddedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(queriedDhHhPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
+            //update user
             Update updatePostAddedUser = new Update();
-
             long genuineRatingCount = isGenuine ? queriedDhHhPost.getGenuineRatingUserIds().size() + 1 : queriedDhHhPost.getGenuineRatingUserIds().size();
-
             long nonGenuineRatingCount = !isGenuine ? queriedDhHhPost.getNotGenuineRatingUserIds().size() + 1 : queriedDhHhPost.getNotGenuineRatingUserIds().size();
-
-            float avgGenuinePercentage = queriedDhHhPost.getHhGenuinePercentage();
-            long totalAddedPost = queriedDhHhPost.getNumberOfHHPosts() + 1;
+            float avgGenuinePercentage = queriedPostAddedDhUser.getHhGenuinePercentage();
+            long totalAddedPost = queriedPostAddedDhUser.getNumberOfHHPosts();
             float finalAvgGenPerc = calculatePerPostGenuinePercentage(previousGenuineRatingCount, previousNotGenuineRatingCount, genuineRatingCount, nonGenuineRatingCount, avgGenuinePercentage, totalAddedPost);
             updatePostAddedUser.set(AppConstants.KEY_GENUINE_PERCENTAGE, finalAvgGenPerc);
             updatePostAddedUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
@@ -274,14 +280,15 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
 
     //working and tested,
     private float calculatePerPostGenuinePercentage(long previousGenuineRatingCount, long previousNotGenuineRatingCount, long genuineRatingCount, long nonGenuineRatingCount, float avgGenuinePercentage, long totalAddedPost) {
+        LOGGER.info("calculatePerPostGenuinePercentage:previousGenuineRatingCount:"+previousGenuineRatingCount+" previousNotGenuineRatingCount:"+previousNotGenuineRatingCount+" genuineRatingCount:"+genuineRatingCount+" nonGenuineRatingCount:"+nonGenuineRatingCount+" avgGenuinePercentage:"+avgGenuinePercentage+" totalAddedPost:"+totalAddedPost);
         long totalPreviousRatingCount = previousGenuineRatingCount + previousNotGenuineRatingCount;
-        float previousGenPerc = previousGenuineRatingCount == 0 || totalPreviousRatingCount == 0 ? 0 : (previousGenuineRatingCount / totalPreviousRatingCount) * 100;
+        long previousGenPerc = previousGenuineRatingCount == 0 || totalPreviousRatingCount == 0 ? 0 : (previousGenuineRatingCount * 100 / totalPreviousRatingCount);
 
         float previousAvgGenCount = (((totalPreviousRatingCount > 0 ? totalAddedPost : totalAddedPost - 1) * avgGenuinePercentage) - previousGenPerc);
 
-        float currentGenPerc = (genuineRatingCount / (genuineRatingCount + nonGenuineRatingCount)) * 100;
+        long currentGenPerc = (genuineRatingCount*100 / (genuineRatingCount + nonGenuineRatingCount));
         float finalPerc = (previousAvgGenCount + currentGenPerc) / totalAddedPost;
-        LOGGER.info("calculatePerPostGenuinePercentage->finalPerc=" + finalPerc);
+        LOGGER.info("calculatePerPostGenuinePercentage->finalPerc=" + finalPerc+" currentGenPerc:"+currentGenPerc+" previousAvgGenCount:"+previousAvgGenCount+" previousGenPerc:"+previousGenPerc+" totalPreviousRatingCount:"+totalPreviousRatingCount);
         return (float) Utility.roundTwoDecimals(finalPerc);
     }
 
