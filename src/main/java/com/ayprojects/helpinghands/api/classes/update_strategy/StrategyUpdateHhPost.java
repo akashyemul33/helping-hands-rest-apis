@@ -293,9 +293,8 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         long totalPreviousRatingCount = previousGenuineRatingCount + previousNotGenuineRatingCount;
         long previousGenPerc = previousGenuineRatingCount == 0 || totalPreviousRatingCount == 0 ? 0 : (previousGenuineRatingCount * 100 / totalPreviousRatingCount);
 
-        totalAddedPost = totalPreviousRatingCount > 0 && (genuineRatingCount + nonGenuineRatingCount) > 1 ? totalAddedPost : totalAddedPost - 1;
-        float previousAvgGenCount = ((totalAddedPost * avgGenuinePercentage) - previousGenPerc);
-
+        long tempAddedPost = totalPreviousRatingCount > 0 && (genuineRatingCount + nonGenuineRatingCount) > 1 ? totalAddedPost : totalAddedPost - 1;
+        float previousAvgGenCount = ((tempAddedPost * avgGenuinePercentage) - previousGenPerc);
 
         long currentGenPerc = (genuineRatingCount * 100 / (genuineRatingCount + nonGenuineRatingCount));
         float finalPerc = (previousAvgGenCount + currentGenPerc) / totalAddedPost;
