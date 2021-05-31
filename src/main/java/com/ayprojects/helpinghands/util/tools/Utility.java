@@ -246,6 +246,10 @@ public class Utility {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
         return Double.parseDouble(twoDForm.format(d));
     }
+    public static double roundOneDecimals(double d) {
+        DecimalFormat twoDForm = new DecimalFormat("#.#");
+        return Double.parseDouble(twoDForm.format(d));
+    }
 
     public static double convertMetres(double km) {
         return km * 1000;

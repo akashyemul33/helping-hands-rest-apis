@@ -300,6 +300,11 @@ public class AppConstants {
     public static final String KEY_GENUINE_RATING_USER_IDS = "genuineRatingUserIds";
     public static final String KEY_NOTGENUINE_RATING_USER_IDS = "genuineRatingUserIds";
     public static final String COLLECTION_DH_HH_HELPED_USERS = "dhHhHelpedUsers";
+    public static final String LIKED_USER_IDS = "likedUserIds";
+    public static final String KEY_GENUINE_NON_GENUINE_USER_ID = "genuineNonGenuineUserId";
+    public static final String KEY_LIKED_USER_ID = "likedUserId";
+    public static final String KEY_OTHER_USER_ID = "OtherUserId";
+    public static final String KEY_HH_OTHER_USERNAME = "OtherUserName";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

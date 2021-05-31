@@ -46,9 +46,12 @@ public class HhPostController {
     }
 
     @PutMapping(value = "/updatePost")
-    public ResponseEntity<Response<DhHHPost>> updatePost(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost, @RequestParam HhPostUpdateEnums hhPostUpdateEnums, @PathVariable String version) throws ServerSideException {
+    public ResponseEntity<Response<DhHHPost>> updatePost(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost, @RequestParam HhPostUpdateEnums hhPostUpdateEnums, @RequestParam String hhPostId, @RequestParam String otherUserId, @RequestParam String otherUserName, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_HH_POST_STEP_ENUM, hhPostUpdateEnums);
+        params.put(AppConstants.KEY_HH_POST_ID, hhPostId);
+        params.put(AppConstants.KEY_OTHER_USER_ID, otherUserId);
+        params.put(AppConstants.KEY_HH_OTHER_USERNAME, otherUserName);
         Response<DhHHPost> response = apiOperations.update(authentication, httpHeaders, params, dhHHPost, StrategyName.UpdateHhPostStrategy, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -57,6 +60,7 @@ public class HhPostController {
 
     /**
      * add helped user message and other things at 0th position of DhHhPost item
+     *
      * @param httpHeaders
      * @param authentication
      * @param dhHHPost

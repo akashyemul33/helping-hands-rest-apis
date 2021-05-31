@@ -24,7 +24,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -44,19 +43,123 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         if (params == null) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
         }
+
         Set<String> keySet = params.keySet();
         if (keySet.contains(AppConstants.KEY_HH_POST_STEP_ENUM)) {
             HhPostUpdateEnums hhPostUpdateEnums = (HhPostUpdateEnums) params.get(AppConstants.KEY_HH_POST_STEP_ENUM);
+            String hhPostId = (String) params.get(AppConstants.KEY_HH_POST_ID);
+            String otherUserId = (String) params.get(AppConstants.KEY_OTHER_USER_ID);
+            String otherUserName = (String) params.get(AppConstants.KEY_HH_OTHER_USERNAME);
             switch (hhPostUpdateEnums) {
                 case ADD_LIKE:
-                    break;
+                    return markAsLiked(language, hhPostId,otherUserId);
                 case DELETE_POST:
+                    //TODO
                     break;
+                case MARK_AS_GENUINE:
+                    return markAsGenuineOrNotGenuine(language,hhPostId, true, otherUserId);
+                case MARK_AS_NOTGENUINE:
+                    return markAsGenuineOrNotGenuine(language, hhPostId, false, otherUserId);
                 case MARK_HELPED:
-                    return markPostAsHelped(language, obj, (String) params.get(AppConstants.KEY_HELPED_USER_ID), (String) params.get(AppConstants.KEY_HELPED_USER_NAME));
+                    return markPostAsHelped(language, obj, otherUserId,otherUserName);
             }
         }
         return null;
+    }
+
+    private Response<DhHHPost> markAsGenuineOrNotGenuine(String language, String hhPostId, boolean isGenuine, String genuineNonGenuineUserId) {
+        if (Utility.isFieldEmpty(hhPostId) || Utility.isFieldEmpty(genuineNonGenuineUserId)) {
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+        }
+
+        if (!commonService.checkUserExistence(genuineNonGenuineUserId))
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+
+        Query querFindPostById = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
+        querFindPostById.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        querFindPostById.fields().include(AppConstants.KEY_USER_ID);
+        querFindPostById.fields().include(AppConstants.KEY_GENUINE_RATING_USER_IDS);
+        querFindPostById.fields().include(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS);
+        DhHHPost queriedDhHhPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
+
+        //Update post added user
+        if (queriedDhHhPost != null) {
+
+            //dont change code location, intentionally place this code here 
+            long previousGenuineRatingCount = queriedDhHhPost.getGenuineRatingUserIds() == null ? 0 : queriedDhHhPost.getGenuineRatingUserIds().size();
+            long previousNotGenuineRatingCount = queriedDhHhPost.getNotGenuineRatingUserIds() == null ? 0 : queriedDhHhPost.getNotGenuineRatingUserIds().size();
+
+            //update hh post
+            Update updateDhHhPost = new Update();
+            if (isGenuine) {
+                //check for whether userId already not exists in not genuine list,
+                //if exists remove it before pushing it in genuine user ids
+                boolean needToPopFromNonGenuineList = false;
+                for (String gn : queriedDhHhPost.getNotGenuineRatingUserIds()) {
+                    if (gn.equals(genuineNonGenuineUserId)) {
+                        queriedDhHhPost.getNotGenuineRatingUserIds().remove(genuineNonGenuineUserId);
+                        needToPopFromNonGenuineList = true;
+                        break;
+                    }
+                }
+                if (needToPopFromNonGenuineList)
+                    updateDhHhPost.set(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS, queriedDhHhPost.getNotGenuineRatingUserIds());
+                else
+                    updateDhHhPost.push(AppConstants.KEY_GENUINE_RATING_USER_IDS, genuineNonGenuineUserId);
+
+            } else {
+                //check for whether userId already not exists in genuine list,
+                //if exists remove it before pushing it in non genuine user ids
+                boolean needToPopFromGenuineList = false;
+                for (String gn : queriedDhHhPost.getGenuineRatingUserIds()) {
+                    if (gn.equals(genuineNonGenuineUserId)) {
+                        queriedDhHhPost.getGenuineRatingUserIds().remove(genuineNonGenuineUserId);
+                        needToPopFromGenuineList = true;
+                        break;
+                    }
+                }
+                if (needToPopFromGenuineList)
+                    updateDhHhPost.set(AppConstants.KEY_GENUINE_RATING_USER_IDS, queriedDhHhPost.getNotGenuineRatingUserIds());
+                else
+                    updateDhHhPost.push(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS, genuineNonGenuineUserId);
+            }
+            updateDhHhPost.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+            mongoTemplate.updateFirst(querFindPostById, updateDhHhPost, DhHHPost.class);
+
+            Query findPostAddedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(queriedDhHhPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
+            Update updatePostAddedUser = new Update();
+            long genuineRatingCount = isGenuine ? (queriedDhHhPost.getGenuineRatingUserIds() == null ? 1 : queriedDhHhPost.getGenuineRatingUserIds().size() + 1) : queriedDhHhPost.getGenuineRatingUserIds().size();
+
+            long nonGenuineRatingCount = !isGenuine ? (queriedDhHhPost.getNotGenuineRatingUserIds() == null ? 1 : queriedDhHhPost.getNotGenuineRatingUserIds().size() + 1) : queriedDhHhPost.getNotGenuineRatingUserIds().size();
+
+            float avgGenuinePercentage = queriedDhHhPost.getHhGenuinePercentage();
+            long totalAddedPost = queriedDhHhPost.getNumberOfHHPosts();
+            float finalAvgGenPerc = calculatePerPostGenuinePercentage(previousGenuineRatingCount, previousNotGenuineRatingCount, genuineRatingCount, nonGenuineRatingCount, avgGenuinePercentage, totalAddedPost);
+            updatePostAddedUser.set(AppConstants.KEY_GENUINE_PERCENTAGE, finalAvgGenPerc);
+            updatePostAddedUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+            mongoTemplate.updateFirst(findPostAddedUserQuery, updatePostAddedUser, DhUser.class);
+
+            return new Response<DhHHPost>(true, 201, isGenuine ? "Marked post as genuine" : "Marked post as non genuine", new ArrayList<>(), 0);
+        }
+        return new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
+    }
+
+    private Response<DhHHPost> markAsLiked(String language, String hhPostId, String likedUserId) {
+        if (Utility.isFieldEmpty(hhPostId) || Utility.isFieldEmpty(likedUserId)) {
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+        }
+
+        if (!commonService.checkUserExistence(likedUserId))
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+
+        Update update = new Update();
+        update.push(AppConstants.LIKED_USER_IDS, likedUserId);
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        Query query = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
+        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        mongoTemplate.updateFirst(query, update, DhHHPost.class);
+
+        return new Response<DhHHPost>(true, 201, "Marked post as liked", new ArrayList<>(), 0);
     }
 
     private Response<DhHHPost> markPostAsHelped(String language, DhHHPost dhHHPost, String helpedUserId, String helpedUsername) {
@@ -146,7 +249,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
 
         float currentGenPerc = (genuineRatingCount / (genuineRatingCount + nonGenuineRatingCount)) * 100;
 
-        return (previousAvgGenCount + currentGenPerc) / totalAddedPost;
+        return (float) Utility.roundOneDecimals((previousAvgGenCount + currentGenPerc) / totalAddedPost);
     }
 
     @Override
