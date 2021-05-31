@@ -5,13 +5,18 @@ import com.ayprojects.helpinghands.api.behaviours.StrategyAddBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhHHPost;
+import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
+import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -36,8 +41,22 @@ public class StrategyAddHhPostApi implements StrategyAddBehaviour<DhHHPost> {
         if (!validationResponse.getStatus())
             return validationResponse;
 
+        //validating user against user ids intentionally, later in this code used this quried objects to update dhUser
+        Query findPostAddedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(dhHHPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
+        findPostAddedUserQuery.fields().include(AppConstants.KEY_GENUINE_PERCENTAGE);
+        findPostAddedUserQuery.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
+        DhUser queriedPostAddedDhUser = mongoTemplate.findOne(findPostAddedUserQuery, DhUser.class);
+        if (queriedPostAddedDhUser == null)
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+
         dhHHPost = (DhHHPost) Utility.setCommonAttrs(dhHHPost, AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhHHPost, AppConstants.COLLECTION_DH_HH_POST);
+
+        //Update helped user details
+        Update updatePostsCountOfUser = new Update();
+        updatePostsCountOfUser.set(AppConstants.KEY_NUMBER_OF_HH_POSTS, queriedPostAddedDhUser.getNumberOfHHPosts() + 1);
+        updatePostsCountOfUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(findPostAddedUserQuery, updatePostsCountOfUser, DhUser.class);
         return validationResponse;
     }
 
@@ -92,10 +111,6 @@ public class StrategyAddHhPostApi implements StrategyAddBehaviour<DhHHPost> {
             resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
             LOGGER.info("missingfields=>" + resMsg);
             return new Response<DhHHPost>(false, 402, resMsg, new ArrayList<>(), 0);
-        }
-
-        if (!commonService.checkUserExistence(dhHHPost.getUserId())) {
-            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
         }
 
         return new Response<DhHHPost>(true, 201,ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_HH_ADD_POST_MSG),ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_HH_ADD_POST_BODY), new ArrayList<>(), 0);

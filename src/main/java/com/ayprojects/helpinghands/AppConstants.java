@@ -1,7 +1,7 @@
 package com.ayprojects.helpinghands;
 
 public class AppConstants {
-    public static final  String KEY_NUMBER_OF_HH_POSTS = "numberOfHHPosts";
+    public static final String KEY_NUMBER_OF_HH_POSTS = "numberOfHHPosts";
     public static final  String KEY_NUMBER_OF_HH_HELPS = "numberOfHHHelps";
     public static final  String KEY_GENUINE_PERCENTAGE = "hhGenuinePercentage";
     public static final String DATE_FORMAT_HOUR_MIN = "HH:mm";
@@ -298,9 +298,9 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_NTFN_BODY_HH_HELPED_NONAME = "NTFN_BODY_HH_HELPED_NONAME";
     public static final String KEY_HELPED_USER_NAME = "helpedUsername";
     public static final String KEY_GENUINE_RATING_USER_IDS = "genuineRatingUserIds";
-    public static final String KEY_NOTGENUINE_RATING_USER_IDS = "genuineRatingUserIds";
+    public static final String KEY_NOTGENUINE_RATING_USER_IDS = "notGenuineRatingUserIds";
     public static final String COLLECTION_DH_HH_HELPED_USERS = "dhHhHelpedUsers";
-    public static final String LIKED_USER_IDS = "likedUserIds";
+    public static final String KEY_LIKED_USER_IDS = "likedUserIds";
     public static final String KEY_GENUINE_NON_GENUINE_USER_ID = "genuineNonGenuineUserId";
     public static final String KEY_LIKED_USER_ID = "likedUserId";
     public static final String KEY_OTHER_USER_ID = "OtherUserId";

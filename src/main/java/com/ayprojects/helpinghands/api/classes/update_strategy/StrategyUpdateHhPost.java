@@ -52,16 +52,16 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             String otherUserName = (String) params.get(AppConstants.KEY_HH_OTHER_USERNAME);
             switch (hhPostUpdateEnums) {
                 case ADD_LIKE:
-                    return markAsLiked(language, hhPostId,otherUserId);
+                    return markAsLiked(language, hhPostId, otherUserId);
                 case DELETE_POST:
                     //TODO
                     break;
                 case MARK_AS_GENUINE:
-                    return markAsGenuineOrNotGenuine(language,hhPostId, true, otherUserId);
+                    return markAsGenuineOrNotGenuine(language, hhPostId, true, otherUserId);
                 case MARK_AS_NOTGENUINE:
                     return markAsGenuineOrNotGenuine(language, hhPostId, false, otherUserId);
                 case MARK_HELPED:
-                    return markPostAsHelped(language, obj, otherUserId,otherUserName);
+                    return markPostAsHelped(language, obj, otherUserId, otherUserName);
             }
         }
         return null;
@@ -89,35 +89,52 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             long previousGenuineRatingCount = queriedDhHhPost.getGenuineRatingUserIds() == null ? 0 : queriedDhHhPost.getGenuineRatingUserIds().size();
             long previousNotGenuineRatingCount = queriedDhHhPost.getNotGenuineRatingUserIds() == null ? 0 : queriedDhHhPost.getNotGenuineRatingUserIds().size();
 
+            //to avoid crashes
+            if (queriedDhHhPost.getNotGenuineRatingUserIds() == null)
+                queriedDhHhPost.setNotGenuineRatingUserIds(new ArrayList<>());
+
+            if (queriedDhHhPost.getGenuineRatingUserIds() == null)
+                queriedDhHhPost.setGenuineRatingUserIds(new ArrayList<>());
+
             //update hh post
             Update updateDhHhPost = new Update();
-            if (isGenuine) {
-                //check for whether userId already not exists in not genuine list,
-                //if exists remove it before pushing it in genuine user ids
-                boolean needToPopFromNonGenuineList = false;
-                for (String gn : queriedDhHhPost.getNotGenuineRatingUserIds()) {
-                    if (gn.equals(genuineNonGenuineUserId)) {
-                        queriedDhHhPost.getNotGenuineRatingUserIds().remove(genuineNonGenuineUserId);
-                        needToPopFromNonGenuineList = true;
-                        break;
-                    }
+            //check for whether userId already not exists in not genuine list,
+            //if exists remove it before pushing it in genuine user ids
+            boolean needToPopFromNonGenuineList = false;
+            for (String gn : queriedDhHhPost.getNotGenuineRatingUserIds()) {
+                if (gn.equals(genuineNonGenuineUserId)) {
+                    if (!isGenuine)
+                        return new Response<DhHHPost>(false, 201, "Already marked as not genuine", new ArrayList<>(), 0);
+
+                    queriedDhHhPost.getNotGenuineRatingUserIds().remove(genuineNonGenuineUserId);
+                    needToPopFromNonGenuineList = true;
+                    break;
+
                 }
+            }
+
+            //check for whether userId already not exists in genuine list,
+            //if exists remove it before pushing it in non genuine user ids
+            boolean needToPopFromGenuineList = false;
+            for (String gn : queriedDhHhPost.getGenuineRatingUserIds()) {
+                if (gn.equals(genuineNonGenuineUserId)) {
+                    if (isGenuine)
+                        return new Response<DhHHPost>(false, 201, "Already marked as genuine", new ArrayList<>(), 0);
+                    
+                    queriedDhHhPost.getGenuineRatingUserIds().remove(genuineNonGenuineUserId);
+                    needToPopFromGenuineList = true;
+                    break;
+                }
+            }
+
+
+            if (isGenuine) {
                 if (needToPopFromNonGenuineList)
                     updateDhHhPost.set(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS, queriedDhHhPost.getNotGenuineRatingUserIds());
                 else
                     updateDhHhPost.push(AppConstants.KEY_GENUINE_RATING_USER_IDS, genuineNonGenuineUserId);
 
             } else {
-                //check for whether userId already not exists in genuine list,
-                //if exists remove it before pushing it in non genuine user ids
-                boolean needToPopFromGenuineList = false;
-                for (String gn : queriedDhHhPost.getGenuineRatingUserIds()) {
-                    if (gn.equals(genuineNonGenuineUserId)) {
-                        queriedDhHhPost.getGenuineRatingUserIds().remove(genuineNonGenuineUserId);
-                        needToPopFromGenuineList = true;
-                        break;
-                    }
-                }
                 if (needToPopFromGenuineList)
                     updateDhHhPost.set(AppConstants.KEY_GENUINE_RATING_USER_IDS, queriedDhHhPost.getNotGenuineRatingUserIds());
                 else
@@ -128,12 +145,13 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
 
             Query findPostAddedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(queriedDhHhPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
             Update updatePostAddedUser = new Update();
-            long genuineRatingCount = isGenuine ? (queriedDhHhPost.getGenuineRatingUserIds() == null ? 1 : queriedDhHhPost.getGenuineRatingUserIds().size() + 1) : queriedDhHhPost.getGenuineRatingUserIds().size();
 
-            long nonGenuineRatingCount = !isGenuine ? (queriedDhHhPost.getNotGenuineRatingUserIds() == null ? 1 : queriedDhHhPost.getNotGenuineRatingUserIds().size() + 1) : queriedDhHhPost.getNotGenuineRatingUserIds().size();
+            long genuineRatingCount = isGenuine ? queriedDhHhPost.getGenuineRatingUserIds().size() + 1 : queriedDhHhPost.getGenuineRatingUserIds().size();
+
+            long nonGenuineRatingCount = !isGenuine ? queriedDhHhPost.getNotGenuineRatingUserIds().size() + 1 : queriedDhHhPost.getNotGenuineRatingUserIds().size();
 
             float avgGenuinePercentage = queriedDhHhPost.getHhGenuinePercentage();
-            long totalAddedPost = queriedDhHhPost.getNumberOfHHPosts();
+            long totalAddedPost = queriedDhHhPost.getNumberOfHHPosts() + 1;
             float finalAvgGenPerc = calculatePerPostGenuinePercentage(previousGenuineRatingCount, previousNotGenuineRatingCount, genuineRatingCount, nonGenuineRatingCount, avgGenuinePercentage, totalAddedPost);
             updatePostAddedUser.set(AppConstants.KEY_GENUINE_PERCENTAGE, finalAvgGenPerc);
             updatePostAddedUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
@@ -141,7 +159,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
 
             return new Response<DhHHPost>(true, 201, isGenuine ? "Marked post as genuine" : "Marked post as non genuine", new ArrayList<>(), 0);
         }
-        return new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
+        return new Response<DhHHPost>(true, 402, "Post not found with given postId!", new ArrayList<>(), 0);
     }
 
     private Response<DhHHPost> markAsLiked(String language, String hhPostId, String likedUserId) {
@@ -152,14 +170,28 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         if (!commonService.checkUserExistence(likedUserId))
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
 
-        Update update = new Update();
-        update.push(AppConstants.LIKED_USER_IDS, likedUserId);
-        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
-        Query query = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
-        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        mongoTemplate.updateFirst(query, update, DhHHPost.class);
+        Query querFindPostById = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
+        querFindPostById.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        querFindPostById.fields().include(AppConstants.KEY_LIKED_USER_IDS);
+        DhHHPost dhHHPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
+        if (dhHHPost != null) {
+            if (dhHHPost.getLikedUserIds() != null) {
+                for (String s : dhHHPost.getLikedUserIds()) {
+                    if (s.equalsIgnoreCase(likedUserId)) {
+                        return new Response<DhHHPost>(true, 201, "Already marked post as liked", new ArrayList<>(), 0);
+                    }
+                }
+            }
+            Update update = new Update();
+            update.push(AppConstants.KEY_LIKED_USER_IDS, likedUserId);
+            update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+            Query query = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
+            query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+            mongoTemplate.updateFirst(query, update, DhHHPost.class);
 
-        return new Response<DhHHPost>(true, 201, "Marked post as liked", new ArrayList<>(), 0);
+            return new Response<DhHHPost>(true, 201, "Marked post as liked", new ArrayList<>(), 0);
+        }
+        return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
     }
 
     private Response<DhHHPost> markPostAsHelped(String language, DhHHPost dhHHPost, String helpedUserId, String helpedUsername) {
@@ -243,13 +275,14 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
     //working and tested,
     private float calculatePerPostGenuinePercentage(long previousGenuineRatingCount, long previousNotGenuineRatingCount, long genuineRatingCount, long nonGenuineRatingCount, float avgGenuinePercentage, long totalAddedPost) {
         long totalPreviousRatingCount = previousGenuineRatingCount + previousNotGenuineRatingCount;
-        float previousGenPerc = (previousGenuineRatingCount / totalPreviousRatingCount) * 100;
+        float previousGenPerc = previousGenuineRatingCount == 0 || totalPreviousRatingCount == 0 ? 0 : (previousGenuineRatingCount / totalPreviousRatingCount) * 100;
 
         float previousAvgGenCount = (((totalPreviousRatingCount > 0 ? totalAddedPost : totalAddedPost - 1) * avgGenuinePercentage) - previousGenPerc);
 
         float currentGenPerc = (genuineRatingCount / (genuineRatingCount + nonGenuineRatingCount)) * 100;
-
-        return (float) Utility.roundOneDecimals((previousAvgGenCount + currentGenPerc) / totalAddedPost);
+        float finalPerc = (previousAvgGenCount + currentGenPerc) / totalAddedPost;
+        LOGGER.info("calculatePerPostGenuinePercentage->finalPerc=" + finalPerc);
+        return (float) Utility.roundTwoDecimals(finalPerc);
     }
 
     @Override
