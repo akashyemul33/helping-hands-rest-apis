@@ -61,13 +61,13 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
                 case MARK_AS_NOTGENUINE:
                     return markAsGenuineOrNotGenuine(language, hhPostId, false, otherUserId);
                 case MARK_HELPED:
-                    return markPostAsHelped(language, obj, otherUserId, otherUserName);
+                    return markPostAsHelped(language, obj);
             }
         }
         return null;
     }
 
-    private Response<DhHHPost> markAsGenuineOrNotGenuine(String language,String hhPostId, boolean isGenuine, String genuineNonGenuineUserId) {
+    private Response<DhHHPost> markAsGenuineOrNotGenuine(String language, String hhPostId, boolean isGenuine, String genuineNonGenuineUserId) {
         if (Utility.isFieldEmpty(hhPostId) || Utility.isFieldEmpty(genuineNonGenuineUserId)) {
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
         }
@@ -92,7 +92,6 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             DhUser queriedPostAddedDhUser = mongoTemplate.findOne(findPostAddedUserQuery, DhUser.class);
             if (queriedPostAddedDhUser == null)
                 return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
-
 
 
             //dont change code location, intentionally place this code here 
@@ -130,7 +129,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
                 if (gn.equals(genuineNonGenuineUserId)) {
                     if (isGenuine)
                         return new Response<DhHHPost>(false, 201, "Already marked as genuine", new ArrayList<>(), 0);
-                    
+
                     queriedDhHhPost.getGenuineRatingUserIds().remove(genuineNonGenuineUserId);
                     needToPopFromGenuineList = true;
                     break;
@@ -142,12 +141,12 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
                 if (needToPopFromNonGenuineList)
                     updateDhHhPost.set(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS, queriedDhHhPost.getNotGenuineRatingUserIds());
 
-                    updateDhHhPost.push(AppConstants.KEY_GENUINE_RATING_USER_IDS, genuineNonGenuineUserId);
+                updateDhHhPost.push(AppConstants.KEY_GENUINE_RATING_USER_IDS, genuineNonGenuineUserId);
 
             } else {
                 if (needToPopFromGenuineList)
-                    updateDhHhPost.set(AppConstants.KEY_GENUINE_RATING_USER_IDS, queriedDhHhPost.getNotGenuineRatingUserIds());
-                    updateDhHhPost.push(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS, genuineNonGenuineUserId);
+                    updateDhHhPost.set(AppConstants.KEY_GENUINE_RATING_USER_IDS, queriedDhHhPost.getGenuineRatingUserIds());
+                updateDhHhPost.push(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS, genuineNonGenuineUserId);
             }
             updateDhHhPost.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             mongoTemplate.updateFirst(querFindPostById, updateDhHhPost, DhHHPost.class);
@@ -200,12 +199,15 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
     }
 
-    private Response<DhHHPost> markPostAsHelped(String language, DhHHPost dhHHPost, String helpedUserId, String helpedUsername) {
-        Response<DhHHPost> validationResponse = validateHhPost(language, dhHHPost, true, helpedUserId);
+    private Response<DhHHPost> markPostAsHelped(String language, DhHHPost dhHHPost) {
+        Response<DhHHPost> validationResponse = validateHhPost(language, dhHHPost, true);
         if (!validationResponse.getStatus())
             return validationResponse;
 
-        //validating user against user ids intentionally, later in this code used this quried objects to update dhUser
+        String helpedUserId = dhHHPost.getHelpedUserIds().get(0);
+        String helpedUsername = dhHHPost.getHelpedUsers().get(0).getUserName();
+
+//validating user against user ids intentionally, later in this code used this quried objects to update dhUser
         Query findPostAddedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(dhHHPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
         findPostAddedUserQuery.fields().include(AppConstants.KEY_GENUINE_PERCENTAGE);
         findPostAddedUserQuery.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
@@ -224,29 +226,37 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         dhHhHelpedUsers = (DhHhHelpedUsers) Utility.setCommonAttrs(dhHhHelpedUsers, AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhHhHelpedUsers, AppConstants.COLLECTION_DH_HH_HELPED_USERS);
 
-        Query query = new Query();
-        Criteria criteria = new Criteria();
-        criteria.andOperator(Criteria.where(AppConstants.KEY_HH_POST_ID).is(dhHHPost.getPostId()));
-        criteria.andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        query.addCriteria(criteria);
-        Update update = new Update();
+        Query querFindPostById = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(dhHHPost.getPostId()));
+        querFindPostById.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        querFindPostById.fields().include(AppConstants.KEY_GENUINE_RATING_USER_IDS);
+        querFindPostById.fields().include(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS);
+        DhHHPost queriedDhHhPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
+        if (queriedDhHhPost == null)
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
+
+        //to avoid crashes
+        if (queriedDhHhPost.getGenuineRatingUserIds() == null)
+            queriedDhHhPost.setGenuineRatingUserIds(new ArrayList<>());
+        if (queriedDhHhPost.getNotGenuineRatingUserIds() == null)
+            queriedDhHhPost.setNotGenuineRatingUserIds(new ArrayList<>());
+        Update updateHhPost = new Update();
         if (dhHHPost.getHelpedUserIds() == null) {
             List<String> helpedUserIds = new ArrayList<>(1);
             helpedUserIds.add(helpedUserId);
-            update.set(AppConstants.KEY_HELPED_USER_ID, helpedUserIds);
+            updateHhPost.set(AppConstants.KEY_HELPED_USER_ID, helpedUserIds);
         } else {
-            update.push(AppConstants.KEY_HELPED_USER_ID, helpedUserId);
+            updateHhPost.push(AppConstants.KEY_HELPED_USER_ID, helpedUserId);
         }
 
         if (dhHHPost.getGenuineRatingUserIds() == null) {
             List<String> genuineUserIds = new ArrayList<>(1);
             genuineUserIds.add(helpedUserId);
-            update.set(AppConstants.KEY_GENUINE_RATING_USER_IDS, genuineUserIds);
+            updateHhPost.set(AppConstants.KEY_GENUINE_RATING_USER_IDS, genuineUserIds);
         } else {
-            update.push(AppConstants.KEY_GENUINE_RATING_USER_IDS, helpedUserId);
+            updateHhPost.push(AppConstants.KEY_GENUINE_RATING_USER_IDS, helpedUserId);
         }
         String modifiedDateTime = CalendarOperations.currentDateTimeInUTC();
-        update.set(AppConstants.MODIFIED_DATE_TIME, modifiedDateTime);
+        updateHhPost.set(AppConstants.MODIFIED_DATE_TIME, modifiedDateTime);
         String title = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_TITLE_HH_HELPED);
         String body;
         if (Utility.isFieldEmpty(helpedUsername))
@@ -254,7 +264,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         else
             body = String.format(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_BODY_HH_HELPED_NONAME), helpedUsername);
         Utility.sendNotification(ContentType.CONTENT_HH_POST_HELP, dhHHPost.getUserId(), mongoTemplate, title, body, RedirectionContent.REDCONTENT_HH_HELPED, RedirectionContent.REDURL_HH_HELPED);
-        mongoTemplate.updateFirst(query, update, DhHHPost.class);
+        mongoTemplate.updateFirst(querFindPostById, updateHhPost, DhHHPost.class);
 
         //Update helped user details
         Update updateHelpedUser = new Update();
@@ -262,12 +272,11 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         updateHelpedUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(findHelpedUserQuery, updateHelpedUser, DhUser.class);
 
-
         //Update post added user
         Update updatePostAddedUser = new Update();
-        long previousGenuineRatingCount = dhHHPost.getGenuineRatingUserIds().size() - 1;
-        long previousNotGenuineRatingCount = dhHHPost.getNotGenuineRatingUserIds() == null ? 0 : dhHHPost.getNotGenuineRatingUserIds().size();
-        long genuineRatingCount = dhHHPost.getGenuineRatingUserIds().size();
+        long previousGenuineRatingCount = queriedDhHhPost.getGenuineRatingUserIds().size();
+        long previousNotGenuineRatingCount = queriedDhHhPost.getNotGenuineRatingUserIds().size();
+        long genuineRatingCount = previousGenuineRatingCount + 1;
         float avgGenuinePercentage = queriedPostAddedDhUser.getHhGenuinePercentage();
         long totalAddedPost = queriedPostAddedDhUser.getNumberOfHHPosts();
         float finalAvgGenPerc = calculatePerPostGenuinePercentage(previousGenuineRatingCount, previousNotGenuineRatingCount, genuineRatingCount, previousNotGenuineRatingCount, avgGenuinePercentage, totalAddedPost);
@@ -280,15 +289,17 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
 
     //working and tested,
     private float calculatePerPostGenuinePercentage(long previousGenuineRatingCount, long previousNotGenuineRatingCount, long genuineRatingCount, long nonGenuineRatingCount, float avgGenuinePercentage, long totalAddedPost) {
-        LOGGER.info("calculatePerPostGenuinePercentage:previousGenuineRatingCount:"+previousGenuineRatingCount+" previousNotGenuineRatingCount:"+previousNotGenuineRatingCount+" genuineRatingCount:"+genuineRatingCount+" nonGenuineRatingCount:"+nonGenuineRatingCount+" avgGenuinePercentage:"+avgGenuinePercentage+" totalAddedPost:"+totalAddedPost);
+        LOGGER.info("calculatePerPostGenuinePercentage:previousGenuineRatingCount:" + previousGenuineRatingCount + " previousNotGenuineRatingCount:" + previousNotGenuineRatingCount + " genuineRatingCount:" + genuineRatingCount + " nonGenuineRatingCount:" + nonGenuineRatingCount + " avgGenuinePercentage:" + avgGenuinePercentage + " totalAddedPost:" + totalAddedPost);
         long totalPreviousRatingCount = previousGenuineRatingCount + previousNotGenuineRatingCount;
         long previousGenPerc = previousGenuineRatingCount == 0 || totalPreviousRatingCount == 0 ? 0 : (previousGenuineRatingCount * 100 / totalPreviousRatingCount);
 
-        float previousAvgGenCount = (((totalPreviousRatingCount > 0 ? totalAddedPost : totalAddedPost - 1) * avgGenuinePercentage) - previousGenPerc);
+        totalAddedPost = totalPreviousRatingCount > 0 && (genuineRatingCount + nonGenuineRatingCount) > 1 ? totalAddedPost : totalAddedPost - 1;
+        float previousAvgGenCount = ((totalAddedPost * avgGenuinePercentage) - previousGenPerc);
 
-        long currentGenPerc = (genuineRatingCount*100 / (genuineRatingCount + nonGenuineRatingCount));
+
+        long currentGenPerc = (genuineRatingCount * 100 / (genuineRatingCount + nonGenuineRatingCount));
         float finalPerc = (previousAvgGenCount + currentGenPerc) / totalAddedPost;
-        LOGGER.info("calculatePerPostGenuinePercentage->finalPerc=" + finalPerc+" currentGenPerc:"+currentGenPerc+" previousAvgGenCount:"+previousAvgGenCount+" previousGenPerc:"+previousGenPerc+" totalPreviousRatingCount:"+totalPreviousRatingCount);
+        LOGGER.info("calculatePerPostGenuinePercentage->finalPerc=" + finalPerc + " currentGenPerc:" + currentGenPerc + " previousAvgGenCount:" + previousAvgGenCount + " previousGenPerc:" + previousGenPerc + " totalPreviousRatingCount:" + totalPreviousRatingCount);
         return (float) Utility.roundTwoDecimals(finalPerc);
     }
 
@@ -297,14 +308,14 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         return StrategyName.UpdateHhPostStrategy;
     }
 
-    public Response<DhHHPost> validateHhPost(String language, DhHHPost dhHHPost, boolean forHelped, String helpedUserId) {
+    public Response<DhHHPost> validateHhPost(String language, DhHHPost dhHHPost, boolean forHelped) {
         if (dhHHPost == null)
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
 
         List<String> missingFieldsList = new ArrayList<>();
         if (Utility.isFieldEmpty(dhHHPost.getUserId()))
             missingFieldsList.add(AppConstants.KEY_USER_ID);
-        if (forHelped && Utility.isFieldEmpty(helpedUserId))
+        if (forHelped && Utility.isFieldEmpty(dhHHPost.getHelpedUserIds().get(0)))
             missingFieldsList.add(AppConstants.KEY_HELPED_USER_ID);
         if (Utility.isFieldEmpty(dhHHPost.getPostId()))
             missingFieldsList.add(AppConstants.KEY_HH_POST_ID);
@@ -318,14 +329,6 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             resMsg = resMsg + " , these fields are missing : " + missingFieldsList;
             LOGGER.info("missingfields=>" + resMsg);
             return new Response<DhHHPost>(false, 402, resMsg, new ArrayList<>(), 0);
-        }
-
-        if (dhHHPost.getHelpedUserIds() != null) {
-            for (String hUserId : dhHHPost.getHelpedUserIds()) {
-                if (helpedUserId.equals(hUserId)) {
-                    return new Response<DhHHPost>(false, 402, "You've already marked this post as helped !", new ArrayList<>(), 0);
-                }
-            }
         }
 
         return new Response<DhHHPost>(true, 201, "validated", new ArrayList<>(), 0);

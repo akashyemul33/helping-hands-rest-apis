@@ -59,7 +59,7 @@ public class HhPostController {
     }
 
     /**
-     * add helped user message and other things at 0th position of DhHhPost item
+     * DhHhPost need below things:helped user details at 0th pos,helpedUserId in helpedUserIds list at 0th pos,postId,userId,userName
      *
      * @param httpHeaders
      * @param authentication
@@ -71,11 +71,9 @@ public class HhPostController {
      * @throws ServerSideException
      */
     @PutMapping(value = "/markAsHelped")
-    public ResponseEntity<Response<DhHHPost>> markAsHelped(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost, @RequestParam String helpedUserId, @RequestParam String helpedUserName, @PathVariable String version) throws ServerSideException {
+    public ResponseEntity<Response<DhHHPost>> markAsHelped(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost,@PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_HH_POST_STEP_ENUM, HhPostUpdateEnums.MARK_HELPED);
-        params.put(AppConstants.KEY_HELPED_USER_ID, helpedUserId);
-        params.put(AppConstants.KEY_HELPED_USER_NAME, helpedUserName);
         Response<DhHHPost> response = apiOperations.update(authentication, httpHeaders, params, dhHHPost, StrategyName.UpdateHhPostStrategy, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.OK);
