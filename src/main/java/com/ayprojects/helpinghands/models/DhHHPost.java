@@ -87,7 +87,7 @@ public class DhHHPost extends AllCommonUsedAttributes {
     private List<String> imgUrlLow;
     private List<String> imgUrlHigh;
     private String message;
-    private long postRatingCount;
+
     private List<String> likedUserIds;
     private String priorityId;
     private String priorityName;
@@ -235,14 +235,6 @@ public class DhHHPost extends AllCommonUsedAttributes {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public long getPostRatingCount() {
-        return postRatingCount;
-    }
-
-    public void setPostRatingCount(long postRatingCount) {
-        this.postRatingCount = postRatingCount;
     }
 
 }
