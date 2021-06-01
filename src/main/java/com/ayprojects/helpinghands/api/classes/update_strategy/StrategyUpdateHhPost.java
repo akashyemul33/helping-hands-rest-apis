@@ -52,7 +52,9 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             String otherUserName = (String) params.get(AppConstants.KEY_HH_OTHER_USERNAME);
             switch (hhPostUpdateEnums) {
                 case ADD_LIKE:
-                    return markAsLiked(language, hhPostId, otherUserId);
+                    return markAsLiked(language, hhPostId, otherUserId, true);
+                case DIS_LIKE:
+                    return markAsLiked(language, hhPostId, otherUserId, false);
                 case DELETE_POST:
                     //TODO
                     break;
@@ -167,31 +169,44 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         return new Response<DhHHPost>(true, 402, "Post not found with given postId!", new ArrayList<>(), 0);
     }
 
-    private Response<DhHHPost> markAsLiked(String language, String hhPostId, String likedUserId) {
+    private Response<DhHHPost> markAsLiked(String language, String hhPostId, String likedUserId, boolean markOrUnmark) {
         if (Utility.isFieldEmpty(hhPostId) || Utility.isFieldEmpty(likedUserId)) {
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
         }
 
-        if (!commonService.checkUserExistence(likedUserId))
+
+        if (markOrUnmark && !commonService.checkUserExistence(likedUserId))
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
 
         Query querFindPostById = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
         querFindPostById.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         querFindPostById.fields().include(AppConstants.KEY_LIKED_USER_IDS);
         DhHHPost dhHHPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
+        Query query = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
+        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         if (dhHHPost != null) {
             if (dhHHPost.getLikedUserIds() != null) {
                 for (String s : dhHHPost.getLikedUserIds()) {
                     if (s.equalsIgnoreCase(likedUserId)) {
-                        return new Response<DhHHPost>(true, 201, "Already marked post as liked", new ArrayList<>(), 0);
+                        if (markOrUnmark)
+                            return new Response<DhHHPost>(true, 201, "Already marked post as liked", new ArrayList<>(), 0);
+                        else {
+                            dhHHPost.getLikedUserIds().remove(likedUserId);
+                            Update update = new Update();
+                            update.set(AppConstants.KEY_LIKED_USER_IDS, dhHHPost.getLikedUserIds());
+                            update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+                            mongoTemplate.updateFirst(query, update, DhHHPost.class);
+                            return new Response<DhHHPost>(true, 201, "Marked post as dis liked", new ArrayList<>(), 0);
+                        }
                     }
                 }
             }
+            if (!markOrUnmark)
+                return new Response<DhHHPost>(true, 201, "No likes found with given UserId !", new ArrayList<>(), 0);
+
             Update update = new Update();
             update.push(AppConstants.KEY_LIKED_USER_IDS, likedUserId);
             update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
-            Query query = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
-            query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
             mongoTemplate.updateFirst(query, update, DhHHPost.class);
 
             return new Response<DhHHPost>(true, 201, "Marked post as liked", new ArrayList<>(), 0);
@@ -295,7 +310,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
     private float calculatePerPostGenuinePercentage(float avgGenuinePercentage, float prevAvgGenuinePercentage, long currentGenPerc, long totalAddedPost) {
         float sumOfAllPostsAvg = avgGenuinePercentage * totalAddedPost;
         float finalPerc = ((sumOfAllPostsAvg - prevAvgGenuinePercentage) + currentGenPerc) / totalAddedPost;
-        LOGGER.info("calculatePerPostGenuinePercentage:avgGenuinePercentage:"+avgGenuinePercentage+" prevAvgGenuinePercentage:"+prevAvgGenuinePercentage+" currentGenPerc:"+currentGenPerc+" totalAddedPost:"+totalAddedPost+" sumOfAllPostsAvg:"+sumOfAllPostsAvg+" finalPerc:"+finalPerc);
+        LOGGER.info("calculatePerPostGenuinePercentage:avgGenuinePercentage:" + avgGenuinePercentage + " prevAvgGenuinePercentage:" + prevAvgGenuinePercentage + " currentGenPerc:" + currentGenPerc + " totalAddedPost:" + totalAddedPost + " sumOfAllPostsAvg:" + sumOfAllPostsAvg + " finalPerc:" + finalPerc);
         return (float) Utility.roundOneDecimals(finalPerc);
     }
 
