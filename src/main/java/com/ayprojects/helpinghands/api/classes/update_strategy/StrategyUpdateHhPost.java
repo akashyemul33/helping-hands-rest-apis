@@ -255,7 +255,16 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             queriedDhHhPost.setGenuineRatingUserIds(new ArrayList<>());
         if (queriedDhHhPost.getNotGenuineRatingUserIds() == null)
             queriedDhHhPost.setNotGenuineRatingUserIds(new ArrayList<>());
+
         Update updateHhPost = new Update();
+        for (String gn : queriedDhHhPost.getNotGenuineRatingUserIds()) {
+            if (gn.equals(helpedUserId)) {
+                queriedDhHhPost.getNotGenuineRatingUserIds().remove(helpedUserId);
+                updateHhPost.set(AppConstants.KEY_NOTGENUINE_RATING_USER_IDS, queriedDhHhPost.getNotGenuineRatingUserIds());
+                break;
+            }
+        }
+
         if (dhHHPost.getHelpedUserIds() == null) {
             List<String> helpedUserIds = new ArrayList<>(1);
             helpedUserIds.add(helpedUserId);
