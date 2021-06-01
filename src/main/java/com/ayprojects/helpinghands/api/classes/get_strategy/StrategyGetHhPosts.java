@@ -5,6 +5,7 @@ import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhHHPost;
+import com.ayprojects.helpinghands.models.DhHhHelpedUsers;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
@@ -98,6 +99,13 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
                     d.setDistance(Utility.distance(lat, placeLat, lng, placeLng));
                 }
             }
+
+            Query queryToFindHelpedUserDetails = new Query();
+            queryToFindHelpedUserDetails.addCriteria(Criteria.where(AppConstants.KEY_HH_POST_ID).is(d.getPostId()));
+            queryToFindHelpedUserDetails.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+            List<DhHhHelpedUsers> helpedUsersList = mongoTemplate.find(queryToFindHelpedUserDetails, DhHhHelpedUsers.class);
+            d.setHelpedUsers(helpedUsersList);
+
         }
 
         Page<DhHHPost> hhPosts = PageableExecutionUtils.getPage(

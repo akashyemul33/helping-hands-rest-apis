@@ -292,7 +292,7 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_NO_RECORDS_FOUND = "NO_RECORDS_FOUND";
     public static final String KEY_USER_PFORILE_LOW = "profileImgLow";
     public static final String KEY_USER_PFORILE_HIGH = "profileImgHigh";
-    public static final String KEY_HELPED_USER_ID = "helpedUserId";
+    public static final String KEY_HELPED_USER_ID = "helpedUserIds";
     public static final String KEY_HELPED_USERS = "helpedUsers";
     public static final String RESPONSEMESSAGE_NTFN_TITLE_HH_HELPED = "NTFN_TITLE_HH_HELPED";
     public static final String RESPONSEMESSAGE_NTFN_BODY_HH_HELPED = "NTFN_BODY_HH_HELPED";
