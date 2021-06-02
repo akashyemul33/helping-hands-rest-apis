@@ -33,6 +33,7 @@ public enum StrategyName {
     GetHhPostsStrategy,
     GetHhCategoryStrategy,
     GetHhPriorityStrategy,
+    GetDhCommentsStrategy,
     UpdatePlaceStrategy,
     UpdateHhPostStrategy
     ;
