@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -73,6 +74,7 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
 
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         List<DhHHPost> dhHHPosts = mongoTemplate.find(query.with(pageable), DhHHPost.class);
+        query.with(Sort.by(Sort.Direction.DESC, AppConstants.CREATED_DATETIME));
 
         LOGGER.info("getPaginatedPosts=" + dhHHPosts.size());
         for (DhHHPost d : dhHHPosts) {
@@ -84,6 +86,10 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
             queryFindUser.fields().include(AppConstants.KEY_GENUINE_PERCENTAGE);
             queryFindUser.fields().include(AppConstants.KEY_NUMBER_OF_HH_HELPS);
             queryFindUser.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
+            if (d.isPostCommentsOnOff()) {
+                queryFindUser.fields().include(AppConstants.KEY_USER_SETTINGS);
+                queryFindUser.fields().include(AppConstants.KEY_USER_SETTINGS_ENABLED);
+            }
             DhUser dhUser = mongoTemplate.findOne(queryFindUser, DhUser.class);
             if (dhUser != null) {
                 d.setUserName(String.format(Locale.US, "%s %s", dhUser.getFirstName(), dhUser.getLastName()));
@@ -92,6 +98,9 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
                 d.setHhGenuinePercentage(dhUser.getHhGenuinePercentage());
                 d.setNumberOfHHHelps(dhUser.getNumberOfHHHelps());
                 d.setNumberOfHHPosts(dhUser.getNumberOfHHPosts());
+
+                if (dhUser.getUserSettingEnabled() && dhUser.getUserSettings() != null)
+                    d.setPostCommentsOnOff(dhUser.getUserSettings().isHhPostCommentsOnOff());
             }
             if (lat != 0 && lng != 0) {
                 //calculate distance of place from given lat lng

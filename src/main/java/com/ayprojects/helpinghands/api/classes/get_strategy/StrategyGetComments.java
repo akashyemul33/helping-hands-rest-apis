@@ -6,6 +6,7 @@ import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhComments;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.models.Threads;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -54,6 +56,7 @@ public class StrategyGetComments implements StrategyGetBehaviour<DhComments> {
 
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         query.addCriteria(Criteria.where(AppConstants.KEY_CONTENT_ID).is(contentId));
+        query.with(Sort.by(Sort.Direction.DESC, AppConstants.CREATED_DATETIME));
 
         List<DhComments> dhComments = mongoTemplate.find(query.with(pageable), DhComments.class);
         Page<DhComments> dhCommentsPage = PageableExecutionUtils.getPage(

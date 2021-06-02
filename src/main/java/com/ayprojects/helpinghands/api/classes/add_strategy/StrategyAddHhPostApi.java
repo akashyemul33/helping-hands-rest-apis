@@ -45,12 +45,16 @@ public class StrategyAddHhPostApi implements StrategyAddBehaviour<DhHHPost> {
         Query findPostAddedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(dhHHPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
         findPostAddedUserQuery.fields().include(AppConstants.KEY_GENUINE_PERCENTAGE);
         findPostAddedUserQuery.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
+        findPostAddedUserQuery.fields().include(AppConstants.KEY_USER_SETTINGS);
+        findPostAddedUserQuery.fields().include(AppConstants.KEY_USER_SETTINGS_ENABLED);
         DhUser queriedPostAddedDhUser = mongoTemplate.findOne(findPostAddedUserQuery, DhUser.class);
         if (queriedPostAddedDhUser == null)
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
 
         dhHHPost = (DhHHPost) Utility.setCommonAttrs(dhHHPost, AppConstants.STATUS_ACTIVE);
-        dhHHPost.setPostCommentsOnOff(true);
+        if (queriedPostAddedDhUser.getUserSettingEnabled() && queriedPostAddedDhUser.getUserSettings() != null) {
+            dhHHPost.setPostCommentsOnOff(queriedPostAddedDhUser.getUserSettings().isHhPostCommentsOnOff());
+        } else dhHHPost.setPostCommentsOnOff(true);
         mongoTemplate.save(dhHHPost, AppConstants.COLLECTION_DH_HH_POST);
 
         //Update helped user details
@@ -114,6 +118,6 @@ public class StrategyAddHhPostApi implements StrategyAddBehaviour<DhHHPost> {
             return new Response<DhHHPost>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 
-        return new Response<DhHHPost>(true, 201,ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_HH_ADD_POST_MSG),ResponseMsgFactory.getResponseMsg(language,AppConstants.RESPONSEMESSAGE_HH_ADD_POST_BODY), new ArrayList<>(), 0);
+        return new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_ADD_POST_MSG), ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_ADD_POST_BODY), new ArrayList<>(), 0);
     }
 }

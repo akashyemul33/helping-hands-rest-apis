@@ -146,7 +146,9 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             tempList.add(threads);
             updateComments.set(AppConstants.COMMENTS_THREADS_LIST, tempList);
         } else {
-            updateComments.push(AppConstants.COMMENTS_THREADS_LIST, threads);
+            //insert elements , so that they will be in by default descending order by created date time
+            dhComments.getThreadsList().add(0, threads);
+            updateComments.set(AppConstants.COMMENTS_THREADS_LIST, dhComments.getThreadsList());
         }
         updateComments.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(querFindCommentById, updateComments, DhComments.class);
