@@ -50,6 +50,7 @@ public class StrategyAddHhPostApi implements StrategyAddBehaviour<DhHHPost> {
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
 
         dhHHPost = (DhHHPost) Utility.setCommonAttrs(dhHHPost, AppConstants.STATUS_ACTIVE);
+        dhHHPost.setPostCommentsOnOff(true);
         mongoTemplate.save(dhHHPost, AppConstants.COLLECTION_DH_HH_POST);
 
         //Update helped user details

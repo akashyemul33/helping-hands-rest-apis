@@ -2,6 +2,7 @@ package com.ayprojects.helpinghands.models;
 
 import org.springframework.data.annotation.Transient;
 
+import java.lang.annotation.Inherited;
 import java.util.List;
 
 import jdk.nashorn.internal.ir.annotations.Ignore;
@@ -11,7 +12,72 @@ public class DhHHPost extends AllCommonUsedAttributes {
     @Ignore
     private long numberOfHHPosts;
 
+    private boolean postCommentsOnOff;
+    private List<String> dhCommentsIds;
+    @Transient
+    @Ignore
+    private List<DhComments> dhComments;
     private float postGenuinePerc;
+    @Transient
+    @Ignore
+    private long numberOfHHHelps;
+    @Transient
+    @Ignore
+    private String profileImgLow;
+    @Transient
+    @Ignore
+    private String profileImgHigh;
+    private String userId;
+    @Transient
+    @Ignore
+    private String userName;
+    @Transient
+    @Ignore
+    private List<DhHhHelpedUsers> helpedUsers;
+    private List<String> helpedUserIds;
+    private String postId;
+    private Address address;
+    private String categoryId;
+    private String categoryName;
+    @Transient
+    @Ignore
+    private float hhGenuinePercentage;
+    private List<String> genuineRatingUserIds;
+    private List<String> notGenuineRatingUserIds;
+    @Transient
+    @Ignore
+    private String distance;
+    private int numberOfPeople;
+    private List<String> imgUrlLow;
+    private List<String> imgUrlHigh;
+    private String message;
+    private List<String> likedUserIds;
+    private String priorityId;
+    private String priorityName;
+
+    public boolean isPostCommentsOnOff() {
+        return postCommentsOnOff;
+    }
+
+    public void setPostCommentsOnOff(boolean postCommentsOnOff) {
+        this.postCommentsOnOff = postCommentsOnOff;
+    }
+
+    public List<String> getDhCommentsIds() {
+        return dhCommentsIds;
+    }
+
+    public void setDhCommentsIds(List<String> dhCommentsIds) {
+        this.dhCommentsIds = dhCommentsIds;
+    }
+
+    public List<DhComments> getDhComments() {
+        return dhComments;
+    }
+
+    public void setDhComments(List<DhComments> dhComments) {
+        this.dhComments = dhComments;
+    }
 
     public float getPostGenuinePerc() {
         return postGenuinePerc;
@@ -37,16 +103,6 @@ public class DhHHPost extends AllCommonUsedAttributes {
         this.numberOfHHHelps = numberOfHHHelps;
     }
 
-    @Transient
-    @Ignore
-    private long numberOfHHHelps;
-    @Transient
-    @Ignore
-    private String profileImgLow;
-    @Transient
-    @Ignore
-    private String profileImgHigh;
-
     public String getProfileImgLow() {
         return profileImgLow;
     }
@@ -63,16 +119,6 @@ public class DhHHPost extends AllCommonUsedAttributes {
         this.profileImgHigh = profileImgHigh;
     }
 
-    private String userId;
-    @Transient
-    @Ignore
-    private String userName;
-    @Transient
-    @Ignore
-    private List<DhHhHelpedUsers> helpedUsers;
-
-    private List<String> helpedUserIds;
-
     public List<String> getHelpedUserIds() {
         return helpedUserIds;
     }
@@ -80,28 +126,6 @@ public class DhHHPost extends AllCommonUsedAttributes {
     public void setHelpedUserIds(List<String> helpedUserIds) {
         this.helpedUserIds = helpedUserIds;
     }
-
-    private String postId;
-    private Address address;
-    private String categoryId;
-    private String categoryName;
-    @Transient
-    @Ignore
-    private float hhGenuinePercentage;
-    private List<String> genuineRatingUserIds;
-    private List<String> notGenuineRatingUserIds;
-    @Transient
-    @Ignore
-    private String distance;
-    private int numberOfPeople;
-    private List<String> imgUrlLow;
-    private List<String> imgUrlHigh;
-    private String message;
-
-    private List<String> likedUserIds;
-    private String priorityId;
-    private String priorityName;
-
 
     public List<DhHhHelpedUsers> getHelpedUsers() {
         return helpedUsers;

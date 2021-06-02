@@ -20,6 +20,7 @@ public class UserSettings {
     private long hhPerPostImgLimit;
     private boolean hhShowProfileOnHelp;
     private boolean hhShowProfileOnAddPost;
+    private boolean hhPostCommentsOnOff;
 
     public UserSettings(long totalPlacesLimit, long perDayAddPlacesLimit, long perDayAddPostsLimit, long perPlaceImagesLimit, long perPostImagesLimit, long perPlaceProductsLimit, boolean perDayAddPlacesLimitEnabled, boolean perDayAddPostsLimitEnabled, boolean perPlaceImagesLimitEnabled, boolean perPostImagesLimitEnabled, long perProductDefaultImagesLimit, boolean perProductDefaultImageLimitEnabled, boolean perProductMaxImagesLimitEnabled, long perProductMaxImagesLimit) {
         this.totalPlacesLimit = totalPlacesLimit;
@@ -37,6 +38,14 @@ public class UserSettings {
         this.perProductMaxImagesLimitEnabled = perProductMaxImagesLimitEnabled;
         this.perProductDefaultImagesLimit = perProductDefaultImagesLimit;
         this.perProductMaxImagesLimit = perProductMaxImagesLimit;
+    }
+
+    public boolean isHhPostCommentsOnOff() {
+        return hhPostCommentsOnOff;
+    }
+
+    public void setHhPostCommentsOnOff(boolean hhPostCommentsOnOff) {
+        this.hhPostCommentsOnOff = hhPostCommentsOnOff;
     }
 
     public boolean isHhShowProfileOnAddPost() {

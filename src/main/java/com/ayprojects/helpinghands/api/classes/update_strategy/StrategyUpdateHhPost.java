@@ -7,10 +7,12 @@ import com.ayprojects.helpinghands.api.enums.HhPostUpdateEnums;
 import com.ayprojects.helpinghands.api.enums.RedirectionContent;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
+import com.ayprojects.helpinghands.models.DhComments;
 import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhHhHelpedUsers;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.models.Threads;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -64,9 +67,151 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
                     return markAsGenuineOrNotGenuine(language, hhPostId, false, otherUserId);
                 case MARK_HELPED:
                     return markPostAsHelped(language, obj);
+                case ADD_HH_POST_COMMENT:
+                    return addCommentToPost(language, hhPostId, otherUserId, otherUserName, (String) params.get(AppConstants.COMMENT));
+                case ADD_HH_POST_REPLY_TO_COMMENT:
+                    return addReplyOnPostComment(language, hhPostId, (String) params.get(AppConstants.KEY_DH_COMMENT_ID), otherUserId, otherUserName, (String) params.get(AppConstants.KEY_REPLY_TO_COMMENT));
+                case DELETE_HH_POST_COMMENT:
+                    return removeCommentFromPost(language, hhPostId, otherUserId, (String) params.get(AppConstants.KEY_DH_COMMENT_ID));
             }
         }
         return null;
+    }
+
+
+    private Response<DhHHPost> removeCommentFromPost(String language, String postId, String commentUserId, String commentId) {
+        if (Utility.isFieldEmpty(postId) || Utility.isFieldEmpty(commentUserId))
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+
+        Query querFindPostById = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(postId));
+        querFindPostById.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        querFindPostById.fields().include(AppConstants.KEY_USER_ID);
+        querFindPostById.fields().include(AppConstants.KEY_DH_HH_COMMENTS_IDS);
+        DhHHPost queriedDhHhPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
+        if (queriedDhHhPost == null)
+            return new Response<DhHHPost>(false, 402, "There is no post with given postId !", new ArrayList<>(), 0);
+
+        Query queryFindCommentById = new Query();
+        queryFindCommentById.addCriteria(Criteria.where(AppConstants.KEY_DH_COMMENT_ID).is(commentId));
+        Update updateCommentStatus = new Update();
+        updateCommentStatus.set(AppConstants.STATUS, AppConstants.STATUS_DELETED);
+        updateCommentStatus.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(queryFindCommentById, updateCommentStatus, DhComments.class);
+
+        if (queriedDhHhPost.getDhCommentsIds() != null) {
+            for (String comment : queriedDhHhPost.getDhCommentsIds()) {
+                if (comment.equals(commentId)) {
+                    Update updateHhPost = new Update();
+                    queriedDhHhPost.getDhCommentsIds().remove(comment);
+                    updateHhPost.set(AppConstants.KEY_DH_HH_COMMENTS_IDS, queriedDhHhPost.getDhCommentsIds());
+                    updateHhPost.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+                    mongoTemplate.updateFirst(querFindPostById, updateHhPost, DhHHPost.class);
+                    break;
+                }
+            }
+        }
+        return new Response<DhHHPost>(true, 201, "Comment has been removed .", new ArrayList<>(), 0);
+    }
+
+    private Response<DhHHPost> addReplyOnPostComment(String language, String postId, String commentId, String replyUserId, String replyUsername, String reply) {
+        if (Utility.isFieldEmpty(postId) || Utility.isFieldEmpty(replyUserId) || Utility.isFieldEmpty(reply))
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+
+        if (!commonService.checkUserExistence(replyUserId))
+            return new Response<DhHHPost>(false, 402, "User not found with given replyUserId", new ArrayList<>(), 0);
+
+        Query querFindPostById = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(postId));
+        querFindPostById.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        querFindPostById.fields().include(AppConstants.KEY_USER_ID);
+        DhHHPost queriedDhHhPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
+        if (queriedDhHhPost == null)
+            return new Response<DhHHPost>(false, 402, "There is no post with given postId !", new ArrayList<>(), 0);
+
+        Query querFindCommentById = new Query(Criteria.where(AppConstants.KEY_DH_COMMENT_ID).is(commentId));
+        querFindCommentById.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        querFindCommentById.fields().include(AppConstants.COMMENTS_THREADS_LIST);
+        DhComments dhComments = mongoTemplate.findOne(querFindCommentById, DhComments.class);
+
+        if (dhComments == null)
+            return new Response<DhHHPost>(false, 402, "There is no comment with given commentId !", new ArrayList<>(), 0);
+
+        Update updateComments = new Update();
+        Threads threads = new Threads();
+        threads.setReplyToComment(reply);
+        threads.setName(replyUsername);
+        threads.setUserId(replyUserId);
+        threads = (Threads) Utility.setCommonAttrs(threads, AppConstants.STATUS_ACTIVE);
+        if (dhComments.getThreadsList() == null) {
+            List<Threads> tempList = new ArrayList<>();
+            tempList.add(threads);
+            updateComments.set(AppConstants.COMMENTS_THREADS_LIST, tempList);
+        } else {
+            updateComments.push(AppConstants.COMMENTS_THREADS_LIST, threads);
+        }
+        updateComments.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(querFindCommentById, updateComments, DhComments.class);
+
+        return new Response<DhHHPost>(true, 201, "Reply to the comment has been added .", new ArrayList<>(), 0);
+    }
+
+    private Response<DhHHPost> addCommentToPost(String language, String postId, String commentUserId, String commentUserName, String comment) {
+        if (Utility.isFieldEmpty(postId) || Utility.isFieldEmpty(commentUserId) || Utility.isFieldEmpty(comment))
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+
+        if (!commonService.checkUserExistence(commentUserId))
+            return new Response<DhHHPost>(false, 402, "User not found with given commentUserId", new ArrayList<>(), 0);
+
+        Query querFindPostById = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(postId));
+        querFindPostById.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        querFindPostById.fields().include(AppConstants.KEY_USER_ID);
+        querFindPostById.fields().include(AppConstants.KEY_POST_COMMENTS_ON_OFF);
+        querFindPostById.fields().include(AppConstants.KEY_DH_HH_COMMENTS_IDS);
+        DhHHPost queriedDhHhPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
+        if (queriedDhHhPost == null)
+            return new Response<DhHHPost>(false, 402, "There is no post with given postId !", new ArrayList<>(), 0);
+
+        if (!queriedDhHhPost.isPostCommentsOnOff())
+            return new Response<DhHHPost>(false, 402, "Unable to add comments as user turned off this feature !", new ArrayList<>(), 0);
+
+        //validating user against user ids intentionally, later in this code used this quried objects to update dhUser
+        Query findUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(queriedDhHhPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
+        findUserQuery.fields().include(AppConstants.KEY_USER_SETTINGS);
+        findUserQuery.fields().include(AppConstants.KEY_USER_SETTINGS_ENABLED);
+        findUserQuery.fields().include(AppConstants.KEY_NOTIFICATIONS_REQUIRED);
+        DhUser queriedDhUser = mongoTemplate.findOne(findUserQuery, DhUser.class);
+        if (queriedDhUser == null)
+            return new Response<DhHHPost>(false, 402, "User not found with given commentUserId", new ArrayList<>(), 0);
+
+        if (queriedDhUser.getUserSettingEnabled() && queriedDhUser.getUserSettings() != null && !queriedDhUser.getUserSettings().isHhPostCommentsOnOff())
+            return new Response<DhHHPost>(false, 402, "Unable to add comments as user turned off this feature !", new ArrayList<>(), 0);
+
+        //insert things into dhComments
+        String commentId = Utility.getUUID();
+        DhComments dhComments = new DhComments();
+        dhComments.setCommentId(commentId);
+        dhComments.setAddedBy(commentUserId);
+        dhComments.setComment(comment);
+        dhComments.setUserName(commentUserName);
+        dhComments.setContentId(postId);
+        dhComments.setContentType(ContentType.CONTENT_HH_POST);
+        dhComments = (DhComments) Utility.setCommonAttrs(dhComments, AppConstants.STATUS_ACTIVE);
+        mongoTemplate.save(dhComments, AppConstants.COLLECTION_DH_COMMENTS);
+
+        //update dh hh post
+        Update updateHhPost = new Update();
+        if (queriedDhHhPost.getDhCommentsIds() == null) {
+            List<String> tempList = new ArrayList<>();
+            tempList.add(commentId);
+            updateHhPost.set(AppConstants.KEY_DH_HH_COMMENTS_IDS, tempList);
+        } else
+            updateHhPost.push(AppConstants.KEY_DH_HH_COMMENTS_IDS, commentId);
+        updateHhPost.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(querFindPostById, updateHhPost, DhHHPost.class);
+
+        if (queriedDhUser.getUserSettingEnabled() && queriedDhUser.getUserSettings().isNotificationsRequired() && !queriedDhHhPost.getUserId().equals(commentUserId))
+            Utility.sendNotification(ContentType.CONTENT_ADD_HH_POST_COMMENT, queriedDhHhPost.getUserId(), mongoTemplate, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_TITLE_HH_POST_COMMENT_ADD), String.format(Locale.US, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_NTFN_BODY_HH_POST_COMMENT_ADD), commentUserName), RedirectionContent.REDCONTENT_HH_POST_COMMENT_ADD, RedirectionContent.REDURL_HH_POST_COMMENT_ADD);
+        return new Response<DhHHPost>(true, 201, "Comment has been added .", new ArrayList<>(), 0);
+
     }
 
     private Response<DhHHPost> markAsGenuineOrNotGenuine(String language, String hhPostId, boolean isGenuine, String genuineNonGenuineUserId) {

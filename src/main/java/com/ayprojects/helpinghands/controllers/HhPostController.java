@@ -45,13 +45,59 @@ public class HhPostController {
         } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
     }
 
+    @PutMapping(value = "/addCommentOnPost")
+    public ResponseEntity<Response<DhHHPost>> addCommentOnPost(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String hhPostId, @RequestParam String otherUserId, @RequestParam String otherUserName, @RequestParam String comment, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_HH_POST_STEP_ENUM, HhPostUpdateEnums.ADD_HH_POST_COMMENT);
+        params.put(AppConstants.KEY_HH_POST_ID, hhPostId);
+        params.put(AppConstants.KEY_OTHER_USER_ID, otherUserId);
+        params.put(AppConstants.KEY_HH_OTHER_USERNAME, otherUserName);
+        params.put(AppConstants.COMMENT, comment);
+        Response<DhHHPost> response = apiOperations.update(authentication, httpHeaders, params, null, StrategyName.UpdateHhPostStrategy, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @PutMapping(value = "/addReplyOnComment")
+    public ResponseEntity<Response<DhHHPost>> addReplyOnComment(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String hhPostId, @RequestParam String otherUserId, @RequestParam String otherUserName, @RequestParam String commentId, @RequestParam String replyToComment,@PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_HH_POST_STEP_ENUM, HhPostUpdateEnums.ADD_HH_POST_REPLY_TO_COMMENT);
+        params.put(AppConstants.KEY_HH_POST_ID, hhPostId);
+        params.put(AppConstants.KEY_OTHER_USER_ID, otherUserId);
+        params.put(AppConstants.KEY_HH_OTHER_USERNAME, otherUserName);
+        params.put(AppConstants.KEY_DH_COMMENT_ID, commentId);
+        params.put(AppConstants.KEY_REPLY_TO_COMMENT, replyToComment);
+        Response<DhHHPost> response = apiOperations.update(authentication, httpHeaders, params, null, StrategyName.UpdateHhPostStrategy, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @PutMapping(value = "/removeComment")
+    public ResponseEntity<Response<DhHHPost>> removeComment(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,@RequestParam String hhPostId, @RequestParam String otherUserId, @RequestParam String otherUserName, @RequestParam String commentId, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_HH_POST_STEP_ENUM, HhPostUpdateEnums.DELETE_HH_POST_COMMENT);
+        params.put(AppConstants.KEY_HH_POST_ID, hhPostId);
+        params.put(AppConstants.KEY_OTHER_USER_ID, otherUserId);
+        params.put(AppConstants.KEY_HH_OTHER_USERNAME, otherUserName);
+        params.put(AppConstants.KEY_DH_COMMENT_ID, commentId);
+        Response<DhHHPost> response = apiOperations.update(authentication, httpHeaders, params, null, StrategyName.UpdateHhPostStrategy, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+
     @PutMapping(value = "/updatePost")
-    public ResponseEntity<Response<DhHHPost>> updatePost(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost, @RequestParam HhPostUpdateEnums hhPostUpdateEnums, @RequestParam String hhPostId, @RequestParam String otherUserId, @RequestParam String otherUserName, @PathVariable String version) throws ServerSideException {
+    public ResponseEntity<Response<DhHHPost>> updatePost(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost, @RequestParam HhPostUpdateEnums hhPostUpdateEnums, @RequestParam String hhPostId, @RequestParam String otherUserId, @RequestParam String otherUserName, @RequestParam String commentId, @RequestParam String replyToComment, @RequestParam String comment, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_HH_POST_STEP_ENUM, hhPostUpdateEnums);
         params.put(AppConstants.KEY_HH_POST_ID, hhPostId);
         params.put(AppConstants.KEY_OTHER_USER_ID, otherUserId);
         params.put(AppConstants.KEY_HH_OTHER_USERNAME, otherUserName);
+        params.put(AppConstants.KEY_DH_COMMENT_ID, commentId);
+        params.put(AppConstants.KEY_REPLY_TO_COMMENT, replyToComment);
+        params.put(AppConstants.COMMENT, comment);
         Response<DhHHPost> response = apiOperations.update(authentication, httpHeaders, params, dhHHPost, StrategyName.UpdateHhPostStrategy, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -69,7 +115,7 @@ public class HhPostController {
      * @throws ServerSideException
      */
     @PutMapping(value = "/markAsHelped")
-    public ResponseEntity<Response<DhHHPost>> markAsHelped(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost,@PathVariable String version) throws ServerSideException {
+    public ResponseEntity<Response<DhHHPost>> markAsHelped(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhHHPost dhHHPost, @PathVariable String version) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_HH_POST_STEP_ENUM, HhPostUpdateEnums.MARK_HELPED);
         Response<DhHHPost> response = apiOperations.update(authentication, httpHeaders, params, dhHHPost, StrategyName.UpdateHhPostStrategy, version);

@@ -127,6 +127,8 @@ public class ResponseMsgInEnglish extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_HH_HELPED, "Update on your Helping Hands Post");
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_HH_HELPED, "%s has helped the people by reacting to your post.");
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_HH_HELPED_NONAME, "Anonymous person helped the people by reacting to your post.");
+            responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_HH_POST_COMMENT_ADD, "Update on your post !");
+            responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_HH_POST_COMMENT_ADD, "%s has commented on your post ");
         }
     }
 

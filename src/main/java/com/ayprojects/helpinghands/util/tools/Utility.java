@@ -92,6 +92,7 @@ public class Utility {
         userSettings.setHhPerPostImgLimitEnabled(true);
         userSettings.setHhPerPostImgLimit(AppConstants.HH_PER_POST_IMG_LIMIT);
         userSettings.setNotificationsRequired(true);
+        userSettings.setHhPostCommentsOnOff(true);
         return userSettings;
     }
 

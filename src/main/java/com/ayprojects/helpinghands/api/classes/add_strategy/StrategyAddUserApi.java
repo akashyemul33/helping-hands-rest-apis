@@ -29,13 +29,11 @@ import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 public class StrategyAddUserApi implements StrategyAddBehaviour<DhUser> {
 
     @Autowired
+    UserDao userDao;
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
-
     @Autowired
     private CommonService commonService;
-
-    @Autowired
-    UserDao userDao;
 
     @Override
     public Response<DhUser> add(String language, DhUser dhUser) {
@@ -47,7 +45,7 @@ public class StrategyAddUserApi implements StrategyAddBehaviour<DhUser> {
             dhUser.setPassword(bCryptPasswordEncoder.encode(dhUser.getPassword()));
             dhUser.setRoles(AppConstants.ROLE_USER);
             dhUser.setUserSettings(Utility.getGlobalUserSettings());
-            dhUser.setUserSettingEnabled(false);
+            dhUser.setUserSettingEnabled(true);
             dhUser.setSponsored(false);
             dhUser = (DhUser) Utility.setCommonAttrs(dhUser, AppConstants.STATUS_ACTIVE);
             userDao.addUser(dhUser);

@@ -2,8 +2,10 @@ package com.ayprojects.helpinghands.api.classes.get_strategy;
 
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
+import com.ayprojects.helpinghands.api.enums.ContentType;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
+import com.ayprojects.helpinghands.models.DhComments;
 import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhHhHelpedUsers;
 import com.ayprojects.helpinghands.models.DhUser;
@@ -106,6 +108,12 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
             List<DhHhHelpedUsers> helpedUsersList = mongoTemplate.find(queryToFindHelpedUserDetails, DhHhHelpedUsers.class);
             d.setHelpedUsers(helpedUsersList);
 
+            Query queryToFindComments = new Query();
+            queryToFindComments.addCriteria(Criteria.where(AppConstants.KEY_CONTENT_ID).is(d.getPostId()));
+            queryToFindComments.addCriteria(Criteria.where(AppConstants.KEY_CONTENT_TYPE).is(ContentType.CONTENT_ADD_HH_POST_COMMENT));
+            queryToFindComments.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+            List<DhComments> commentsList = mongoTemplate.find(queryToFindComments, DhComments.class);
+            d.setDhComments(commentsList);
         }
 
         Page<DhHHPost> hhPosts = PageableExecutionUtils.getPage(
