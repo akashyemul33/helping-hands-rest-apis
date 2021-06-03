@@ -59,8 +59,9 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
                 case DIS_LIKE:
                     return markAsLiked(language, hhPostId, otherUserId, false);
                 case DELETE_POST:
-                    //TODO
-                    break;
+                    return deleteHhPost(language, hhPostId);
+                case COMMENTS_ON_OFF:
+                    return changeCommentsOnOff(language, hhPostId, (boolean) params.get(AppConstants.COMMENTS_ON_OFF));
                 case MARK_AS_GENUINE:
                     return markAsGenuineOrNotGenuine(language, hhPostId, true, otherUserId);
                 case MARK_AS_NOTGENUINE:
@@ -316,6 +317,59 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         return new Response<DhHHPost>(true, 402, "Post not found with given postId!", new ArrayList<>(), 0);
     }
 
+    private Response<DhHHPost> changeCommentsOnOff(String language, String hhPostId, boolean isCommentsOnOff) {
+        if (Utility.isFieldEmpty(hhPostId)) {
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+        }
+
+        Query querFindPostById = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
+        querFindPostById.fields().include(AppConstants.KEY_USER_ID);
+        DhHHPost dhHHPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
+
+        if (dhHHPost == null)
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
+
+        Update update = new Update();
+        update.set(AppConstants.KEY_POST_COMMENTS_ON_OFF, isCommentsOnOff);
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(querFindPostById, update, DhHHPost.class);
+
+        return new Response<DhHHPost>(true, 201, String.format(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_COMMENTS_TURNED_ON_OFF), (isCommentsOnOff ? "ON" : "OFF")), new ArrayList<>(), 0);
+
+    }
+
+    private Response<DhHHPost> deleteHhPost(String language, String hhPostId) {
+        if (Utility.isFieldEmpty(hhPostId)) {
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
+        }
+
+        Query querFindPostById = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
+        querFindPostById.fields().include(AppConstants.KEY_USER_ID);
+        DhHHPost dhHHPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
+
+        if (dhHHPost == null)
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
+
+        Update update = new Update();
+        update.set(AppConstants.STATUS, AppConstants.STATUS_DELETED);
+        update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(querFindPostById, update, DhHHPost.class);
+
+        Query findPostAddedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(dhHHPost.getUserId()).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
+        findPostAddedUserQuery.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
+        DhUser queriedPostAddedDhUser = mongoTemplate.findOne(findPostAddedUserQuery, DhUser.class);
+        if (queriedPostAddedDhUser == null)
+            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
+
+        Update updateUser = new Update();
+        updateUser.set(AppConstants.KEY_NUMBER_OF_HH_POSTS, queriedPostAddedDhUser.getNumberOfHHPosts() + 1);
+        updateUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+        mongoTemplate.updateFirst(findPostAddedUserQuery, updateUser, DhUser.class);
+
+        return new Response<DhHHPost>(true, 201, "Marked post as deleted !", new ArrayList<>(), 0);
+
+    }
+
     private Response<DhHHPost> markAsLiked(String language, String hhPostId, String likedUserId, boolean markOrUnmark) {
         if (Utility.isFieldEmpty(hhPostId) || Utility.isFieldEmpty(likedUserId)) {
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
@@ -329,8 +383,6 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         querFindPostById.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         querFindPostById.fields().include(AppConstants.KEY_LIKED_USER_IDS);
         DhHHPost dhHHPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
-        Query query = new Query(Criteria.where(AppConstants.KEY_HH_POST_ID).is(hhPostId));
-        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         if (dhHHPost != null) {
             if (dhHHPost.getLikedUserIds() != null) {
                 for (String s : dhHHPost.getLikedUserIds()) {
@@ -342,7 +394,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
                             Update update = new Update();
                             update.set(AppConstants.KEY_LIKED_USER_IDS, dhHHPost.getLikedUserIds());
                             update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
-                            mongoTemplate.updateFirst(query, update, DhHHPost.class);
+                            mongoTemplate.updateFirst(querFindPostById, update, DhHHPost.class);
                             return new Response<DhHHPost>(true, 201, "Marked post as dis liked", new ArrayList<>(), 0);
                         }
                     }
@@ -354,7 +406,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
             Update update = new Update();
             update.push(AppConstants.KEY_LIKED_USER_IDS, likedUserId);
             update.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
-            mongoTemplate.updateFirst(query, update, DhHHPost.class);
+            mongoTemplate.updateFirst(querFindPostById, update, DhHHPost.class);
 
             return new Response<DhHHPost>(true, 201, "Marked post as liked", new ArrayList<>(), 0);
         }
@@ -457,6 +509,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         mongoTemplate.updateFirst(findPostAddedUserQuery, updatePostAddedUser, DhUser.class);
 
         updateHhPost.set(AppConstants.HH_POST_GENUINE_PERC, currentGenPerc);
+        updateHhPost.set(AppConstants.STATUS, AppConstants.STATUS_HELPED);
         mongoTemplate.updateFirst(querFindPostById, updateHhPost, DhHHPost.class);
 
         return new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_MSG), ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_MARK_POST_HELPED_BODY), new ArrayList<>(), 0);

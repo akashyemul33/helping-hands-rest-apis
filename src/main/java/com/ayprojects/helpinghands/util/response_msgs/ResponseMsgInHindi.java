@@ -132,6 +132,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_HH_HELPED_NONAME, "Anonymous person helped the people by reacting to your post.");
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_HH_POST_COMMENT_ADD, "Update on your post !");
             responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_HH_POST_COMMENT_ADD, "%s has commented on your post ");
+            responseMsgsMap.put(RESPONSEMESSAGE_COMMENTS_TURNED_ON_OFF, "Comments are turned %s");
         }
     }
 

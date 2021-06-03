@@ -45,21 +45,18 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
         }
 
         Set<String> keySet = params.keySet();
-        if (keySet.contains(AppConstants.KEY_PAGE)
-                && keySet.contains(AppConstants.KEY_SIZE)
-                && keySet.contains(AppConstants.KEY_LAT)
-                && keySet.contains(AppConstants.KEY_LNG)
+        int page = (int) params.get(AppConstants.KEY_PAGE);
+        int size = (int) params.get(AppConstants.KEY_SIZE);
+        if (keySet.contains(AppConstants.KEY_USER_ID)) {
+            String userId = (String) params.get(AppConstants.KEY_USER_ID);
+            return getPaginatedPostsByUserId(language, page, size, userId);
+        } else if (
+                keySet.contains(AppConstants.KEY_LAT)
+                        && keySet.contains(AppConstants.KEY_LNG)
         ) {
-            try {
-                int page = (int) params.get(AppConstants.KEY_PAGE);
-                int size = (int) params.get(AppConstants.KEY_SIZE);
-                double lat = (double) params.get(AppConstants.KEY_LAT);
-                double lng = (double) params.get(AppConstants.KEY_LNG);
-                return getPaginatedPosts(language, page, size, lat, lng);
-            } catch (Exception e) {
-                throw new ServerSideException(ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG));
-            }
-
+            double lat = (double) params.get(AppConstants.KEY_LAT);
+            double lng = (double) params.get(AppConstants.KEY_LNG);
+            return getPaginatedPosts(language, page, size, lat, lng);
         }
         throw new ServerSideException("No matching get method found in " + getStrategyName());
     }
@@ -69,14 +66,28 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
         return StrategyName.GetHhPostsStrategy;
     }
 
-    public Response<DhHHPost> getPaginatedPosts(String language, int page, int size, double lat, double lng) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Response<DhHHPost> getPaginatedPostsByUserId(String language, int page, int size, String userId) {
+        Query query = new Query();
+        Criteria criteria = Criteria.where(AppConstants.KEY_USER_ID).is(userId);
+        criteria.orOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_HELPED, "i"));
+        criteria.orOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        query.addCriteria(criteria);
+        return returnPaginatedPosts(0, 0, query, page, size);
+    }
 
-        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+    public Response<DhHHPost> getPaginatedPosts(String language, int page, int size, double lat, double lng) {
+
+        Query query = new Query();
+        Criteria criteria = Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_HELPED, "i");
+        criteria.orOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
+        query.addCriteria(criteria);
+        return returnPaginatedPosts(lat, lng, query, page, size);
+    }
+
+    private Response<DhHHPost> returnPaginatedPosts(double lat, double lng, Query query, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         List<DhHHPost> dhHHPosts = mongoTemplate.find(query.with(pageable), DhHHPost.class);
         query.with(Sort.by(Sort.Direction.ASC, AppConstants.CREATED_DATETIME));
-
-        LOGGER.info("getPaginatedPosts=" + dhHHPosts.size());
         for (DhHHPost d : dhHHPosts) {
             Query queryFindUser = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(d.getUserId()));
             queryFindUser.fields().include(AppConstants.FIRST_NAME);

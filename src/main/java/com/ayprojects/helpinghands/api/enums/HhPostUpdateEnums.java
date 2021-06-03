@@ -5,6 +5,7 @@ public enum HhPostUpdateEnums {
     DIS_LIKE,
     MARK_HELPED,
     DELETE_POST,
+    COMMENTS_ON_OFF,
     MARK_AS_GENUINE,
     MARK_AS_NOTGENUINE,
     ADD_HH_POST_COMMENT,

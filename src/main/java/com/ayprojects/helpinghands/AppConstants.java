@@ -318,6 +318,9 @@ public class AppConstants {
     public static final String KEY_POST_COMMENTS_ON_OFF = "postCommentsOnOff";
     public static final String KEY_USER_SETTINGS_ENABLED = "userSettingEnabled";
     public static final String KEY_NOTIFICATIONS_REQUIRED = "notificationsRequired";
+    public static final String STATUS_HELPED = "Helped";
+    public static final String COMMENTS_ON_OFF = "commentsOnOff";
+    public static final String RESPONSEMESSAGE_COMMENTS_TURNED_ON_OFF = "COMMENTS_TURNED_ON_OFF";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
