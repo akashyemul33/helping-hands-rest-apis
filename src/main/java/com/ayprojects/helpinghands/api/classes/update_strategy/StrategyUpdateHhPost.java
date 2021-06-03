@@ -327,7 +327,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         DhHHPost dhHHPost = mongoTemplate.findOne(querFindPostById, DhHHPost.class);
 
         if (dhHHPost == null)
-            return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>(), 0);
+            return new Response<DhHHPost>(false, 402, "Post not found with given postId !", new ArrayList<>(), 0);
 
         Update update = new Update();
         update.set(AppConstants.KEY_POST_COMMENTS_ON_OFF, isCommentsOnOff);

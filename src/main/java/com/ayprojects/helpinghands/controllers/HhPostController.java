@@ -147,8 +147,10 @@ public class HhPostController {
     }
 
     @GetMapping(value = "/getPostsWithUserId")
-    ResponseEntity<Response<DhHHPost>> getPostsWithUserId(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId) throws ServerSideException {
+    ResponseEntity<Response<DhHHPost>> getPostsWithUserId(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size, @RequestParam String userId) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PAGE, page);
+        params.put(AppConstants.KEY_SIZE, size);
         params.put(AppConstants.KEY_USER_ID, userId);
         Response<DhHHPost> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetHhPostsStrategy, params, version);
         if (response.getStatus()) {

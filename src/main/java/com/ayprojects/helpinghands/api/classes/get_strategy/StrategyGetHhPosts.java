@@ -67,20 +67,14 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
     }
 
     public Response<DhHHPost> getPaginatedPostsByUserId(String language, int page, int size, String userId) {
-        Query query = new Query();
-        Criteria criteria = Criteria.where(AppConstants.KEY_USER_ID).is(userId);
-        criteria.orOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_HELPED, "i"));
-        criteria.orOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        query.addCriteria(criteria);
+        Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
+        query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE_OR_HELPED, "i"));
         return returnPaginatedPosts(0, 0, query, page, size);
     }
 
     public Response<DhHHPost> getPaginatedPosts(String language, int page, int size, double lat, double lng) {
 
-        Query query = new Query();
-        Criteria criteria = Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_HELPED, "i");
-        criteria.orOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
-        query.addCriteria(criteria);
+        Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE_OR_HELPED,"i"));
         return returnPaginatedPosts(lat, lng, query, page, size);
     }
 

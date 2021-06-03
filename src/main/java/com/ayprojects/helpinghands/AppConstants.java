@@ -326,6 +326,7 @@ public class AppConstants {
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
     public static String LABEL_HEADER_APPLANGUAGE = "App-Language";
     public static String STATUS_ACTIVE = "Active";
+    public static String STATUS_ACTIVE_OR_HELPED = "Active|Helped";
     public static String STATUS_APPROVED = "Approved";
     public static String SCHEMA_VERSION = "1.0.0";
     public static String RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE = "USER_ALREADY_EXISTS_WITH_MOBILE";
