@@ -74,7 +74,7 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
 
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i"));
         List<DhHHPost> dhHHPosts = mongoTemplate.find(query.with(pageable), DhHHPost.class);
-        query.with(Sort.by(Sort.Direction.DESC, AppConstants.CREATED_DATETIME));
+        query.with(Sort.by(Sort.Direction.ASC, AppConstants.CREATED_DATETIME));
 
         LOGGER.info("getPaginatedPosts=" + dhHHPosts.size());
         for (DhHHPost d : dhHHPosts) {
