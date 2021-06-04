@@ -7,6 +7,7 @@ public class AppConstants {
     public static final String DATE_FORMAT_HOUR_MIN = "HH:mm";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmssSSS";
+    public static final String DATE_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMdd";
     //expiration value of 3 hours
     public static final long JWT_TOKEN_EXPIRATION_VALUE = 1000 * 60 * 60 * 3;
     public static final String JWT_TOKEN_ISSUER = "HelpingHandsAdmin";
@@ -321,6 +322,11 @@ public class AppConstants {
     public static final String STATUS_HELPED = "Helped";
     public static final String COMMENTS_ON_OFF = "commentsOnOff";
     public static final String RESPONSEMESSAGE_COMMENTS_TURNED_ON_OFF = "COMMENTS_TURNED_ON_OFF";
+    public static final String API_TYPE = "ApiType";
+    public static final String API_TYPE_HELPED_POSTS = "HelpedPosts";
+    public static final String API_TYPE_ADDED_POSTS = "AddedPosts";
+    public static final String API_TYPE_SINGLE_THOUGHT = "SingleThought";
+    public static final String COLLECTION_DH_THOUGHTS = "dhThoughts";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

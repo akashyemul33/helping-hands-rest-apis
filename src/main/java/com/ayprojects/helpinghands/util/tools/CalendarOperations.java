@@ -39,6 +39,12 @@ public class CalendarOperations {
         return dateFormat.format(new Date());
     }
 
+    public static String currentDateInUTC() throws NullPointerException, IllegalArgumentException {
+        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_FORMAT_WITHOUT_UNDERSCORE);
+        dateFormat.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
+        return dateFormat.format(new Date());
+    }
+
     public String getTimeAtFileEnd() throws NullPointerException, IllegalArgumentException {
         DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE);
         dateFormat.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));

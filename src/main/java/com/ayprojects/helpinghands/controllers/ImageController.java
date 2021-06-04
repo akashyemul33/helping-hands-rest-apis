@@ -5,6 +5,7 @@ import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPromotions;
+import com.ayprojects.helpinghands.models.DhThought;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
@@ -36,7 +37,7 @@ import io.swagger.annotations.Api;
 @Api(value = "Views API's", description = "CRUD for image uploads")
 @RestController
 @ResponseStatus
-    @RequestMapping("/api/v{version}/imageUpload")
+@RequestMapping("/api/v{version}/imageUpload")
 public class ImageController {
 
     @Autowired
@@ -45,6 +46,11 @@ public class ImageController {
     @PostMapping(value = "/uploadUserImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DhUser>> uploadUserImage(@RequestHeader HttpHeaders httpHeaders, @RequestPart(value = "userImageLow", required = true) MultipartFile userImageLow, @RequestPart(value = "userImageHigh", required = true) MultipartFile userImageHigh, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(imageService.uploadUserImage(httpHeaders, userImageLow, userImageHigh, version), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/uploadThoughtImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<DhThought>> uploadThoughtImage(@RequestHeader HttpHeaders httpHeaders, @RequestPart(value = "thoughtImageLow", required = true) MultipartFile thoughtImageLow, @RequestPart(value = "thoughtImageHigh", required = true) MultipartFile thoughtImageHigh, @RequestParam(value = "userId", required = true) String userId, @PathVariable String version) throws ServerSideException {
+        return new ResponseEntity<>(imageService.uploadThoughtImage(httpHeaders, thoughtImageLow, thoughtImageHigh,userId, version), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/uploadPlaceImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

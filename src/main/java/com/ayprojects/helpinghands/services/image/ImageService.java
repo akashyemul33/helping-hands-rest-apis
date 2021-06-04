@@ -5,6 +5,7 @@ import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPromotions;
+import com.ayprojects.helpinghands.models.DhThought;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
@@ -19,6 +20,7 @@ import java.util.List;
 @Service
 public interface ImageService {
     Response<DhUser> uploadUserImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String version) throws ServerSideException;
+    Response<DhThought> uploadThoughtImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh,String userId, String version) throws ServerSideException;
 
     Response<DhPlace> uploadPlaceImages(HttpHeaders httpHeaders, Authentication authentication, String placeType, String addedBy, MultipartFile[] placeImagesLow, MultipartFile[] placeImagesHigh, String version) throws ServerSideException;
 

@@ -7,6 +7,7 @@ import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPromotions;
+import com.ayprojects.helpinghands.models.DhThought;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
@@ -63,6 +64,34 @@ public class ImageServiceImpl implements ImageService {
             DhUser dhUser = new DhUser(uniqueUserID, finalKeyLow, finalKeyHigh);
             logService.addLog(new DhLog(uniqueUserID, "User image has been added"));
             return new Response<DhUser>(true, 201, "Image saved successfully", Collections.singletonList(dhUser));
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG);
+            return new Response<>(false, 402, errorMsg, new ArrayList<>());
+        }
+    }
+
+    @Override
+    public Response<DhThought> uploadThoughtImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh,String userId, String version) throws ServerSideException {
+        String language = IHeaders.getLanguageFromHeader(httpHeaders);
+        if (imageLow == null || imageLow.isEmpty() || imageHigh == null || imageHigh.isEmpty())
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+
+        String uniqueThoughtID = Utility.getUUID();
+        String imgUploadKeyLow = GetImageFoldersAndPrefix.getUserImgUploadKeyLow(uniqueThoughtID, false);
+        String imgUploadKeyHigh = GetImageFoldersAndPrefix.getUserImgUploadKeyLow(uniqueThoughtID, true);
+        try {
+            String finalKeyLow = amazonClient.uploadSingleImageToS3(imgUploadKeyLow, imageLow);
+            String finalKeyHigh = amazonClient.uploadSingleImageToS3(imgUploadKeyHigh, imageHigh);
+            DhThought dhThought = new DhThought();
+            dhThought.setImgUrlHigh(finalKeyHigh);
+            dhThought.setImgUrlLow(finalKeyLow);
+            dhThought.setThoughtId(uniqueThoughtID);
+            dhThought.setUserId(userId);
+            dhThought = (DhThought) Utility.setCommonAttrs(dhThought, AppConstants.STATUS_PENDING);
+            mongoTemplate.save(dhThought,AppConstants.COLLECTION_DH_THOUGHTS);
+            logService.addLog(new DhLog(uniqueThoughtID, "New Thought has been added"));
+            return new Response<DhThought>(true, 201, "Thought saved successfully", Collections.singletonList(dhThought));
         } catch (Exception e) {
             e.printStackTrace();
             String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG);

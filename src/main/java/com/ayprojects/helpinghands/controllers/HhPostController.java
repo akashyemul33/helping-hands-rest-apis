@@ -152,6 +152,20 @@ public class HhPostController {
         params.put(AppConstants.KEY_PAGE, page);
         params.put(AppConstants.KEY_SIZE, size);
         params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.API_TYPE, AppConstants.API_TYPE_ADDED_POSTS);
+        Response<DhHHPost> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetHhPostsStrategy, params, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @GetMapping(value = "/getHelpedPosts")
+    ResponseEntity<Response<DhHHPost>> getHelpedPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "7") int size, @RequestParam String userId) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_PAGE, page);
+        params.put(AppConstants.KEY_SIZE, size);
+        params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.API_TYPE, AppConstants.API_TYPE_HELPED_POSTS);
         Response<DhHHPost> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetHhPostsStrategy, params, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.OK);

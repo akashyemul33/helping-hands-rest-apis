@@ -4,6 +4,7 @@ import com.ayprojects.helpinghands.AppConstants;
 
 public class GetImageFoldersAndPrefix {
     static final String imagesBaseFolder = "app_images";
+    static final String thoughtsFolder = "thoughts";
     static final String userDir = "user";
     static final String userInitial = "USER_";
     static final String placeDir = "places";
@@ -19,10 +20,18 @@ public class GetImageFoldersAndPrefix {
     static final String regexBusinessPost = "^[Bb]usiness[\\s]*[Pp]ost$";
     static String postInitial = "PSTS";
 
+    public static String getThoughtImgUploadKeyLow(String uniqueThoughtId, boolean isHigh) {
+        if (Utility.isFieldEmpty(uniqueThoughtId))
+            throw new IllegalArgumentException("UniqueThoughtId must not be null !");
+        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
+        String date = CalendarOperations.currentDateInUTC();
+        return String.format("%s/%s/%s/%s/%s_", imagesBaseFolder, thoughtsFolder, lowHighQualityFolder, date, uniqueThoughtId);
+    }
+
     public static String getUserImgUploadKeyLow(String uniqueUserID, boolean isHigh) {
         if (Utility.isFieldEmpty(uniqueUserID))
             throw new IllegalArgumentException("UniqueUserID must not be null !");
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMAGE_URL_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
         return String.format("%s/%s/%s/%s/%s%s_", imagesBaseFolder, uniqueUserID, userDir, lowHighQualityFolder, userInitial, uniqueUserID);
     }
 
@@ -36,7 +45,7 @@ public class GetImageFoldersAndPrefix {
 
         String imgType = placeType.matches(regexBusinessPlace) ? businessImgInitial : publicImgInitial;
         String newPlaceType = placeType.matches(regexBusinessPlace) ? AppConstants.BUSINESS_PLACE : AppConstants.PUBLIC_PLACE;
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMAGE_URL_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
         return String.format("%s/%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, placeDir, newPlaceType, uniquePlaceID, "place_images", lowHighQualityFolder, imgType, placeInitial, uniquePlaceID);
     }
 
@@ -46,7 +55,7 @@ public class GetImageFoldersAndPrefix {
         if (Utility.isFieldEmpty(userId))
             throw new IllegalArgumentException("HH UniqueUserID must not be null !");
 
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMAGE_URL_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
         return String.format("%s/%s/%s/%s/%s/%s/%s_%s_", imagesBaseFolder, userId, hhPostDir, uniquePostID, "hh_post_images", lowHighQualityFolder, hhPostsInitial, uniquePostID);
     }
 
@@ -60,7 +69,7 @@ public class GetImageFoldersAndPrefix {
 
         String imgType = postType.matches(regexBusinessPost) ? businessImgInitial : publicImgInitial;
         String newPostType = postType.matches(regexBusinessPost) ? AppConstants.BUSINESS_PROMOTION : AppConstants.PUBLIC_PROMOTION;
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMAGE_URL_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
         return String.format("%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, postDir, newPostType, uniquePostId, lowHighQualityFolder, imgType, postInitial, uniquePostId);
     }
 
@@ -73,7 +82,7 @@ public class GetImageFoldersAndPrefix {
             throw new IllegalArgumentException("UniquePlaceId must not be null !");
 
         String newPlaceType = placeType.matches(regexBusinessPlace) ? AppConstants.BUSINESS_PLACE : AppConstants.PUBLIC_PLACE;
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMAGE_URL_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
 
         return String.format("%s/%s/%s/%s/%s/%s/%s/%s/%s_%s_", imagesBaseFolder, userId, placeDir, newPlaceType, uniquePlaceId, productDir, uniqueProductId, lowHighQualityFolder, productImgInitial, uniqueProductId);
     }
