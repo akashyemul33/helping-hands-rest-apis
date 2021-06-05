@@ -130,6 +130,8 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_NTFN_TITLE_HH_POST_COMMENT_ADD, "Update on your post !");
         responseMsgsMap.put(RESPONSEMESSAGE_NTFN_BODY_HH_POST_COMMENT_ADD, "%s has commented on your post ");
         responseMsgsMap.put(RESPONSEMESSAGE_COMMENTS_TURNED_ON_OFF, "Comments are turned %s");
+        responseMsgsMap.put(RESPONSEMESSAGE_THOUGHT_SCHEDULED_NOTE, "Thought will be available at hour %s of the day");
+        responseMsgsMap.put(RESPONSEMESSAGE_THOUGHT_NOTE, "Everybody reads, only few follows. Are you reader only?");
     }
 
     public Map<String, String> getResponseMsgsMap() {

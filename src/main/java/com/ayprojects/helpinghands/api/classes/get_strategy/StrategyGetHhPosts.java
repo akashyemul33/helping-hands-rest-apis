@@ -74,22 +74,22 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
     public Response<DhHHPost> getPaginatedPostsByUserId(String language, int page, int size, String userId) {
         Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
         query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE_OR_HELPED, "i"));
-        return returnPaginatedPosts(0, 0, query, page, size);
+        return returnPaginatedPosts(0, 0, query, page, size, true);
     }
 
     public Response<DhHHPost> getPaginatedHelpedPosts(String language, int page, int size, String userId) {
         Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
         query.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_HELPED, "i"));
-        return returnPaginatedPosts(0, 0, query, page, size);
+        return returnPaginatedPosts(0, 0, query, page, size, true);
     }
 
     public Response<DhHHPost> getPaginatedPosts(String language, int page, int size, double lat, double lng) {
 
         Query query = new Query(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE_OR_HELPED, "i"));
-        return returnPaginatedPosts(lat, lng, query, page, size);
+        return returnPaginatedPosts(lat, lng, query, page, size, false);
     }
 
-    private Response<DhHHPost> returnPaginatedPosts(double lat, double lng, Query query, int page, int size) {
+    private Response<DhHHPost> returnPaginatedPosts(double lat, double lng, Query query, int page, int size, boolean myPosts) {
         Pageable pageable = PageRequest.of(page, size);
         List<DhHHPost> dhHHPosts = mongoTemplate.find(query.with(pageable), DhHHPost.class);
         query.with(Sort.by(Sort.Direction.ASC, AppConstants.CREATED_DATETIME));
@@ -108,7 +108,10 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
             }
             DhUser dhUser = mongoTemplate.findOne(queryFindUser, DhUser.class);
             if (dhUser != null) {
-                d.setUserName(String.format(Locale.US, "%s %s", dhUser.getFirstName(), dhUser.getLastName()));
+                if (myPosts)
+                    d.setUserName("You");
+                else
+                    d.setUserName(String.format(Locale.US, "%s %s", dhUser.getFirstName(), dhUser.getLastName()));
                 d.setProfileImgLow(dhUser.getProfileImgLow());
                 d.setProfileImgHigh(dhUser.getProfileImgHigh());
                 d.setHhGenuinePercentage(dhUser.getHhGenuinePercentage());

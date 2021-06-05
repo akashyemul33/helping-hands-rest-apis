@@ -327,6 +327,8 @@ public class AppConstants {
     public static final String API_TYPE_ADDED_POSTS = "AddedPosts";
     public static final String API_TYPE_SINGLE_THOUGHT = "SingleThought";
     public static final String COLLECTION_DH_THOUGHTS = "dhThoughts";
+    public static final String RESPONSEMESSAGE_THOUGHT_SCHEDULED_NOTE = "THOUGHT_SCHEDULED_NOTE";
+    public static final String RESPONSEMESSAGE_THOUGHT_NOTE = "THOUGHT_NOTE";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
