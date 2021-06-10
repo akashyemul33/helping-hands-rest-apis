@@ -28,17 +28,17 @@ import java.util.HashMap;
 
 import io.swagger.annotations.Api;
 
-@Api(value = "Posts API's",description = "CRUD for posts")
+@Api(value = "Posts API's",description = "CRUD for promotions")
 @RestController
 @ResponseStatus
-@RequestMapping("/api/v{version}/posts")
-public class PostsController {
+@RequestMapping("/api/v{version}/promotions")
+public class PromotionsController {
 
     @Autowired
     ApiOperations<DhPromotions> apiOperations;
 
-    @PostMapping(value="/addPosts")
-    public ResponseEntity<Response<DhPromotions>> addPosts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPromotions dhPromotions, @PathVariable String version) throws ServerSideException {
+    @PostMapping(value="/addPromotion")
+    public ResponseEntity<Response<DhPromotions>> addPromotion(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhPromotions dhPromotions, @PathVariable String version) throws ServerSideException {
         return new ResponseEntity<>(apiOperations.add(authentication,httpHeaders, dhPromotions, StrategyName.AddPostStrategy,version), HttpStatus.CREATED);
     }
 

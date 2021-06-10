@@ -9,7 +9,7 @@ public class GetImageFoldersAndPrefix {
     static final String userInitial = "USER_";
     static final String placeDir = "places";
     static final String hhPostDir = "hhposts";
-    static final String postDir = "posts";
+    static final String promotionDir = "promotions";
     static final String productDir = "products";
     static final String placeInitial = "PLCS";
     static final String hhPostsInitial = "HHPSTS";
@@ -17,8 +17,8 @@ public class GetImageFoldersAndPrefix {
     static final String publicImgInitial = "P";
     static final String productImgInitial = "PRD";
     static final String regexBusinessPlace = "^[Bb]usiness[\\s]*[Pp]lace$";
-    static final String regexBusinessPost = "^[Bb]usiness[\\s]*[Pp]ost$";
-    static String postInitial = "PSTS";
+    static final String regexBusinessPromotion = "^[Bb]usiness[\\s]*[Pp]romotion";
+    static String promotionInitial = "PRMTNS";
 
     public static String getThoughtImgUploadKeyLow(String uniqueThoughtId, boolean isHigh) {
         if (Utility.isFieldEmpty(uniqueThoughtId))
@@ -59,18 +59,32 @@ public class GetImageFoldersAndPrefix {
         return String.format("%s/%s/%s/%s/%s/%s/%s_%s_", imagesBaseFolder, userId, hhPostDir, uniquePostID, "hh_post_images", lowHighQualityFolder, hhPostsInitial, uniquePostID);
     }
 
-    public static String getPostImgUploadKey(String userId, String uniquePostId, String postType, boolean isHigh) {
-        if (Utility.isFieldEmpty(uniquePostId))
-            throw new IllegalArgumentException("UniquePostId must not be null !");
+    public static String getPromotionImgUploadKey(String userId, String uniquePromotioId, String promotionType, boolean isHigh) {
+        if (Utility.isFieldEmpty(uniquePromotioId))
+            throw new IllegalArgumentException("uniquePromotioId must not be null !");
         if (Utility.isFieldEmpty(userId))
-            throw new IllegalArgumentException("UniqueUserID must not be null !");
-        if (Utility.isFieldEmpty(postType))
-            throw new IllegalArgumentException("PostType must not be null !");
+            throw new IllegalArgumentException("uniquePromotioId must not be null !");
+        if (Utility.isFieldEmpty(promotionType))
+            throw new IllegalArgumentException("PromotionType must not be null !");
 
-        String imgType = postType.matches(regexBusinessPost) ? businessImgInitial : publicImgInitial;
-        String newPostType = postType.matches(regexBusinessPost) ? AppConstants.BUSINESS_PROMOTION : AppConstants.PUBLIC_PROMOTION;
+        String imgType = promotionType.matches(regexBusinessPromotion) ? businessImgInitial : publicImgInitial;
+        String newPromotionType = promotionType.matches(regexBusinessPromotion) ? AppConstants.BUSINESS_PROMOTION : AppConstants.PUBLIC_PROMOTION;
         String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
-        return String.format("%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, postDir, newPostType, uniquePostId, lowHighQualityFolder, imgType, postInitial, uniquePostId);
+        return String.format("%s/%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, promotionDir, newPromotionType, uniquePromotioId,"images", lowHighQualityFolder, imgType, promotionInitial, uniquePromotioId);
+    }
+
+    public static String getPromotionVideoUploadKey(String userId, String uniquePromotioId, String promotionType, boolean isHigh) {
+        if (Utility.isFieldEmpty(uniquePromotioId))
+            throw new IllegalArgumentException("uniquePromotioId must not be null !");
+        if (Utility.isFieldEmpty(userId))
+            throw new IllegalArgumentException("uniquePromotioId must not be null !");
+        if (Utility.isFieldEmpty(promotionType))
+            throw new IllegalArgumentException("PromotionType must not be null !");
+
+        String imgType = promotionType.matches(regexBusinessPromotion) ? businessImgInitial : publicImgInitial;
+        String newPromotionType = promotionType.matches(regexBusinessPromotion) ? AppConstants.BUSINESS_PROMOTION : AppConstants.PUBLIC_PROMOTION;
+        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
+        return String.format("%s/%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, promotionDir, newPromotionType, uniquePromotioId,"videos", lowHighQualityFolder, imgType, promotionInitial, uniquePromotioId);
     }
 
     public static String getProductImgUploadKey(String userId, String placeType, String uniquePlaceId, String uniqueProductId, boolean isHigh) {

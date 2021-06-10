@@ -134,6 +134,10 @@ public class AmazonClient {
     }
 
     public String uploadSingleImageToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl, MultipartFile multipartFile, String imgUploadKey) throws Exception {
+        return uploadSingleImageToS3(amazonS3,bucketName,endpointUrl,multipartFile,imgUploadKey,false);
+    }
+
+    public String uploadSingleImageToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl, MultipartFile multipartFile, String imgUploadKey,boolean isVideo) throws Exception {
         if (amazonS3 == null)
             throw new NullPointerException("Got null AmazonS3 object as arguement !");
         if (Utility.isFieldEmpty(bucketName)) {
@@ -150,7 +154,7 @@ public class AmazonClient {
         }
 
         File convertMultipartFile = convertMultipartFile(multipartFile);
-        String ext = getFileExtension(multipartFile.getOriginalFilename(), AppConstants.FILETYPE_WEBP);
+        String ext = getFileExtension(multipartFile.getOriginalFilename(),isVideo?AppConstants.FILETYPE_MP4: AppConstants.FILETYPE_WEBP);
         String objKey = imgUploadKey + Calendar.getInstance().getTimeInMillis() + "." + ext;
         //upload file to s3 bucket
         uploadFileTos3bucket(amazonS3, bucketName, objKey, convertMultipartFile);
@@ -165,7 +169,7 @@ public class AmazonClient {
 
     }
 
-    public List<String> uploadImagesToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl, String imgUploadKey, MultipartFile[] multipartFiles) throws Exception {
+    public List<String> uploadImagesToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl, String imgUploadKey, MultipartFile[] multipartFiles,boolean isVideo) throws Exception {
         if (amazonS3 == null)
             throw new NullPointerException("Got null AmazonS3 object as arguement !");
         if (Utility.isFieldEmpty(bucketName)) {
@@ -182,14 +186,22 @@ public class AmazonClient {
         }
         List<String> uploadedImageNames = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
-            String returnUrl = uploadSingleImageToS3(amazonS3, bucketName, endpointUrl, multipartFile, imgUploadKey);
+            String returnUrl = uploadSingleImageToS3(amazonS3, bucketName, endpointUrl, multipartFile, imgUploadKey,isVideo);
             uploadedImageNames.add(returnUrl);
         }
         return uploadedImageNames;
     }
 
+    public List<String> uploadImagesToS3(AmazonS3 amazonS3, String bucketName, String endpointUrl, String imgUploadKey, MultipartFile[] multipartFiles) throws Exception {
+        return uploadImagesToS3(amazonS3,bucketName,endpointUrl,imgUploadKey,multipartFiles,false);
+    }
+
     public List<String> uploadImagesToS3(String imgUploadKey, MultipartFile[] multipartImages) throws Exception {
         return uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadKey, multipartImages);
+    }
+
+    public List<String> uploadImagesToS3(String imgUploadKey, MultipartFile[] multipartImages,boolean isVideo) throws Exception {
+        return uploadImagesToS3(s3Client, bucketName, endpointUrl, imgUploadKey, multipartImages,isVideo);
     }
 
     public AmazonS3 getS3Client() {

@@ -96,9 +96,9 @@ public class ImageController {
         }
     }
 
-    @PostMapping(value = "/uploadPostImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<DhPromotions>> uploadPostImages(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "postType", required = true) String postType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "postImagesLow", required = true) MultipartFile[] postImagesLow, @RequestPart(value = "postImagesHigh", required = true) MultipartFile[] postImagesHigh, @PathVariable String version) throws ServerSideException {
-        Response<DhPromotions> response = imageService.uploadPostImages(httpHeaders, authentication, postType, addedBy, postImagesLow, postImagesHigh, version);
+    @PostMapping(value = "/uploadPromotionFiles", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<DhPromotions>> uploadPromotionImagesVideosThumbnails(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "promotionType", required = true) String promotionType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "promotionImagesLow", required = true) MultipartFile[] promotionImagesLow, @RequestPart(value = "promotionImagesHigh", required = true) MultipartFile[] promotionImagesHigh,@RequestPart(value = "promotionThumbnails", required = true) MultipartFile[] promotionThumbnails,@RequestPart(value = "promotionVideoLowUrls", required = true) MultipartFile[] promotionVideoLowUrls,@RequestPart(value = "promotionVideoHighUrls", required = true) MultipartFile[] promotionVideoHighUrls,  @PathVariable String version) throws ServerSideException {
+        Response<DhPromotions> response = imageService.uploadPromotionImagesVideosThumbnails(httpHeaders, authentication, promotionType,addedBy,promotionVideoLowUrls,promotionVideoHighUrls,promotionThumbnails,promotionImagesLow,promotionImagesHigh,version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {

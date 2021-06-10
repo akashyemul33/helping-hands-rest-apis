@@ -50,14 +50,14 @@ public class AppConstants {
     public static final String PROMOTION_TYPE = "promotionType";
     public static final String SUB_PLACE_CATEGORY_IDS = "subPlaceCategoryIds";
     public static final String BUSINESS_PLACE = "BusinessPlace";
-    public static final String REGEX_BUSINESS_PROMOTION = "^[Bb]usiness[\\s]*[Pp]ost$";
+    public static final String REGEX_BUSINESS_PROMOTION = "^[Bb]usiness[\\s]*[Pp]romotion";
     public static final String REGEX_BUSINESS_REQUIREMENT = "^[Bb]usiness[\\s]*[Rr]equirement$";
     public static final String REGEX_PUBLIC_REQUIREMENT = "^[Pp]ublic[\\s]*[Rr]equirement$";
     public static final String REGEX_BUSINESS_PLACE = "^[Bb]usiness[\\s]*[Pp]lace$";
     public static final String REGEX_USER = "^[Uu]ser$";
     public static final String REGEX_PUBLIC_PLACE = "^[Pp]ublic[\\s]*[Pp]lace$";
     public static final String PUBLIC_PLACE = "PublicPlace";
-    public static final String REGEX_PUBLIC_promotion = "^[Pp]ublic[\\s]*[Pp]ost$";
+    public static final String REGEX_PUBLIC_promotion = "^[Pp]ublic[\\s]*[Pp]romotion";
     public static final int LIMIT_RATINGS_IN_PLACES = 5;
     public static final int LIMIT_RATINGS_IN_PROMOTIONS = 5;
     public static final int LIMIT_RATINGS_IN_REQUIREMENTS = 5;
@@ -329,6 +329,8 @@ public class AppConstants {
     public static final String COLLECTION_DH_THOUGHTS = "dhThoughts";
     public static final String RESPONSEMESSAGE_THOUGHT_SCHEDULED_NOTE = "THOUGHT_SCHEDULED_NOTE";
     public static final String RESPONSEMESSAGE_THOUGHT_NOTE = "THOUGHT_NOTE";
+    public static final String FILETYPE_MP4 = "mp4";
+    public static final int PER_PROMOTION_MAX_VIDEOS_LIMIT = 4;
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
@@ -355,6 +357,7 @@ public class AppConstants {
     public static String RESPONSEMESSAGE_USER_AND_APPCONFIG_DETAILS_FETCHED = "USER_AND_APPCONFIG_DETAILS_FETCHED";
     public static String RESPONSEMESSAGE_EMPTY_BODY = "EMPTY_BODY";
     public static String RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX = "IMAGES_SIZE_GREATER_THAN_MAX";
+    public static String RESPONSEMESSAGE_VIDEOS_SIZE_GREATER_THAN_MAX = "VIDEOS_SIZE_GREATER_THAN_MAX";
     public static String RESPONSEMESSAGE_INVALID_PROMOTIONTYPE = "INVALID_PROMOTIONTYPE";
     public static String RESPONSEMESSAGE_EMPTY_BODY_OR_PLACECATEGORYNAMES = "EMPTY_BODY_OR_PLACECATEGORYNAMES";
     public static String RESPONSEMESSAGE_TYPE_PLACECATEGORY_EMPTY = "TYPE_PLACECATEGORY_EMPTY";

@@ -72,7 +72,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Response<DhThought> uploadThoughtImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh,String userId, String version) throws ServerSideException {
+    public Response<DhThought> uploadThoughtImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String userId, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
         if (imageLow == null || imageLow.isEmpty() || imageHigh == null || imageHigh.isEmpty())
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
@@ -89,7 +89,7 @@ public class ImageServiceImpl implements ImageService {
             dhThought.setThoughtId(uniqueThoughtID);
             dhThought.setUserId(userId);
             dhThought = (DhThought) Utility.setCommonAttrs(dhThought, AppConstants.STATUS_PENDING);
-            mongoTemplate.save(dhThought,AppConstants.COLLECTION_DH_THOUGHTS);
+            mongoTemplate.save(dhThought, AppConstants.COLLECTION_DH_THOUGHTS);
             logService.addLog(new DhLog(uniqueThoughtID, "New Thought has been added"));
             return new Response<DhThought>(true, 201, "Thought saved successfully", Collections.singletonList(dhThought));
         } catch (Exception e) {
@@ -191,9 +191,10 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Response<DhPromotions> uploadPostImages(HttpHeaders httpHeaders, Authentication authentication, String postType, String addedBy, MultipartFile[] postImagesLow, MultipartFile[] postImagesHigh, String version) throws ServerSideException {
+    public Response<DhPromotions> uploadPromotionImagesVideosThumbnails(HttpHeaders httpHeaders, Authentication authentication, String promotionType, String addedBy, MultipartFile[] promotionVideosLow, MultipartFile[] promotionVideosHigh, MultipartFile[] promotionVideoThumbnails, MultipartFile[] promotionImagesLow, MultipartFile[] promotionImagesHigh, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        if (postImagesHigh == null || postImagesHigh.length == 0 || Utility.isFieldEmpty(postType) || Utility.isFieldEmpty(addedBy)) {
+        LOGGER.info("uploadPromotionImagesVideosThumbnails->imagesLow==null:" + (promotionImagesLow == null) + " imagesHigh==null:" + (promotionImagesHigh == null) + " videoLow==null:" + (promotionVideosLow == null) + " videoHigh==null:" + (promotionVideosHigh == null) + " thumbnails==null:" + (promotionVideoThumbnails == null));
+        if (Utility.isFieldEmpty(promotionType) || Utility.isFieldEmpty(addedBy)) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
 
@@ -201,26 +202,56 @@ public class ImageServiceImpl implements ImageService {
             return new Response<DhPromotions>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
         }
 
-        if (postImagesHigh.length > AppConstants.PER_PROMOTION_MAX_IMAGES_LIMIT)
-            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX), new ArrayList<>());
+        if (promotionImagesHigh != null) {
+            LOGGER.info("uploadPromotionImagesVideosThumbnails->promotionImagesHigh.length:"+promotionImagesHigh.length);
+            if (promotionImagesHigh.length > AppConstants.PER_PROMOTION_MAX_IMAGES_LIMIT)
+                return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX), new ArrayList<>());
 
-        String uniquePostID = Utility.getUUID();
-        String postImgUploadKeyLow = GetImageFoldersAndPrefix.getPostImgUploadKey(addedBy, uniquePostID, postType, false);
-        String postImgUploadKeyHigh = GetImageFoldersAndPrefix.getPostImgUploadKey(addedBy, uniquePostID, postType, true);
+            if (promotionImagesHigh.length > AppConstants.PER_PROMOTION_MAX_VIDEOS_LIMIT)
+                return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_VIDEOS_SIZE_GREATER_THAN_MAX), new ArrayList<>());
+        }
+
+        String uniquePromotionID = Utility.getUUID();
+        String promotionImgUploadKeyLow = GetImageFoldersAndPrefix.getPromotionImgUploadKey(addedBy, uniquePromotionID, promotionType, false);
+        String promotionImgUploadKeyHigh = GetImageFoldersAndPrefix.getPromotionImgUploadKey(addedBy, uniquePromotionID, promotionType, true);
+        String promotionVideoUploadKeyLow = GetImageFoldersAndPrefix.getPromotionVideoUploadKey(addedBy, uniquePromotionID, promotionType, false);
+        String promotionVideoUploadKeyHigh = GetImageFoldersAndPrefix.getPromotionVideoUploadKey(addedBy, uniquePromotionID, promotionType, true);
+        String promotionVideoUploadKeyThumbnails = GetImageFoldersAndPrefix.getPromotionVideoUploadKey(addedBy, uniquePromotionID, promotionType, true);
 
         try {
-            List<String> postImageUrlsLow = amazonClient.uploadImagesToS3(postImgUploadKeyLow, postImagesLow);
-            List<String> postImageUrlsHigh = amazonClient.uploadImagesToS3(postImgUploadKeyHigh, postImagesHigh);
             DhPromotions dhPromotions = new DhPromotions();
-            dhPromotions.setPromotionId(uniquePostID);
+            dhPromotions.setPromotionId(uniquePromotionID);
             dhPromotions.setAddedBy(addedBy);
-            dhPromotions.setPromotionImagesLow(postImageUrlsLow);
-            dhPromotions.setPromotionImagesHigh(postImageUrlsHigh);
-            logService.addLog(new DhLog(addedBy, "Post images have been added"));
-            String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PLACE_IMAGES_ADDED);
+            if (promotionImagesLow != null && promotionImagesLow.length > 0) {
+                List<String> promotionImageUrlsLow = amazonClient.uploadImagesToS3(promotionImgUploadKeyLow, promotionImagesLow, false);
+                dhPromotions.setPromotionImagesLow(promotionImageUrlsLow);
+            }
+
+            if (promotionImagesHigh != null && promotionImagesHigh.length > 0) {
+                List<String> promotionImageUrlsHigh = amazonClient.uploadImagesToS3(promotionImgUploadKeyHigh, promotionImagesHigh, false);
+                dhPromotions.setPromotionImagesHigh(promotionImageUrlsHigh);
+            }
+
+            if (promotionVideosLow != null && promotionVideosLow.length > 0) {
+                List<String> promotionVideorlsLow = amazonClient.uploadImagesToS3(promotionVideoUploadKeyLow, promotionVideosLow, true);
+                dhPromotions.setVideoUrlsLow(promotionVideorlsLow);
+            }
+
+            if (promotionVideosHigh != null && promotionVideosHigh.length > 0) {
+                List<String> promotionVideoUrlsHigh = amazonClient.uploadImagesToS3(promotionVideoUploadKeyHigh, promotionVideosHigh, true);
+                dhPromotions.setVideoUrlsHigh(promotionVideoUrlsHigh);
+            }
+
+            if (promotionVideoThumbnails != null && promotionVideoThumbnails.length > 0) {
+                List<String> postVideoThumbnailUrlsHigh = amazonClient.uploadImagesToS3(promotionVideoUploadKeyThumbnails, promotionVideoThumbnails, false);
+                dhPromotions.setVideoThumbnails(postVideoThumbnailUrlsHigh);
+            }
+
+            logService.addLog(new DhLog(addedBy, "Promotion images/videos/thumnails have been added"));
+            String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PROMOTION_IMAGES_ADDED);
             return new Response<>(true, 201, successMsg, Collections.singletonList(dhPromotions), 1);
         } catch (Exception ioException) {
-            LOGGER.info("ImageServiceImpl->uploadPostImages : exception = " + ioException.getMessage());
+            LOGGER.info("ImageServiceImpl->uploadPromotionImages : exception = " + ioException.getMessage());
             String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_UNABLE_TO_ADD_PROMOTION_IMAGES);
             return new Response<>(false, 402, errorMsg, new ArrayList<>());
         }

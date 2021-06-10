@@ -1,6 +1,10 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.List;
+
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class DhPromotions extends AllCommonUsedAttributes {
     private String promotionId;
@@ -9,6 +13,35 @@ public class DhPromotions extends AllCommonUsedAttributes {
     private String addedBy;
     private String promotionTitle;
     private String promotionDesc;
+    private List<String> videoThumbnails;
+    private List<String> videoUrlsLow;
+
+    public List<String> getVideoThumbnails() {
+        return videoThumbnails;
+    }
+
+    public void setVideoThumbnails(List<String> videoThumbnails) {
+        this.videoThumbnails = videoThumbnails;
+    }
+
+    public List<String> getVideoUrlsLow() {
+        return videoUrlsLow;
+    }
+
+    public void setVideoUrlsLow(List<String> videoUrlsLow) {
+        this.videoUrlsLow = videoUrlsLow;
+    }
+
+    public List<String> getVideoUrlsHigh() {
+        return videoUrlsHigh;
+    }
+
+    public void setVideoUrlsHigh(List<String> videoUrlsHigh) {
+        this.videoUrlsHigh = videoUrlsHigh;
+    }
+
+    private List<String> videoUrlsHigh;
+
     private List<String> promotionImagesLow;
 
     public List<String> getPromotionImagesHigh() {
@@ -29,7 +62,11 @@ public class DhPromotions extends AllCommonUsedAttributes {
     private long numberOfRatings;
     private long numberOfViews;
     private double avgRating;
+    @Transient
+    @Ignore
     private String userName;//username
+    @Transient
+    @Ignore
     private String userImage;//userImage
 
     public String getUserImage() {
@@ -40,7 +77,10 @@ public class DhPromotions extends AllCommonUsedAttributes {
         this.userImage = userImage;
     }
 
+
     private String placeName;
+    @Transient
+    @Ignore
     private String placeCategory;
 
     public String getPlaceName() {

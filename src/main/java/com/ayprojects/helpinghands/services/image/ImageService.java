@@ -26,7 +26,7 @@ public interface ImageService {
 
     Response<DhPlace> singlePlaceImageOperations(HttpHeaders httpHeaders, Authentication authentication, List<String> existingImgUrlsLowList, List<String> existingImgUrlsHighList, int editOrRemovePos, String placeId, String placeType, String addedBy, MultipartFile placeImagesLow, MultipartFile placeImagesHigh, SinglePlaceImageOperationsEnum operationsEnum, String version) throws ServerSideException;
 
-    Response<DhPromotions> uploadPostImages(HttpHeaders httpHeaders, Authentication authentication, String postType, String addedBy, MultipartFile[] postImagesLow, MultipartFile[] postImagesHigh, String version) throws ServerSideException;
+    public Response<DhPromotions> uploadPromotionImagesVideosThumbnails(HttpHeaders httpHeaders, Authentication authentication, String promotionType, String addedBy, MultipartFile[] promotionVideosLow, MultipartFile[] promotionVideosHigh, MultipartFile[] promotionVideoThumbnails, MultipartFile[] promotionImagesLow, MultipartFile[] promotionImagesHigh, String version) throws ServerSideException;
 
     Response<ProductsWithPrices> uploadProductImages(HttpHeaders httpHeaders, Authentication authentication, String uniqueProductId, String placeType, String placeId, String addedBy, List<String> existingProductLowList, List<String> existingProductHighList, List<String> deleteProductLowList, MultipartFile[] productImagesLow, MultipartFile[] productImagesHigh, String version) throws ServerSideException;
 //    Response<DhRequirements> uploadRequirementImages(HttpHeaders httpHeaders, Authentication authentication, String reqType, String addedBy, MultipartFile[] reqImages, String version) throws ServerSideException;

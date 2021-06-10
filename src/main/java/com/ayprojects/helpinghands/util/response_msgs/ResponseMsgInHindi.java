@@ -135,6 +135,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_COMMENTS_TURNED_ON_OFF, "Comments are turned %s");
             responseMsgsMap.put(RESPONSEMESSAGE_THOUGHT_SCHEDULED_NOTE, "Thought will be available at hour %s of the day");
             responseMsgsMap.put(RESPONSEMESSAGE_THOUGHT_NOTE, "Everybody reads, only few follows. Are you reader only?");
+            responseMsgsMap.put(RESPONSEMESSAGE_VIDEOS_SIZE_GREATER_THAN_MAX, "Promotions max videos limit is 4 ");
         }
     }
 

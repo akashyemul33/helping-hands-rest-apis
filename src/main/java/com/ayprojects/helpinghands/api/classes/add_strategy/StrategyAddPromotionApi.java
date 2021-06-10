@@ -28,7 +28,7 @@ import static com.ayprojects.helpinghands.AppConstants.BUSINESS_PROMOTION;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
-public class StrategyAddPostApi implements StrategyAddBehaviour<DhPromotions> {
+public class StrategyAddPromotionApi implements StrategyAddBehaviour<DhPromotions> {
 
     @Autowired
     CommonService commonService;
@@ -40,9 +40,9 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPromotions> {
     public Response<DhPromotions> add(String language, DhPromotions dhPromotions) {
 
         //check if postId present && postImages present
-        dhPromotions = setPostIdIfNotExists(dhPromotions);
+        dhPromotions = setPromotionIdIfNotExists(dhPromotions);
 
-        Response<DhPromotions> validationResponse = validateAddPosts(dhPromotions, language);
+        Response<DhPromotions> validationResponse = validateAddPromotion(dhPromotions, language);
         if (!validationResponse.getStatus())
             return validationResponse;
 
@@ -70,7 +70,7 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPromotions> {
         //store posts
         dhPromotions = (DhPromotions) ApiOperations.setCommonAttrs(dhPromotions, AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhPromotions, AppConstants.COLLECTION_DH_PROMOTIONS);
-        validationResponse.setLogActionMsg("New [" + dhPromotions.getPromotionType() + "] post has been added.");
+        validationResponse.setLogActionMsg("New [" + dhPromotions.getPromotionType() + "] promotion has been added.");
 
         //update the place if post is businesspost
         if (isBusinessPost) {
@@ -98,7 +98,7 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPromotions> {
         return null;
     }
 
-    private DhPromotions setPostIdIfNotExists(DhPromotions dhPromotions) {
+    private DhPromotions setPromotionIdIfNotExists(DhPromotions dhPromotions) {
         if (Utility.isFieldEmpty(dhPromotions.getPlaceId()) || dhPromotions.getPromotionImagesLow() == null || dhPromotions.getPromotionImagesLow().size() <= 0) {
             dhPromotions.setPromotionId(Utility.getUUID());
         }
@@ -110,7 +110,7 @@ public class StrategyAddPostApi implements StrategyAddBehaviour<DhPromotions> {
         return StrategyName.AddPostStrategy;
     }
 
-    public Response<DhPromotions> validateAddPosts(DhPromotions dhPromotions, String language) {
+    public Response<DhPromotions> validateAddPromotion(DhPromotions dhPromotions, String language) {
         if (dhPromotions == null)
             return new Response<DhPromotions>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>(), 0);
 
