@@ -285,8 +285,8 @@ public class AppConstants {
     public static final String KEY_HH_ADDRESS = "address";
     public static final String COLLECTION_DH_HH_POST = "dhHHPost";
     public static final String COLLECTION_DH_HH_CATEGORY = "dhHHCategory";
-    public static final String IMG_DIR_FOR_HIGH = "1";
-    public static final String IMG_DIR_FOR_LOW = "0";
+    public static final String DIR_FOR_HIGH = "1";
+    public static final String DIR_FOR_LOW = "0";
     public static final String KEY_HH_PRIORITY_ID = "priorityId";
     public static final String KEY_HH_PRIORITY_NAME = "priorityName";
     public static final String COLLECTION_DH_HH_PRIORITY = "dhHHPriorities";
@@ -331,6 +331,8 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_THOUGHT_NOTE = "THOUGHT_NOTE";
     public static final String FILETYPE_MP4 = "mp4";
     public static final int PER_PROMOTION_MAX_VIDEOS_LIMIT = 4;
+    public static final long PER_PROMOTION_VIDEOS_LIMIT = 2;
+    public static final long PROMOTION_VIDEO_TIME_LIMIT_IN_SECONDS = 300;
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
@@ -406,8 +408,8 @@ public class AppConstants {
     public static long PER_DAY_ADD_PROMOTIONS_LIMIT = 200;
     public static long PER_PLACE_IMAGES_LIMIT = 8;
     public static long PER_PLACE_MAX_IMAGES_LIMIT = 20;
-    public static long PER_PROMOTION_IMAGES_LIMIT = 8;
-    public static long PER_PROMOTION_MAX_IMAGES_LIMIT = 8;
+    public static long PER_PROMOTION_IMAGES_LIMIT = 6;
+    public static long PER_PROMOTION_MAX_IMAGES_LIMIT = 10;
     public static long PER_PLACE_PRODUCTS_LIMIT = 200;
     public static long PER_PRODUCT_DEFAULT_IMAGES_LIMIT = 4;
     public static long PER_PRODUCT_MAX_IMAGES_LIMIT = 16;

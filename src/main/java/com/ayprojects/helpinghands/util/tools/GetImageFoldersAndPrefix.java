@@ -18,12 +18,13 @@ public class GetImageFoldersAndPrefix {
     static final String productImgInitial = "PRD";
     static final String regexBusinessPlace = "^[Bb]usiness[\\s]*[Pp]lace$";
     static final String regexBusinessPromotion = "^[Bb]usiness[\\s]*[Pp]romotion";
+    private static final String videosBaseFolder = "app_videos";
     static String promotionInitial = "PRMTNS";
 
     public static String getThoughtImgUploadKeyLow(String uniqueThoughtId, boolean isHigh) {
         if (Utility.isFieldEmpty(uniqueThoughtId))
             throw new IllegalArgumentException("UniqueThoughtId must not be null !");
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.DIR_FOR_HIGH : AppConstants.DIR_FOR_LOW;
         String date = CalendarOperations.currentDateInUTC();
         return String.format("%s/%s/%s/%s/%s_", imagesBaseFolder, thoughtsFolder, lowHighQualityFolder, date, uniqueThoughtId);
     }
@@ -31,7 +32,7 @@ public class GetImageFoldersAndPrefix {
     public static String getUserImgUploadKeyLow(String uniqueUserID, boolean isHigh) {
         if (Utility.isFieldEmpty(uniqueUserID))
             throw new IllegalArgumentException("UniqueUserID must not be null !");
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.DIR_FOR_HIGH : AppConstants.DIR_FOR_LOW;
         return String.format("%s/%s/%s/%s/%s%s_", imagesBaseFolder, uniqueUserID, userDir, lowHighQualityFolder, userInitial, uniqueUserID);
     }
 
@@ -45,7 +46,7 @@ public class GetImageFoldersAndPrefix {
 
         String imgType = placeType.matches(regexBusinessPlace) ? businessImgInitial : publicImgInitial;
         String newPlaceType = placeType.matches(regexBusinessPlace) ? AppConstants.BUSINESS_PLACE : AppConstants.PUBLIC_PLACE;
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.DIR_FOR_HIGH : AppConstants.DIR_FOR_LOW;
         return String.format("%s/%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, placeDir, newPlaceType, uniquePlaceID, "place_images", lowHighQualityFolder, imgType, placeInitial, uniquePlaceID);
     }
 
@@ -55,7 +56,7 @@ public class GetImageFoldersAndPrefix {
         if (Utility.isFieldEmpty(userId))
             throw new IllegalArgumentException("HH UniqueUserID must not be null !");
 
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.DIR_FOR_HIGH : AppConstants.DIR_FOR_LOW;
         return String.format("%s/%s/%s/%s/%s/%s/%s_%s_", imagesBaseFolder, userId, hhPostDir, uniquePostID, "hh_post_images", lowHighQualityFolder, hhPostsInitial, uniquePostID);
     }
 
@@ -69,8 +70,8 @@ public class GetImageFoldersAndPrefix {
 
         String imgType = promotionType.matches(regexBusinessPromotion) ? businessImgInitial : publicImgInitial;
         String newPromotionType = promotionType.matches(regexBusinessPromotion) ? AppConstants.BUSINESS_PROMOTION : AppConstants.PUBLIC_PROMOTION;
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
-        return String.format("%s/%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, promotionDir, newPromotionType, uniquePromotioId,"images", lowHighQualityFolder, imgType, promotionInitial, uniquePromotioId);
+        String lowHighQualityFolder = isHigh ? AppConstants.DIR_FOR_HIGH : AppConstants.DIR_FOR_LOW;
+        return String.format("%s/%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, promotionDir, newPromotionType, uniquePromotioId, "images", lowHighQualityFolder, imgType, promotionInitial, uniquePromotioId);
     }
 
     public static String getPromotionVideoUploadKey(String userId, String uniquePromotioId, String promotionType, boolean isHigh) {
@@ -83,8 +84,8 @@ public class GetImageFoldersAndPrefix {
 
         String imgType = promotionType.matches(regexBusinessPromotion) ? businessImgInitial : publicImgInitial;
         String newPromotionType = promotionType.matches(regexBusinessPromotion) ? AppConstants.BUSINESS_PROMOTION : AppConstants.PUBLIC_PROMOTION;
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
-        return String.format("%s/%s/%s/%s/%s/%s/%s/%s_%s_%s_", imagesBaseFolder, userId, promotionDir, newPromotionType, uniquePromotioId,"videos", lowHighQualityFolder, imgType, promotionInitial, uniquePromotioId);
+        String lowHighQualityFolder = isHigh ? AppConstants.DIR_FOR_HIGH : AppConstants.DIR_FOR_LOW;
+        return String.format("%s/%s/%s/%s/%s/%s/%s/%s_%s_%s_", videosBaseFolder, userId, promotionDir, newPromotionType, uniquePromotioId, "videos", lowHighQualityFolder, imgType, promotionInitial, uniquePromotioId);
     }
 
     public static String getProductImgUploadKey(String userId, String placeType, String uniquePlaceId, String uniqueProductId, boolean isHigh) {
@@ -96,7 +97,7 @@ public class GetImageFoldersAndPrefix {
             throw new IllegalArgumentException("UniquePlaceId must not be null !");
 
         String newPlaceType = placeType.matches(regexBusinessPlace) ? AppConstants.BUSINESS_PLACE : AppConstants.PUBLIC_PLACE;
-        String lowHighQualityFolder = isHigh ? AppConstants.IMG_DIR_FOR_HIGH : AppConstants.IMG_DIR_FOR_LOW;
+        String lowHighQualityFolder = isHigh ? AppConstants.DIR_FOR_HIGH : AppConstants.DIR_FOR_LOW;
 
         return String.format("%s/%s/%s/%s/%s/%s/%s/%s/%s_%s_", imagesBaseFolder, userId, placeDir, newPlaceType, uniquePlaceId, productDir, uniqueProductId, lowHighQualityFolder, productImgInitial, uniqueProductId);
     }

@@ -1,5 +1,6 @@
 package com.ayprojects.helpinghands.controllers;
 
+import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.enums.SinglePlaceImageOperationsEnum;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhHHPost;
@@ -34,6 +35,8 @@ import java.util.List;
 
 import io.swagger.annotations.Api;
 
+import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
+
 @Api(value = "Views API's", description = "CRUD for image uploads")
 @RestController
 @ResponseStatus
@@ -50,7 +53,7 @@ public class ImageController {
 
     @PostMapping(value = "/uploadThoughtImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DhThought>> uploadThoughtImage(@RequestHeader HttpHeaders httpHeaders, @RequestPart(value = "thoughtImageLow", required = true) MultipartFile thoughtImageLow, @RequestPart(value = "thoughtImageHigh", required = true) MultipartFile thoughtImageHigh, @RequestParam(value = "userId", required = true) String userId, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(imageService.uploadThoughtImage(httpHeaders, thoughtImageLow, thoughtImageHigh,userId, version), HttpStatus.CREATED);
+        return new ResponseEntity<>(imageService.uploadThoughtImage(httpHeaders, thoughtImageLow, thoughtImageHigh, userId, version), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/uploadPlaceImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -97,9 +100,32 @@ public class ImageController {
     }
 
     @PostMapping(value = "/uploadPromotionFiles", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<DhPromotions>> uploadPromotionImagesVideosThumbnails(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestParam(value = "promotionType", required = true) String promotionType, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestPart(value = "promotionImagesLow", required = true) MultipartFile[] promotionImagesLow, @RequestPart(value = "promotionImagesHigh", required = true) MultipartFile[] promotionImagesHigh,@RequestPart(value = "promotionThumbnails", required = true) MultipartFile[] promotionThumbnails,@RequestPart(value = "promotionVideoLowUrls", required = true) MultipartFile[] promotionVideoLowUrls,@RequestPart(value = "promotionVideoHighUrls", required = true) MultipartFile[] promotionVideoHighUrls,  @PathVariable String version) throws ServerSideException {
-        Response<DhPromotions> response = imageService.uploadPromotionImagesVideosThumbnails(httpHeaders, authentication, promotionType,addedBy,promotionVideoLowUrls,promotionVideoHighUrls,promotionThumbnails,promotionImagesLow,promotionImagesHigh,version);
+    public ResponseEntity<Response<DhPromotions>> uploadPromotionImagesVideosThumbnails(@RequestHeader HttpHeaders httpHeaders, Authentication authentication,
+                                                                                        @RequestPart(value = "promotionImagesLow", required = true) MultipartFile[] promotionImagesLow,
+                                                                                        @RequestPart(value = "promotionImagesHigh", required = true) MultipartFile[] promotionImagesHigh,
+                                                                                        @RequestPart(value = "promotionThumbnails", required = true) MultipartFile[] promotionThumbnails,
+                                                                                        @RequestPart(value = "promotionVideoLowUrls", required = true) MultipartFile[] promotionVideoLowUrls,
+                                                                                        @RequestPart(value = "promotionVideoHighUrls", required = true) MultipartFile[] promotionVideoHighUrls,
+                                                                                        @RequestParam(value = "promotionType", required = true) String promotionType,
+                                                                                        @RequestParam(value = "placeId", required = false) String placeId,
+                                                                                        @RequestParam(value = "placeName", required = false) String placeName,
+                                                                                        @RequestParam(value = "placeCategory", required = false) String placeCategory,
+                                                                                        @RequestParam(value = "addedBy", required = true) String addedBy,
+                                                                                        @RequestParam(value = "promotionTitle", required = true) String promotionTitle,
+                                                                                        @RequestParam(value = "promotionDesc", required = true) String promotionDesc,
+                                                                                        @RequestParam(value = "fullAddress", required = true) String fullAddress,
+                                                                                        @RequestParam(value = "fullName", required = true) String fullName,
+                                                                                        @RequestParam(value = "offerStartTime", required = true) String offerStartTime,
+                                                                                        @RequestParam(value = "offerEndTime", required = true) String offerEndTime,
+                                                                                        @RequestParam(value = "areDetailsSameAsRegistered", required = true) boolean areDetailsSameAsRegistered,
+                                                                                        @RequestParam(value = "mobile", required = true) String mobile,
+                                                                                        @RequestParam(value = "email", required = true) String email) throws ServerSideException {
+        Response<DhPromotions> response = imageService.uploadPromotionImagesVideosThumbnails(httpHeaders, authentication, placeName, placeCategory, promotionType, placeId, addedBy, promotionTitle, promotionDesc, fullAddress, fullName, offerStartTime, offerEndTime, areDetailsSameAsRegistered, mobile, email, promotionImagesLow, promotionImagesHigh, promotionThumbnails, promotionVideoLowUrls, promotionVideoHighUrls, AppConstants.SCHEMA_VERSION);
         if (response.getStatus()) {
+            LOGGER.info("videoHigh.length:" + promotionVideoHighUrls.length);
+            LOGGER.info("videoLow.length:" + promotionVideoLowUrls.length);
+            LOGGER.info("imagesLow.length:" + promotionImagesLow.length);
+            LOGGER.info("imagesHigh.length:" + promotionImagesHigh.length);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);

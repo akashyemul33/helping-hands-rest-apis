@@ -15,6 +15,15 @@ public class DhPromotions extends AllCommonUsedAttributes {
     private String promotionDesc;
     private List<String> videoThumbnails;
     private List<String> videoUrlsLow;
+    private String offerMsg;
+
+    public String getOfferMsg() {
+        return offerMsg;
+    }
+
+    public void setOfferMsg(String offerMsg) {
+        this.offerMsg = offerMsg;
+    }
 
     public List<String> getVideoThumbnails() {
         return videoThumbnails;
@@ -107,15 +116,6 @@ public class DhPromotions extends AllCommonUsedAttributes {
         this.userName = userName;
     }
 
-    public String getOfferMsg() {
-        return offerMsg;
-    }
-
-    public void setOfferMsg(String offerMsg) {
-        this.offerMsg = offerMsg;
-    }
-
-    private String offerMsg;
     private List<String> ratingIds;
     private List<String> viewIds;
     private List<DhRatingAndComments> topRatings;

@@ -6,10 +6,83 @@ public class UserSettings {
     private long perDayAddPostsLimit;
     private long perPlaceImagesLimit;
     private long perPostImagesLimit;
+    private long perPostMaxImagesLimit;
+    private long perPostMaxVideosLimit;
+    private long perPostVideosLimit;
     private boolean perDayAddPlacesLimitEnabled;
     private boolean perDayAddPostsLimitEnabled;
     private boolean perPlaceImagesLimitEnabled;
     private boolean perPostImagesLimitEnabled;
+    private boolean perPostVideosLimitEnabled;
+    private boolean perPostMaxVideosLimitEnabled;
+    private boolean promotionVideoTimeLimitEnabled;
+    private long promotionVideoTimeLimitInSeconds;
+
+    public boolean isPromotionVideoTimeLimitEnabled() {
+        return promotionVideoTimeLimitEnabled;
+    }
+
+    public void setPromotionVideoTimeLimitEnabled(boolean promotionVideoTimeLimitEnabled) {
+        this.promotionVideoTimeLimitEnabled = promotionVideoTimeLimitEnabled;
+    }
+
+    public long getPromotionVideoTimeLimitInSeconds() {
+        return promotionVideoTimeLimitInSeconds;
+    }
+
+    public void setPromotionVideoTimeLimitInSeconds(long promotionVideoTimeLimitInSeconds) {
+        this.promotionVideoTimeLimitInSeconds = promotionVideoTimeLimitInSeconds;
+    }
+
+    public long getPerPostMaxImagesLimit() {
+        return perPostMaxImagesLimit;
+    }
+
+    public void setPerPostMaxImagesLimit(long perPostMaxImagesLimit) {
+        this.perPostMaxImagesLimit = perPostMaxImagesLimit;
+    }
+
+    public long getPerPostMaxVideosLimit() {
+        return perPostMaxVideosLimit;
+    }
+
+    public void setPerPostMaxVideosLimit(long perPostMaxVideosLimit) {
+        this.perPostMaxVideosLimit = perPostMaxVideosLimit;
+    }
+
+    public long getPerPostVideosLimit() {
+        return perPostVideosLimit;
+    }
+
+    public void setPerPostVideosLimit(long perPostVideosLimit) {
+        this.perPostVideosLimit = perPostVideosLimit;
+    }
+
+    public boolean isPerPostVideosLimitEnabled() {
+        return perPostVideosLimitEnabled;
+    }
+
+    public void setPerPostVideosLimitEnabled(boolean perPostVideosLimitEnabled) {
+        this.perPostVideosLimitEnabled = perPostVideosLimitEnabled;
+    }
+
+    public boolean isPerPostMaxVideosLimitEnabled() {
+        return perPostMaxVideosLimitEnabled;
+    }
+
+    public void setPerPostMaxVideosLimitEnabled(boolean perPostMaxVideosLimitEnabled) {
+        this.perPostMaxVideosLimitEnabled = perPostMaxVideosLimitEnabled;
+    }
+
+    public boolean isPerPostMaxImagesLimitEnabled() {
+        return perPostMaxImagesLimitEnabled;
+    }
+
+    public void setPerPostMaxImagesLimitEnabled(boolean perPostMaxImagesLimitEnabled) {
+        this.perPostMaxImagesLimitEnabled = perPostMaxImagesLimitEnabled;
+    }
+
+    private boolean perPostMaxImagesLimitEnabled;
     private boolean perProductDefaultImageLimitEnabled;
     private long perProductDefaultImagesLimit;
     private long perProductMaxImagesLimit;

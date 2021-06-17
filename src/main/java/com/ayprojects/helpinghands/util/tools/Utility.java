@@ -93,6 +93,16 @@ public class Utility {
         userSettings.setHhPerPostImgLimit(AppConstants.HH_PER_POST_IMG_LIMIT);
         userSettings.setNotificationsRequired(true);
         userSettings.setHhPostCommentsOnOff(true);
+        userSettings.setPerPostMaxImagesLimitEnabled(true);
+        userSettings.setPerPostMaxVideosLimitEnabled(true);
+        userSettings.setPerPostImagesLimitEnabled(true);
+        userSettings.setPerPostVideosLimitEnabled(true);
+        userSettings.setPerPostImagesLimit(AppConstants.PER_PROMOTION_IMAGES_LIMIT);
+        userSettings.setPerPostVideosLimit(AppConstants.PER_PROMOTION_VIDEOS_LIMIT);
+        userSettings.setPerPostMaxImagesLimit(AppConstants.PER_PROMOTION_MAX_IMAGES_LIMIT);
+        userSettings.setPerPostMaxVideosLimit(AppConstants.PER_PROMOTION_MAX_VIDEOS_LIMIT);
+        userSettings.setPromotionVideoTimeLimitEnabled(true);
+        userSettings.setPromotionVideoTimeLimitInSeconds(AppConstants.PROMOTION_VIDEO_TIME_LIMIT_IN_SECONDS);
         return userSettings;
     }
 
@@ -247,6 +257,7 @@ public class Utility {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
         return Double.parseDouble(twoDForm.format(d));
     }
+
     public static double roundOneDecimals(double d) {
         DecimalFormat twoDForm = new DecimalFormat("#.#");
         return Double.parseDouble(twoDForm.format(d));

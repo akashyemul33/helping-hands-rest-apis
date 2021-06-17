@@ -118,7 +118,7 @@ public class AmazonClient {
     }
 
     public String getExtensionAfterValidation(String extension) {
-        String[] validImgFormats = new String[]{"[pP][nN][gG]", "[jJ][pP][eE][gG]", "[jJ][pP][gG]", "[sS][vV][gG]", "[wW][eE][bB][pP]"};
+        String[] validImgFormats = new String[]{"[pP][nN][gG]", "[jJ][pP][eE][gG]", "[jJ][pP][gG]", "[sS][vV][gG]", "[wW][eE][bB][pP]","[mM][pP]4"};
         if (Utility.isFieldEmpty(extension)) return AppConstants.FILETYPE_WEBP;
 
         for (String s : validImgFormats) {

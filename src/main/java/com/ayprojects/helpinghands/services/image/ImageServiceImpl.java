@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.services.image;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.enums.SinglePlaceImageOperationsEnum;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
+import com.ayprojects.helpinghands.models.Contact;
 import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
@@ -191,9 +192,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Response<DhPromotions> uploadPromotionImagesVideosThumbnails(HttpHeaders httpHeaders, Authentication authentication, String promotionType, String addedBy, MultipartFile[] promotionVideosLow, MultipartFile[] promotionVideosHigh, MultipartFile[] promotionVideoThumbnails, MultipartFile[] promotionImagesLow, MultipartFile[] promotionImagesHigh, String version) throws ServerSideException {
+    public Response<DhPromotions> uploadPromotionImagesVideosThumbnails(HttpHeaders httpHeaders, Authentication authentication, String placeName, String placeCategory, String promotionType, String placeId, String addedBy, String promotionTitle, String promotionDesc, String fullAddress, String fullName, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, String mobile, String email, MultipartFile[] promotionImagesLow, MultipartFile[] promotionImagesHigh, MultipartFile[] promotionThumbnails, MultipartFile[] promotionVideoLowUrls, MultipartFile[] promotionVideoHighUrls, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        LOGGER.info("uploadPromotionImagesVideosThumbnails->imagesLow==null:" + (promotionImagesLow == null) + " imagesHigh==null:" + (promotionImagesHigh == null) + " videoLow==null:" + (promotionVideosLow == null) + " videoHigh==null:" + (promotionVideosHigh == null) + " thumbnails==null:" + (promotionVideoThumbnails == null));
+        LOGGER.info("uploadPromotionImagesVideosThumbnails->imagesLow==null:" + (promotionImagesLow == null) + " imagesHigh==null:" + (promotionImagesHigh == null) + " videoLow==null:" + (promotionVideoLowUrls == null) + " videoHigh==null:" + (promotionVideoHighUrls == null) + " thumbnails==null:" + (promotionThumbnails == null));
         if (Utility.isFieldEmpty(promotionType) || Utility.isFieldEmpty(addedBy)) {
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
         }
@@ -202,14 +203,13 @@ public class ImageServiceImpl implements ImageService {
             return new Response<DhPromotions>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID), new ArrayList<>(), 0);
         }
 
-        if (promotionImagesHigh != null) {
-            LOGGER.info("uploadPromotionImagesVideosThumbnails->promotionImagesHigh.length:"+promotionImagesHigh.length);
-            if (promotionImagesHigh.length > AppConstants.PER_PROMOTION_MAX_IMAGES_LIMIT)
-                return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX), new ArrayList<>());
-
-            if (promotionImagesHigh.length > AppConstants.PER_PROMOTION_MAX_VIDEOS_LIMIT)
-                return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_VIDEOS_SIZE_GREATER_THAN_MAX), new ArrayList<>());
+        if (promotionImagesHigh != null && promotionImagesHigh.length > AppConstants.PER_PROMOTION_MAX_IMAGES_LIMIT) {
+            LOGGER.info("uploadPromotionImagesVideosThumbnails->promotionImagesHigh.length:" + promotionImagesHigh.length);
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_IMAGES_SIZE_GREATER_THAN_MAX), new ArrayList<>());
         }
+
+        if (promotionVideoHighUrls != null && promotionVideoHighUrls.length > AppConstants.PER_PROMOTION_MAX_VIDEOS_LIMIT)
+            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_VIDEOS_SIZE_GREATER_THAN_MAX), new ArrayList<>());
 
         String uniquePromotionID = Utility.getUUID();
         String promotionImgUploadKeyLow = GetImageFoldersAndPrefix.getPromotionImgUploadKey(addedBy, uniquePromotionID, promotionType, false);
@@ -232,20 +232,43 @@ public class ImageServiceImpl implements ImageService {
                 dhPromotions.setPromotionImagesHigh(promotionImageUrlsHigh);
             }
 
-            if (promotionVideosLow != null && promotionVideosLow.length > 0) {
-                List<String> promotionVideorlsLow = amazonClient.uploadImagesToS3(promotionVideoUploadKeyLow, promotionVideosLow, true);
+            if (promotionVideoLowUrls != null && promotionVideoLowUrls.length > 0) {
+                LOGGER.info("Uploading promotion video low,");
+                List<String> promotionVideorlsLow = amazonClient.uploadImagesToS3(promotionVideoUploadKeyLow, promotionVideoLowUrls, true);
                 dhPromotions.setVideoUrlsLow(promotionVideorlsLow);
             }
 
-            if (promotionVideosHigh != null && promotionVideosHigh.length > 0) {
-                List<String> promotionVideoUrlsHigh = amazonClient.uploadImagesToS3(promotionVideoUploadKeyHigh, promotionVideosHigh, true);
+            if (promotionVideoHighUrls != null && promotionVideoHighUrls.length > 0) {
+                LOGGER.info("Uploading promotion video high,");
+                List<String> promotionVideoUrlsHigh = amazonClient.uploadImagesToS3(promotionVideoUploadKeyHigh, promotionVideoHighUrls, true);
                 dhPromotions.setVideoUrlsHigh(promotionVideoUrlsHigh);
             }
 
-            if (promotionVideoThumbnails != null && promotionVideoThumbnails.length > 0) {
-                List<String> postVideoThumbnailUrlsHigh = amazonClient.uploadImagesToS3(promotionVideoUploadKeyThumbnails, promotionVideoThumbnails, false);
+           /* if (promotionThumbnails != null && promotionThumbnails.length > 0) {
+                List<String> postVideoThumbnailUrlsHigh = amazonClient.uploadImagesToS3(promotionVideoUploadKeyThumbnails, promotionThumbnails, false);
                 dhPromotions.setVideoThumbnails(postVideoThumbnailUrlsHigh);
+            }*/
+            if (!Utility.isFieldEmpty(placeId)) {
+                dhPromotions.setPlaceId(placeId);
+                dhPromotions.setPlaceName(placeName);
+                dhPromotions.setPlaceCategory(placeCategory);
             }
+            dhPromotions.setAddedBy(addedBy);
+            dhPromotions.setAreDetailsSameAsRegistered(areDetailsSameAsRegistered);
+            Contact contact = new Contact();
+            contact.setMobile(mobile);
+            contact.setEmail(email);
+            dhPromotions.setContactDetails(contact);
+            dhPromotions.setFullAddress(fullAddress);
+            dhPromotions.setFullName(fullName);
+            dhPromotions.setOfferEndTime(offerEndTime);
+            dhPromotions.setOfferStartTime(offerStartTime);
+            dhPromotions.setPromotionDesc(promotionDesc);
+            dhPromotions.setPromotionId(uniquePromotionID);
+            dhPromotions.setPromotionTitle(promotionTitle);
+            dhPromotions.setPromotionType(promotionType);
+            dhPromotions = (DhPromotions) Utility.setCommonAttrs(dhPromotions, AppConstants.STATUS_ACTIVE);
+            mongoTemplate.save(dhPromotions, AppConstants.COLLECTION_DH_PROMOTIONS);
 
             logService.addLog(new DhLog(addedBy, "Promotion images/videos/thumnails have been added"));
             String successMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_PROMOTION_IMAGES_ADDED);
