@@ -15,7 +15,99 @@ public class DhPromotions extends AllCommonUsedAttributes {
     private String promotionDesc;
     private List<String> videoThumbnails;
     private List<String> videoUrlsLow;
+    @Transient
+    @Ignore
     private String offerMsg;
+    private List<String> dhCommentsIds;
+    private boolean postCommentsOnOff;
+    @Transient
+    @Ignore
+    private List<DhComments> dhComments;
+    private List<String> videoUrlsHigh;
+    private List<String> promotionImagesLow;
+    private List<String> promotionImagesHigh;
+    private Contact contactDetails;
+    private String fullAddress;
+    private String offerStartTime;
+    private String offerEndTime;
+    private String offerStartDate;
+    private String offerEndDate;
+    private long numberOfLikes;
+    private List<String> likedUserIds;
+
+    public long getNumberOfLikes() {
+        return numberOfLikes;
+    }
+
+    public void setNumberOfLikes(long numberOfLikes) {
+        this.numberOfLikes = numberOfLikes;
+    }
+
+    public List<String> getLikedUserIds() {
+        return likedUserIds;
+    }
+
+    public void setLikedUserIds(List<String> likedUserIds) {
+        this.likedUserIds = likedUserIds;
+    }
+
+    public String getOfferStartDate() {
+        return offerStartDate;
+    }
+
+    public void setOfferStartDate(String offerStartDate) {
+        this.offerStartDate = offerStartDate;
+    }
+
+    public String getOfferEndDate() {
+        return offerEndDate;
+    }
+
+    public void setOfferEndDate(String offerEndDate) {
+        this.offerEndDate = offerEndDate;
+    }
+
+    private boolean areDetailsSameAsRegistered;
+    private long numberOfViews;
+    private long numberOfComments;
+    @Transient
+    @Ignore
+    private String userName;//username
+    @Transient
+    @Ignore
+    private String userImage;//userImage
+    private String placeName;
+    private String placeCategory;
+    private List<String> viewIds;
+    private List<DhViews> topViews;
+
+    public DhPromotions() {
+
+    }
+
+    public boolean isPostCommentsOnOff() {
+        return postCommentsOnOff;
+    }
+
+    public void setPostCommentsOnOff(boolean postCommentsOnOff) {
+        this.postCommentsOnOff = postCommentsOnOff;
+    }
+
+    public List<String> getDhCommentsIds() {
+        return dhCommentsIds;
+    }
+
+    public void setDhCommentsIds(List<String> dhCommentsIds) {
+        this.dhCommentsIds = dhCommentsIds;
+    }
+
+    public List<DhComments> getDhComments() {
+        return dhComments;
+    }
+
+    public void setDhComments(List<DhComments> dhComments) {
+        this.dhComments = dhComments;
+    }
 
     public String getOfferMsg() {
         return offerMsg;
@@ -49,10 +141,6 @@ public class DhPromotions extends AllCommonUsedAttributes {
         this.videoUrlsHigh = videoUrlsHigh;
     }
 
-    private List<String> videoUrlsHigh;
-
-    private List<String> promotionImagesLow;
-
     public List<String> getPromotionImagesHigh() {
         return promotionImagesHigh;
     }
@@ -61,23 +149,6 @@ public class DhPromotions extends AllCommonUsedAttributes {
         this.promotionImagesHigh = promotionImagesHigh;
     }
 
-    private List<String> promotionImagesHigh;
-    private Contact contactDetails;
-    private String fullAddress;
-    private String fullName;
-    private String offerStartTime;
-    private String offerEndTime;
-    private boolean areDetailsSameAsRegistered;
-    private long numberOfRatings;
-    private long numberOfViews;
-    private double avgRating;
-    @Transient
-    @Ignore
-    private String userName;//username
-    @Transient
-    @Ignore
-    private String userImage;//userImage
-
     public String getUserImage() {
         return userImage;
     }
@@ -85,12 +156,6 @@ public class DhPromotions extends AllCommonUsedAttributes {
     public void setUserImage(String userImage) {
         this.userImage = userImage;
     }
-
-
-    private String placeName;
-    @Transient
-    @Ignore
-    private String placeCategory;
 
     public String getPlaceName() {
         return placeName;
@@ -114,23 +179,6 @@ public class DhPromotions extends AllCommonUsedAttributes {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    private List<String> ratingIds;
-    private List<String> viewIds;
-    private List<DhRatingAndComments> topRatings;
-    private List<DhViews> topViews;
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public DhPromotions() {
-
     }
 
     public String getPromotionId() {
@@ -222,36 +270,12 @@ public class DhPromotions extends AllCommonUsedAttributes {
         this.areDetailsSameAsRegistered = areDetailsSameAsRegistered;
     }
 
-    public long getNumberOfRatings() {
-        return numberOfRatings;
-    }
-
-    public void setNumberOfRatings(long numberOfRatings) {
-        this.numberOfRatings = numberOfRatings;
-    }
-
     public long getNumberOfViews() {
         return numberOfViews;
     }
 
     public void setNumberOfViews(long numberOfViews) {
         this.numberOfViews = numberOfViews;
-    }
-
-    public double getAvgRating() {
-        return avgRating;
-    }
-
-    public void setAvgRating(double avgRating) {
-        this.avgRating = avgRating;
-    }
-
-    public List<String> getRatingIds() {
-        return ratingIds;
-    }
-
-    public void setRatingIds(List<String> ratingIds) {
-        this.ratingIds = ratingIds;
     }
 
     public List<String> getViewIds() {
@@ -262,20 +286,20 @@ public class DhPromotions extends AllCommonUsedAttributes {
         this.viewIds = viewIds;
     }
 
-    public List<DhRatingAndComments> getTopRatings() {
-        return topRatings;
-    }
-
-    public void setTopRatings(List<DhRatingAndComments> topRatings) {
-        this.topRatings = topRatings;
-    }
-
     public List<DhViews> getTopViews() {
         return topViews;
     }
 
     public void setTopViews(List<DhViews> topViews) {
         this.topViews = topViews;
+    }
+
+    public long getNumberOfComments() {
+        return numberOfComments;
+    }
+
+    public void setNumberOfComments(long numberOfComments) {
+        this.numberOfComments = numberOfComments;
     }
 
     public String getFullAddress() {
@@ -286,31 +310,5 @@ public class DhPromotions extends AllCommonUsedAttributes {
         this.fullAddress = fullAddress;
     }
 
-    public DhPromotions(String schemaVersion, String createdDateTime, String modifiedDateTime, String status, String promotionId, String promotionType, String placeId, String addedBy, String promotionTitle, String promotionDesc, List<String> promotionImagesLow, Contact contactDetails, String fullAddress, String offerStartTime, String offerEndTime, boolean areDetailsSameAsRegistered, long numberOfRatings, long numberOfViews, double avgRating, List<String> ratingIds, List<String> viewIds, List<DhRatingAndComments> topRatings, List<DhViews> topViews, String fullName) {
-        this.schemaVersion =schemaVersion;
-        this.createdDateTime = createdDateTime;
-        this.modifiedDateTime =modifiedDateTime;
-        this.status=status;
-        this.promotionId = promotionId;
-        this.promotionType = promotionType;
-        this.placeId = placeId;
-        this.addedBy = addedBy;
-        this.promotionTitle = promotionTitle;
-        this.promotionDesc = promotionDesc;
-        this.promotionImagesLow = promotionImagesLow;
-        this.contactDetails = contactDetails;
-        this.fullAddress = fullAddress;
-        this.offerStartTime = offerStartTime;
-        this.offerEndTime = offerEndTime;
-        this.areDetailsSameAsRegistered = areDetailsSameAsRegistered;
-        this.numberOfRatings = numberOfRatings;
-        this.numberOfViews = numberOfViews;
-        this.avgRating = avgRating;
-        this.ratingIds = ratingIds;
-        this.viewIds = viewIds;
-        this.topRatings = topRatings;
-        this.topViews = topViews;
-        this.fullName = fullName;
-    }
 }
 
