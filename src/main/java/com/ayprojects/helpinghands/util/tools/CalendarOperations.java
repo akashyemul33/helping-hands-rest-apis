@@ -31,6 +31,21 @@ public class CalendarOperations {
         return dateFormat.format(new Date());
     }
 
+    public static int findDiffBetweenTwoDates(String firstDateStr, String secondDateStr) {
+        SimpleDateFormat sdfDate = new SimpleDateFormat(AppConstants.DATE_FORMAT);
+        sdfDate.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
+        try {
+            Date firstDate = sdfDate.parse(firstDateStr);
+            Date secondDate = sdfDate.parse(secondDateStr);
+
+            long diffInMillis = secondDate.getTime() - firstDate.getTime();
+            return (int) (diffInMillis / (AppConstants.MILLIS_IN_DAY));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public static String convert24HoursFormatTo12Hours(String timeIn24HourFormat) {
         //Displaying given time in 12 hour format with AM/PM
         if (Utility.isFieldEmpty(timeIn24HourFormat)) return "";

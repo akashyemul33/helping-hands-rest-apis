@@ -14,31 +14,18 @@ import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
 
-import org.apache.tomcat.jni.Local;
-import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
-
-import sun.util.resources.LocaleData;
 
 @Component
 public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
@@ -61,7 +48,6 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             String status = (String) params.get(AppConstants.STATUS);
             return getAllThoughts(language, userId, status);
         }
-        return null;
     }
 
     private Response<Thoughts> checkAddThoughtEligibility(String language, String userId) {
@@ -104,11 +90,9 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         int daysLimit = 0;
         if (thoughtsConfig.getEligibilityFrequency() == ThoughtsFrequency.NONE) {
             atleastOneHelpOrPostNeeded = false;
-        }
-        else if (thoughtsConfig.getEligibilityFrequency() == ThoughtsFrequency.DAILY) {
-daysLimit = 1;
-        }
-        else if (thoughtsConfig.getEligibilityFrequency() == ThoughtsFrequency.WEEKLY) {
+        } else if (thoughtsConfig.getEligibilityFrequency() == ThoughtsFrequency.DAILY) {
+            daysLimit = 1;
+        } else if (thoughtsConfig.getEligibilityFrequency() == ThoughtsFrequency.WEEKLY) {
             daysLimit = 7;
         } else if (thoughtsConfig.getEligibilityFrequency() == ThoughtsFrequency.MONTHLY) {
             daysLimit = 30;
@@ -116,31 +100,16 @@ daysLimit = 1;
             daysLimit = 365;
         }
 
-        /*DateTimeFormatter.ofPattern(A)
-        SimpleDateFormat sdfDateTime = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT);
-        SimpleDateFormat sdfDateTime = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT);
-        SimpleDateFormat sdfDate = new SimpleDateFormat(AppConstants.DATE_FORMAT);
-        sdfDate.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
-        sdfDateTime.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
-        try {
-            Date lastAddedDateTime = DateTimeFormatter.ofPattern().parse(dhUser.getLastHhPostAddedDateTime());
-            Date lastAddedDateTime = sdfDateTime.parse(dhUser.getLastHhPostAddedDateTime());
-            Date lastHelpedDateTime = sdfDateTime.parse(dhUser.getLastHhPostHelpedDateTime());
-            Date date = sdfDateTime.parse(CalendarOperations.currentDateTimeInUTC());
-            Duration.between(LocalDate.now(),LocalDate.parse());
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return timeIn24HourFormat;
-        }*/
-
-        String responseWhenNotEligible = String.format(Locale.US,ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED),thoughtsConfig.getEligibilityFrequency().name());
-        if(atleastOneHelpOrPostNeeded && dhUser.getNumberOfHHHelps() == 0 && dhUser.getNumberOfHHPosts() == 0)
-        {
+        String responseWhenNotEligible = String.format(Locale.US, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED), thoughtsConfig.getEligibilityFrequency().name());
+        if (atleastOneHelpOrPostNeeded && dhUser.getNumberOfHHHelps() == 0 && dhUser.getNumberOfHHPosts() == 0) {
             return new Response<Thoughts>(true, 200, responseWhenNotEligible, Collections.singletonList(thoughts));
         }
 
-        if()
+        int diffBetweenPostAddedDays = CalendarOperations.findDiffBetweenTwoDates(dhUser.getLastHhPostAddedDateTime(), currentDate);
+        int diffBetweenHelpedDays = CalendarOperations.findDiffBetweenTwoDates(dhUser.getLastHhPostHelpedDateTime(), currentDate);
+        if (diffBetweenHelpedDays > daysLimit || diffBetweenPostAddedDays > daysLimit)
+            return new Response<Thoughts>(true, 200, responseWhenNotEligible, Collections.singletonList(thoughts));
+
         thoughts.setCanAddThoughts(true);
         return new Response<Thoughts>(true, 200, responseWhenNotEligible, Collections.singletonList(thoughts));
     }

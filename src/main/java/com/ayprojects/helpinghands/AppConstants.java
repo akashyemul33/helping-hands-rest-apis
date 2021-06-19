@@ -342,6 +342,7 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED = "thoughtsNotPostedOrHelped";
     public static final String KEY_LAST_HH_POST_ADDED_DATETIME = "lastHhPostAddedDateTime";
     public static final String KEY_LAST_HH_POST_HELPED_DATETIME = "lastHhPostHelpedDateTime";
+    public static final long MILLIS_IN_DAY = 24 * 60 * 60 * 1000;
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
