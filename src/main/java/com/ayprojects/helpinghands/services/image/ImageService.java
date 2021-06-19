@@ -9,6 +9,7 @@ import com.ayprojects.helpinghands.models.DhThought;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.models.Thoughts;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,7 @@ import java.util.List;
 @Service
 public interface ImageService {
     Response<DhUser> uploadUserImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String version) throws ServerSideException;
-    Response<DhThought> uploadThoughtImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh,String userId, String version) throws ServerSideException;
+    Response<Thoughts> uploadThoughtImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh,String addedBy,String thoughtStr,String userName,String userImg,boolean fromSystem, String version) throws ServerSideException;
 
     Response<DhPlace> uploadPlaceImages(HttpHeaders httpHeaders, Authentication authentication, String placeType, String addedBy, MultipartFile[] placeImagesLow, MultipartFile[] placeImagesHigh, String version) throws ServerSideException;
 
@@ -32,4 +33,5 @@ public interface ImageService {
 //    Response<DhRequirements> uploadRequirementImages(HttpHeaders httpHeaders, Authentication authentication, String reqType, String addedBy, MultipartFile[] reqImages, String version) throws ServerSideException;
 
     Response<DhHHPost> uploadHhPostImages(HttpHeaders httpHeaders, Authentication authentication, String addedBy, MultipartFile[] postImagesLow, MultipartFile[] postImagesHigh, String version) throws ServerSideException;
+
 }

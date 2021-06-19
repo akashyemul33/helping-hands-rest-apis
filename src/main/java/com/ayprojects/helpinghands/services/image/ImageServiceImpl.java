@@ -12,6 +12,8 @@ import com.ayprojects.helpinghands.models.DhThought;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.models.Thoughts;
+import com.ayprojects.helpinghands.models.ThoughtsStatus;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.util.aws.AmazonClient;
@@ -73,26 +75,31 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Response<DhThought> uploadThoughtImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String userId, String version) throws ServerSideException {
+    public Response<Thoughts> uploadThoughtImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String addedBy, String thoughtStr, String userName, String userImg, boolean fromSystem, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        if (imageLow == null || imageLow.isEmpty() || imageHigh == null || imageHigh.isEmpty())
+        if (imageLow == null || imageLow.isEmpty() || imageHigh == null || imageHigh.isEmpty() || Utility.isFieldEmpty(thoughtStr) || Utility.isFieldEmpty(addedBy))
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
 
         String uniqueThoughtID = Utility.getUUID();
-        String imgUploadKeyLow = GetImageFoldersAndPrefix.getUserImgUploadKeyLow(uniqueThoughtID, false);
-        String imgUploadKeyHigh = GetImageFoldersAndPrefix.getUserImgUploadKeyLow(uniqueThoughtID, true);
+        String imgUploadKeyLow = GetImageFoldersAndPrefix.getThoughtImgUploadKeyLow(uniqueThoughtID, false);
+        String imgUploadKeyHigh = GetImageFoldersAndPrefix.getThoughtImgUploadKeyLow(uniqueThoughtID, true);
         try {
             String finalKeyLow = amazonClient.uploadSingleImageToS3(imgUploadKeyLow, imageLow);
             String finalKeyHigh = amazonClient.uploadSingleImageToS3(imgUploadKeyHigh, imageHigh);
-            DhThought dhThought = new DhThought();
-            dhThought.setImgUrlHigh(finalKeyHigh);
-            dhThought.setImgUrlLow(finalKeyLow);
-            dhThought.setThoughtId(uniqueThoughtID);
-            dhThought.setUserId(userId);
-            dhThought = (DhThought) Utility.setCommonAttrs(dhThought, AppConstants.STATUS_PENDING);
-            mongoTemplate.save(dhThought, AppConstants.COLLECTION_DH_THOUGHTS);
+            Thoughts thoughts = new Thoughts();
+            thoughts.setAddedBy(addedBy);
+            thoughts.setFromSystem(fromSystem);
+            thoughts.setThoughtImgPathLow(finalKeyLow);
+            thoughts.setThoughtImgPathHigh(finalKeyHigh);
+            thoughts.setThoughtStr(thoughtStr);
+            thoughts.setUserImg(userImg);
+            thoughts.setUserName(userName);
+            thoughts = (Thoughts) Utility.setCommonAttrs(thoughts, ThoughtsStatus.PENDING.name());
+            if (fromSystem)
+                mongoTemplate.save(thoughts, AppConstants.COLLECTION_DH_SYSTEM_THOUGHTS);
+            else mongoTemplate.save(thoughts, AppConstants.COLLECTION_DH_USER_THOUGHTS);
             logService.addLog(new DhLog(uniqueThoughtID, "New Thought has been added"));
-            return new Response<DhThought>(true, 201, "Thought saved successfully", Collections.singletonList(dhThought));
+            return new Response<Thoughts>(true, 201, "Thought saved successfully", Collections.singletonList(thoughts));
         } catch (Exception e) {
             e.printStackTrace();
             String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG);
@@ -260,7 +267,6 @@ public class ImageServiceImpl implements ImageService {
             contact.setEmail(email);
             dhPromotions.setContactDetails(contact);
             dhPromotions.setFullAddress(fullAddress);
-            dhPromotions.setFullName(fullName);
             dhPromotions.setOfferEndTime(offerEndTime);
             dhPromotions.setOfferStartTime(offerStartTime);
             dhPromotions.setPromotionDesc(promotionDesc);

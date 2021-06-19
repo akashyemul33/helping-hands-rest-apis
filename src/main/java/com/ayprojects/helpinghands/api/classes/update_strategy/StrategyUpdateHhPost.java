@@ -492,6 +492,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         //Update helped user details
         Update updateHelpedUser = new Update();
         updateHelpedUser.set(AppConstants.KEY_NUMBER_OF_HH_HELPS, queriedHelpedDhUser.getNumberOfHHHelps() + 1);
+        updateHelpedUser.set(AppConstants.KEY_LAST_HH_POST_HELPED_DATETIME, CalendarOperations.currentDateTimeInUTC());
         updateHelpedUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(findHelpedUserQuery, updateHelpedUser, DhUser.class);
 

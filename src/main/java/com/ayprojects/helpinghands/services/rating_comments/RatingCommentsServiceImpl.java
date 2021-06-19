@@ -96,21 +96,21 @@ public class RatingCommentsServiceImpl implements RatingCommentsService{
                 DhPromotions queriedDhPost = mongoTemplate.findOne(queryFindPostWithId, DhPromotions.class);
                 if(queriedDhPost == null)throw new ServerSideException("Unable to add rating into posts collection, seems like no post found with given id");
                 Update updatePost = new Update();
-                updatePost.set(AppConstants.NUMBER_OF_RATINGS,queriedDhPost.getNumberOfRatings()+1);
+//                updatePost.set(AppConstants.NUMBER_OF_RATINGS,queriedDhPost.getNumberOfRatings()+1);
                 double avgPostsRating=0;
-                if(queriedDhPost.getAvgRating()<=0){
+                /*if(queriedDhPost.getAvgRating()<=0){
                     avgPostsRating = dhRatingComments.getRating();
                 }
                 else{
                     avgPostsRating = (queriedDhPost.getAvgRating()+ dhRatingComments.getRating())/2;
-                }
+                }*/
                 updatePost.set(AppConstants.AVG_RATING,avgPostsRating);
                 updatePost.push(AppConstants.RATINGS_IDS, dhRatingComments.getReviewCommentId());
-                if(queriedDhPost.getTopRatings()!=null && queriedDhPost.getTopRatings().size()==AppConstants.LIMIT_RATINGS_IN_PROMOTIONS){
+                /*if(queriedDhPost.getTopRatings()!=null && queriedDhPost.getTopRatings().size()==AppConstants.LIMIT_RATINGS_IN_PROMOTIONS){
                     Update updatePopTopRating = new Update();
                     updatePopTopRating.pop(AppConstants.TOP_RATINGS, Update.Position.LAST);
                     mongoTemplate.updateFirst(queryFindPostWithId,updatePopTopRating, DhPromotions.class);
-                }
+                }*/
                 updatePost.push(AppConstants.TOP_RATINGS, dhRatingComments);
                 updatePost.set(AppConstants.MODIFIED_DATE_TIME,CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPostWithId,updatePost, DhPromotions.class);

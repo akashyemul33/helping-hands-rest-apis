@@ -10,7 +10,7 @@ public class DhPromotions extends AllCommonUsedAttributes {
     private String promotionId;
     private String promotionType;
     private String placeId;
-    private String addedBy;
+    private String adxdedBy;
     private String promotionTitle;
     private String promotionDesc;
     private List<String> videoThumbnails;
@@ -34,6 +34,7 @@ public class DhPromotions extends AllCommonUsedAttributes {
     private String offerEndDate;
     private long numberOfLikes;
     private List<String> likedUserIds;
+    private String addedBy;
 
     public long getNumberOfLikes() {
         return numberOfLikes;

@@ -13,26 +13,6 @@ import java.util.TimeZone;
 
 public class CalendarOperations {
 
-    public boolean verifyTimeFollowsCorrectFormat(String time) {
-        return verifyDateTimeFormat(time, AppConstants.DATE_FORMAT_HOUR_MIN);
-    }
-
-    public boolean verifyDateTimeFollowsCorrectFormat(String time) {
-        return verifyDateTimeFormat(time, AppConstants.DATE_TIME_FORMAT);
-    }
-
-    private boolean verifyDateTimeFormat(String time, String dateTimeFormat) {
-        if (Utility.isFieldEmpty(time)) return false;
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateTimeFormat);
-        try {
-            dateTimeFormatter.parse(time);
-            return true;
-        } catch (DateTimeParseException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public static String currentDateTimeInUTC() throws NullPointerException, IllegalArgumentException {
         DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
@@ -40,13 +20,13 @@ public class CalendarOperations {
     }
 
     public static String currentDateInUTC() throws NullPointerException, IllegalArgumentException {
-        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_FORMAT_WITHOUT_UNDERSCORE);
+        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
         return dateFormat.format(new Date());
     }
 
-    public String getTimeAtFileEnd() throws NullPointerException, IllegalArgumentException {
-        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE);
+    public static String currentDateInUTCWithoutDelimeter() throws NullPointerException, IllegalArgumentException {
+        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_FORMAT_WITHOUT_UNDERSCORE);
         dateFormat.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
         return dateFormat.format(new Date());
     }
@@ -67,5 +47,31 @@ public class CalendarOperations {
             e.printStackTrace();
             return timeIn24HourFormat;
         }
+    }
+
+    public boolean verifyTimeFollowsCorrectFormat(String time) {
+        return verifyDateTimeFormat(time, AppConstants.DATE_FORMAT_HOUR_MIN);
+    }
+
+    public boolean verifyDateTimeFollowsCorrectFormat(String time) {
+        return verifyDateTimeFormat(time, AppConstants.DATE_TIME_FORMAT);
+    }
+
+    private boolean verifyDateTimeFormat(String time, String dateTimeFormat) {
+        if (Utility.isFieldEmpty(time)) return false;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateTimeFormat);
+        try {
+            dateTimeFormatter.parse(time);
+            return true;
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String getTimeAtFileEnd() throws NullPointerException, IllegalArgumentException {
+        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_TIME_FORMAT_WITHOUT_UNDERSCORE);
+        dateFormat.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
+        return dateFormat.format(new Date());
     }
 }

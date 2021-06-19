@@ -8,6 +8,7 @@ import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhThought;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.models.Thoughts;
 import com.ayprojects.helpinghands.services.common_service.CommonService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
@@ -27,7 +28,7 @@ import java.util.List;
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
-public class StrategyAddHhThoughtApi implements StrategyAddBehaviour<DhThought> {
+public class StrategyAddHhThoughtApi implements StrategyAddBehaviour<Thoughts> {
 
     @Autowired
     CommonService commonService;
@@ -36,17 +37,17 @@ public class StrategyAddHhThoughtApi implements StrategyAddBehaviour<DhThought> 
     MongoTemplate mongoTemplate;
 
     @Override
-    public Response<DhThought> add(String language, DhThought obj) throws ServerSideException {
+    public Response<Thoughts> add(String language, Thoughts obj) throws ServerSideException {
         return null;
     }
 
     @Override
-    public Response<DhThought> add(String language, DhThought obj, HashMap<String, Object> params) throws ServerSideException {
+    public Response<Thoughts> add(String language, Thoughts obj, HashMap<String, Object> params) throws ServerSideException {
         return null;
     }
 
     @Override
     public StrategyName getStrategyName() {
-        return null;
+        return StrategyName.AddHHThoughtStrategy;
     }
 }

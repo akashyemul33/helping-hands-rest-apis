@@ -1,6 +1,7 @@
 package com.ayprojects.helpinghands;
 
 public class AppConstants {
+
     public static final String KEY_NUMBER_OF_HH_POSTS = "numberOfHHPosts";
     public static final  String KEY_NUMBER_OF_HH_HELPS = "numberOfHHHelps";
     public static final  String KEY_GENUINE_PERCENTAGE = "hhGenuinePercentage";
@@ -8,6 +9,7 @@ public class AppConstants {
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_TIME_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMddHHmmssSSS";
     public static final String DATE_FORMAT_WITHOUT_UNDERSCORE = "yyyyMMdd";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
     //expiration value of 3 hours
     public static final long JWT_TOKEN_EXPIRATION_VALUE = 1000 * 60 * 60 * 3;
     public static final String JWT_TOKEN_ISSUER = "HelpingHandsAdmin";
@@ -326,13 +328,20 @@ public class AppConstants {
     public static final String API_TYPE_HELPED_POSTS = "HelpedPosts";
     public static final String API_TYPE_ADDED_POSTS = "AddedPosts";
     public static final String API_TYPE_SINGLE_THOUGHT = "SingleThought";
-    public static final String COLLECTION_DH_THOUGHTS = "dhThoughts";
+    public static final String COLLECTION_DH_USER_THOUGHTS = "dhUserThoughts";
     public static final String RESPONSEMESSAGE_THOUGHT_SCHEDULED_NOTE = "THOUGHT_SCHEDULED_NOTE";
     public static final String RESPONSEMESSAGE_THOUGHT_NOTE = "THOUGHT_NOTE";
     public static final String FILETYPE_MP4 = "mp4";
     public static final int PER_PROMOTION_MAX_VIDEOS_LIMIT = 4;
     public static final long PER_PROMOTION_VIDEOS_LIMIT = 2;
     public static final long PROMOTION_VIDEO_TIME_LIMIT_IN_SECONDS = 300;
+    public static final String COLLECTION_DH_SYSTEM_THOUGHTS = "dhSystemThoughts";
+    public static final String API_ADDTHOUGHT_ELIGIBILITY = "AddThoughtEligibility";
+    public static final String THOUGHTS_CONFIG = "thoughtsConfig";
+    public static final String RESPONSEMESSAGE_THOUGHTS_DAILY_LIMIT_REACHED = "thoughtsDailyLimitReached";
+    public static final String RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED = "thoughtsNotPostedOrHelped";
+    public static final String KEY_LAST_HH_POST_ADDED_DATETIME = "lastHhPostAddedDateTime";
+    public static final String KEY_LAST_HH_POST_HELPED_DATETIME = "lastHhPostHelpedDateTime";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

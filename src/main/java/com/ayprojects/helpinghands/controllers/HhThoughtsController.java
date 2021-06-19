@@ -5,8 +5,9 @@ import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.ApiOperations;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
-import com.ayprojects.helpinghands.models.DhThought;
+import com.ayprojects.helpinghands.models.Thoughts;
 import com.ayprojects.helpinghands.models.Response;
+import com.ayprojects.helpinghands.models.Thoughts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -33,32 +34,44 @@ import io.swagger.annotations.Api;
 @RequestMapping("/api/v{version}/hh-thoughts")
 public class HhThoughtsController {
     @Autowired
-    ApiOperations<DhThought> apiOperations;
+    ApiOperations<Thoughts> apiOperations;
 
     @PostMapping(value = "/addThought")
-    public ResponseEntity<Response<DhThought>> addThought(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody DhThought dhThought, @PathVariable String version) throws ServerSideException {
-        Response<DhThought> response = apiOperations.add(authentication, httpHeaders, dhThought, StrategyName.AddHHThoughtStrategy, version);
+    public ResponseEntity<Response<Thoughts>> addThought(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @RequestBody Thoughts dhThought, @PathVariable String version) throws ServerSideException {
+        Response<Thoughts> response = apiOperations.add(authentication, httpHeaders, dhThought, StrategyName.AddHHThoughtStrategy, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
     }
 
     @GetMapping(value = "/getSingleThought")
-    ResponseEntity<Response<DhThought>> getSingleThought(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId) throws ServerSideException {
+    ResponseEntity<Response<Thoughts>> getSingleThought(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_USER_ID, userId);
         params.put(AppConstants.API_TYPE, AppConstants.API_TYPE_SINGLE_THOUGHT);
-        Response<DhThought> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetHhThoughtStrategy, params, version);
+        Response<Thoughts> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetHhThoughtStrategy, params, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
     }
 
-    @GetMapping(value = "/getAllThoughts")
-    ResponseEntity<Response<DhThought>> getAllThoughts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId) throws ServerSideException {
+    @GetMapping(value = "/checkEligibility")
+    ResponseEntity<Response<Thoughts>> checkEligibility(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId, @RequestParam String status) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_USER_ID, userId);
-        Response<DhThought> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetHhThoughtStrategy, params, version);
+        params.put(AppConstants.API_TYPE, AppConstants.API_ADDTHOUGHT_ELIGIBILITY);
+        Response<Thoughts> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetHhThoughtStrategy, params, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+    }
+    
+    @GetMapping(value = "/getAllThoughts")
+    ResponseEntity<Response<Thoughts>> getAllThoughts(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId, @RequestParam String status) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_USER_ID, userId);
+        params.put(AppConstants.STATUS, status);
+        Response<Thoughts> response = apiOperations.get(authentication, httpHeaders, StrategyName.GetHhThoughtStrategy, params, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);

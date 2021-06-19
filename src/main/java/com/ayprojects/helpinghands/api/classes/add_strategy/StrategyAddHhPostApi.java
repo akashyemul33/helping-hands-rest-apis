@@ -60,6 +60,7 @@ public class StrategyAddHhPostApi implements StrategyAddBehaviour<DhHHPost> {
         //Update helped user details
         Update updatePostsCountOfUser = new Update();
         updatePostsCountOfUser.set(AppConstants.KEY_NUMBER_OF_HH_POSTS, queriedPostAddedDhUser.getNumberOfHHPosts() + 1);
+        updatePostsCountOfUser.set(AppConstants.KEY_LAST_HH_POST_ADDED_DATETIME, CalendarOperations.currentDateTimeInUTC());
         updatePostsCountOfUser.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
         mongoTemplate.updateFirst(findPostAddedUserQuery, updatePostsCountOfUser, DhUser.class);
         return validationResponse;

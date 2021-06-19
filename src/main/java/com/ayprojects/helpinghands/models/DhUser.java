@@ -22,6 +22,24 @@ public class DhUser extends AllCommonUsedAttributes {
     private long numberOfHHPosts;
     private long numberOfHHHelps;
     private float hhGenuinePercentage;
+    private String lastHhPostAddedDateTime;
+    private String lastHhPostHelpedDateTime;
+
+    public String getLastHhPostAddedDateTime() {
+        return lastHhPostAddedDateTime;
+    }
+
+    public void setLastHhPostAddedDateTime(String lastHhPostAddedDateTime) {
+        this.lastHhPostAddedDateTime = lastHhPostAddedDateTime;
+    }
+
+    public String getLastHhPostHelpedDateTime() {
+        return lastHhPostHelpedDateTime;
+    }
+
+    public void setLastHhPostHelpedDateTime(String lastHhPostHelpedDateTime) {
+        this.lastHhPostHelpedDateTime = lastHhPostHelpedDateTime;
+    }
 
     public long getNumberOfHHPosts() {
         return numberOfHHPosts;

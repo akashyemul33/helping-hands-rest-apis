@@ -118,7 +118,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                 updatePlace.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPlaceWithId, updatePlace, DhPlace.class);
                 break;
-            case CONTENT_PROMOTION:
+            /*case CONTENT_PROMOTION:
                 contentIdToSearch = AppConstants.PROMOTION_ID;
                 Query queryFindPostWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));
                 DhPromotions queriedDhPost = mongoTemplate.findOne(queryFindPostWithId, DhPromotions.class);
@@ -127,7 +127,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                     return;
                 }
                 Update updatePost = new Update();
-                updatePost.set(AppConstants.NUMBER_OF_RATINGS, queriedDhPost.getNumberOfRatings() + 1);
+//                updatePost.set(AppConstants.NUMBER_OF_RATINGS, queriedDhPost.getNumberOfRatings() + 1);
                 double avgPostsRating = 0;
                 if (queriedDhPost.getAvgRating() <= 0) {
                     avgPostsRating = dhRatingComments.getRating();
@@ -150,7 +150,7 @@ public class StrategyAddRatingApi implements StrategyAddBehaviour<DhRatingAndCom
                 }
                 updatePost.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
                 mongoTemplate.updateFirst(queryFindPostWithId, updatePost, DhPromotions.class);
-                break;
+                break;*/
             case CONTENT_REQUIREMENT:
                 contentIdToSearch = AppConstants.REQUIREMENT_ID;
                 Query queryFindRequirementWithId = new Query(Criteria.where(contentIdToSearch).is(dhRatingComments.getContentId()));

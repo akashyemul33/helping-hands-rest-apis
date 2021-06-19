@@ -25,7 +25,7 @@ public class GetImageFoldersAndPrefix {
         if (Utility.isFieldEmpty(uniqueThoughtId))
             throw new IllegalArgumentException("UniqueThoughtId must not be null !");
         String lowHighQualityFolder = isHigh ? AppConstants.DIR_FOR_HIGH : AppConstants.DIR_FOR_LOW;
-        String date = CalendarOperations.currentDateInUTC();
+        String date = CalendarOperations.currentDateInUTCWithoutDelimeter();
         return String.format("%s/%s/%s/%s/%s_", imagesBaseFolder, thoughtsFolder, lowHighQualityFolder, date, uniqueThoughtId);
     }
 

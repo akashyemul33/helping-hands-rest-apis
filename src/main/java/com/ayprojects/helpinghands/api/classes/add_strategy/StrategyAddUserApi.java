@@ -43,7 +43,9 @@ public class StrategyAddUserApi implements StrategyAddBehaviour<DhUser> {
         LOGGER.info("returnResponse=>" + returnResponse.getMessage());
         if (returnResponse.getStatus()) {
             dhUser.setPassword(bCryptPasswordEncoder.encode(dhUser.getPassword()));
-            dhUser.setRoles(AppConstants.ROLE_USER);
+            if(dhUser.getRoles()==null || dhUser.getRoles().length==0)
+                dhUser.setRoles(AppConstants.ROLE_USER);
+
             dhUser.setUserSettings(Utility.getGlobalUserSettings());
             dhUser.setUserSettingEnabled(true);
             dhUser.setSponsored(false);

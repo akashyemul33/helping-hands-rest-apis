@@ -23,7 +23,15 @@ public class DhAppConfig extends AllCommonUsedAttributes {
     }
 
     private List<LangValueObj> offlineMessages;
+    private ThoughtsConfig thoughtsConfig;
 
+    public ThoughtsConfig getThoughtsConfig() {
+        return thoughtsConfig;
+    }
+
+    public void setThoughtsConfig(ThoughtsConfig thoughtsConfig) {
+        this.thoughtsConfig = thoughtsConfig;
+    }
 
     public DhAppConfig() {
 
