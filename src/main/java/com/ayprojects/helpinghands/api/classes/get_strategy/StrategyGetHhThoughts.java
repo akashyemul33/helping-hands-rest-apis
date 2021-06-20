@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.Set;
 import java.util.TimeZone;
 
 import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
@@ -52,14 +51,12 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             return new Response<Thoughts>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
         }
 
-        Set<String> keySet = params.keySet();
         String userId = (String) params.get(AppConstants.KEY_USER_ID);
         String apiType = (String) params.get(AppConstants.API_TYPE);
         if (AppConstants.API_ADDTHOUGHT_ELIGIBILITY.equals(apiType)) {
             return checkAddThoughtEligibility(language, userId);
         } else {
-            String status = (String) params.get(AppConstants.STATUS);
-            return getAllThoughts(language, userId, status);
+            return getUserSpecificThoughts(language, userId);
         }
     }
 
@@ -127,7 +124,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         return new Response<Thoughts>(true, 200, responseWhenNotEligible, Collections.singletonList(thoughts));
     }
 
-    private Response<Thoughts> getAllThoughts(String language, String userId, String status) {
+    private Response<Thoughts> getUserSpecificThoughts(String language, String userId) {
         //picking up yesterday date UTC, and current hour of the day Locale.Default
         Calendar calendar = Calendar.getInstance();
         int hourOfTheDayLocal = calendar.get(Calendar.HOUR_OF_DAY);
