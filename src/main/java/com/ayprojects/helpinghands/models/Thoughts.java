@@ -3,6 +3,7 @@ package com.ayprojects.helpinghands.models;
 import org.springframework.data.annotation.Transient;
 
 import java.util.List;
+import java.util.Set;
 
 import jdk.nashorn.internal.ir.annotations.Ignore;
 
@@ -37,7 +38,7 @@ public class Thoughts extends AllCommonUsedAttributes {
 
     private long numberOfLikes;
     private List<String> likedUserIds;
-    private List<String> liveDateOn;
+    private Set<String> liveDateOn;
     private boolean postWon;
     private boolean prizeApplicable;
     private boolean fromSystem;
@@ -107,11 +108,11 @@ public class Thoughts extends AllCommonUsedAttributes {
         this.likedUserIds = likedUserIds;
     }
 
-    public List<String> getLiveDateOn() {
+    public Set<String> getLiveDateOn() {
         return liveDateOn;
     }
 
-    public void setLiveDateOn(List<String> liveDateOn) {
+    public void setLiveDateOn(Set<String> liveDateOn) {
         this.liveDateOn = liveDateOn;
     }
 

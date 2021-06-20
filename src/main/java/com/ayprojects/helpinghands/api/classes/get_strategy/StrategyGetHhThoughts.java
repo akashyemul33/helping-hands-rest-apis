@@ -11,6 +11,7 @@ import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.models.Thoughts;
 import com.ayprojects.helpinghands.models.ThoughtsConfig;
 import com.ayprojects.helpinghands.models.ThoughtsFrequency;
+import com.ayprojects.helpinghands.models.ThoughtsStatus;
 import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
@@ -177,6 +178,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         List<Thoughts> returningThoughts = new ArrayList<>(hourOfTheDayLocal);
         Random random = new Random(allThoughtsList.size());
         List<String> updatedThoughtsIdsList = new ArrayList<>(hourOfTheDayLocal);
+        List<Thoughts> newlyPickedThoughtIdsList = new ArrayList<>();
         //if user has no thoughts stored in his table, then fetch all the thoughts up to current hour of the day
         if (dhUser.getTwentyFourThougths() == null || dhUser.getTwentyFourThougths().size() == 0) {
             int tempInt = hourOfTheDayLocal;
@@ -186,6 +188,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
                 updatedThoughtsIdsList.add(t.getThoughtId());
                 tempInt--;
             }
+            newlyPickedThoughtIdsList.addAll(returningThoughts);
         } else if (dhUser.getTwentyFourThougths().size() < hourOfTheDayLocal) {
 
             LOGGER.info("All thoughts list .size:" + allThoughtsList.size());
@@ -210,6 +213,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
                 Thoughts t = allThoughtsList.get(random.nextInt());
                 returningThoughts.add(t);
                 updatedThoughtsIdsList.add(t.getThoughtId());
+                newlyPickedThoughtIdsList.add(t);
                 neededThoughtsUpToHour--;
             }
         } else {
@@ -228,6 +232,18 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             updateThoughtIdsOfUser.set(AppConstants.KEY_TWENTY_FOUR_THOUGHTS, updatedThoughtsIdsList);
             mongoTemplate.updateFirst(queryGetUserDetails, updateThoughtIdsOfUser, DhUser.class);
             LOGGER.info("Updating thought ids of user.");
+        }
+        if (newlyPickedThoughtIdsList.size() > 0) {
+            Query query = new Query();
+            Update updatePosts = new Update();
+            updatePosts.set(AppConstants.STATUS, ThoughtsStatus.ATTEMPTED);
+            updatePosts.push(AppConstants.KEY_LIVE_DATE_ON, CalendarOperations.currentDateInUTC());
+            updatePosts.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
+            for (Thoughts t : newlyPickedThoughtIdsList) {
+                query.addCriteria(Criteria.where(AppConstants.KEY_THOUGHT_ID).is(t.getThoughtId()));
+                updatePosts.set(AppConstants.KEY_NUMBER_OF_ATTEMPTS, t.getNumberOfAttempts() + 1);
+                mongoTemplate.updateFirst(query, updatePosts, Thoughts.class, AppConstants.COLLECTION_DH_USER_THOUGHTS);
+            }
         }
         return new Response<Thoughts>(true, 200, AppConstants.QUERY_SUCCESSFUL, returningThoughts, returningThoughts.size());
     }

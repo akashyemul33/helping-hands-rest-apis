@@ -39,6 +39,8 @@ public class AppConstants {
     public static final String CONTENT_ID = "contentId";
     public static final String CONTENT_TYPE = "contentType";
     public static final String STATUS = "status";
+    public static final String KEY_LIVE_DATE_ON = "liveDateOn";
+    public static final String KEY_NUMBER_OF_ATTEMPTS = "numberOfAttempts";
     public static final String NUMBER_OF_RATINGS = "numberOfRatings";
     public static final String NUMBER_OF_PROMOTIONS = "numberOfPromotions";
     public static final String AVG_RATING = "avgRating";
@@ -344,6 +346,7 @@ public class AppConstants {
     public static final String KEY_LAST_HH_POST_HELPED_DATETIME = "lastHhPostHelpedDateTime";
     public static final long MILLIS_IN_DAY = 24 * 60 * 60 * 1000;
     public static final String KEY_TWENTY_FOUR_THOUGHTS = "twentyFourThougths";
+    public static final String KEY_THOUGHT_ID = "thoughtId";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
