@@ -37,7 +37,7 @@ public class HhThoughtsController {
     ApiOperations<Thoughts> apiOperations;
 
     @GetMapping(value = "/checkEligibility")
-    ResponseEntity<Response<Thoughts>> checkEligibility(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId, @RequestParam String status) throws ServerSideException {
+    ResponseEntity<Response<Thoughts>> checkEligibility(@RequestHeader HttpHeaders httpHeaders, Authentication authentication, @PathVariable String version, @RequestParam String userId) throws ServerSideException {
         HashMap<String, Object> params = new HashMap<>();
         params.put(AppConstants.KEY_USER_ID, userId);
         params.put(AppConstants.API_TYPE, AppConstants.API_ADDTHOUGHT_ELIGIBILITY);
