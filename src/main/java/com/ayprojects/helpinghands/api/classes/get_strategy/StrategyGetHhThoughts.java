@@ -137,7 +137,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
     private Response<Thoughts> getUserSpecificThoughts(String language, String userId) {
         //picking up yesterday date UTC, and current hour of the day Locale.Default
         Calendar calendar = Calendar.getInstance();
-        int hourOfTheDayLocal = calendar.get(Calendar.HOUR_OF_DAY);
+        int hourOfTheDayLocal = calendar.get(Calendar.HOUR_OF_DAY)+1;
         LOGGER.info("getAllThoughts->hourOfTheDay:" + hourOfTheDayLocal);
         calendar.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
         calendar.add(Calendar.DATE, -1);
@@ -162,9 +162,11 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         queryToGetUserThoughts.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.THOUGHTS_STATUS_VALIDATED_ATTEMPTED_LIVE, "i"));
         List<Thoughts> allThoughtsList = mongoTemplate.find(queryToGetUserThoughts, Thoughts.class, AppConstants.COLLECTION_DH_USER_THOUGHTS);
         if (allThoughtsList.size() < 24) {
+            Query queryToGetSystemThoughts = new Query();
+            queryToGetSystemThoughts.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.THOUGHTS_STATUS_VALIDATED_ATTEMPTED_LIVE, "i"));
             int neededThoughtsFromSystem = 24 - allThoughtsList.size();
-            queryToGetUserThoughts.limit(neededThoughtsFromSystem);
-            List<Thoughts> systemThoughts = mongoTemplate.find(queryToGetUserThoughts, Thoughts.class, AppConstants.COLLECTION_DH_SYSTEM_THOUGHTS);
+            queryToGetSystemThoughts.limit(neededThoughtsFromSystem);
+            List<Thoughts> systemThoughts = mongoTemplate.find(queryToGetSystemThoughts, Thoughts.class, AppConstants.COLLECTION_DH_SYSTEM_THOUGHTS);
 
             if (systemThoughts.size() < neededThoughtsFromSystem) {
                 logService.addLog(new DhLog(userId, "Please have attention, User Thoughts are less than 24 and also system thoughts are less than " + neededThoughtsFromSystem));
@@ -176,21 +178,22 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
 
         //prepare thoughts needed to return according to stored user thoughts and current hour of the day
         List<Thoughts> returningThoughts = new ArrayList<>(hourOfTheDayLocal);
-        Random random = new Random(allThoughtsList.size());
+        Random random = new Random();
         List<String> updatedThoughtsIdsList = new ArrayList<>(hourOfTheDayLocal);
         List<Thoughts> newlyPickedThoughtIdsList = new ArrayList<>();
         //if user has no thoughts stored in his table, then fetch all the thoughts up to current hour of the day
         if (dhUser.getTwentyFourThougths() == null || dhUser.getTwentyFourThougths().size() == 0) {
+            LOGGER.info("if ");
             int tempInt = hourOfTheDayLocal;
-            while (tempInt == 0) {
-                Thoughts t = allThoughtsList.get(random.nextInt());
+            while (tempInt > 0) {
+                Thoughts t = allThoughtsList.get(random.nextInt(allThoughtsList.size()));
                 returningThoughts.add(t);
                 updatedThoughtsIdsList.add(t.getThoughtId());
                 tempInt--;
             }
             newlyPickedThoughtIdsList.addAll(returningThoughts);
         } else if (dhUser.getTwentyFourThougths().size() < hourOfTheDayLocal) {
-
+            LOGGER.info("else if ");
             LOGGER.info("All thoughts list .size:" + allThoughtsList.size());
             for (int i = 0; i < allThoughtsList.size(); i++) {
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
@@ -209,14 +212,15 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
 
             int neededThoughtsUpToHour = hourOfTheDayLocal - dhUser.getTwentyFourThougths().size();
             LOGGER.info("NeededThoughtsUpToHour:" + neededThoughtsUpToHour);
-            while (neededThoughtsUpToHour == 0) {
-                Thoughts t = allThoughtsList.get(random.nextInt());
+            while (neededThoughtsUpToHour > 0) {
+                Thoughts t = allThoughtsList.get(random.nextInt(allThoughtsList.size()));
                 returningThoughts.add(t);
                 updatedThoughtsIdsList.add(t.getThoughtId());
                 newlyPickedThoughtIdsList.add(t);
                 neededThoughtsUpToHour--;
             }
         } else {
+            LOGGER.info("else");
             for (Thoughts thoughts : allThoughtsList) {
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
                     if (thoughtId.equals(thoughts.getThoughtId())) {
@@ -234,15 +238,17 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             LOGGER.info("Updating thought ids of user.");
         }
         if (newlyPickedThoughtIdsList.size() > 0) {
-            Query query = new Query();
+
             Update updatePosts = new Update();
             updatePosts.set(AppConstants.STATUS, ThoughtsStatus.ATTEMPTED);
             updatePosts.push(AppConstants.KEY_LIVE_DATE_ON, CalendarOperations.currentDateInUTC());
             updatePosts.set(AppConstants.MODIFIED_DATE_TIME, CalendarOperations.currentDateTimeInUTC());
             for (Thoughts t : newlyPickedThoughtIdsList) {
+                Query query = new Query();
                 query.addCriteria(Criteria.where(AppConstants.KEY_THOUGHT_ID).is(t.getThoughtId()));
                 updatePosts.set(AppConstants.KEY_NUMBER_OF_ATTEMPTS, t.getNumberOfAttempts() + 1);
                 mongoTemplate.updateFirst(query, updatePosts, Thoughts.class, AppConstants.COLLECTION_DH_USER_THOUGHTS);
+                mongoTemplate.updateFirst(query, updatePosts, Thoughts.class, AppConstants.COLLECTION_DH_SYSTEM_THOUGHTS);
             }
         }
         return new Response<Thoughts>(true, 200, AppConstants.QUERY_SUCCESSFUL, returningThoughts, returningThoughts.size());
