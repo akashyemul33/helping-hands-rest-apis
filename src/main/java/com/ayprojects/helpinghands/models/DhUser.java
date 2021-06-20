@@ -24,6 +24,15 @@ public class DhUser extends AllCommonUsedAttributes {
     private float hhGenuinePercentage;
     private String lastHhPostAddedDateTime;
     private String lastHhPostHelpedDateTime;
+    private List<String> twentyFourThougths;
+
+    public List<String> getTwentyFourThougths() {
+        return twentyFourThougths;
+    }
+
+    public void setTwentyFourThougths(List<String> twentyFourThougths) {
+        this.twentyFourThougths = twentyFourThougths;
+    }
 
     public String getLastHhPostAddedDateTime() {
         return lastHhPostAddedDateTime;

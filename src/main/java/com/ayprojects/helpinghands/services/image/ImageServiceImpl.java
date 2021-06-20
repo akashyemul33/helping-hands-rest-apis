@@ -87,6 +87,7 @@ public class ImageServiceImpl implements ImageService {
             String finalKeyLow = amazonClient.uploadSingleImageToS3(imgUploadKeyLow, imageLow);
             String finalKeyHigh = amazonClient.uploadSingleImageToS3(imgUploadKeyHigh, imageHigh);
             Thoughts thoughts = new Thoughts();
+            thoughts.setThoughtId(uniqueThoughtID);
             thoughts.setAddedBy(addedBy);
             thoughts.setFromSystem(fromSystem);
             thoughts.setThoughtImgPathLow(finalKeyLow);

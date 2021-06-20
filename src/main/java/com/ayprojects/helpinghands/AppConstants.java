@@ -343,12 +343,14 @@ public class AppConstants {
     public static final String KEY_LAST_HH_POST_ADDED_DATETIME = "lastHhPostAddedDateTime";
     public static final String KEY_LAST_HH_POST_HELPED_DATETIME = "lastHhPostHelpedDateTime";
     public static final long MILLIS_IN_DAY = 24 * 60 * 60 * 1000;
+    public static final String KEY_TWENTY_FOUR_THOUGHTS = "twentyFourThougths";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};
     public static String LABEL_HEADER_APPLANGUAGE = "App-Language";
     public static String STATUS_ACTIVE = "Active";
     public static String STATUS_ACTIVE_OR_HELPED = "Active|Helped";
+    public static String THOUGHTS_STATUS_VALIDATED_ATTEMPTED_LIVE = "VALIDATED|ATTEMPTED|LIVE";
     public static String STATUS_APPROVED = "Approved";
     public static String SCHEMA_VERSION = "1.0.0";
     public static String RESPONSEMESSAGE_USER_ALREADY_EXISTS_WITH_MOBILE = "USER_ALREADY_EXISTS_WITH_MOBILE";

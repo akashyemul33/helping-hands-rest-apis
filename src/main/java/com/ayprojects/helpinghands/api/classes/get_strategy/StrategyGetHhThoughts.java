@@ -5,11 +5,13 @@ import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhAppConfig;
+import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.models.Thoughts;
 import com.ayprojects.helpinghands.models.ThoughtsConfig;
 import com.ayprojects.helpinghands.models.ThoughtsFrequency;
+import com.ayprojects.helpinghands.services.log.LogService;
 import com.ayprojects.helpinghands.util.response_msgs.ResponseMsgFactory;
 import com.ayprojects.helpinghands.util.tools.CalendarOperations;
 import com.ayprojects.helpinghands.util.tools.Utility;
@@ -18,17 +20,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
+import java.util.TimeZone;
+
+import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
 public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
+
+    @Autowired
+    LogService logService;
 
     @Autowired
     MongoTemplate mongoTemplate;
@@ -100,7 +113,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             daysLimit = 365;
         }
 
-        String responseWhenNotEligible = String.format(Locale.US, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED), thoughtsConfig.getEligibilityFrequency().name());
+        String responseWhenNotEligible = String.format(Locale.US, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED), thoughtsConfig.getEligibilityFrequency().name(), dhUser.getLastHhPostAddedDateTime(), dhUser.getLastHhPostHelpedDateTime());
         if (atleastOneHelpOrPostNeeded && dhUser.getNumberOfHHHelps() == 0 && dhUser.getNumberOfHHPosts() == 0) {
             return new Response<Thoughts>(true, 200, responseWhenNotEligible, Collections.singletonList(thoughts));
         }
@@ -115,10 +128,102 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
     }
 
     private Response<Thoughts> getAllThoughts(String language, String userId, String status) {
-        Query queryGetSingleThought = new Query();
-        queryGetSingleThought.addCriteria(Criteria.where(AppConstants.STATUS).regex(status, "i"));
-        List<Thoughts> thoughtsList = mongoTemplate.find(queryGetSingleThought, Thoughts.class);
-        return new Response<Thoughts>(true, 200, AppConstants.QUERY_SUCCESSFUL, thoughtsList, thoughtsList.size());
+        //picking up yesterday date UTC, and current hour of the day Locale.Default
+        Calendar calendar = Calendar.getInstance();
+        int hourOfTheDayLocal = calendar.get(Calendar.HOUR_OF_DAY);
+        LOGGER.info("getAllThoughts->hourOfTheDay:" + hourOfTheDayLocal);
+        calendar.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
+        calendar.add(Calendar.DATE, -1);
+        LOGGER.info("getAllThoughts->hourOfTheDay UTC:" + calendar.get(Calendar.HOUR_OF_DAY));
+        DateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_FORMAT);
+        String yesterdayDate = dateFormat.format(calendar.getTime());
+        LOGGER.info("getAllThoughts->yesterdayDate:" + yesterdayDate);
+
+        //get user details
+        Query queryGetUserDetails = new Query();
+        queryGetUserDetails.addCriteria(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
+        queryGetUserDetails.fields().include(AppConstants.KEY_TWENTY_FOUR_THOUGHTS);
+        queryGetUserDetails.fields().include(AppConstants.KEY_USER_ID);
+        DhUser dhUser = mongoTemplate.findOne(queryGetUserDetails, DhUser.class);
+        if (dhUser == null) {
+            return new Response<Thoughts>(false, 402, Utility.getResponseMessage(AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_USERID, language), new ArrayList<>(), 0);
+        }
+
+        //get thoughts pool
+        Query queryToGetUserThoughts = new Query();
+        queryToGetUserThoughts.addCriteria(Criteria.where(AppConstants.CREATED_DATETIME).regex(yesterdayDate, "i"));
+        queryToGetUserThoughts.addCriteria(Criteria.where(AppConstants.STATUS).regex(AppConstants.THOUGHTS_STATUS_VALIDATED_ATTEMPTED_LIVE, "i"));
+        List<Thoughts> allThoughtsList = mongoTemplate.find(queryToGetUserThoughts, Thoughts.class, AppConstants.COLLECTION_DH_USER_THOUGHTS);
+        if (allThoughtsList.size() < 24) {
+            int neededThoughtsFromSystem = 24 - allThoughtsList.size();
+            queryToGetUserThoughts.limit(neededThoughtsFromSystem);
+            List<Thoughts> systemThoughts = mongoTemplate.find(queryToGetUserThoughts, Thoughts.class, AppConstants.COLLECTION_DH_SYSTEM_THOUGHTS);
+
+            if (systemThoughts.size() < neededThoughtsFromSystem) {
+                logService.addLog(new DhLog(userId, "Please have attention, User Thoughts are less than 24 and also system thoughts are less than " + neededThoughtsFromSystem));
+                return new Response<Thoughts>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG), new ArrayList<>());
+            } else
+                logService.addLog(new DhLog(userId, "Please have attention, User Thoughts are less than 24, So taken " + neededThoughtsFromSystem + " thoughts from system ."));
+            allThoughtsList.addAll(systemThoughts);
+        }
+
+        //prepare thoughts needed to return according to stored user thoughts and current hour of the day
+        List<Thoughts> returningThoughts = new ArrayList<>(hourOfTheDayLocal);
+        Random random = new Random(allThoughtsList.size());
+        List<String> updatedThoughtsIdsList = new ArrayList<>(hourOfTheDayLocal);
+        //if user has no thoughts stored in his table, then fetch all the thoughts up to current hour of the day
+        if (dhUser.getTwentyFourThougths() == null || dhUser.getTwentyFourThougths().size() == 0) {
+            int tempInt = hourOfTheDayLocal;
+            while (tempInt == 0) {
+                Thoughts t = allThoughtsList.get(random.nextInt());
+                returningThoughts.add(t);
+                updatedThoughtsIdsList.add(t.getThoughtId());
+                tempInt--;
+            }
+        } else if (dhUser.getTwentyFourThougths().size() < hourOfTheDayLocal) {
+
+            LOGGER.info("All thoughts list .size:" + allThoughtsList.size());
+            for (int i = 0; i < allThoughtsList.size(); i++) {
+                for (String thoughtId : dhUser.getTwentyFourThougths()) {
+                    Thoughts t = allThoughtsList.get(i);
+                    if (thoughtId.equals(t.getThoughtId())) {
+                        returningThoughts.add(t);
+                        updatedThoughtsIdsList.add(t.getThoughtId());
+                        allThoughtsList.remove(i);
+                        LOGGER.info("Removing item at " + i + " from all thoughts list.");
+                    }
+
+                }
+            }
+            LOGGER.info("All thoughts list.size after removal:" + allThoughtsList.size());
+
+
+            int neededThoughtsUpToHour = hourOfTheDayLocal - dhUser.getTwentyFourThougths().size();
+            LOGGER.info("NeededThoughtsUpToHour:" + neededThoughtsUpToHour);
+            while (neededThoughtsUpToHour == 0) {
+                Thoughts t = allThoughtsList.get(random.nextInt());
+                returningThoughts.add(t);
+                updatedThoughtsIdsList.add(t.getThoughtId());
+                neededThoughtsUpToHour--;
+            }
+        } else {
+            for (Thoughts thoughts : allThoughtsList) {
+                for (String thoughtId : dhUser.getTwentyFourThougths()) {
+                    if (thoughtId.equals(thoughts.getThoughtId())) {
+                        returningThoughts.add(thoughts);
+                    }
+
+                }
+            }
+        }
+
+        if (updatedThoughtsIdsList.size() > 0) {
+            Update updateThoughtIdsOfUser = new Update();
+            updateThoughtIdsOfUser.set(AppConstants.KEY_TWENTY_FOUR_THOUGHTS, updatedThoughtsIdsList);
+            mongoTemplate.updateFirst(queryGetUserDetails, updateThoughtIdsOfUser, DhUser.class);
+            LOGGER.info("Updating thought ids of user.");
+        }
+        return new Response<Thoughts>(true, 200, AppConstants.QUERY_SUCCESSFUL, returningThoughts, returningThoughts.size());
     }
 
     @Override

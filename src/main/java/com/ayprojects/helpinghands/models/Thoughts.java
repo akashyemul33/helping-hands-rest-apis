@@ -7,6 +7,16 @@ import java.util.List;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class Thoughts extends AllCommonUsedAttributes {
+    private String thoughtId;
+
+    public String getThoughtId() {
+        return thoughtId;
+    }
+
+    public void setThoughtId(String thoughtId) {
+        this.thoughtId = thoughtId;
+    }
+
     private String thoughtStr;
     private String thoughtImgPathLow;
     private String thoughtImgPathHigh;
