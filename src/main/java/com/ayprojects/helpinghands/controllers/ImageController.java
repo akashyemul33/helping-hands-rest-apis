@@ -51,9 +51,19 @@ public class ImageController {
         return new ResponseEntity<>(imageService.uploadUserImage(httpHeaders, userImageLow, userImageHigh, version), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/uploadThoughtImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<Thoughts>> uploadThoughtImage(@RequestHeader HttpHeaders httpHeaders, @RequestPart(value = "thoughtImageLow", required = true) MultipartFile thoughtImageLow, @RequestPart(value = "thoughtImageHigh", required = true) MultipartFile thoughtImageHigh, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestParam(value = "thoughtsStr", required = true) String thoughtsStr, @RequestParam(value = "userName", required = true) String userName, @RequestParam(value = "userImg", required = true) String userImg, @RequestParam(value = "fromSystem", required = true) boolean fromSystem, @PathVariable String version) throws ServerSideException {
-        Response<Thoughts> response = imageService.uploadThoughtImage(httpHeaders, thoughtImageLow, thoughtImageHigh, addedBy, thoughtsStr, userName, userImg, fromSystem, version);
+    @PostMapping(value = "/uploadSystemThoughtImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<Thoughts>> uploadThoughtImage(@RequestHeader HttpHeaders httpHeaders, @RequestPart(value = "thoughtImageLow", required = true) MultipartFile thoughtImageLow, @RequestPart(value = "thoughtImageHigh", required = true) MultipartFile thoughtImageHigh, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestParam(value = "thoughtsStr", required = true) String thoughtsStr, @PathVariable String version) throws ServerSideException {
+        Response<Thoughts> response = imageService.uploadThoughtImage(httpHeaders, thoughtImageLow, thoughtImageHigh, addedBy, thoughtsStr, null, null, true, version);
+        if (response.getStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PostMapping(value = "/uploadUserThoughtImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<Thoughts>> uploadThoughtImage(@RequestHeader HttpHeaders httpHeaders, @RequestPart(value = "thoughtImageLow", required = true) MultipartFile thoughtImageLow, @RequestPart(value = "thoughtImageHigh", required = true) MultipartFile thoughtImageHigh, @RequestParam(value = "addedBy", required = true) String addedBy, @RequestParam(value = "thoughtsStr", required = true) String thoughtsStr, @RequestParam(value = "userName", required = true) String userName, @RequestParam(value = "userImg", required = true) String userImg, @PathVariable String version) throws ServerSideException {
+        Response<Thoughts> response = imageService.uploadThoughtImage(httpHeaders, thoughtImageLow, thoughtImageHigh, addedBy, thoughtsStr, userName, userImg, false, version);
         if (response.getStatus()) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {

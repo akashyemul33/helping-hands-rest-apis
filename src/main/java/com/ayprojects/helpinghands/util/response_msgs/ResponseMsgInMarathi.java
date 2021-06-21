@@ -136,6 +136,8 @@ public class ResponseMsgInMarathi extends AbstractResponseMessages {
         responseMsgsMap.put(RESPONSEMESSAGE_THOUGHTS_DAILY_LIMIT_REACHED, "We regret, todays thoughts intake limit is reached !");
         responseMsgsMap.put(RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED, "You've to add atleast one person seeking for help or you've to help one person in a %s !");
         responseMsgsMap.put(RESPONSEMESSAGE_THOUGHT_CANNOT_ADD_HEADING, "We Regret !");
+        responseMsgsMap.put(RESPONSEMESSAGE_THOUGHT_ADDED_BODY, "Your thought has been added. It will be live tomorrow, if you get maximum likes throughout day you will get your prize money for sure.");
+        responseMsgsMap.put(RESPONSEMESSAGE_THOUGHT_ADDED_HEADING, "Congratulations !");
     }
 
     public Map<String, String> getResponseMsgsMap() {

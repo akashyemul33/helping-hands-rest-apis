@@ -201,14 +201,15 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             LOGGER.info("else if dhUser.getTwentyFourThougths().size() < hourOfTheDayLocal");
             LOGGER.info("All thoughts list .size:" + allThoughtsList.size());
             for (int i = 0; i < allThoughtsList.size(); i++) {
+                Thoughts t = allThoughtsList.get(i);
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
-                    Thoughts t = allThoughtsList.get(i);
                     if (thoughtId.equals(t.getThoughtId())) {
                         t.setAlreadyLiked(t.getLikedUserIds() != null && t.getLikedUserIds().contains(userId));
                         returningThoughts.add(t);
                         updatedThoughtsIdsList.add(t.getThoughtId());
                         allThoughtsList.remove(i);
                         LOGGER.info("Removing item at " + i + " from all thoughts list.");
+                        break;
                     }
 
                 }
@@ -230,14 +231,15 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             LOGGER.info("start of 24thoughts>hourOfTheDay, else if dhUser.getTwentyFourThougths().size()>hourOfTheDayLocal");
             LOGGER.info("24thoughts>hourOfTheDay, All thoughts list .size:" + allThoughtsList.size());
             for (int i = 0; i < allThoughtsList.size(); i++) {
+                Thoughts t = allThoughtsList.get(i);
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
-                    Thoughts t = allThoughtsList.get(i);
                     if (thoughtId.equals(t.getThoughtId()) && dhUser.getTwentyFourThougths().indexOf(thoughtId) > hourOfTheDayLocal) {
                         t.setAlreadyLiked(t.getLikedUserIds() != null && t.getLikedUserIds().contains(userId));
                         returningThoughts.add(t);
                         updatedThoughtsIdsList.add(t.getThoughtId());
                         allThoughtsList.remove(i);
                         LOGGER.info("Removing item at " + i + " from all thoughts list.");
+                        break;
                     }
 
                 }

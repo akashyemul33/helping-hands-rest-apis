@@ -8,7 +8,6 @@ import com.ayprojects.helpinghands.models.DhHHPost;
 import com.ayprojects.helpinghands.models.DhLog;
 import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPromotions;
-import com.ayprojects.helpinghands.models.DhThought;
 import com.ayprojects.helpinghands.models.DhUser;
 import com.ayprojects.helpinghands.models.ProductsWithPrices;
 import com.ayprojects.helpinghands.models.Response;
@@ -77,8 +76,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Response<Thoughts> uploadThoughtImage(HttpHeaders httpHeaders, MultipartFile imageLow, MultipartFile imageHigh, String addedBy, String thoughtStr, String userName, String userImg, boolean fromSystem, String version) throws ServerSideException {
         String language = IHeaders.getLanguageFromHeader(httpHeaders);
-        if (imageLow == null || imageLow.isEmpty() || imageHigh == null || imageHigh.isEmpty() || Utility.isFieldEmpty(thoughtStr) || Utility.isFieldEmpty(addedBy))
+        if (imageLow == null || imageLow.isEmpty() || imageHigh == null || imageHigh.isEmpty() || Utility.isFieldEmpty(thoughtStr) || Utility.isFieldEmpty(addedBy)) {
+            LOGGER.info("uploadThoughtImage->returning as body is null");
             return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_EMPTY_BODY), new ArrayList<>());
+        }
 
         String uniqueThoughtID = Utility.getUUID();
         String imgUploadKeyLow = GetImageFoldersAndPrefix.getThoughtImgUploadKeyLow(uniqueThoughtID, false);
@@ -100,7 +101,7 @@ public class ImageServiceImpl implements ImageService {
                 mongoTemplate.save(thoughts, AppConstants.COLLECTION_DH_SYSTEM_THOUGHTS);
             else mongoTemplate.save(thoughts, AppConstants.COLLECTION_DH_USER_THOUGHTS);
             logService.addLog(new DhLog(uniqueThoughtID, "New Thought has been added"));
-            return new Response<Thoughts>(true, 201, "Thought saved successfully", Collections.singletonList(thoughts));
+            return new Response<Thoughts>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHT_ADDED_HEADING), ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHT_ADDED_BODY), Collections.singletonList(thoughts));
         } catch (Exception e) {
             e.printStackTrace();
             String errorMsg = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_SOMETHING_WENT_WRONG);
