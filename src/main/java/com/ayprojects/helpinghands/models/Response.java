@@ -9,6 +9,15 @@ public class Response<T> {
     private Boolean status;
     private Integer statusCode;
     private String message;
+    private long thoughtsLeft;
+
+    public long getThoughtsLeft() {
+        return thoughtsLeft;
+    }
+
+    public void setThoughtsLeft(long thoughtsLeft) {
+        this.thoughtsLeft = thoughtsLeft;
+    }
 
     public String getBody() {
         return body;
@@ -98,7 +107,14 @@ public Response(Boolean status, Integer statusCode, String heading,String messag
         this.setData(data);
         this.setTotalCount(totalCount);
     }
-
+    public Response(Boolean status, Integer statusCode, String message, List<T> data, Integer totalCount,long thoughtsLeft) {
+        this.setStatus(status);
+        this.setStatusCode(statusCode);
+        this.setMessage(message);
+        this.setData(data);
+        this.setTotalCount(totalCount);
+        this.setThoughtsLeft(thoughtsLeft);
+    }
     public Response(Boolean status, Integer statusCode, String message,String body, List<T> data, Integer totalCount) {
         this.setStatus(status);
         this.setStatusCode(statusCode);

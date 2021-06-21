@@ -96,8 +96,9 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         Thoughts thoughts = new Thoughts();
         thoughts.setCanAddThoughts(false);
         ThoughtsConfig thoughtsConfig = dhAppConfig.getThoughtsConfig();
+        long thoughtsLeft = thoughtsConfig.getMaxDailyLimit()-todaysThoughtsList.size();
         if (todaysThoughtsList.size() >= thoughtsConfig.getMaxDailyLimit())
-            return new Response<Thoughts>(true, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_DAILY_LIMIT_REACHED), Collections.singletonList(thoughts));
+            return new Response<Thoughts>(true, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_DAILY_LIMIT_REACHED), Collections.singletonList(thoughts),0,thoughtsLeft);
 
         //get user details to verify that user helped or posted atleast one person
         boolean atleastOneHelpOrPostNeeded = true;
@@ -116,7 +117,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
 
         String responseWhenNotEligible = String.format(Locale.US, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED), thoughtsConfig.getEligibilityFrequency().name(), dhUser.getLastHhPostAddedDateTime(), dhUser.getLastHhPostHelpedDateTime());
         if (atleastOneHelpOrPostNeeded && dhUser.getNumberOfHHHelps() == 0 && dhUser.getNumberOfHHPosts() == 0) {
-            return new Response<Thoughts>(true, 402, responseWhenNotEligible, Collections.singletonList(thoughts));
+            return new Response<Thoughts>(true, 402, responseWhenNotEligible, Collections.singletonList(thoughts),0,thoughtsLeft);
         }
 
         int diffBetweenPostAddedDays = Utility.isFieldEmpty(dhUser.getLastHhPostAddedDateTime()) ? -1 : CalendarOperations.findDiffBetweenTwoDates(dhUser.getLastHhPostAddedDateTime(), currentDate);
@@ -128,10 +129,10 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         boolean isPostAddedDateGreaterThanLimit = diffBetweenPostAddedDays > daysLimit;
         boolean isPostHelpedDateGreaterThanLimit = diffBetweenHelpedDays > daysLimit;
         if ((isPostAddedDateNone && isPostHelpedDateNone) || (isPostAddedDateGreaterThanLimit && isPostHelpedDateGreaterThanLimit) || (isPostAddedDateGreaterThanLimit && isPostHelpedDateNone) || (isPostHelpedDateGreaterThanLimit && isPostAddedDateNone))
-            return new Response<Thoughts>(true, 402, responseWhenNotEligible, Collections.singletonList(thoughts));
+            return new Response<Thoughts>(true, 402, responseWhenNotEligible, Collections.singletonList(thoughts),0,thoughtsLeft);
 
         thoughts.setCanAddThoughts(true);
-        return new Response<Thoughts>(true, 200, "OK, you can add thought .", Collections.singletonList(thoughts));
+        return new Response<Thoughts>(true, 200, "OK, you can add thought .", Collections.singletonList(thoughts),0,thoughtsLeft);
     }
 
     private Response<Thoughts> getUserSpecificThoughts(String language, String userId) {
