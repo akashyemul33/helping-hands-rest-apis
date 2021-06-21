@@ -10,6 +10,17 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 public class Thoughts extends AllCommonUsedAttributes {
     private String thoughtId;
 
+    public boolean isAlreadyLiked() {
+        return alreadyLiked;
+    }
+
+    public void setAlreadyLiked(boolean alreadyLiked) {
+        this.alreadyLiked = alreadyLiked;
+    }
+
+    @Transient
+    @Ignore
+    private boolean alreadyLiked;
     public String getThoughtId() {
         return thoughtId;
     }

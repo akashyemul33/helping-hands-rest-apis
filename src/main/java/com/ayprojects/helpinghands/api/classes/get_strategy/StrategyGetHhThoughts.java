@@ -137,7 +137,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
     private Response<Thoughts> getUserSpecificThoughts(String language, String userId) {
         //picking up yesterday date UTC, and current hour of the day Locale.Default
         Calendar calendar = Calendar.getInstance();
-        int hourOfTheDayLocal = calendar.get(Calendar.HOUR_OF_DAY)+1;
+        int hourOfTheDayLocal = calendar.get(Calendar.HOUR_OF_DAY) + 1;
         LOGGER.info("getAllThoughts->hourOfTheDay:" + hourOfTheDayLocal);
         calendar.setTimeZone(TimeZone.getTimeZone(AppConstants.UTC));
         calendar.add(Calendar.DATE, -1);
@@ -187,18 +187,20 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             int tempInt = hourOfTheDayLocal;
             while (tempInt > 0) {
                 Thoughts t = allThoughtsList.get(random.nextInt(allThoughtsList.size()));
+                t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
                 returningThoughts.add(t);
                 updatedThoughtsIdsList.add(t.getThoughtId());
                 tempInt--;
             }
             newlyPickedThoughtIdsList.addAll(returningThoughts);
         } else if (dhUser.getTwentyFourThougths().size() < hourOfTheDayLocal) {
-            LOGGER.info("else if ");
+            LOGGER.info("else if dhUser.getTwentyFourThougths().size() < hourOfTheDayLocal");
             LOGGER.info("All thoughts list .size:" + allThoughtsList.size());
             for (int i = 0; i < allThoughtsList.size(); i++) {
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
                     Thoughts t = allThoughtsList.get(i);
                     if (thoughtId.equals(t.getThoughtId())) {
+                        t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
                         returningThoughts.add(t);
                         updatedThoughtsIdsList.add(t.getThoughtId());
                         allThoughtsList.remove(i);
@@ -214,16 +216,49 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             LOGGER.info("NeededThoughtsUpToHour:" + neededThoughtsUpToHour);
             while (neededThoughtsUpToHour > 0) {
                 Thoughts t = allThoughtsList.get(random.nextInt(allThoughtsList.size()));
+                t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
                 returningThoughts.add(t);
                 updatedThoughtsIdsList.add(t.getThoughtId());
                 newlyPickedThoughtIdsList.add(t);
                 neededThoughtsUpToHour--;
             }
+        } else if (dhUser.getTwentyFourThougths().size() > hourOfTheDayLocal) {
+            LOGGER.info("start of 24thoughts>hourOfTheDay, else if dhUser.getTwentyFourThougths().size()>hourOfTheDayLocal");
+            LOGGER.info("24thoughts>hourOfTheDay, All thoughts list .size:" + allThoughtsList.size());
+            for (int i = 0; i < allThoughtsList.size(); i++) {
+                for (String thoughtId : dhUser.getTwentyFourThougths()) {
+                    Thoughts t = allThoughtsList.get(i);
+                    if (thoughtId.equals(t.getThoughtId()) && dhUser.getTwentyFourThougths().indexOf(thoughtId) > hourOfTheDayLocal) {
+                        t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
+                        returningThoughts.add(t);
+                        updatedThoughtsIdsList.add(t.getThoughtId());
+                        allThoughtsList.remove(i);
+                        LOGGER.info("Removing item at " + i + " from all thoughts list.");
+                    }
+
+                }
+            }
+            LOGGER.info("24thoughts>hourOfTheDay, All thoughts list.size after removal:" + allThoughtsList.size());
+            LOGGER.info("24thoughts>hourOfTheDay, REturning list.size:" + returningThoughts.size());
+
+            int neededThoughtsUpToHour = dhUser.getTwentyFourThougths().size() - hourOfTheDayLocal;
+            LOGGER.info("NeededThoughtsUpToHour:" + neededThoughtsUpToHour);
+            while (neededThoughtsUpToHour > 0) {
+                Thoughts t = allThoughtsList.get(random.nextInt(allThoughtsList.size()));
+                t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
+                returningThoughts.add(t);
+                updatedThoughtsIdsList.add(t.getThoughtId());
+                newlyPickedThoughtIdsList.add(t);
+                neededThoughtsUpToHour--;
+            }
+            LOGGER.info("end of 24thoughts>hourOfTheDay, else if dhUser.getTwentyFourThougths().size()>hourOfTheDayLocal");
         } else {
             LOGGER.info("else");
+
             for (Thoughts thoughts : allThoughtsList) {
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
                     if (thoughtId.equals(thoughts.getThoughtId())) {
+                        thoughts.setAlreadyLiked(thoughts.getLikedUserIds()!=null && thoughts.getLikedUserIds().contains(userId));
                         returningThoughts.add(thoughts);
                     }
 
@@ -251,6 +286,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
                 mongoTemplate.updateFirst(query, updatePosts, Thoughts.class, AppConstants.COLLECTION_DH_SYSTEM_THOUGHTS);
             }
         }
+
         return new Response<Thoughts>(true, 200, AppConstants.QUERY_SUCCESSFUL, returningThoughts, returningThoughts.size());
     }
 
