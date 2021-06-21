@@ -151,6 +151,8 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         //get user details
         Query queryGetUserDetails = new Query();
         queryGetUserDetails.addCriteria(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
+        queryGetUserDetails.fields().include(AppConstants.KEY_NUMBER_OF_HH_POSTS);
+        queryGetUserDetails.fields().include(AppConstants.KEY_NUMBER_OF_HH_HELPS);
         queryGetUserDetails.fields().include(AppConstants.KEY_TWENTY_FOUR_THOUGHTS);
         queryGetUserDetails.fields().include(AppConstants.KEY_USER_ID);
         DhUser dhUser = mongoTemplate.findOne(queryGetUserDetails, DhUser.class);
