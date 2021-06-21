@@ -138,6 +138,7 @@ public class ResponseMsgInHindi extends AbstractResponseMessages {
             responseMsgsMap.put(RESPONSEMESSAGE_VIDEOS_SIZE_GREATER_THAN_MAX, "Promotions max videos limit is 4 ");
             responseMsgsMap.put(RESPONSEMESSAGE_THOUGHTS_DAILY_LIMIT_REACHED, "We regret, todays thoughts intake limit is reached !");
             responseMsgsMap.put(RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED, "You've to add atleast one person seeking for help or you've to help one person in a %s !");
+            responseMsgsMap.put(RESPONSEMESSAGE_THOUGHT_CANNOT_ADD_HEADING, "We Regret !");
         }
     }
 

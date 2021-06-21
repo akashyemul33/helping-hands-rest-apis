@@ -100,6 +100,15 @@ public Response(Boolean status, Integer statusCode, String heading,String messag
         this.heading = heading;
     }
 
+    public Response(Boolean status, int statusCode, String heading,String message, List<T> data,long thoughtsLeft) {
+        this.setStatus(status);
+        this.setStatusCode(statusCode);
+        this.setMessage(message);
+        this.setData(data);
+        this.heading = heading;
+        this.thoughtsLeft = thoughtsLeft;
+    }
+
     public Response(Boolean status, Integer statusCode, String message, List<T> data, Integer totalCount) {
         this.setStatus(status);
         this.setStatusCode(statusCode);

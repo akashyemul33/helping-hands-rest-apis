@@ -119,6 +119,6 @@ public class StrategyAddHhPostApi implements StrategyAddBehaviour<DhHHPost> {
             return new Response<DhHHPost>(false, 402, resMsg, new ArrayList<>(), 0);
         }
 
-        return new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_ADD_POST_MSG), ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_ADD_POST_BODY), new ArrayList<>(), 0);
+        return new Response<DhHHPost>(true, 201, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_ADD_POST_MSG), ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_HH_ADD_POST_BODY), new ArrayList<>());
     }
 }

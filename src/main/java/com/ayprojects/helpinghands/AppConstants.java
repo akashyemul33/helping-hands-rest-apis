@@ -347,6 +347,7 @@ public class AppConstants {
     public static final long MILLIS_IN_DAY = 24 * 60 * 60 * 1000;
     public static final String KEY_TWENTY_FOUR_THOUGHTS = "twentyFourThougths";
     public static final String KEY_THOUGHT_ID = "thoughtId";
+    public static final String RESPONSEMESSAGE_THOUGHT_CANNOT_ADD_HEADING = "ThoughtsCannotAdd";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

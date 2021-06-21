@@ -96,9 +96,9 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         Thoughts thoughts = new Thoughts();
         thoughts.setCanAddThoughts(false);
         ThoughtsConfig thoughtsConfig = dhAppConfig.getThoughtsConfig();
-        long thoughtsLeft = thoughtsConfig.getMaxDailyLimit()-todaysThoughtsList.size();
+        long thoughtsLeft = thoughtsConfig.getMaxDailyLimit() - todaysThoughtsList.size();
         if (todaysThoughtsList.size() >= thoughtsConfig.getMaxDailyLimit())
-            return new Response<Thoughts>(true, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_DAILY_LIMIT_REACHED), Collections.singletonList(thoughts),0,thoughtsLeft);
+            return new Response<Thoughts>(true, 200, "", ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_DAILY_LIMIT_REACHED), Collections.singletonList(thoughts), thoughtsLeft);
 
         //get user details to verify that user helped or posted atleast one person
         boolean atleastOneHelpOrPostNeeded = true;
@@ -116,8 +116,9 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         }
 
         String responseWhenNotEligible = String.format(Locale.US, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHTS_NOT_POSTED_OR_HELPED), thoughtsConfig.getEligibilityFrequency().name(), dhUser.getLastHhPostAddedDateTime(), dhUser.getLastHhPostHelpedDateTime());
+        String responseHeaderRegret = ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_THOUGHT_CANNOT_ADD_HEADING);
         if (atleastOneHelpOrPostNeeded && dhUser.getNumberOfHHHelps() == 0 && dhUser.getNumberOfHHPosts() == 0) {
-            return new Response<Thoughts>(true, 402, responseWhenNotEligible, Collections.singletonList(thoughts),0,thoughtsLeft);
+            return new Response<Thoughts>(true, 200, responseHeaderRegret, responseWhenNotEligible, Collections.singletonList(thoughts), thoughtsLeft);
         }
 
         int diffBetweenPostAddedDays = Utility.isFieldEmpty(dhUser.getLastHhPostAddedDateTime()) ? -1 : CalendarOperations.findDiffBetweenTwoDates(dhUser.getLastHhPostAddedDateTime(), currentDate);
@@ -129,10 +130,10 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
         boolean isPostAddedDateGreaterThanLimit = diffBetweenPostAddedDays > daysLimit;
         boolean isPostHelpedDateGreaterThanLimit = diffBetweenHelpedDays > daysLimit;
         if ((isPostAddedDateNone && isPostHelpedDateNone) || (isPostAddedDateGreaterThanLimit && isPostHelpedDateGreaterThanLimit) || (isPostAddedDateGreaterThanLimit && isPostHelpedDateNone) || (isPostHelpedDateGreaterThanLimit && isPostAddedDateNone))
-            return new Response<Thoughts>(true, 402, responseWhenNotEligible, Collections.singletonList(thoughts),0,thoughtsLeft);
+            return new Response<Thoughts>(true, 200, responseHeaderRegret, responseWhenNotEligible, Collections.singletonList(thoughts), thoughtsLeft);
 
         thoughts.setCanAddThoughts(true);
-        return new Response<Thoughts>(true, 200, "OK, you can add thought .", Collections.singletonList(thoughts),0,thoughtsLeft);
+        return new Response<Thoughts>(true, 200, "Ok", "Ok, you can add thought .", Collections.singletonList(thoughts), thoughtsLeft);
     }
 
     private Response<Thoughts> getUserSpecificThoughts(String language, String userId) {
@@ -188,7 +189,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             int tempInt = hourOfTheDayLocal;
             while (tempInt > 0) {
                 Thoughts t = allThoughtsList.get(random.nextInt(allThoughtsList.size()));
-                t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
+                t.setAlreadyLiked(t.getLikedUserIds() != null && t.getLikedUserIds().contains(userId));
                 returningThoughts.add(t);
                 updatedThoughtsIdsList.add(t.getThoughtId());
                 tempInt--;
@@ -201,7 +202,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
                     Thoughts t = allThoughtsList.get(i);
                     if (thoughtId.equals(t.getThoughtId())) {
-                        t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
+                        t.setAlreadyLiked(t.getLikedUserIds() != null && t.getLikedUserIds().contains(userId));
                         returningThoughts.add(t);
                         updatedThoughtsIdsList.add(t.getThoughtId());
                         allThoughtsList.remove(i);
@@ -217,7 +218,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             LOGGER.info("NeededThoughtsUpToHour:" + neededThoughtsUpToHour);
             while (neededThoughtsUpToHour > 0) {
                 Thoughts t = allThoughtsList.get(random.nextInt(allThoughtsList.size()));
-                t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
+                t.setAlreadyLiked(t.getLikedUserIds() != null && t.getLikedUserIds().contains(userId));
                 returningThoughts.add(t);
                 updatedThoughtsIdsList.add(t.getThoughtId());
                 newlyPickedThoughtIdsList.add(t);
@@ -230,7 +231,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
                     Thoughts t = allThoughtsList.get(i);
                     if (thoughtId.equals(t.getThoughtId()) && dhUser.getTwentyFourThougths().indexOf(thoughtId) > hourOfTheDayLocal) {
-                        t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
+                        t.setAlreadyLiked(t.getLikedUserIds() != null && t.getLikedUserIds().contains(userId));
                         returningThoughts.add(t);
                         updatedThoughtsIdsList.add(t.getThoughtId());
                         allThoughtsList.remove(i);
@@ -246,7 +247,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             LOGGER.info("NeededThoughtsUpToHour:" + neededThoughtsUpToHour);
             while (neededThoughtsUpToHour > 0) {
                 Thoughts t = allThoughtsList.get(random.nextInt(allThoughtsList.size()));
-                t.setAlreadyLiked(t.getLikedUserIds()!=null && t.getLikedUserIds().contains(userId));
+                t.setAlreadyLiked(t.getLikedUserIds() != null && t.getLikedUserIds().contains(userId));
                 returningThoughts.add(t);
                 updatedThoughtsIdsList.add(t.getThoughtId());
                 newlyPickedThoughtIdsList.add(t);
@@ -259,7 +260,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
             for (Thoughts thoughts : allThoughtsList) {
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
                     if (thoughtId.equals(thoughts.getThoughtId())) {
-                        thoughts.setAlreadyLiked(thoughts.getLikedUserIds()!=null && thoughts.getLikedUserIds().contains(userId));
+                        thoughts.setAlreadyLiked(thoughts.getLikedUserIds() != null && thoughts.getLikedUserIds().contains(userId));
                         returningThoughts.add(thoughts);
                     }
 
