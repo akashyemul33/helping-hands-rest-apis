@@ -234,6 +234,7 @@ public class StrategyGetHhThoughts implements StrategyGetBehaviour<Thoughts> {
                 Thoughts t = allThoughtsList.get(i);
                 for (String thoughtId : dhUser.getTwentyFourThougths()) {
                     if (thoughtId.equals(t.getThoughtId()) && dhUser.getTwentyFourThougths().indexOf(thoughtId) > hourOfTheDayLocal) {
+                        t.setYesterdaysThought(true);
                         t.setAlreadyLiked(t.getLikedUserIds() != null && t.getLikedUserIds().contains(userId));
                         returningThoughts.add(t);
                         updatedThoughtsIdsList.add(t.getThoughtId());

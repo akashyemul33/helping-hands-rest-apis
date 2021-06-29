@@ -10,6 +10,16 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 public class Thoughts extends AllCommonUsedAttributes {
     private String thoughtId;
 
+    public boolean isYesterdaysThought() {
+        return yesterdaysThought;
+    }
+
+    public void setYesterdaysThought(boolean yesterdaysThought) {
+        this.yesterdaysThought = yesterdaysThought;
+    }
+
+    private boolean yesterdaysThought;
+
     public boolean isAlreadyLiked() {
         return alreadyLiked;
     }
