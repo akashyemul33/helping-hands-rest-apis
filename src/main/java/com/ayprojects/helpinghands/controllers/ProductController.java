@@ -6,6 +6,7 @@ import com.ayprojects.helpinghands.api.enums.StrategyName;
 import com.ayprojects.helpinghands.exceptions.ServerSideException;
 import com.ayprojects.helpinghands.models.DhProduct;
 import com.ayprojects.helpinghands.models.DhProductForAddingProducts;
+import com.ayprojects.helpinghands.models.DhProductReportType;
 import com.ayprojects.helpinghands.models.LangValueObj;
 import com.ayprojects.helpinghands.models.Response;
 import com.ayprojects.helpinghands.util.tools.Utility;

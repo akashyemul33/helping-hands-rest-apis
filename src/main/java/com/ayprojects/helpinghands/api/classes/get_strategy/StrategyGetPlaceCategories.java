@@ -3,8 +3,6 @@ package com.ayprojects.helpinghands.api.classes.get_strategy;
 import com.ayprojects.helpinghands.AppConstants;
 import com.ayprojects.helpinghands.api.behaviours.StrategyGetBehaviour;
 import com.ayprojects.helpinghands.api.enums.StrategyName;
-import com.ayprojects.helpinghands.dao.appconfig.AppConfigDao;
-import com.ayprojects.helpinghands.models.DhPlace;
 import com.ayprojects.helpinghands.models.DhPlaceCategories;
 import com.ayprojects.helpinghands.models.PlaceSubCategories;
 import com.ayprojects.helpinghands.models.Response;
@@ -15,16 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
-import static com.ayprojects.helpinghands.HelpingHandsApplication.LOGGER;
 
 @Component
 public class StrategyGetPlaceCategories implements StrategyGetBehaviour<DhPlaceCategories> {
@@ -61,26 +55,18 @@ public class StrategyGetPlaceCategories implements StrategyGetBehaviour<DhPlaceC
             //and for active subcategories add maincategoryid and name.
             for (DhPlaceCategories mc : dhPlaceCategoriesList) {
                 if (mc != null && mc.getPlaceSubCategories() != null && mc.getPlaceSubCategories().size() > 0) {
-                    List<Integer> scToRemoveIndex = new ArrayList<>();
+                    List<PlaceSubCategories> activePlaceSubCategories = new ArrayList<>(mc.getPlaceSubCategories().size());
                     for (int j = 0; j < mc.getPlaceSubCategories().size(); j++) {
                         PlaceSubCategories sc = mc.getPlaceSubCategories().get(j);
                         if (sc != null) {
-                            if (!sc.getStatus().equalsIgnoreCase(AppConstants.STATUS_ACTIVE)) {
-                                //add indexes of subcategories in a list, so that we can remove them later after this for loop
-                                //to avoid concurrent modfiication exceptions
-                                scToRemoveIndex.add(j);
-                            } else {
+                            if (sc.getStatus().equalsIgnoreCase(AppConstants.STATUS_ACTIVE)) {
                                 sc.setPlaceMainCategoryId(mc.getPlaceCategoryId());
                                 sc.setPlaceMainCategoryName(Utility.getMainCategoryName(mc, language));
+                                activePlaceSubCategories.add(sc);
                             }
                         }
                     }
-
-                    //remove the subcategories from main list
-                    for (int index : scToRemoveIndex) {
-                        LOGGER.info("PlaceCategoryServiceImpl->getAllPlaceCategoriesByType-> going to remove : categoryname=" + mc.getPlaceSubCategories().get(index).getDefaultName());
-                        mc.getPlaceSubCategories().remove(index);
-                    }
+                    mc.setPlaceSubCategories(activePlaceSubCategories);
 
                 }
             }

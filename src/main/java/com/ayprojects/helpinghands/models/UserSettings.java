@@ -1,6 +1,7 @@
 package com.ayprojects.helpinghands.models;
 
 public class UserSettings {
+
     private long totalPlacesLimit;
     private long perDayAddPlacesLimit;
     private long perDayAddPostsLimit;

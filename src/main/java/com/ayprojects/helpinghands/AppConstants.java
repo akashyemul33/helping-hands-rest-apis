@@ -350,6 +350,9 @@ public class AppConstants {
     public static final String RESPONSEMESSAGE_THOUGHT_CANNOT_ADD_HEADING = "ThoughtsCannotAdd";
     public static final String RESPONSEMESSAGE_THOUGHT_ADDED_HEADING = "THOUGHT_ADDED_HEADING";
     public static final String RESPONSEMESSAGE_THOUGHT_ADDED_BODY = "THOUGHT_ADDED_BODY";
+    public static final String COLLECTION_DH_PRODUCT_REPORT_TYPE = "dhProductReportType";
+    public static final String COLLECTION_DH_PRODUCT_REPORT = "dhProductReport";
+    public static final String OTHER = "Other";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

@@ -13,6 +13,15 @@ public class DhAppConfig extends AllCommonUsedAttributes {
     private String addedBy;
     private Modules modules;
     private List<LangValueObj> units;
+    private List<DhProductReportType> dhProductReportTypes;
+
+    public List<DhProductReportType> getDhProductReportTypes() {
+        return dhProductReportTypes;
+    }
+
+    public void setDhProductReportTypes(List<DhProductReportType> dhProductReportTypes) {
+        this.dhProductReportTypes = dhProductReportTypes;
+    }
 
     public List<LangValueObj> getOfflineMessages() {
         return offlineMessages;
