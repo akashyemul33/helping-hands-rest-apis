@@ -353,6 +353,9 @@ public class AppConstants {
     public static final String COLLECTION_DH_PRODUCT_REPORT_TYPE = "dhProductReportType";
     public static final String COLLECTION_DH_PRODUCT_REPORT = "dhProductReport";
     public static final String OTHER = "Other";
+    public static final String KEY_USER_API_TYPE = "UserApiType";
+    public static final String VALUE_UPDATE_SETTINGS = "UpdateSettings";
+    public static final String VALUE_RESET_SETTINGS = "ResetSettings";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

@@ -18,6 +18,42 @@ public class UserSettings {
     private boolean perPostMaxVideosLimitEnabled;
     private boolean promotionVideoTimeLimitEnabled;
     private long promotionVideoTimeLimitInSeconds;
+    private boolean perPostMaxImagesLimitEnabled;
+    private boolean perProductDefaultImageLimitEnabled;
+    private long perProductDefaultImagesLimit;
+    private long perProductMaxImagesLimit;
+    private boolean perProductMaxImagesLimitEnabled;
+    private long perPlaceProductsLimit;
+    private boolean notificationsRequired;
+    private boolean hhPerPostImgLimitEnabled;
+    private long hhPerPostImgLimit;
+    private boolean hhShowProfileOnHelp;
+    private boolean hhPostCommentsEnabled;
+    private boolean hhNotifyOnNearbyPostsEnabled;
+    private boolean hhDontNotifyBetweenTimeEnabled;
+    private String hhDontNotifyBetweenTime;
+    private String hhRangeForNearbyPostsInKm;
+    private Address hhUserLocation;
+    private boolean hhNotifyOnNewPosts;
+    private boolean hhNotifyOnNewThought;
+    private boolean hhNotifyOnHelp;
+    public UserSettings(long totalPlacesLimit, long perDayAddPlacesLimit, long perDayAddPostsLimit, long perPlaceImagesLimit, long perPostImagesLimit, long perPlaceProductsLimit, boolean perDayAddPlacesLimitEnabled, boolean perDayAddPostsLimitEnabled, boolean perPlaceImagesLimitEnabled, boolean perPostImagesLimitEnabled, long perProductDefaultImagesLimit, boolean perProductDefaultImageLimitEnabled, boolean perProductMaxImagesLimitEnabled, long perProductMaxImagesLimit) {
+        this.totalPlacesLimit = totalPlacesLimit;
+        this.perDayAddPlacesLimit = perDayAddPlacesLimit;
+        this.perDayAddPostsLimit = perDayAddPostsLimit;
+        this.perPlaceImagesLimit = perPlaceImagesLimit;
+        this.perPostImagesLimit = perPostImagesLimit;
+        this.perPlaceProductsLimit = perPlaceProductsLimit;
+        this.perDayAddPlacesLimitEnabled = perDayAddPlacesLimitEnabled;
+        this.perDayAddPostsLimitEnabled = perDayAddPostsLimitEnabled;
+        this.perPlaceImagesLimitEnabled = perPlaceImagesLimitEnabled;
+        this.perPostImagesLimitEnabled = perPostImagesLimitEnabled;
+
+        this.perProductDefaultImageLimitEnabled = perProductDefaultImageLimitEnabled;
+        this.perProductMaxImagesLimitEnabled = perProductMaxImagesLimitEnabled;
+        this.perProductDefaultImagesLimit = perProductDefaultImagesLimit;
+        this.perProductMaxImagesLimit = perProductMaxImagesLimit;
+    }
 
     public boolean isPromotionVideoTimeLimitEnabled() {
         return promotionVideoTimeLimitEnabled;
@@ -83,51 +119,76 @@ public class UserSettings {
         this.perPostMaxImagesLimitEnabled = perPostMaxImagesLimitEnabled;
     }
 
-    private boolean perPostMaxImagesLimitEnabled;
-    private boolean perProductDefaultImageLimitEnabled;
-    private long perProductDefaultImagesLimit;
-    private long perProductMaxImagesLimit;
-    private boolean perProductMaxImagesLimitEnabled;
-    private long perPlaceProductsLimit;
-    private boolean notificationsRequired;
-    private boolean hhPerPostImgLimitEnabled;
-    private long hhPerPostImgLimit;
-    private boolean hhShowProfileOnHelp;
-    private boolean hhShowProfileOnAddPost;
-    private boolean hhPostCommentsOnOff;
-
-    public UserSettings(long totalPlacesLimit, long perDayAddPlacesLimit, long perDayAddPostsLimit, long perPlaceImagesLimit, long perPostImagesLimit, long perPlaceProductsLimit, boolean perDayAddPlacesLimitEnabled, boolean perDayAddPostsLimitEnabled, boolean perPlaceImagesLimitEnabled, boolean perPostImagesLimitEnabled, long perProductDefaultImagesLimit, boolean perProductDefaultImageLimitEnabled, boolean perProductMaxImagesLimitEnabled, long perProductMaxImagesLimit) {
-        this.totalPlacesLimit = totalPlacesLimit;
-        this.perDayAddPlacesLimit = perDayAddPlacesLimit;
-        this.perDayAddPostsLimit = perDayAddPostsLimit;
-        this.perPlaceImagesLimit = perPlaceImagesLimit;
-        this.perPostImagesLimit = perPostImagesLimit;
-        this.perPlaceProductsLimit = perPlaceProductsLimit;
-        this.perDayAddPlacesLimitEnabled = perDayAddPlacesLimitEnabled;
-        this.perDayAddPostsLimitEnabled = perDayAddPostsLimitEnabled;
-        this.perPlaceImagesLimitEnabled = perPlaceImagesLimitEnabled;
-        this.perPostImagesLimitEnabled = perPostImagesLimitEnabled;
-
-        this.perProductDefaultImageLimitEnabled = perProductDefaultImageLimitEnabled;
-        this.perProductMaxImagesLimitEnabled = perProductMaxImagesLimitEnabled;
-        this.perProductDefaultImagesLimit = perProductDefaultImagesLimit;
-        this.perProductMaxImagesLimit = perProductMaxImagesLimit;
+    public boolean isHhPostCommentsEnabled() {
+        return hhPostCommentsEnabled;
     }
 
-    public boolean isHhPostCommentsOnOff() {
-        return hhPostCommentsOnOff;
+    public void setHhPostCommentsEnabled(boolean hhPostCommentsEnabled) {
+        this.hhPostCommentsEnabled = hhPostCommentsEnabled;
     }
 
-    public void setHhPostCommentsOnOff(boolean hhPostCommentsOnOff) {
-        this.hhPostCommentsOnOff = hhPostCommentsOnOff;
+    public boolean isHhNotifyOnNearbyPostsEnabled() {
+        return hhNotifyOnNearbyPostsEnabled;
     }
 
-    public boolean isHhShowProfileOnAddPost() {
-        return hhShowProfileOnAddPost;
+    public void setHhNotifyOnNearbyPostsEnabled(boolean hhNotifyOnNearbyPostsEnabled) {
+        this.hhNotifyOnNearbyPostsEnabled = hhNotifyOnNearbyPostsEnabled;
     }
 
-    public void setHhShowProfileOnAddPost(boolean hhShowProfileOnAddPost) {
-        this.hhShowProfileOnAddPost = hhShowProfileOnAddPost;
+    public boolean isHhDontNotifyBetweenTimeEnabled() {
+        return hhDontNotifyBetweenTimeEnabled;
+    }
+
+    public void setHhDontNotifyBetweenTimeEnabled(boolean hhDontNotifyBetweenTimeEnabled) {
+        this.hhDontNotifyBetweenTimeEnabled = hhDontNotifyBetweenTimeEnabled;
+    }
+
+    public String getHhDontNotifyBetweenTime() {
+        return hhDontNotifyBetweenTime;
+    }
+
+    public void setHhDontNotifyBetweenTime(String hhDontNotifyBetweenTime) {
+        this.hhDontNotifyBetweenTime = hhDontNotifyBetweenTime;
+    }
+
+    public String getHhRangeForNearbyPostsInKm() {
+        return hhRangeForNearbyPostsInKm;
+    }
+
+    public void setHhRangeForNearbyPostsInKm(String hhRangeForNearbyPostsInKm) {
+        this.hhRangeForNearbyPostsInKm = hhRangeForNearbyPostsInKm;
+    }
+
+    public Address getHhUserLocation() {
+        return hhUserLocation;
+    }
+
+    public void setHhUserLocation(Address hhUserLocation) {
+        this.hhUserLocation = hhUserLocation;
+    }
+
+    public boolean isHhNotifyOnNewPosts() {
+        return hhNotifyOnNewPosts;
+    }
+
+    public void setHhNotifyOnNewPosts(boolean hhNotifyOnNewPosts) {
+        this.hhNotifyOnNewPosts = hhNotifyOnNewPosts;
+    }
+
+    public boolean isHhNotifyOnNewThought() {
+        return hhNotifyOnNewThought;
+    }
+
+    public void setHhNotifyOnNewThought(boolean hhNotifyOnNewThought) {
+        this.hhNotifyOnNewThought = hhNotifyOnNewThought;
+    }
+
+    public boolean isHhNotifyOnHelp() {
+        return hhNotifyOnHelp;
+    }
+
+    public void setHhNotifyOnHelp(boolean hhNotifyOnHelp) {
+        this.hhNotifyOnHelp = hhNotifyOnHelp;
     }
 
     public boolean isHhShowProfileOnHelp() {

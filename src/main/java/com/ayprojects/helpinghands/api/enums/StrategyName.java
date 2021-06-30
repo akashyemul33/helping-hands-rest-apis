@@ -41,6 +41,6 @@ public enum StrategyName {
     GetDhCommentsStrategy,
     GetHhThoughtStrategy,
     UpdatePlaceStrategy,
-    UpdateHhPostStrategy
-    ;
+    UpdateHhPostStrategy,
+    UpdateUserStrategy;
 }

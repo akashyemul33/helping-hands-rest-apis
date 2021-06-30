@@ -119,7 +119,7 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
                 d.setNumberOfHHPosts(dhUser.getNumberOfHHPosts());
 
                 if (dhUser.getUserSettingEnabled() && dhUser.getUserSettings() != null)
-                    d.setPostCommentsOnOff(dhUser.getUserSettings().isHhPostCommentsOnOff());
+                    d.setPostCommentsOnOff(dhUser.getUserSettings().isHhPostCommentsEnabled());
             }
             if (lat != 0 && lng != 0) {
                 //calculate distance of place from given lat lng

@@ -185,7 +185,7 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
         if (queriedDhUser == null)
             return new Response<DhHHPost>(false, 402, "User not found with given commentUserId", new ArrayList<>(), 0);
 
-        if (queriedDhUser.getUserSettingEnabled() && queriedDhUser.getUserSettings() != null && !queriedDhUser.getUserSettings().isHhPostCommentsOnOff())
+        if (queriedDhUser.getUserSettingEnabled() && queriedDhUser.getUserSettings() != null && !queriedDhUser.getUserSettings().isHhPostCommentsEnabled())
             return new Response<DhHHPost>(false, 402, "Unable to add comments as user turned off this feature !", new ArrayList<>(), 0);
 
         //insert things into dhComments

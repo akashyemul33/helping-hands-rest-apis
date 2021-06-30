@@ -35,17 +35,27 @@ public class UserController {
     @Autowired
     ApiOperations<DhUser> apiOperations;
 
+    @PostMapping
+    public ResponseEntity<Response<DhUser>> updateUserSettings(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUser, @RequestBody boolean resetSettings, @PathVariable String version) throws ServerSideException {
+        HashMap<String, Object> params = new HashMap<>();
+        if (resetSettings)
+            params.put(AppConstants.KEY_USER_API_TYPE, AppConstants.VALUE_RESET_SETTINGS);
+        else
+            params.put(AppConstants.KEY_USER_API_TYPE, AppConstants.VALUE_UPDATE_SETTINGS);
+        return new ResponseEntity<>(apiOperations.update(null, httpHeaders, params, dhUser, StrategyName.UpdateUserStrategy, version), HttpStatus.CREATED);
+    }
+
     @PostMapping(value = "/addUser")
     public ResponseEntity<Response<DhUser>> addUser(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUser, @PathVariable String version) throws ServerSideException {
-        return new ResponseEntity<>(apiOperations.add(null,httpHeaders,dhUser, StrategyName.AddUserStrategy,version), HttpStatus.CREATED);
+        return new ResponseEntity<>(apiOperations.add(null, httpHeaders, dhUser, StrategyName.AddUserStrategy, version), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getUserByMobile")
     ResponseEntity<Response<DhUser>> getUserByMobile(@RequestHeader HttpHeaders httpHeaders, @RequestParam String mobileNumber, @RequestParam String countryCode, @RequestParam String fcmToken, @PathVariable String version) throws ServerSideException {
-        HashMap<String, Object> params=new HashMap<>();
-        params.put(AppConstants.KEY_MOBILE,mobileNumber);
-        params.put(AppConstants.KEY_COUNTRY_CODE,countryCode);
-        params.put(AppConstants.KEY_FCM_TOKEN,fcmToken);
-        return new ResponseEntity<>(apiOperations.get(null,httpHeaders, StrategyName.GetUserStrategy,params,version), HttpStatus.OK);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put(AppConstants.KEY_MOBILE, mobileNumber);
+        params.put(AppConstants.KEY_COUNTRY_CODE, countryCode);
+        params.put(AppConstants.KEY_FCM_TOKEN, fcmToken);
+        return new ResponseEntity<>(apiOperations.get(null, httpHeaders, StrategyName.GetUserStrategy, params, version), HttpStatus.OK);
     }
 }

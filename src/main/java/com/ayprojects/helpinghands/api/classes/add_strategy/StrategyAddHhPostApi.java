@@ -53,7 +53,7 @@ public class StrategyAddHhPostApi implements StrategyAddBehaviour<DhHHPost> {
 
         dhHHPost = (DhHHPost) Utility.setCommonAttrs(dhHHPost, AppConstants.STATUS_ACTIVE);
         if (queriedPostAddedDhUser.getUserSettingEnabled() && queriedPostAddedDhUser.getUserSettings() != null) {
-            dhHHPost.setPostCommentsOnOff(queriedPostAddedDhUser.getUserSettings().isHhPostCommentsOnOff());
+            dhHHPost.setPostCommentsOnOff(queriedPostAddedDhUser.getUserSettings().isHhPostCommentsEnabled());
         } else dhHHPost.setPostCommentsOnOff(true);
         mongoTemplate.save(dhHHPost, AppConstants.COLLECTION_DH_HH_POST);
 
