@@ -1,12 +1,27 @@
 package com.ayprojects.helpinghands.models;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 @Document
 public class DhUser extends AllCommonUsedAttributes {
+    @Transient
+    @Ignore
+    private boolean systemDefaultSettings;
+
+    public boolean isSystemDefaultSettings() {
+        return systemDefaultSettings;
+    }
+
+    public void setSystemDefaultSettings(boolean systemDefaultSettings) {
+        this.systemDefaultSettings = systemDefaultSettings;
+    }
+
     @Indexed
     private String userId;
     private String firstName;

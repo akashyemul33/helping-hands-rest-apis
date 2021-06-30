@@ -28,30 +28,24 @@ public class StrategyUpdateUserApi implements StrategyUpdateBehaviour<DhUser> {
 
     @Override
     public Response<DhUser> update(String language, DhUser dhUser, HashMap<String, Object> params) throws ServerSideException {
-        if (params == null) {
-            return new Response<>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_MISSING_QUERY_PARAMS), new ArrayList<>());
-        }
 
-        String userApiType = (String) params.get(AppConstants.KEY_USER_API_TYPE);
-        if (AppConstants.VALUE_UPDATE_SETTINGS.equalsIgnoreCase(userApiType)) {
-            Response<DhUser> validatedResponse = validateForUserSettings(language, dhUser);
-            if (validatedResponse.getStatus()) {
-                updateUserSettings(dhUser.getUserId(),dhUser.getUserSettings());
-            }
-            return validatedResponse;
-        }
-        else if(AppConstants.VALUE_RESET_SETTINGS.equalsIgnoreCase(userApiType)){
-            Response<DhUser> validatedResponse = validateForUserSettings(language, dhUser);
-            if (validatedResponse.getStatus()) {
+        Response<DhUser> validatedResponse = validateForUserSettings(language, dhUser);
+
+        if (validatedResponse.getStatus()) {
+            if (dhUser.isSystemDefaultSettings()) {
                 UserSettings userSettings = Utility.getGlobalUserSettings();
-                updateUserSettings(dhUser.getUserId(),userSettings);
+                updateUserSettings(dhUser.getUserId(), userSettings);
+                return validatedResponse;
+            } else {
+                updateUserSettings(dhUser.getUserId(), dhUser.getUserSettings());
+                return validatedResponse;
             }
-            return validatedResponse;
         }
         return null;
+
     }
 
-    private void updateUserSettings(String userId,UserSettings userSettings) {
+    private void updateUserSettings(String userId, UserSettings userSettings) {
         Query query = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(userId));
         Update update = new Update();
         update.set(AppConstants.KEY_USER_SETTINGS, userSettings);

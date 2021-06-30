@@ -35,14 +35,9 @@ public class UserController {
     @Autowired
     ApiOperations<DhUser> apiOperations;
 
-    @PostMapping
-    public ResponseEntity<Response<DhUser>> updateUserSettings(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUser, @RequestBody boolean resetSettings, @PathVariable String version) throws ServerSideException {
-        HashMap<String, Object> params = new HashMap<>();
-        if (resetSettings)
-            params.put(AppConstants.KEY_USER_API_TYPE, AppConstants.VALUE_RESET_SETTINGS);
-        else
-            params.put(AppConstants.KEY_USER_API_TYPE, AppConstants.VALUE_UPDATE_SETTINGS);
-        return new ResponseEntity<>(apiOperations.update(null, httpHeaders, params, dhUser, StrategyName.UpdateUserStrategy, version), HttpStatus.CREATED);
+    @PostMapping(value = "/updateUserSettings")
+    public ResponseEntity<Response<DhUser>> updateUserSettings(@RequestHeader HttpHeaders httpHeaders, @RequestBody DhUser dhUser, @PathVariable String version) throws ServerSideException {
+        return new ResponseEntity<>(apiOperations.update(null, httpHeaders, null, dhUser, StrategyName.UpdateUserStrategy, version), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/addUser")
