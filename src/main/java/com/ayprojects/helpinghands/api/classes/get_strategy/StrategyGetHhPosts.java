@@ -91,8 +91,8 @@ public class StrategyGetHhPosts implements StrategyGetBehaviour<DhHHPost> {
 
     private Response<DhHHPost> returnPaginatedPosts(double lat, double lng, Query query, int page, int size, boolean myPosts) {
         Pageable pageable = PageRequest.of(page, size);
+        query.with(Sort.by(Sort.Direction.DESC, AppConstants.CREATED_DATETIME));
         List<DhHHPost> dhHHPosts = mongoTemplate.find(query.with(pageable), DhHHPost.class);
-        query.with(Sort.by(Sort.Direction.ASC, AppConstants.CREATED_DATETIME));
         for (DhHHPost d : dhHHPosts) {
             Query queryFindUser = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(d.getUserId()));
             queryFindUser.fields().include(AppConstants.FIRST_NAME);
