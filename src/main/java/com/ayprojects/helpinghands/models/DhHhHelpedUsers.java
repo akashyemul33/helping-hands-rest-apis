@@ -28,11 +28,8 @@ public class DhHhHelpedUsers extends AllCommonUsedAttributes{
 
     private String userId;
     private String userName;
-    @Transient
-    @Ignore
     private String profileImgLow;
-    @Transient
-    @Ignore
+
     private String profileImgHigh;
     @Transient
     @Ignore

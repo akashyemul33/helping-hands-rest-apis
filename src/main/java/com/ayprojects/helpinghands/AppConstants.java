@@ -356,6 +356,8 @@ public class AppConstants {
     public static final String KEY_USER_API_TYPE = "UserApiType";
     public static final String VALUE_UPDATE_SETTINGS = "UpdateSettings";
     public static final String VALUE_RESET_SETTINGS = "ResetSettings";
+    public static final String KEY_PROFILE_IMG_LOW = "profileImgLow";
+    public static final String KEY_PROFILE_IMG_HIGH = "profileImgHigh";
     public static String ACCESS_KEY = "";
     public static String SECRET_KEY = "";
     public static String[] SUPPORTED_LANGUAGES = {"en", "hi", "mr"};

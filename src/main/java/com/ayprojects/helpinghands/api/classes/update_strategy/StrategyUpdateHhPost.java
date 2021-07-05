@@ -431,12 +431,16 @@ public class StrategyUpdateHhPost implements StrategyUpdateBehaviour<DhHHPost> {
 
         Query findHelpedUserQuery = new Query(Criteria.where(AppConstants.KEY_USER_ID).is(helpedUserId).andOperator(Criteria.where(AppConstants.STATUS).regex(AppConstants.STATUS_ACTIVE, "i")));
         findHelpedUserQuery.fields().include(AppConstants.KEY_NUMBER_OF_HH_HELPS);
+        findHelpedUserQuery.fields().include(AppConstants.KEY_PROFILE_IMG_LOW);
+        findHelpedUserQuery.fields().include(AppConstants.KEY_PROFILE_IMG_HIGH);
         DhUser queriedHelpedDhUser = mongoTemplate.findOne(findHelpedUserQuery, DhUser.class);
         if (queriedHelpedDhUser == null)
             return new Response<DhHHPost>(false, 402, ResponseMsgFactory.getResponseMsg(language, AppConstants.RESPONSEMESSAGE_USER_NOT_FOUND_WITH_HELPED_USERID), new ArrayList<>(), 0);
 
         //insert into helped user item & update dhHhPost
         DhHhHelpedUsers dhHhHelpedUsers = dhHHPost.getHelpedUsers().get(0);
+        dhHhHelpedUsers.setProfileImgLow(queriedHelpedDhUser.getProfileImgLow());
+        dhHhHelpedUsers.setProfileImgHigh(queriedHelpedDhUser.getProfileImgHigh());
         dhHhHelpedUsers = (DhHhHelpedUsers) Utility.setCommonAttrs(dhHhHelpedUsers, AppConstants.STATUS_ACTIVE);
         mongoTemplate.save(dhHhHelpedUsers, AppConstants.COLLECTION_DH_HH_HELPED_USERS);
 
